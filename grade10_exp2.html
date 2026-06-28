@@ -25,7 +25,7 @@
             max-width: 1100px;
             margin: 0 auto;
             background: white;
-            padding: 30px;
+            padding: 16px;
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
@@ -55,14 +55,23 @@
         /* نافذة المختبر */
         .lab-window {
             background: linear-gradient(135deg, #1e272e 0%, #3d3d3d 100%);
-            height: 380px;
+            min-height: 260px;
             border-radius: 12px;
             position: relative;
-            overflow: hidden;
+            overflow-x: auto;
+            overflow-y: hidden;
             box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
             display: flex;
             align-items: center;
+            justify-content: flex-start;
+            -webkit-overflow-scrolling: touch;
+        }
+        .lab-window-inner {
+            min-width: 780px;
+            display: flex;
+            align-items: center;
             justify-content: center;
+            padding: 10px 20px;
         }
 
         .micrometer-3d {
@@ -71,6 +80,7 @@
             height: 250px;
             display: flex;
             align-items: center;
+            flex-shrink: 0;
         }
 
         .u-frame {
@@ -220,6 +230,9 @@
             gap: 20px;
             margin-top: 25px;
         }
+        @media (max-width: 700px) {
+            .controls-section { grid-template-columns: 1fr; }
+        }
 
         .panel {
             background: #f9f9f9;
@@ -258,7 +271,7 @@
 
         .zoom-display {
             font-family: 'Courier New', Courier, monospace;
-            font-size: 38px;
+            font-size: clamp(22px, 5vw, 38px);
             font-weight: bold;
             color: #c0392b;
             margin: 10px 0;
@@ -278,12 +291,58 @@
             margin-top: 15px;
         }
 
-        th, td { border: 1px solid #ddd; padding: 12px; text-align: center; }
+        th, td { border: 1px solid #ddd; padding: 8px 6px; text-align: center; font-size: 13px; }
         th { background-color: var(--primary); color: white; }
         input[type="number"] { width: 85px; padding: 6px; text-align: center; }
-    </style>
+
+        /* ===== RESPONSIVE MOBILE ===== */
+        @media (max-width: 600px) {
+            body { padding: 6px; }
+            .container { padding: 12px; border-radius: 8px; }
+            header h1 { font-size: 18px; }
+            .btn { padding: 8px 10px; font-size: 12px; display: block; width: 100%; margin: 4px 0; }
+            input[type="range"] { width: 100% !important; }
+            table { font-size: 11px; }
+            th, td { padding: 5px 3px; }
+            input[type="number"] { width: 60px; }
+            .zoom-display { font-size: 26px; }
+            .report-section { padding: 12px; }
+            .panel { padding: 12px; }
+            .lab-window { min-height: 200px; }
+        }
+        </style>
 </head>
 <body>
+
+<style>
+.back-to-lab {
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    z-index: 9999;
+    background: rgba(10,22,40,0.92);
+    border: 1px solid rgba(0,200,150,0.35);
+    border-radius: 24px;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: #00C896;
+    font-family: Tajawal, Cairo, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+    transition: background 0.2s;
+}
+.back-to-lab:hover { background: rgba(0,200,150,0.15); }
+</style>
+<a href="grade10.html" class="back-to-lab">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+  العودة للصف العاشر
+</a>
+
 
 <div class="container">
     <header>
@@ -296,6 +355,7 @@
     </div>
 
     <div class="lab-window">
+      <div class="lab-window-inner">
         <div class="micrometer-3d">
             <div class="u-frame"></div>
             <div class="anvil"></div>
@@ -312,6 +372,7 @@
             
             <div id="targetObject" class="target-object"></div>
         </div>
+      </div>
     </div>
 
     <div class="controls-section">

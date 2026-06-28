@@ -19,7 +19,7 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             margin: 0;
-            padding: 20px;
+            padding: 12px;
         }
 
         .container {
@@ -78,21 +78,23 @@
             overflow: hidden;
             border: 1px solid #ddd;
             margin-bottom: 15px;
+            width: 100%;
         }
 
         canvas {
             display: block;
-            width: 100%;
-            height: auto;
+            width: 100% !important;
+            height: auto !important;
             background-color: #ecf0f1;
+            touch-action: none;
         }
 
         .controls {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             flex-wrap: wrap;
             background: #f1f2f6;
-            padding: 12px;
+            padding: 10px;
             border-radius: 8px;
             margin-bottom: 15px;
             align-items: center;
@@ -101,12 +103,14 @@
         label { font-weight: bold; font-size: 14px; }
 
         select, input[type="range"], input[type="number"], button {
-            padding: 8px 12px;
+            padding: 8px 10px;
             border: 1px solid #ccc;
             border-radius: 6px;
             font-family: inherit;
             font-size: 14px;
+            max-width: 100%;
         }
+        input[type="range"] { width: 100% !important; }
 
         button {
             background-color: var(--secondary-color);
@@ -163,9 +167,60 @@
             font-family: inherit;
             box-sizing: border-box;
         }
-    </style>
+
+        /* ===== RESPONSIVE MOBILE ===== */
+        @media (max-width: 600px) {
+            body { padding: 8px; }
+            header h1 { font-size: 18px; }
+            header p { font-size: 12px; }
+            h2 { font-size: 15px; }
+            .controls { flex-direction: column; align-items: stretch; }
+            .controls label { font-size: 13px; }
+            select { width: 100%; }
+            input[type="range"] { width: 100% !important; }
+            .verification div { flex-direction: column; gap: 8px; }
+            input[type="number"] { width: 100% !important; }
+            button { width: 100%; }
+            table { font-size: 12px; }
+            th, td { padding: 6px 4px; }
+            textarea { font-size: 13px; }
+        }
+        @media (max-width: 400px) {
+            header h1 { font-size: 15px; }
+        }
+        </style>
 </head>
 <body>
+
+<style>
+.back-to-lab {
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    z-index: 9999;
+    background: rgba(10,22,40,0.92);
+    border: 1px solid rgba(0,200,150,0.35);
+    border-radius: 24px;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: #00C896;
+    font-family: Tajawal, Cairo, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+    transition: background 0.2s;
+}
+.back-to-lab:hover { background: rgba(0,200,150,0.15); }
+</style>
+<a href="grade10.html" class="back-to-lab">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+  العودة للصف العاشر
+</a>
+
 
 <div class="container">
     <header>
@@ -542,7 +597,18 @@
     }
 
     // تشغيل المختبر عند تحميل الصفحة بالكامل
-    window.onload = init;
+    window.onload = function(){ init(); resizeCanvas(); };
+
+    // Responsive canvas resize
+    function resizeCanvas() {
+        const container = canvas.parentElement;
+        const ratio = canvas.height / canvas.width;
+        canvas.style.width = '100%';
+        canvas.style.height = 'auto';
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
 </script>
 
 </body>
