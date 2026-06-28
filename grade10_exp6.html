@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>القصور الذاتي - فيزياء الصف العاشر</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@300;400;500;700;900&display=swap');
+
+  :root {
+    --primary: #1a3a5c;
+    --accent: #e8a020;
+    --accent2: #2ecc71;
+    --bg: #0d1b2a;
+    --bg2: #112240;
+    --bg3: #1a3050;
+    --card: rgba(255,255,255,0.05);
+    --border: rgba(255,255,255,0.1);
+    --text: #e8f0fe;
+    --text-muted: #8bafd4;
+    --gold: #f0c040;
+    --red: #e74c3c;
+    --teal: #1abc9c;
+    --glass: rgba(26,58,92,0.6);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Cairo', 'Tajawal', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Stars background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 80% 10%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 50% 80%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(2px 2px at 10% 60%, rgba(255,255,255,0.25) 0%, transparent 100%),
+      radial-gradient(1px 1px at 90% 70%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 35% 50%, rgba(255,255,255,0.15) 0%, transparent 100%),
+      radial-gradient(1px 1px at 65% 25%, rgba(255,255,255,0.2) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Header */
+  .hero {
+    position: relative;
+    text-align: center;
+    padding: 60px 20px 50px;
+    background: linear-gradient(135deg, #0d1b2a 0%, #1a3a5c 50%, #0d2137 100%);
+    border-bottom: 2px solid var(--accent);
+    overflow: hidden;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(232,160,32,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--accent), #c87000);
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 6px 18px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+    margin-bottom: 18px;
+    box-shadow: 0 4px 16px rgba(232,160,32,0.4);
+  }
+
+  .hero h1 {
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-weight: 900;
+    background: linear-gradient(135deg, #fff 30%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 12px;
+    line-height: 1.2;
+  }
+
+  .hero p {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  /* Newton's Law Box */
+  .law-box {
+    max-width: 900px;
+    margin: 40px auto 0;
+    background: linear-gradient(135deg, rgba(232,160,32,0.1), rgba(232,160,32,0.03));
+    border: 2px solid var(--accent);
+    border-radius: 20px;
+    padding: 28px 36px;
+    position: relative;
+    backdrop-filter: blur(12px);
+  }
+
+  .law-box::before {
+    content: '⚖️';
+    position: absolute;
+    top: -18px;
+    right: 28px;
+    font-size: 2rem;
+    filter: drop-shadow(0 0 8px var(--accent));
+  }
+
+  .law-box h2 {
+    color: var(--accent);
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  .law-box p {
+    font-size: 1.05rem;
+    line-height: 1.9;
+    color: #cde;
+  }
+
+  /* Sections */
+  .section {
+    max-width: 1000px;
+    margin: 50px auto;
+    padding: 0 20px;
+  }
+
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+
+  .section-title .icon {
+    width: 46px; height: 46px;
+    background: linear-gradient(135deg, var(--accent), #c87000);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem;
+    box-shadow: 0 4px 16px rgba(232,160,32,0.35);
+    flex-shrink: 0;
+  }
+
+  .section-title h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  /* Concept Cards */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+  }
+
+  .card {
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 26px;
+    backdrop-filter: blur(12px);
+    transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 80px; height: 80px;
+    border-radius: 0 18px 0 80px;
+    background: linear-gradient(135deg, rgba(232,160,32,0.12), transparent);
+  }
+
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+    border-color: rgba(232,160,32,0.35);
+  }
+
+  .card .emoji { font-size: 2rem; margin-bottom: 12px; display: block; }
+  .card h3 { font-size: 1.1rem; font-weight: 700; color: var(--accent); margin-bottom: 8px; }
+  .card p { font-size: 0.93rem; color: var(--text-muted); line-height: 1.7; }
+
+  /* Formula */
+  .formula-box {
+    background: linear-gradient(135deg, rgba(46,204,113,0.08), rgba(46,204,113,0.02));
+    border: 1.5px solid rgba(46,204,113,0.35);
+    border-radius: 16px;
+    padding: 24px 30px;
+    text-align: center;
+    margin: 30px 0;
+  }
+
+  .formula-box .formula {
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--accent2);
+    letter-spacing: 2px;
+    font-family: monospace;
+    margin-bottom: 8px;
+  }
+
+  .formula-box p { color: var(--text-muted); font-size: 0.9rem; }
+
+  /* ===== VIRTUAL LAB ===== */
+  #lab {
+    max-width: 1000px;
+    margin: 60px auto;
+    padding: 0 20px;
+  }
+
+  .lab-container {
+    background: linear-gradient(135deg, #0a1628, #112240);
+    border: 2px solid rgba(232,160,32,0.5);
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 0 60px rgba(232,160,32,0.1), 0 30px 80px rgba(0,0,0,0.6);
+  }
+
+  .lab-header {
+    background: linear-gradient(90deg, #1a3a5c, #0d2137);
+    padding: 18px 28px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .lab-dots { display: flex; gap: 6px; }
+  .lab-dot {
+    width: 12px; height: 12px; border-radius: 50%;
+  }
+  .lab-dot:nth-child(1) { background: #e74c3c; }
+  .lab-dot:nth-child(2) { background: #f39c12; }
+  .lab-dot:nth-child(3) { background: #2ecc71; }
+
+  .lab-title {
+    flex: 1;
+    text-align: center;
+    font-weight: 700;
+    color: var(--accent);
+    font-size: 1.05rem;
+  }
+
+  /* 3D Scene Canvas */
+  .scene-wrapper {
+    position: relative;
+    background: linear-gradient(180deg, #0a1020 0%, #0d1828 60%, #1a2840 100%);
+    height: 380px;
+    overflow: hidden;
+    perspective: 900px;
+  }
+
+  /* Table surface */
+  #scene3d {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+  }
+
+  .table-3d {
+    position: absolute;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%) rotateX(25deg);
+    width: 520px;
+    height: 180px;
+    transform-origin: center bottom;
+  }
+
+  .table-top {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 14px;
+    background: linear-gradient(180deg, #8b6914, #6b5010);
+    border-radius: 6px 6px 0 0;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.6), inset 0 2px 4px rgba(255,255,255,0.15);
+  }
+
+  .table-surface {
+    position: absolute;
+    top: 14px; left: 0; right: 0;
+    height: 18px;
+    background: linear-gradient(180deg, #5a3e10, #3d2a0a);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+  }
+
+  .table-leg {
+    position: absolute;
+    bottom: 0;
+    width: 14px;
+    height: 130px;
+    background: linear-gradient(90deg, #7a5510, #5a3e10, #7a5510);
+    border-radius: 4px;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.4);
+  }
+
+  .table-leg.left { left: 30px; }
+  .table-leg.right { right: 30px; }
+
+  /* Glass / Cup */
+  .cup-3d {
+    position: absolute;
+    transition: all 0.5s ease;
+  }
+
+  .cup-body {
+    width: 54px;
+    height: 72px;
+    background: linear-gradient(135deg,
+      rgba(150,220,255,0.35) 0%,
+      rgba(100,180,255,0.15) 40%,
+      rgba(150,220,255,0.35) 80%,
+      rgba(200,240,255,0.2) 100%);
+    border: 2px solid rgba(180,230,255,0.5);
+    border-radius: 4px 4px 12px 12px;
+    clip-path: polygon(8% 0%, 92% 0%, 100% 100%, 0% 100%);
+    position: relative;
+    box-shadow:
+      inset 4px 0 10px rgba(255,255,255,0.1),
+      inset -4px 0 10px rgba(0,100,200,0.2),
+      0 8px 24px rgba(0,0,0,0.4);
+    backdrop-filter: blur(2px);
+  }
+
+  .cup-shine {
+    position: absolute;
+    top: 10px; left: 8px;
+    width: 10px; height: 36px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.5), transparent);
+    border-radius: 4px;
+    transform: rotate(-5deg);
+  }
+
+  .cup-rim {
+    width: 60px;
+    height: 8px;
+    background: linear-gradient(180deg, rgba(200,240,255,0.6), rgba(150,200,255,0.3));
+    border-radius: 4px 4px 0 0;
+    margin: 0 auto;
+    margin-top: -4px;
+    border: 1px solid rgba(180,230,255,0.6);
+  }
+
+  /* Paper */
+  .paper-3d {
+    position: absolute;
+    width: 110px;
+    height: 80px;
+    background: linear-gradient(135deg, #fffef5, #f5f0d8);
+    border-radius: 3px;
+    box-shadow:
+      0 3px 12px rgba(0,0,0,0.4),
+      inset 0 1px 3px rgba(255,255,255,0.8);
+    border: 1px solid rgba(200,190,150,0.5);
+    transition: all 0.3s ease;
+    overflow: hidden;
+  }
+
+  .paper-lines {
+    padding: 10px 12px;
+  }
+
+  .paper-line {
+    height: 3px;
+    background: rgba(100,150,200,0.3);
+    border-radius: 2px;
+    margin-bottom: 8px;
+  }
+
+  .paper-line:nth-child(1) { width: 80%; }
+  .paper-line:nth-child(2) { width: 65%; }
+  .paper-line:nth-child(3) { width: 75%; }
+  .paper-line:nth-child(4) { width: 50%; }
+
+  /* Coin */
+  .coin-3d {
+    position: absolute;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .coin-face {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%,
+      #f5d060 0%, #d4a017 35%, #a87c10 65%, #c9960e 80%, #f0c030 100%);
+    border: 2px solid #a87c10;
+    box-shadow:
+      0 3px 8px rgba(0,0,0,0.5),
+      inset 0 2px 5px rgba(255,240,120,0.6),
+      inset 0 -2px 5px rgba(100,60,0,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.65rem;
+    color: rgba(80,50,0,0.8);
+    font-weight: 900;
+    position: relative;
+  }
+
+  .coin-edge {
+    width: 40px;
+    height: 8px;
+    background: linear-gradient(180deg, #c9960e, #8b6510, #c9960e);
+    border-radius: 0 0 4px 4px;
+    margin: -2px auto 0;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.4);
+  }
+
+  /* Trajectory arrows */
+  .arrow-indicator {
+    position: absolute;
+    font-size: 1.6rem;
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.3s;
+    pointer-events: none;
+    filter: drop-shadow(0 0 8px currentColor);
+  }
+
+  /* Lab Controls */
+  .lab-controls {
+    padding: 28px;
+    background: rgba(10,22,40,0.8);
+    border-top: 1px solid var(--border);
+  }
+
+  .controls-row {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  .control-group {
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .control-group label {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+
+  .slider-wrapper {
+    position: relative;
+  }
+
+  input[type=range] {
+    width: 100%;
+    -webkit-appearance: none;
+    height: 6px;
+    border-radius: 3px;
+    background: linear-gradient(90deg, var(--accent) 0%, var(--bg3) 0%);
+    outline: none;
+    cursor: pointer;
+  }
+
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), #c87000);
+    box-shadow: 0 2px 8px rgba(232,160,32,0.5);
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+
+  input[type=range]::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+  }
+
+  .slider-value {
+    text-align: center;
+    font-weight: 700;
+    color: var(--accent);
+    font-size: 0.9rem;
+    margin-top: 6px;
+  }
+
+  /* Buttons */
+  .btn {
+    padding: 12px 28px;
+    border: none;
+    border-radius: 12px;
+    font-family: 'Cairo', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent), #c87000);
+    color: #fff;
+    box-shadow: 0 4px 20px rgba(232,160,32,0.4);
+  }
+
+  .btn-primary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(232,160,32,0.55);
+  }
+
+  .btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .btn-secondary {
+    background: rgba(255,255,255,0.08);
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+
+  .btn-secondary:hover {
+    background: rgba(255,255,255,0.14);
+    transform: translateY(-2px);
+  }
+
+  /* Result Panel */
+  .result-panel {
+    margin-top: 20px;
+    background: rgba(10,22,40,0.9);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 0;
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.6s ease, padding 0.4s ease;
+  }
+
+  .result-panel.open {
+    max-height: 500px;
+    padding: 24px;
+  }
+
+  .result-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+
+  .result-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--accent2), #1a9c6a);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem;
+  }
+
+  .result-header h3 { font-size: 1.1rem; font-weight: 700; }
+
+  .observations {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+  }
+
+  .obs-item {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+    border-right: 3px solid var(--accent);
+    transition: all 0.4s;
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  .obs-item.reveal {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .obs-item h4 { font-size: 0.85rem; color: var(--accent); margin-bottom: 6px; font-weight: 700; }
+  .obs-item p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; }
+
+  /* Steps */
+  .steps-list {
+    list-style: none;
+    counter-reset: step;
+  }
+
+  .steps-list li {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+    counter-increment: step;
+  }
+
+  .steps-list li:last-child { border-bottom: none; }
+
+  .step-num {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), #c87000);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 900;
+    font-size: 1rem;
+    flex-shrink: 0;
+    box-shadow: 0 4px 14px rgba(232,160,32,0.4);
+  }
+
+  .step-text { padding-top: 6px; line-height: 1.7; color: #cde; font-size: 0.95rem; }
+
+  /* Conclusion */
+  .conclusion {
+    background: linear-gradient(135deg, rgba(46,204,113,0.08), rgba(26,188,156,0.05));
+    border: 1.5px solid rgba(46,204,113,0.3);
+    border-radius: 18px;
+    padding: 28px;
+    margin-top: 40px;
+  }
+
+  .conclusion h3 { color: var(--accent2); font-size: 1.2rem; margin-bottom: 16px; }
+  .conclusion p { color: #cde; line-height: 1.9; font-size: 0.97rem; }
+
+  /* Quiz */
+  .quiz-section {
+    max-width: 1000px;
+    margin: 50px auto;
+    padding: 0 20px;
+  }
+
+  .question-card {
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 26px;
+    backdrop-filter: blur(12px);
+    margin-bottom: 20px;
+  }
+
+  .question-card h4 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 18px;
+    color: #fff;
+    line-height: 1.6;
+  }
+
+  .options { display: flex; flex-direction: column; gap: 10px; }
+
+  .option-btn {
+    background: rgba(255,255,255,0.04);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 18px;
+    color: var(--text);
+    font-family: 'Cairo', sans-serif;
+    font-size: 0.95rem;
+    text-align: right;
+    cursor: pointer;
+    transition: all 0.25s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .option-btn:hover:not(:disabled) {
+    background: rgba(232,160,32,0.1);
+    border-color: rgba(232,160,32,0.4);
+  }
+
+  .option-btn.correct {
+    background: rgba(46,204,113,0.15);
+    border-color: var(--accent2);
+    color: var(--accent2);
+  }
+
+  .option-btn.wrong {
+    background: rgba(231,76,60,0.12);
+    border-color: var(--red);
+    color: var(--red);
+  }
+
+  .option-btn:disabled { cursor: default; }
+
+  .feedback {
+    margin-top: 12px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    display: none;
+    padding: 10px 14px;
+    border-radius: 8px;
+  }
+
+  .feedback.correct { display: block; color: var(--accent2); background: rgba(46,204,113,0.1); }
+  .feedback.wrong { display: block; color: var(--red); background: rgba(231,76,60,0.1); }
+
+  /* Score */
+  .score-bar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 24px;
+    margin-bottom: 30px;
+    backdrop-filter: blur(12px);
+  }
+
+  .score-bar .score-label { color: var(--text-muted); font-size: 0.9rem; }
+  .score-bar .score-num { font-size: 1.8rem; font-weight: 900; color: var(--accent); }
+  .score-bar .score-total { color: var(--text-muted); font-size: 1rem; }
+
+  /* Physics animation overlay */
+  .physics-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: float-particle 2s ease-out forwards;
+    opacity: 0;
+  }
+
+  @keyframes float-particle {
+    0% { transform: translateY(0) scale(1); opacity: 0.8; }
+    100% { transform: translateY(-80px) translateX(var(--dx, 0px)) scale(0.3); opacity: 0; }
+  }
+
+  /* Meter display */
+  .meter-display {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 18px;
+  }
+
+  .meter {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+    text-align: center;
+  }
+
+  .meter .meter-label { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 6px; }
+  .meter .meter-val { font-size: 1.4rem; font-weight: 900; color: var(--accent); }
+  .meter .meter-unit { font-size: 0.7rem; color: var(--text-muted); }
+
+  /* Progress bar for speed */
+  .speed-bar-wrapper {
+    background: rgba(0,0,0,0.3);
+    border-radius: 6px;
+    height: 8px;
+    margin-top: 10px;
+    overflow: hidden;
+  }
+
+  .speed-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent2), var(--accent));
+    border-radius: 6px;
+    transition: width 0.3s;
+    width: 0%;
+  }
+
+  /* Notification toast */
+  .toast {
+    position: fixed;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-80px);
+    background: linear-gradient(135deg, #1a3a5c, #0d2137);
+    border: 1.5px solid var(--accent);
+    border-radius: 14px;
+    padding: 16px 28px;
+    color: #fff;
+    font-weight: 700;
+    font-size: 1rem;
+    z-index: 1000;
+    transition: transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 0 20px rgba(232,160,32,0.2);
+    backdrop-filter: blur(12px);
+    text-align: center;
+  }
+
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* Responsive */
+  @media (max-width: 650px) {
+    .hero { padding: 40px 16px 30px; }
+    .table-3d { width: 320px; }
+    .meter-display { grid-template-columns: repeat(2, 1fr); }
+    .controls-row { flex-direction: column; }
+    .law-box { padding: 20px; }
+  }
+
+  /* Glow animation */
+  @keyframes glow-pulse {
+    0%, 100% { box-shadow: 0 0 20px rgba(232,160,32,0.2); }
+    50% { box-shadow: 0 0 40px rgba(232,160,32,0.5); }
+  }
+
+  .glow { animation: glow-pulse 2s infinite; }
+
+  /* Paper slide animation */
+  @keyframes paper-slide {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(var(--slide-dist, -200px)); }
+  }
+
+  @keyframes coin-fall {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(var(--fall-dist, 80px)); }
+  }
+
+  footer {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    border-top: 1px solid var(--border);
+    margin-top: 60px;
+  }
+</style>
+</head>
+<body>
+
+<!-- Toast Notification -->
+<div class="toast" id="toast"></div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="badge">📚 فيزياء · الصف العاشر · فلسطين</div>
+  <h1>القصور الذاتي</h1>
+  <p>قانون نيوتن الأول للحركة — اكتشف كيف تقاوم الأجسام تغيير حالتها الحركية</p>
+
+  <div class="law-box">
+    <h2>⚖️ قانون نيوتن الأول (قانون القصور الذاتي)</h2>
+    <p>
+      الجسم الساكن يبقى ساكناً، والجسم المتحرك يبقى متحركاً بسرعة ثابتة وبخط مستقيم،
+      ما لم تؤثر عليه محصلة قوى خارجية تعمل على تغيير مقدار سرعته أو اتجاهه أو كليهما معاً.
+    </p>
+  </div>
+</div>
+
+<!-- CONCEPT SECTION -->
+<div class="section">
+  <div class="section-title">
+    <div class="icon">🧠</div>
+    <h2>مفاهيم أساسية</h2>
+  </div>
+  <div class="cards-grid">
+    <div class="card">
+      <span class="emoji">🪨</span>
+      <h3>القصور الذاتي</h3>
+      <p>خاصية الجسم التي تجعله يقاوم أي تغيير في حالته الحركية. كلما زادت الكتلة، زاد القصور الذاتي.</p>
+    </div>
+    <div class="card">
+      <span class="emoji">⚖️</span>
+      <h3>الكتلة والقصور</h3>
+      <p>الكتلة هي مقياس القصور الذاتي. الجسم الأثقل يحتاج قوة أكبر لتغيير حالته الحركية.</p>
+    </div>
+    <div class="card">
+      <span class="emoji">🚗</span>
+      <h3>حزام الأمان</h3>
+      <p>عند التوقف المفاجئ، يستمر الجسم بالحركة للأمام بسبب القصور الذاتي — ولهذا يُعدّ حزام الأمان ضرورياً.</p>
+    </div>
+    <div class="card">
+      <span class="emoji">🌍</span>
+      <h3>أمثلة من الحياة</h3>
+      <p>البسكويت فوق الشاي، البساط تحت المزهرية، توقف الحافلة فجأة — كلها أمثلة حية على القصور الذاتي.</p>
+    </div>
+  </div>
+
+  <div class="formula-box">
+    <div class="formula">∑ف = 0 ← حالة السكون أو الحركة المنتظمة</div>
+    <p>عندما تكون محصلة القوى المؤثرة على الجسم تساوي صفراً، يبقى الجسم في حالته الحركية</p>
+  </div>
+</div>
+
+<!-- EXPERIMENT STEPS -->
+<div class="section">
+  <div class="section-title">
+    <div class="icon">📋</div>
+    <h2>خطوات التجربة</h2>
+  </div>
+  <ul class="steps-list">
+    <li>
+      <div class="step-num">١</div>
+      <div class="step-text">ضع الورقة فوق الكأس الموضوع على سطح الطاولة</div>
+    </li>
+    <li>
+      <div class="step-num">٢</div>
+      <div class="step-text">ضع قطعة النقد (العملة المعدنية) فوق الورقة مباشرةً</div>
+    </li>
+    <li>
+      <div class="step-num">٣</div>
+      <div class="step-text">اسحب الورقة بسرعة كبيرة جداً من تحت قطعة النقد</div>
+    </li>
+    <li>
+      <div class="step-num">٤</div>
+      <div class="step-text">لاحظ ماذا يحدث لقطعة النقد وحاول تفسير النتيجة</div>
+    </li>
+  </ul>
+</div>
+
+<!-- VIRTUAL LAB -->
+<div id="lab">
+  <div class="section-title">
+    <div class="icon">🔬</div>
+    <h2>المختبر الافتراضي — نشاط (٩): القصور الذاتي</h2>
+  </div>
+
+  <div class="lab-container glow">
+    <div class="lab-header">
+      <div class="lab-dots">
+        <div class="lab-dot"></div>
+        <div class="lab-dot"></div>
+        <div class="lab-dot"></div>
+      </div>
+      <div class="lab-title">🔬 مختبر فيزياء — تجربة القصور الذاتي</div>
+      <div style="width:56px"></div>
+    </div>
+
+    <!-- 3D Scene -->
+    <div class="scene-wrapper">
+      <div id="scene3d">
+        <!-- Background glow -->
+        <div style="position:absolute;bottom:60px;left:50%;transform:translateX(-50%);width:400px;height:40px;background:radial-gradient(ellipse,rgba(100,150,255,0.08),transparent);border-radius:50%;pointer-events:none;"></div>
+
+        <!-- Table -->
+        <div class="table-3d" id="table3d">
+          <div class="table-top"></div>
+          <div class="table-surface"></div>
+          <div class="table-leg left"></div>
+          <div class="table-leg right"></div>
+        </div>
+
+        <!-- Paper -->
+        <div class="paper-3d" id="paper" style="bottom:196px;left:50%;transform:translateX(-50%);">
+          <div class="paper-lines">
+            <div class="paper-line"></div>
+            <div class="paper-line"></div>
+            <div class="paper-line"></div>
+            <div class="paper-line"></div>
+          </div>
+        </div>
+
+        <!-- Cup -->
+        <div class="cup-3d" id="cup" style="bottom:196px;left:50%;transform:translateX(-30px);">
+          <div class="cup-rim"></div>
+          <div class="cup-body">
+            <div class="cup-shine"></div>
+          </div>
+        </div>
+
+        <!-- Coin on paper -->
+        <div class="coin-3d" id="coin" style="bottom:276px;left:50%;transform:translateX(-8px);">
+          <div class="coin-face">₪</div>
+          <div class="coin-edge"></div>
+        </div>
+
+        <!-- Arrows -->
+        <div class="arrow-indicator" id="arrowPaper" style="bottom:210px;right:160px;color:#e8a020;">⟸</div>
+        <div class="arrow-indicator" id="arrowCoin" style="bottom:290px;left:200px;color:#2ecc71;">⬇</div>
+
+        <!-- Physics Overlay for particles -->
+        <div class="physics-overlay" id="physicsOverlay"></div>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="lab-controls">
+      <div class="controls-row">
+        <div class="control-group">
+          <label>⚡ سرعة سحب الورقة</label>
+          <div class="slider-wrapper">
+            <input type="range" id="speedSlider" min="1" max="10" value="5" oninput="updateSlider(this)">
+          </div>
+          <div class="slider-value" id="speedVal">متوسطة (٥)</div>
+        </div>
+
+        <div class="control-group">
+          <label>⚖️ كتلة قطعة النقد</label>
+          <div class="slider-wrapper">
+            <input type="range" id="massSlider" min="1" max="5" value="2" oninput="updateMassSlider(this)">
+          </div>
+          <div class="slider-value" id="massVal">خفيفة (٢ غ)</div>
+        </div>
+      </div>
+
+      <div class="controls-row" style="justify-content:center; gap: 14px;">
+        <button class="btn btn-primary" id="runBtn" onclick="runExperiment()">
+          <span>▶</span> ابدأ التجربة
+        </button>
+        <button class="btn btn-secondary" onclick="resetExperiment()">
+          <span>↺</span> إعادة التعيين
+        </button>
+      </div>
+
+      <!-- Meters -->
+      <div class="meter-display">
+        <div class="meter">
+          <div class="meter-label">سرعة الورقة</div>
+          <div class="meter-val" id="mSpeed">0</div>
+          <div class="meter-unit">م/ث</div>
+          <div class="speed-bar-wrapper"><div class="speed-bar" id="speedBarEl"></div></div>
+        </div>
+        <div class="meter">
+          <div class="meter-label">إزاحة الورقة</div>
+          <div class="meter-val" id="mDisp">0</div>
+          <div class="meter-unit">سم</div>
+        </div>
+        <div class="meter">
+          <div class="meter-label">حالة قطعة النقد</div>
+          <div class="meter-val" id="mCoin" style="font-size:1rem;">⏸ ساكنة</div>
+          <div class="meter-unit"></div>
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div class="result-panel" id="resultPanel">
+        <div class="result-header">
+          <div class="result-icon">🔍</div>
+          <h3>نتائج وملاحظات التجربة</h3>
+        </div>
+        <div class="observations" id="obsGrid">
+          <!-- Filled by JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONCLUSION -->
+<div class="section">
+  <div class="conclusion">
+    <h3>📌 الاستنتاج العلمي</h3>
+    <p>
+      من التجربة يتبيّن أن <strong>القصور الذاتي للأجسام هو الممانعة التي يُبديها الجسم لتغيير حالته الحركية بفعل كتلته</strong>.
+      عند سحب الورقة بسرعة كبيرة، تنتقل إليها قوة الاحتكاك ولكن لفترة زمنية قصيرة جداً، مما يجعل قطعة النقد — بسبب قصورها الذاتي — تبقى في مكانها
+      وتسقط مباشرةً داخل الكأس. وكلما زادت كتلة قطعة النقد، زاد قصورها الذاتي، وكلما زادت سرعة سحب الورقة، قلّ زمن تأثير قوة الاحتكاك على النقد.
+    </p>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div class="quiz-section">
+  <div class="section-title">
+    <div class="icon">✍️</div>
+    <h2>اختبر نفسك</h2>
+  </div>
+
+  <div class="score-bar">
+    <div>
+      <div class="score-label">درجتك الحالية</div>
+      <div>
+        <span class="score-num" id="scoreNum">0</span>
+        <span class="score-total"> / 4</span>
+      </div>
+    </div>
+    <div style="flex:1; background: rgba(255,255,255,0.06); border-radius:8px; height:10px; overflow:hidden; margin: 0 16px;">
+      <div id="scoreBar" style="height:100%;width:0%;background:linear-gradient(90deg,var(--accent2),var(--accent));border-radius:8px;transition:width 0.5s;"></div>
+    </div>
+    <div style="color:var(--text-muted);font-size:0.9rem;" id="scoreLabel">أجب عن الأسئلة</div>
+  </div>
+
+  <!-- Q1 -->
+  <div class="question-card" id="q1">
+    <h4>١. ماذا يحدث لقطعة النقد عند سحب الورقة بسرعة كبيرة جداً من تحتها؟</h4>
+    <div class="options">
+      <button class="option-btn" onclick="answer(this,'q1',false)">🔴 تتحرك مع الورقة في نفس الاتجاه</button>
+      <button class="option-btn" onclick="answer(this,'q1',true)">🟢 تبقى مكانها وتسقط داخل الكأس</button>
+      <button class="option-btn" onclick="answer(this,'q1',false)">🔵 تقفز إلى الأعلى</button>
+    </div>
+    <div class="feedback" id="fb_q1"></div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="question-card" id="q2">
+    <h4>٢. ما الذي يعبّر عن مقياس القصور الذاتي للجسم؟</h4>
+    <div class="options">
+      <button class="option-btn" onclick="answer(this,'q2',false)">🔴 السرعة</button>
+      <button class="option-btn" onclick="answer(this,'q2',false)">🔵 الحجم</button>
+      <button class="option-btn" onclick="answer(this,'q2',true)">🟢 الكتلة</button>
+    </div>
+    <div class="feedback" id="fb_q2"></div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="question-card" id="q3">
+    <h4>٣. لماذا يميل الركاب للأمام عند توقف السيارة فجأة؟</h4>
+    <div class="options">
+      <button class="option-btn" onclick="answer(this,'q3',true)">🟢 بسبب القصور الذاتي — يستمر الجسم بالحركة للأمام</button>
+      <button class="option-btn" onclick="answer(this,'q3',false)">🔴 بسبب الجاذبية الأرضية</button>
+      <button class="option-btn" onclick="answer(this,'q3',false)">🔵 بسبب تسارع السيارة للأمام</button>
+    </div>
+    <div class="feedback" id="fb_q3"></div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="question-card" id="q4">
+    <h4>٤. أيّ الجسمين يملك قصوراً ذاتياً أكبر؟</h4>
+    <div class="options">
+      <button class="option-btn" onclick="answer(this,'q4',false)">🔴 كرة ريشة (٥ غ)</button>
+      <button class="option-btn" onclick="answer(this,'q4',true)">🟢 كرة حديد (٢٠٠ غ)</button>
+      <button class="option-btn" onclick="answer(this,'q4',false)">🔵 كلاهما متساويان</button>
+    </div>
+    <div class="feedback" id="fb_q4"></div>
+  </div>
+</div>
+
+<footer>
+  🎓 درس القصور الذاتي — مادة الفيزياء للصف العاشر | المنهاج الفلسطيني
+  <br><span style="opacity:0.5;">تم تصميمه للاستخدام التعليمي التفاعلي</span>
+</footer>
+
+<script>
+  // =====================
+  // Slider handlers
+  // =====================
+  const speedLabels = ['','بطيئة جداً','بطيئة','متوسطة','متوسطة','متوسطة','سريعة','سريعة','سريعة جداً','سريعة جداً','فائقة السرعة'];
+  const massLabels = ['','خفيفة جداً (١ غ)','خفيفة (٢ غ)','متوسطة (٥ غ)','ثقيلة (١٠ غ)','ثقيلة جداً (٢٠ غ)'];
+
+  function updateSlider(el) {
+    const v = el.value;
+    document.getElementById('speedVal').textContent = `${speedLabels[v] || 'متوسطة'} (${v})`;
+    el.style.background = `linear-gradient(90deg, var(--accent) ${v*10}%, var(--bg3) ${v*10}%)`;
+  }
+
+  function updateMassSlider(el) {
+    const v = el.value;
+    document.getElementById('massVal').textContent = massLabels[v] || `(${v})`;
+    el.style.background = `linear-gradient(90deg, #2ecc71 ${v*20}%, var(--bg3) ${v*20}%)`;
+    // resize coin
+    const coin = document.getElementById('coin');
+    const sizes = [24, 32, 40, 50, 62, 76];
+    const s = sizes[v] || 36;
+    coin.querySelector('.coin-face').style.width = s + 'px';
+    coin.querySelector('.coin-face').style.height = s + 'px';
+    coin.querySelector('.coin-edge').style.width = (s+4) + 'px';
+  }
+
+  // init sliders
+  document.getElementById('speedSlider').style.background = `linear-gradient(90deg, var(--accent) 50%, var(--bg3) 50%)`;
+  document.getElementById('massSlider').style.background = `linear-gradient(90deg, #2ecc71 40%, var(--bg3) 40%)`;
+
+  // =====================
+  // Experiment State
+  // =====================
+  let running = false;
+  let animFrame = null;
+  let paperX = 0;
+  let coinDropping = false;
+  let coinY = 0;
+
+  function resetExperiment() {
+    if (animFrame) cancelAnimationFrame(animFrame);
+    running = false;
+    coinDropping = false;
+    paperX = 0;
+    coinY = 0;
+
+    const paper = document.getElementById('paper');
+    const coin = document.getElementById('coin');
+    const cup = document.getElementById('cup');
+
+    paper.style.transition = 'all 0.4s ease';
+    paper.style.left = '50%';
+    paper.style.transform = 'translateX(-50%)';
+    paper.style.opacity = '1';
+
+    coin.style.transition = 'all 0.4s ease';
+    coin.style.bottom = '276px';
+    coin.style.left = '50%';
+    coin.style.transform = 'translateX(-8px)';
+    coin.style.opacity = '1';
+
+    document.getElementById('arrowPaper').style.opacity = '0';
+    document.getElementById('arrowCoin').style.opacity = '0';
+
+    document.getElementById('mSpeed').textContent = '0';
+    document.getElementById('mDisp').textContent = '0';
+    document.getElementById('mCoin').textContent = '⏸ ساكنة';
+    document.getElementById('mCoin').style.color = 'var(--accent)';
+    document.getElementById('speedBarEl').style.width = '0%';
+
+    document.getElementById('resultPanel').classList.remove('open');
+    document.getElementById('runBtn').disabled = false;
+
+    clearParticles();
+  }
+
+  function showToast(msg, duration = 2500) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), duration);
+  }
+
+  function clearParticles() {
+    const overlay = document.getElementById('physicsOverlay');
+    overlay.innerHTML = '';
+  }
+
+  function spawnParticles(x, y, color) {
+    const overlay = document.getElementById('physicsOverlay');
+    for (let i = 0; i < 8; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      const dx = (Math.random() - 0.5) * 80;
+      p.style.cssText = `
+        left:${x + (Math.random()-0.5)*30}px;
+        top:${y}px;
+        width:${4+Math.random()*6}px;
+        height:${4+Math.random()*6}px;
+        background:${color};
+        --dx:${dx}px;
+        animation-delay:${Math.random()*0.3}s;
+        animation-duration:${0.8+Math.random()*0.8}s;
+      `;
+      overlay.appendChild(p);
+    }
+    setTimeout(clearParticles, 2500);
+  }
+
+  function runExperiment() {
+    if (running) return;
+    running = true;
+    document.getElementById('runBtn').disabled = true;
+
+    const speed = parseInt(document.getElementById('speedSlider').value);
+    const mass = parseInt(document.getElementById('massSlider').value);
+
+    const paper = document.getElementById('paper');
+    const coin = document.getElementById('coin');
+    const sceneEl = document.getElementById('scene3d');
+    const sceneRect = sceneEl.getBoundingClientRect();
+
+    // Determine outcome
+    const coinFalls = speed >= 6;  // fast enough → coin stays → falls into cup
+    const partialSlide = speed >= 4 && speed < 6;  // medium: coin slides a bit
+
+    // Show arrows
+    document.getElementById('arrowPaper').style.opacity = '1';
+    document.getElementById('arrowPaper').style.color = '#e8a020';
+
+    showToast(speed >= 7 ? '🚀 سرعة عالية جداً!' : speed >= 5 ? '⚡ سرعة كافية!' : '🐌 السرعة منخفضة...');
+
+    let startTime = null;
+    const duration = Math.max(300, 1200 - speed * 100); // faster speed = quicker animation
+    const maxSlide = 300 + speed * 20;
+
+    // Animate
+    function animate(ts) {
+      if (!startTime) startTime = ts;
+      const elapsed = ts - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+
+      // Paper slides left
+      const slideAmt = eased * maxSlide;
+      paper.style.transition = 'none';
+      paper.style.left = (50 - slideAmt/6) + '%'; // approximate
+      paper.style.transform = `translateX(calc(-50% - ${slideAmt}px))`;
+
+      // Update meters
+      const speedDisplay = (speed * eased * 1.2).toFixed(1);
+      const dispDisplay = Math.round(slideAmt * 0.3);
+      document.getElementById('mSpeed').textContent = speedDisplay;
+      document.getElementById('mDisp').textContent = dispDisplay;
+      document.getElementById('speedBarEl').style.width = (eased * 100) + '%';
+
+      if (progress < 1) {
+        animFrame = requestAnimationFrame(animate);
+      } else {
+        // Paper done — evaluate coin
+        paper.style.opacity = '0.3';
+        document.getElementById('mSpeed').textContent = '0';
+
+        if (coinFalls) {
+          // Coin stays → falls into cup
+          document.getElementById('arrowCoin').style.opacity = '1';
+          document.getElementById('mCoin').textContent = '⬇ تسقط في الكأس';
+          document.getElementById('mCoin').style.color = '#2ecc71';
+
+          coin.style.transition = 'all 0.6s cubic-bezier(0.25,0.46,0.45,0.94)';
+          coin.style.bottom = '212px'; // falls into cup
+          coin.style.left = '50%';
+          coin.style.transform = 'translateX(-18px) scale(0.8)';
+
+          setTimeout(() => {
+            spawnParticles(sceneRect.width * 0.45, sceneRect.height * 0.5, '#f0c040');
+            coin.style.opacity = '0.6';
+            showToast('✅ سقطت قطعة النقد داخل الكأس! — القصور الذاتي!', 3000);
+            showResults(speed, mass, 'success');
+          }, 700);
+
+        } else if (partialSlide) {
+          // Coin slides slightly
+          document.getElementById('mCoin').textContent = '↗ انزلقت قليلاً';
+          document.getElementById('mCoin').style.color = '#e8a020';
+
+          coin.style.transition = 'all 0.5s ease';
+          coin.style.left = `calc(50% - ${60}px)`;
+
+          setTimeout(() => {
+            showToast('⚠️ انزلقت النقدة قليلاً — السرعة لم تكن كافية!', 3000);
+            showResults(speed, mass, 'partial');
+          }, 600);
+
+        } else {
+          // Coin slides with paper (too slow)
+          document.getElementById('mCoin').textContent = '← تحركت مع الورقة';
+          document.getElementById('mCoin').style.color = '#e74c3c';
+
+          coin.style.transition = 'all 0.6s ease';
+          coin.style.transform = `translateX(calc(-8px - ${maxSlide * 0.5}px))`;
+
+          setTimeout(() => {
+            showToast('❌ السرعة منخفضة — تحركت النقدة مع الورقة', 3000);
+            showResults(speed, mass, 'fail');
+          }, 700);
+        }
+
+        running = false;
+      }
+    }
+
+    animFrame = requestAnimationFrame(animate);
+  }
+
+  function showResults(speed, mass, outcome) {
+    const panel = document.getElementById('resultPanel');
+    const grid = document.getElementById('obsGrid');
+
+    const observations = {
+      success: [
+        { title: '✅ نتيجة التجربة', text: 'سقطت قطعة النقد داخل الكأس بعد سحب الورقة بسرعة — تطبيق مثالي للقصور الذاتي!' },
+        { title: '🧲 سبب الظاهرة', text: 'لفترة زمنية قصيرة جداً، كانت قوة الاحتكاك بين الورقة والنقدة ضعيفة جداً لتحريكها.' },
+        { title: '⚖️ دور الكتلة', text: `كتلة النقدة (المستوى ${mass}) جعلت قصورها الذاتي ${mass >= 4 ? 'عالياً جداً' : 'كافياً'} لمقاومة الحركة.` },
+        { title: '📌 الاستنتاج', text: 'الجسم الساكن يميل للبقاء ساكناً ما لم تؤثر عليه قوة خارجية كافية ولمدة زمنية كافية.' },
+      ],
+      partial: [
+        { title: '⚠️ نتيجة التجربة', text: 'انزلقت قطعة النقد جزئياً — السرعة لم تكن كافية لإظهار القصور الذاتي بشكل واضح.' },
+        { title: '🔧 التوصية', text: 'جرّب زيادة سرعة السحب إلى أعلى من ٦ لرؤية النتيجة الكاملة.' },
+        { title: '📊 التحليل', text: 'زمن التلامس بين الورقة والنقدة كان طويلاً بما يكفي لنقل بعض الزخم.' },
+        { title: '📌 الاستنتاج', text: 'للحصول على النتيجة المثالية، يجب أن تكون سرعة سحب الورقة عالية جداً.' },
+      ],
+      fail: [
+        { title: '❌ نتيجة التجربة', text: 'تحركت قطعة النقد مع الورقة بسبب بطء السحب.' },
+        { title: '🔬 التفسير العلمي', text: 'عندما تسحب الورقة ببطء، يمتد زمن التلامس مما يسمح لقوة الاحتكاك بنقل الزخم للنقدة.' },
+        { title: '🔧 التوصية', text: 'زد السرعة إلى ٦ أو أكثر لرؤية تأثير القصور الذاتي بوضوح.' },
+        { title: '📌 الدرس', text: 'القصور الذاتي يظهر بوضوح فقط عندما تكون مدة تأثير القوة الخارجية قصيرة جداً.' },
+      ]
+    };
+
+    const obs = observations[outcome] || observations.success;
+    grid.innerHTML = obs.map(o => `
+      <div class="obs-item">
+        <h4>${o.title}</h4>
+        <p>${o.text}</p>
+      </div>
+    `).join('');
+
+    panel.classList.add('open');
+
+    // Staggered reveal
+    setTimeout(() => {
+      document.querySelectorAll('.obs-item').forEach((el, i) => {
+        setTimeout(() => el.classList.add('reveal'), i * 150);
+      });
+    }, 100);
+  }
+
+  // =====================
+  // Quiz
+  // =====================
+  let score = 0;
+  const answered = {};
+
+  const explanations = {
+    q1: { correct: '✅ صحيح! بسبب القصور الذاتي، تبقى قطعة النقد في مكانها وتسقط داخل الكأس.', wrong: '❌ خطأ. تبقى النقدة في مكانها بسبب القصور الذاتي، وتسقط داخل الكأس.' },
+    q2: { correct: '✅ صحيح! الكتلة هي المقياس الكمي للقصور الذاتي للجسم.', wrong: '❌ خطأ. الكتلة هي مقياس القصور الذاتي — وليس السرعة أو الحجم.' },
+    q3: { correct: '✅ صحيح! بسبب القصور الذاتي، يستمر جسم الراكب بالتحرك للأمام حتى بعد توقف السيارة.', wrong: '❌ خطأ. السبب هو القصور الذاتي: الجسم يريد الاستمرار في حركته للأمام.' },
+    q4: { correct: '✅ صحيح! كتلة كرة الحديد أكبر بكثير، لذلك قصورها الذاتي أكبر.', wrong: '❌ خطأ. القصور الذاتي يتناسب مع الكتلة — كرة الحديد الأثقل تملك قصوراً أكبر.' }
+  };
+
+  function answer(btn, qid, correct) {
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const btns = btn.parentElement.querySelectorAll('.option-btn');
+    btns.forEach(b => b.disabled = true);
+
+    btn.classList.add(correct ? 'correct' : 'wrong');
+
+    const fb = document.getElementById('fb_' + qid);
+    fb.textContent = correct ? explanations[qid].correct : explanations[qid].wrong;
+    fb.className = 'feedback ' + (correct ? 'correct' : 'wrong');
+
+    if (correct) {
+      score++;
+      showToast('🎉 إجابة صحيحة!', 2000);
+    } else {
+      showToast('💡 حاول مرة أخرى في السؤال التالي', 2000);
+    }
+
+    document.getElementById('scoreNum').textContent = score;
+    const pct = (score / 4 * 100);
+    document.getElementById('scoreBar').style.width = pct + '%';
+
+    const labels = ['أجب عن الأسئلة', 'استمر!', 'جيد جداً!', 'ممتاز!', '🏆 متفوق!'];
+    document.getElementById('scoreLabel').textContent = labels[score] || '';
+  }
+
+  // Init on load
+  updateSlider(document.getElementById('speedSlider'));
+  updateMassSlider(document.getElementById('massSlider'));
+</script>
+</body>
+</html>

@@ -1,0 +1,1481 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>قانون نيوتن الثاني - العلاقة بين القوة والتسارع</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --space: #0A1628;
+    --space-mid: #112240;
+    --space-light: #1E3A5F;
+    --gold: #F5A623;
+    --gold-light: #FFD166;
+    --teal: #00BCD4;
+    --teal-dark: #0097A7;
+    --white: #F0F4FF;
+    --slate: #2D4A6B;
+    --green: #4CAF50;
+    --red: #EF5350;
+    --purple: #7C4DFF;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--space);
+    color: var(--white);
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, #0A1628 0%, #112240 50%, #0d2137 100%);
+    padding: 40px 20px 60px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(0,188,212,0.15) 0%, transparent 70%);
+  }
+  .hero-badge {
+    display: inline-block;
+    background: linear-gradient(90deg, var(--teal), var(--teal-dark));
+    color: #fff;
+    padding: 6px 20px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: 'Cairo', sans-serif;
+    font-size: clamp(28px, 5vw, 52px);
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1.2;
+    position: relative;
+  }
+  .hero h1 span { color: var(--gold); }
+  .hero-sub {
+    font-size: 17px;
+    color: rgba(240,244,255,0.7);
+    margin-top: 10px;
+    font-weight: 400;
+  }
+  .formula-hero {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    background: rgba(245,166,35,0.12);
+    border: 1px solid rgba(245,166,35,0.3);
+    border-radius: 16px;
+    padding: 16px 36px;
+    margin-top: 28px;
+    font-family: 'Cairo', sans-serif;
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--gold);
+    position: relative;
+    backdrop-filter: blur(10px);
+  }
+
+  /* ── NAV TABS ── */
+  .nav-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    padding: 20px;
+    background: var(--space-mid);
+    flex-wrap: wrap;
+  }
+  .tab-btn {
+    background: var(--space-light);
+    border: 1px solid rgba(0,188,212,0.2);
+    color: var(--white);
+    padding: 10px 24px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-family: 'Cairo', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s;
+  }
+  .tab-btn.active, .tab-btn:hover {
+    background: linear-gradient(135deg, var(--teal), var(--teal-dark));
+    border-color: var(--teal);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,188,212,0.3);
+  }
+
+  /* ── SECTIONS ── */
+  .section { display: none; padding: 30px 20px; max-width: 1100px; margin: 0 auto; }
+  .section.active { display: block; }
+
+  /* ── THEORY ── */
+  .theory-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 20px; margin-top: 20px; }
+  .theory-card {
+    background: var(--space-mid);
+    border-radius: 16px;
+    padding: 24px;
+    border: 1px solid rgba(0,188,212,0.15);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .theory-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,188,212,0.15); }
+  .theory-card::before {
+    content: '';
+    position: absolute; top: 0; right: 0;
+    width: 4px; height: 100%;
+    background: linear-gradient(180deg, var(--teal), var(--gold));
+  }
+  .card-icon { font-size: 36px; margin-bottom: 12px; }
+  .card-title { font-family: 'Cairo', sans-serif; font-size: 18px; font-weight: 700; color: var(--gold); margin-bottom: 8px; }
+  .card-text { font-size: 14px; line-height: 1.8; color: rgba(240,244,255,0.85); }
+
+  .law-box {
+    background: linear-gradient(135deg, rgba(245,166,35,0.1), rgba(0,188,212,0.1));
+    border: 2px solid rgba(245,166,35,0.4);
+    border-radius: 20px;
+    padding: 30px;
+    text-align: center;
+    margin: 24px 0;
+  }
+  .law-equation {
+    font-family: 'Cairo', sans-serif;
+    font-size: 40px;
+    font-weight: 900;
+    color: var(--gold);
+    margin: 10px 0;
+    letter-spacing: 4px;
+  }
+  .law-label { font-size: 15px; color: rgba(240,244,255,0.7); margin-top: 8px; }
+
+  .legend-row { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; margin-top: 16px; }
+  .legend-item {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--space-light);
+    border-radius: 10px;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .legend-dot { width: 12px; height: 12px; border-radius: 50%; }
+
+  /* ── LAB ── */
+  .lab-wrapper {
+    background: var(--space-mid);
+    border-radius: 24px;
+    overflow: hidden;
+    border: 1px solid rgba(0,188,212,0.2);
+  }
+  .lab-header {
+    background: linear-gradient(90deg, var(--teal-dark), var(--slate));
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .lab-title { font-family: 'Cairo', sans-serif; font-size: 18px; font-weight: 700; }
+  .lab-status {
+    display: flex; align-items: center; gap: 8px;
+    background: rgba(0,0,0,0.3);
+    padding: 6px 14px; border-radius: 20px;
+    font-size: 13px;
+  }
+  .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); animation: pulse 1.5s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.3)} }
+
+  /* 3D SCENE */
+  .scene-3d {
+    perspective: 1000px;
+    padding: 20px;
+    background: linear-gradient(180deg, #0d1f3c 0%, #0a1628 100%);
+    min-height: 360px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .scene-3d::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 60px;
+    background: linear-gradient(180deg, transparent, rgba(0,188,212,0.05));
+  }
+
+  /* Grid floor */
+  .floor-grid {
+    position: absolute;
+    bottom: 30px; left: 50%; transform: translateX(-50%);
+    width: 800px; height: 40px;
+    background:
+      linear-gradient(90deg, rgba(0,188,212,0.1) 1px, transparent 1px),
+      linear-gradient(rgba(0,188,212,0.05) 1px, transparent 1px);
+    background-size: 40px 20px;
+    transform: rotateX(60deg) translateX(-50%);
+    transform-origin: bottom center;
+  }
+
+  /* Table */
+  .lab-table-3d {
+    position: relative;
+    width: 720px;
+    max-width: 95%;
+  }
+  .table-surface {
+    background: linear-gradient(180deg, #2a4a7f 0%, #1a3560 100%);
+    height: 18px;
+    border-radius: 4px;
+    border: 1px solid rgba(100,150,255,0.3);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+    transform: rotateX(5deg);
+    position: relative;
+  }
+  .table-surface::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+    border-radius: 4px;
+  }
+
+  /* Air Track */
+  .track-wrapper {
+    position: absolute;
+    top: -24px; left: 30px; right: 80px;
+    height: 28px;
+  }
+  .track-body {
+    width: 100%; height: 100%;
+    background: linear-gradient(180deg, #a0c4d8 0%, #5b8fa8 40%, #3d6b80 100%);
+    border-radius: 6px;
+    box-shadow:
+      0 4px 12px rgba(0,0,0,0.4),
+      inset 0 2px 4px rgba(255,255,255,0.3),
+      inset 0 -2px 4px rgba(0,0,0,0.3);
+    position: relative;
+    overflow: hidden;
+  }
+  .track-body::before {
+    content: '';
+    position: absolute;
+    top: 4px; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+    border-radius: 2px;
+  }
+  /* holes on track */
+  .track-holes {
+    position: absolute; top: 0; bottom: 0; left: 0; right: 0;
+    background: repeating-linear-gradient(90deg, transparent, transparent 18px, rgba(0,0,0,0.25) 18px, rgba(0,0,0,0.25) 20px);
+    border-radius: 6px;
+  }
+
+  /* Pulley */
+  .pulley-holder {
+    position: absolute;
+    right: 46px; top: -46px;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .pulley-stand {
+    width: 6px; height: 50px;
+    background: linear-gradient(90deg, #888, #ccc, #888);
+    border-radius: 3px;
+    box-shadow: 2px 2px 6px rgba(0,0,0,0.4);
+  }
+  .pulley-wheel {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #e0e0e0, #9e9e9e, #616161);
+    border: 3px solid #bdbdbd;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.5), inset 0 2px 4px rgba(255,255,255,0.3);
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 2px;
+  }
+  .pulley-wheel::after {
+    content: '';
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #78909c, #37474f);
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.5);
+  }
+  .pulley-groove {
+    position: absolute; inset: 4px;
+    border-radius: 50%;
+    border: 3px solid rgba(0,0,0,0.3);
+  }
+
+  /* String */
+  .string-horizontal {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 2px;
+    background: linear-gradient(90deg, #f5deb3, #d2a679);
+    box-shadow: 0 0 4px rgba(210,166,121,0.6);
+    right: 0; left: 0; /* dynamic via JS */
+    pointer-events: none;
+  }
+  .string-vertical {
+    position: absolute;
+    right: 52px;
+    width: 2px;
+    background: linear-gradient(180deg, #f5deb3, #d2a679);
+    box-shadow: 0 0 4px rgba(210,166,121,0.6);
+    top: -46px; /* connects from pulley down */
+    height: 60px; /* dynamic */
+    pointer-events: none;
+    transition: height 0.05s linear;
+  }
+
+  /* Cart */
+  .cart-3d {
+    position: absolute;
+    top: -58px;
+    width: 80px;
+    height: 36px;
+    transition: left 0.05s linear;
+    cursor: default;
+  }
+  .cart-body {
+    width: 80px; height: 28px;
+    background: linear-gradient(180deg, #ef9a9a 0%, #c62828 60%, #8b0000 100%);
+    border-radius: 5px 5px 2px 2px;
+    box-shadow:
+      0 4px 10px rgba(0,0,0,0.4),
+      inset 0 2px 4px rgba(255,255,255,0.25),
+      inset 0 -2px 4px rgba(0,0,0,0.3);
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.9);
+    font-family: 'Cairo', sans-serif;
+  }
+  .cart-body::after {
+    content: '';
+    position: absolute; top: 3px; left: 6px; right: 6px; height: 3px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 2px;
+  }
+  .cart-wheels {
+    display: flex; justify-content: space-between;
+    padding: 0 8px;
+    margin-top: 2px;
+  }
+  .wheel {
+    width: 18px; height: 18px; border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #bdbdbd, #424242);
+    border: 3px solid #757575;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.5), inset 0 1px 2px rgba(255,255,255,0.3);
+    transition: transform 0.05s linear;
+  }
+  .flag-sensor {
+    position: absolute;
+    top: -20px; left: 50%; transform: translateX(-50%);
+    width: 2px; height: 22px;
+    background: linear-gradient(180deg, #fff, #aaa);
+    border-radius: 1px;
+  }
+  .flag-sensor::after {
+    content: '';
+    position: absolute; top: 0; left: 2px;
+    width: 14px; height: 10px;
+    background: var(--gold);
+    clip-path: polygon(0 0, 100% 50%, 0 100%);
+  }
+
+  /* Light gates */
+  .gate {
+    position: absolute;
+    top: -85px;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 0;
+  }
+  .gate-post {
+    width: 6px; height: 80px;
+    background: linear-gradient(90deg, #546e7a, #90a4ae, #546e7a);
+    border-radius: 3px;
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.4);
+  }
+  .gate-sensor {
+    width: 22px; height: 18px;
+    background: linear-gradient(135deg, #263238, #37474f);
+    border-radius: 4px;
+    border: 1px solid rgba(0,188,212,0.5);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 8px; color: var(--teal);
+    box-shadow: 0 0 10px rgba(0,188,212,0.3);
+  }
+  .gate-beam {
+    position: absolute;
+    height: 2px;
+    background: rgba(0,188,212,0.5);
+    box-shadow: 0 0 8px rgba(0,188,212,0.8);
+    left: 22px; right: -180px;
+    top: 50%;
+    animation: beamPulse 2s infinite;
+  }
+  @keyframes beamPulse { 0%,100%{opacity:0.4} 50%{opacity:0.9} }
+
+  /* Hanging mass */
+  .mass-container {
+    position: absolute;
+    right: 34px;
+    display: flex; flex-direction: column; align-items: center;
+    transition: top 0.05s linear;
+  }
+  .mass-block {
+    width: 38px; height: 38px;
+    background: linear-gradient(135deg, #78909c 0%, #37474f 100%);
+    border-radius: 4px;
+    border: 2px solid #90a4ae;
+    box-shadow:
+      4px 4px 12px rgba(0,0,0,0.6),
+      inset 0 2px 4px rgba(255,255,255,0.2),
+      -2px -2px 8px rgba(0,0,0,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.9);
+    font-family: 'Cairo', sans-serif;
+    position: relative;
+  }
+  .mass-block::after {
+    content: '';
+    position: absolute; top: 3px; left: 3px; right: 3px; height: 3px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 2px;
+  }
+
+  /* Readout display */
+  .readout-panel {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 12px;
+    padding: 16px 20px;
+    background: #080f1e;
+    border-top: 1px solid rgba(0,188,212,0.2);
+  }
+  .readout-box {
+    background: #0c1829;
+    border: 1px solid rgba(0,188,212,0.25);
+    border-radius: 12px;
+    padding: 12px;
+    text-align: center;
+  }
+  .readout-label { font-size: 11px; color: rgba(240,244,255,0.5); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 1px; }
+  .readout-val {
+    font-family: 'Courier New', monospace;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--teal);
+    text-shadow: 0 0 10px rgba(0,188,212,0.5);
+    letter-spacing: 2px;
+  }
+  .readout-unit { font-size: 11px; color: rgba(240,244,255,0.4); margin-top: 2px; }
+
+  /* Controls */
+  .controls-panel {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    padding: 20px;
+    background: var(--space-mid);
+    border-top: 1px solid rgba(100,150,200,0.1);
+  }
+  .control-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(240,244,255,0.7);
+    margin-bottom: 8px;
+  }
+  .control-group label span { color: var(--gold); font-size: 15px; }
+  .slider-wrap { display: flex; align-items: center; gap: 10px; }
+  input[type=range] {
+    flex: 1;
+    -webkit-appearance: none;
+    height: 6px;
+    background: var(--space-light);
+    border-radius: 3px;
+    outline: none;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--teal), var(--teal-dark));
+    cursor: pointer;
+    box-shadow: 0 0 8px rgba(0,188,212,0.5);
+  }
+  .slider-val {
+    min-width: 52px;
+    text-align: center;
+    background: var(--space-light);
+    border-radius: 6px;
+    padding: 4px 8px;
+    font-family: 'Cairo', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--gold);
+  }
+
+  .btn-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; justify-content: center; padding: 0 20px 20px; }
+  .btn {
+    padding: 12px 28px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-family: 'Cairo', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    transition: all 0.3s;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .btn-run {
+    background: linear-gradient(135deg, var(--green), #2e7d32);
+    color: #fff;
+    box-shadow: 0 6px 20px rgba(76,175,80,0.4);
+  }
+  .btn-run:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(76,175,80,0.5); }
+  .btn-stop {
+    background: linear-gradient(135deg, var(--red), #b71c1c);
+    color: #fff;
+    box-shadow: 0 6px 20px rgba(239,83,80,0.4);
+  }
+  .btn-record {
+    background: linear-gradient(135deg, var(--gold), #e08800);
+    color: #000;
+    box-shadow: 0 6px 20px rgba(245,166,35,0.4);
+  }
+  .btn-record:hover { transform: translateY(-2px); }
+  .btn-clear {
+    background: var(--space-light);
+    color: var(--white);
+    border: 1px solid rgba(255,255,255,0.15);
+  }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
+
+  /* ── DATA TABLE ── */
+  .data-section { padding: 20px; }
+  .data-table-wrap { overflow-x: auto; border-radius: 12px; border: 1px solid rgba(0,188,212,0.2); }
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  .data-table th {
+    background: linear-gradient(135deg, var(--teal-dark), var(--slate));
+    padding: 14px 10px;
+    text-align: center;
+    font-family: 'Cairo', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    border: 1px solid rgba(0,188,212,0.2);
+    white-space: nowrap;
+  }
+  .data-table td {
+    padding: 12px 10px;
+    text-align: center;
+    border: 1px solid rgba(100,150,200,0.1);
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    background: var(--space-mid);
+    transition: background 0.2s;
+  }
+  .data-table tr:hover td { background: rgba(0,188,212,0.05); }
+  .data-table tr.recorded td { background: rgba(245,166,35,0.07); }
+  .sym { color: var(--gold); font-weight: 700; font-size: 16px; }
+  .val-cell { color: var(--teal); font-weight: 600; }
+
+  /* ── GRAPH ── */
+  .graph-section { padding: 20px; }
+  canvas#graphCanvas {
+    width: 100%; max-width: 700px;
+    background: #080f1e;
+    border-radius: 16px;
+    border: 1px solid rgba(0,188,212,0.2);
+    display: block; margin: 0 auto;
+  }
+  .graph-legend { display: flex; gap: 20px; justify-content: center; margin-top: 12px; flex-wrap: wrap; }
+  .graph-leg-item { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+  .leg-line { width: 30px; height: 3px; border-radius: 2px; }
+
+  /* ── CONCLUSIONS ── */
+  .conc-section { padding: 20px; }
+  .conc-card {
+    background: var(--space-mid);
+    border-radius: 16px;
+    padding: 22px;
+    margin-bottom: 16px;
+    border-right: 4px solid var(--teal);
+    position: relative;
+  }
+  .conc-num {
+    position: absolute; top: -12px; right: 20px;
+    background: var(--teal);
+    color: #fff;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 900; font-size: 14px;
+  }
+  .conc-title { font-family: 'Cairo', sans-serif; font-size: 17px; font-weight: 700; color: var(--gold); margin-bottom: 8px; }
+  .conc-text { font-size: 14px; line-height: 1.9; color: rgba(240,244,255,0.85); }
+  .conc-text .hi { color: var(--teal); font-weight: 700; }
+
+  .quiz-section { margin-top: 30px; }
+  .quiz-title { font-family: 'Cairo', sans-serif; font-size: 20px; font-weight: 700; color: var(--gold); margin-bottom: 16px; text-align: center; }
+  .quiz-q { background: var(--space-mid); border-radius: 14px; padding: 20px; margin-bottom: 16px; border: 1px solid rgba(100,150,200,0.1); }
+  .quiz-q p { font-size: 15px; margin-bottom: 12px; font-weight: 600; }
+  .quiz-options { display: flex; flex-direction: column; gap: 8px; }
+  .quiz-opt {
+    background: var(--space-light);
+    border: 1px solid rgba(100,150,200,0.15);
+    border-radius: 8px;
+    padding: 10px 16px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+    text-align: right;
+  }
+  .quiz-opt:hover { border-color: var(--teal); background: rgba(0,188,212,0.1); }
+  .quiz-opt.correct { background: rgba(76,175,80,0.2); border-color: var(--green); color: #a5d6a7; }
+  .quiz-opt.wrong { background: rgba(239,83,80,0.2); border-color: var(--red); color: #ef9a9a; }
+  .quiz-feedback { margin-top: 8px; font-size: 13px; font-weight: 600; padding: 8px 12px; border-radius: 6px; }
+  .quiz-feedback.ok { background: rgba(76,175,80,0.15); color: var(--green); }
+  .quiz-feedback.bad { background: rgba(239,83,80,0.15); color: var(--red); }
+
+  /* Misc */
+  .section-title {
+    font-family: 'Cairo', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--white);
+    margin-bottom: 6px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-title::before {
+    content: '';
+    display: inline-block;
+    width: 4px; height: 22px;
+    background: linear-gradient(180deg, var(--teal), var(--gold));
+    border-radius: 2px;
+  }
+  .hint-box {
+    background: rgba(245,166,35,0.08);
+    border: 1px dashed rgba(245,166,35,0.3);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: rgba(240,244,255,0.7);
+    margin: 10px 0 16px;
+    line-height: 1.7;
+  }
+  .hint-box strong { color: var(--gold); }
+
+  .steps-list { list-style: none; counter-reset: step; }
+  .steps-list li {
+    counter-increment: step;
+    display: flex; align-items: flex-start; gap: 14px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(100,150,200,0.08);
+    font-size: 14px; line-height: 1.8;
+    color: rgba(240,244,255,0.85);
+  }
+  .steps-list li::before {
+    content: counter(step);
+    min-width: 26px; height: 26px;
+    background: linear-gradient(135deg, var(--teal-dark), var(--teal));
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 900;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* animations */
+  @keyframes floatUp { from{transform:translateY(8px);opacity:0} to{transform:translateY(0);opacity:1} }
+  .section.active { animation: floatUp 0.4s ease; }
+
+  /* Mobile */
+  @media(max-width:600px) {
+    .readout-panel { grid-template-columns: repeat(3,1fr); gap: 6px; padding: 10px; }
+    .readout-val { font-size: 20px; }
+    .controls-panel { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">🎓 الفيزياء — الصف العاشر — فلسطين</div>
+  <h1>القانون <span>الثاني</span> لنيوتن</h1>
+  <p class="hero-sub">العلاقة بين القوة المؤثرة والتسارع الناتج</p>
+  <div class="formula-hero">
+    <span>ق = ك × ت</span>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav-tabs">
+  <button class="tab-btn active" onclick="showTab('theory')">📖 الشرح النظري</button>
+  <button class="tab-btn" onclick="showTab('lab')">🔬 المختبر الافتراضي</button>
+  <button class="tab-btn" onclick="showTab('data')">📊 جدول البيانات</button>
+  <button class="tab-btn" onclick="showTab('graph')">📈 الرسم البياني</button>
+  <button class="tab-btn" onclick="showTab('conclusions')">✅ الاستنتاجات والتقييم</button>
+</div>
+
+<!-- ══════════ THEORY ══════════ -->
+<div id="tab-theory" class="section active">
+  <div class="section-title">الشرح النظري</div>
+
+  <div class="law-box">
+    <div style="font-size:15px;color:rgba(240,244,255,0.6);margin-bottom:4px;">قانون نيوتن الثاني للحركة</div>
+    <div class="law-equation">ق = ك × ت</div>
+    <div class="law-label">القوة المؤثرة تساوي حاصل ضرب الكتلة في التسارع</div>
+    <div class="legend-row" style="margin-top:18px;">
+      <div class="legend-item"><div class="legend-dot" style="background:var(--gold)"></div>ق = القوة (نيوتن N)</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--teal)"></div>ك = الكتلة (كيلوغرام kg)</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--purple)"></div>ت = التسارع (م/ث²)</div>
+    </div>
+  </div>
+
+  <div class="theory-grid">
+    <div class="theory-card">
+      <div class="card-icon">⚡</div>
+      <div class="card-title">ما هو التسارع؟</div>
+      <div class="card-text">التسارع هو معدل تغيّر السرعة مع الزمن. إذا زادت سرعة جسم فهو يتسارع. وحدته م/ث² ويُرمز له بـ <strong style="color:var(--teal)">(ت)</strong>.</div>
+    </div>
+    <div class="theory-card">
+      <div class="card-icon">🎯</div>
+      <div class="card-title">القوة والتسارع: علاقة طردية</div>
+      <div class="card-text">عند ثبات الكتلة: <strong style="color:var(--gold)">كلما زادت القوة المؤثرة على جسم، زاد تسارعه بنفس النسبة</strong>. ومعنى هذا أن ق ∝ ت.</div>
+    </div>
+    <div class="theory-card">
+      <div class="card-icon">⚖️</div>
+      <div class="card-title">الكتلة والتسارع: علاقة عكسية</div>
+      <div class="card-text">عند ثبات القوة: <strong style="color:var(--gold)">كلما زادت كتلة الجسم، قَلَّ تسارعه</strong>. ومعنى هذا أن ت ∝ 1/ك.</div>
+    </div>
+    <div class="theory-card">
+      <div class="card-icon">🔗</div>
+      <div class="card-title">وحدة القوة: النيوتن</div>
+      <div class="card-text">1 نيوتن (N) هو مقدار القوة التي تُكسب جسماً كتلته 1 كيلوغرام تسارعاً مقداره 1 م/ث². أي: <strong style="color:var(--teal)">1N = 1kg·m/s²</strong></div>
+    </div>
+    <div class="theory-card">
+      <div class="card-icon">🛒</div>
+      <div class="card-title">فكرة التجربة</div>
+      <div class="card-text">نعلّق أثقالاً مختلفة في طرف خيط مربوط بعربة على مسار هوائي، ونقيس تسارع العربة باستخدام بوابات ضوئية.</div>
+    </div>
+    <div class="theory-card">
+      <div class="card-icon">💡</div>
+      <div class="card-title">تطبيقات في حياتنا</div>
+      <div class="card-text">قيادة السيارة، إطلاق الصواريخ، ركل كرة القدم — كلها أمثلة على قانون نيوتن الثاني في العمل يومياً.</div>
+    </div>
+  </div>
+
+  <div style="margin-top:24px;" class="section-title">خطوات التجربة</div>
+  <div class="hint-box"><strong>📌 ملاحظة:</strong> في المختبر الافتراضي ستُنفّذ هذه الخطوات تفاعلياً باستخدام السكة الهوائية والبوابات الضوئية والأثقال المعلقة.</div>
+  <ol class="steps-list">
+    <li>اضبط استواء السكة الهوائية وتأكد من توازنها.</li>
+    <li>ركّب البوابتين الضوئيتين على مسافة مناسبة وصلهما بالعداد.</li>
+    <li>ثبّت حاجزاً على شكل حرف U على العربة وقِسْ عرضه.</li>
+    <li>ثبّت البكرة على طرف السكة وربط الخيط الخفيف بالعربة.</li>
+    <li>اضبط العداد لقياس التسارع، وشغّل المضخة الهوائية.</li>
+    <li>علّق كتلة معروفة في طرف الخيط وسجّل القراءات الثلاث من البوابتين.</li>
+    <li>احسب التسارع من القراءات وسجّله في الجدول.</li>
+    <li>كرر التجربة بأثقال مختلفة للحصول على بيانات كافية.</li>
+    <li>ارسم منحنى القوة مقابل التسارع وتحقق من العلاقة الطردية.</li>
+  </ol>
+</div>
+
+<!-- ══════════ LAB ══════════ -->
+<div id="tab-lab" class="section">
+  <div class="section-title">المختبر الافتراضي الثلاثي الأبعاد</div>
+  <div class="hint-box">
+    <strong>🔬 كيفية الاستخدام:</strong> اضبط كتلة العربة (ك) والثقل المعلق (ث) ثم اضغط <strong>تشغيل</strong>. راقب حركة العربة والثقل واقرأ التسارع المُحسَب. اضغط <strong>تسجيل</strong> لحفظ القراءة في الجدول.
+  </div>
+
+  <div class="lab-wrapper">
+    <div class="lab-header">
+      <div class="lab-title">🏫 السكة الهوائية — نشاط العلاقة بين القوة والتسارع</div>
+      <div class="lab-status">
+        <div class="status-dot" id="statusDot"></div>
+        <span id="statusText">جاهز للتجربة</span>
+      </div>
+    </div>
+
+    <!-- 3D Scene -->
+    <div class="scene-3d" id="scene">
+      <!-- Floor grid -->
+      <div class="floor-grid"></div>
+
+      <div class="lab-table-3d" id="labTable">
+        <div class="table-surface">
+          <!-- Track -->
+          <div class="track-wrapper">
+            <div class="track-body">
+              <div class="track-holes"></div>
+            </div>
+
+            <!-- Gate 1 -->
+            <div class="gate" id="gate1" style="right:200px;">
+              <div class="gate-sensor" title="بوابة ضوئية ١">①</div>
+              <div class="gate-post"></div>
+              <div class="gate-beam" style="right:22px;left:-120px"></div>
+            </div>
+
+            <!-- Gate 2 -->
+            <div class="gate" id="gate2" style="right:50px;">
+              <div class="gate-sensor" title="بوابة ضوئية ٢">②</div>
+              <div class="gate-post"></div>
+            </div>
+
+            <!-- String horizontal -->
+            <div class="string-horizontal" id="stringH" style="right:60px;left:60px;"></div>
+
+            <!-- Cart -->
+            <div class="cart-3d" id="cart3d" style="right:260px;">
+              <div class="flag-sensor"></div>
+              <div class="cart-body" id="cartLabel">العربة</div>
+              <div class="cart-wheels">
+                <div class="wheel" id="wR1"></div>
+                <div class="wheel" id="wR2"></div>
+                <div class="wheel" id="wR3"></div>
+                <div class="wheel" id="wR4"></div>
+              </div>
+            </div>
+
+          </div><!-- end track-wrapper -->
+
+          <!-- Pulley -->
+          <div class="pulley-holder" style="right:30px;">
+            <div class="pulley-wheel"><div class="pulley-groove"></div></div>
+            <div class="pulley-stand"></div>
+          </div>
+
+        </div><!-- end table-surface -->
+
+        <!-- String vertical -->
+        <div class="string-vertical" id="stringV"></div>
+
+        <!-- Hanging mass -->
+        <div class="mass-container" id="massBlock" style="top:20px;">
+          <div class="mass-block" id="massLabel">ث</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Readout -->
+    <div class="readout-panel">
+      <div class="readout-box">
+        <div class="readout-label">القوة المؤثرة (ق)</div>
+        <div class="readout-val" id="dispF">0.00</div>
+        <div class="readout-unit">نيوتن (N)</div>
+      </div>
+      <div class="readout-box">
+        <div class="readout-label">التسارع (ت)</div>
+        <div class="readout-val" id="dispA">0.000</div>
+        <div class="readout-unit">م/ث²</div>
+      </div>
+      <div class="readout-box">
+        <div class="readout-label">الزمن المنقضي</div>
+        <div class="readout-val" id="dispT">0.00</div>
+        <div class="readout-unit">ثانية</div>
+      </div>
+    </div>
+
+    <!-- Gate times display -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:12px 20px;background:#080f1e;border-top:1px solid rgba(0,188,212,0.1);">
+      <div class="readout-box">
+        <div class="readout-label">ز(ث)₁ — بوابة ١</div>
+        <div class="readout-val" id="disp_t1" style="font-size:18px;color:#90caf9;">—</div>
+        <div class="readout-unit">ثانية</div>
+      </div>
+      <div class="readout-box">
+        <div class="readout-label">ز(ث)₂ — بوابة ٢</div>
+        <div class="readout-val" id="disp_t2" style="font-size:18px;color:#90caf9;">—</div>
+        <div class="readout-unit">ثانية</div>
+      </div>
+      <div class="readout-box">
+        <div class="readout-label">ز(ث) — بين البوابتين</div>
+        <div class="readout-val" id="disp_t3" style="font-size:18px;color:#90caf9;">—</div>
+        <div class="readout-unit">ثانية</div>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls-panel">
+      <div class="control-group">
+        <label>كتلة العربة <span>(ك)</span></label>
+        <div class="slider-wrap">
+          <input type="range" id="slMass" min="200" max="800" step="50" value="400" oninput="updateControls()">
+          <div class="slider-val" id="valMass">400 غ</div>
+        </div>
+      </div>
+      <div class="control-group">
+        <label>الثقل المعلق <span>(ث)</span></label>
+        <div class="slider-wrap">
+          <input type="range" id="slWeight" min="20" max="200" step="10" value="50" oninput="updateControls()">
+          <div class="slider-val" id="valWeight">50 غ</div>
+        </div>
+      </div>
+      <div class="control-group">
+        <label>المسافة بين البوابتين <span>(د)</span></label>
+        <div class="slider-wrap">
+          <input type="range" id="slDist" min="0.2" max="0.6" step="0.05" value="0.4" oninput="updateControls()">
+          <div class="slider-val" id="valDist">0.40 م</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-run" id="btnRun" onclick="startExp()">▶ تشغيل التجربة</button>
+      <button class="btn btn-stop" id="btnStop" onclick="stopExp()" disabled>⏹ إيقاف</button>
+      <button class="btn btn-record" id="btnRecord" onclick="recordReading()" disabled>📋 تسجيل القراءة</button>
+      <button class="btn btn-clear" onclick="resetExp()">🔄 إعادة ضبط</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ DATA ══════════ -->
+<div id="tab-data" class="section">
+  <div class="data-section">
+    <div class="section-title">جدول نتائج التجربة</div>
+    <div class="hint-box"><strong>📌 ملاحظة:</strong> القوة المؤثرة (ق) = وزن الثقل المعلق = ث × 9.8 نيوتن. التسارع (ت) يُحسب من معادلة الحركة المتسارعة.</div>
+    <div class="data-table-wrap">
+      <table class="data-table" id="resultsTable">
+        <thead>
+          <tr>
+            <th>رقم المحاولة</th>
+            <th>كتلة العربة <span class="sym">ك</span> (كغ)</th>
+            <th>كتلة الثقل <span class="sym">ث</span> (كغ)</th>
+            <th>ز(ث)₁ — ثانية</th>
+            <th>ز(ث)₂ — ثانية</th>
+            <th>ز(ث) بين البوابتين</th>
+            <th>القوة <span class="sym">ق</span> (N)</th>
+            <th>التسارع <span class="sym">ت</span> (م/ث²)</th>
+            <th>ق ÷ ت</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+          <tr><td colspan="9" style="color:rgba(240,244,255,0.3);padding:30px;font-size:14px;">لم يُسجَّل أي بيانات بعد — نفّذ التجربة واضغط "تسجيل القراءة"</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div id="analysisBox" style="display:none;margin-top:20px;">
+      <div class="law-box">
+        <div style="font-size:14px;color:rgba(240,244,255,0.6);">معدل نسبة ق ÷ ت من التجارب المسجلة</div>
+        <div class="law-equation" id="analysisVal">—</div>
+        <div class="law-label">يمثّل هذه القيمة كتلة المجموعة (ك + ث) بالكيلوغرام</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ GRAPH ══════════ -->
+<div id="tab-graph" class="section">
+  <div class="graph-section">
+    <div class="section-title">الرسم البياني — ق مقابل ت</div>
+    <div class="hint-box"><strong>📈 تفسير الرسم:</strong> إذا كانت النقاط تقع على خط مستقيم يمر من الأصل، فهذا يؤكد أن القوة تتناسب طردياً مع التسارع عند ثبات الكتلة.</div>
+    <canvas id="graphCanvas" width="700" height="420"></canvas>
+    <div class="graph-legend">
+      <div class="graph-leg-item"><div class="leg-line" style="background:var(--gold)"></div>نقاط التجربة</div>
+      <div class="graph-leg-item"><div class="leg-line" style="background:var(--teal);border-top:2px dashed var(--teal);height:0"></div>خط الاتجاه</div>
+    </div>
+    <div style="text-align:center;margin-top:12px;">
+      <button class="btn btn-run" onclick="drawGraph()" style="display:inline-flex;">📊 تحديث الرسم البياني</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ CONCLUSIONS ══════════ -->
+<div id="tab-conclusions" class="section">
+  <div class="conc-section">
+    <div class="section-title">الاستنتاجات العلمية</div>
+
+    <div class="conc-card">
+      <div class="conc-num">١</div>
+      <div class="conc-title">التسارع يتناسب طردياً مع القوة</div>
+      <div class="conc-text">عند ثبات كتلة الجسم، <span class="hi">كلما ازدادت القوة المؤثرة ازداد تسارع الجسم بنفس النسبة</span>. والرسم البياني لـ (ق) مقابل (ت) يكون خطاً مستقيماً يمر من نقطة الأصل، مما يثبت العلاقة الطردية: <strong style="color:var(--gold)">ق ∝ ت</strong></div>
+    </div>
+    <div class="conc-card">
+      <div class="conc-num">٢</div>
+      <div class="conc-title">التسارع يتناسب عكسياً مع الكتلة</div>
+      <div class="conc-text">عند تثبيت القوة، <span class="hi">كلما ازدادت كتلة الجسم قلَّ تسارعه</span>. الجسم الأثقل يحتاج قوة أكبر للحصول على نفس التسارع: <strong style="color:var(--gold)">ت ∝ 1/ك</strong></div>
+    </div>
+    <div class="conc-card">
+      <div class="conc-num">٣</div>
+      <div class="conc-title">القانون الثاني لنيوتن</div>
+      <div class="conc-text">يجمع الاستنتاجين السابقين في صيغة رياضية واحدة: <span class="hi">ق = ك × ت</span>. والتحقق التجريبي يظهر أن ميل الرسم البياني (ق/ت) يساوي تقريباً كتلة المجموعة الكلية، مما يؤكد صحة القانون.</div>
+    </div>
+    <div class="conc-card">
+      <div class="conc-num">٤</div>
+      <div class="conc-title">هل يمكن إيجاد كتلة العربة من الرسم البياني؟</div>
+      <div class="conc-text">نعم! <span class="hi">ميل الرسم البياني لـ (ق) مقابل (ت) يمثّل كتلة المجموعة (ك + ث)</span>. وهذه طريقة تجريبية لقياس الكتلة دون استخدام ميزان مباشرة.</div>
+    </div>
+
+    <!-- Quiz -->
+    <div class="quiz-section">
+      <div class="quiz-title">🎯 أسئلة التقييم الذاتي</div>
+
+      <div class="quiz-q" id="q1">
+        <p>١. إذا ضاعفت القوة المؤثرة على جسم وكتلته ثابتة، ماذا يحدث للتسارع؟</p>
+        <div class="quiz-options">
+          <div class="quiz-opt" onclick="answer(this,'q1','b')">أ) يبقى ثابتاً</div>
+          <div class="quiz-opt" onclick="answer(this,'q1','b')">ب) يتضاعف ✓</div>
+          <div class="quiz-opt" onclick="answer(this,'q1','b')">ج) يتناصف</div>
+          <div class="quiz-opt" onclick="answer(this,'q1','b')">د) يتربّع</div>
+        </div>
+        <div class="quiz-feedback" id="fb_q1" style="display:none"></div>
+      </div>
+
+      <div class="quiz-q" id="q2">
+        <p>٢. وحدة قياس القوة في النظام الدولي هي:</p>
+        <div class="quiz-options">
+          <div class="quiz-opt" onclick="answer(this,'q2','c')">أ) كيلوغرام</div>
+          <div class="quiz-opt" onclick="answer(this,'q2','c')">ب) م/ث²</div>
+          <div class="quiz-opt" onclick="answer(this,'q2','c')">ج) نيوتن ✓</div>
+          <div class="quiz-opt" onclick="answer(this,'q2','c')">د) جول</div>
+        </div>
+        <div class="quiz-feedback" id="fb_q2" style="display:none"></div>
+      </div>
+
+      <div class="quiz-q" id="q3">
+        <p>٣. جسم كتلته 2 كغ تؤثر عليه قوة 10 نيوتن. ما تسارعه؟</p>
+        <div class="quiz-options">
+          <div class="quiz-opt" onclick="answer(this,'q3','b')">أ) 20 م/ث²</div>
+          <div class="quiz-opt" onclick="answer(this,'q3','b')">ب) 5 م/ث² ✓</div>
+          <div class="quiz-opt" onclick="answer(this,'q3','b')">ج) 8 م/ث²</div>
+          <div class="quiz-opt" onclick="answer(this,'q3','b')">د) 12 م/ث²</div>
+        </div>
+        <div class="quiz-feedback" id="fb_q3" style="display:none"></div>
+      </div>
+
+      <div class="quiz-q" id="q4">
+        <p>٤. في الرسم البياني لـ (ق) مقابل (ت)، ماذا يمثّل ميل الخط؟</p>
+        <div class="quiz-options">
+          <div class="quiz-opt" onclick="answer(this,'q4','a')">أ) كتلة الجسم ✓</div>
+          <div class="quiz-opt" onclick="answer(this,'q4','a')">ب) القوة المؤثرة</div>
+          <div class="quiz-opt" onclick="answer(this,'q4','a')">ج) التسارع الناتج</div>
+          <div class="quiz-opt" onclick="answer(this,'q4','a')">د) الزمن المستغرق</div>
+        </div>
+        <div class="quiz-feedback" id="fb_q4" style="display:none"></div>
+      </div>
+
+      <div id="scoreBox" style="display:none;text-align:center;padding:20px;margin-top:10px;background:rgba(0,188,212,0.1);border-radius:14px;border:1px solid rgba(0,188,212,0.3);">
+        <div style="font-family:'Cairo',sans-serif;font-size:22px;font-weight:900;color:var(--gold);">🌟 نتيجتك النهائية</div>
+        <div style="font-size:36px;font-weight:900;color:var(--teal);margin:10px 0;" id="scoreVal">0 / 4</div>
+        <div id="scoreMsg" style="font-size:15px;color:rgba(240,244,255,0.7);"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════ STATE ══════════
+let running = false, animId = null;
+let cartPos = 0; // 0..1 progress
+let t = 0;
+let expData = [];
+let quizAnswers = {};
+let quizCorrect = { q1:'b', q2:'c', q3:'b', q4:'a' };
+let quizAnsweredCount = 0;
+
+// Physics params (from sliders)
+let M_cart_g = 400; // grams
+let m_hang_g  = 50;  // grams
+let dist_m    = 0.4; // meters between gates
+let wRot = 0;
+
+// Computed
+let theoreticalAccel = 0;
+let theoreticalForce = 0;
+let t1 = 0, t2 = 0, t3_val = 0;
+let v1 = 0, v2 = 0;
+
+const g = 9.8;
+const flagWidth = 0.05; // 5cm
+
+function calcPhysics() {
+  const M = M_cart_g / 1000;
+  const m = m_hang_g / 1000;
+  theoreticalForce = m * g; // ق = ث × ج
+  theoreticalAccel = (m * g) / (M + m); // ت = ق / (ك+ث)
+
+  // Gate times: v1² = 2·a·s1 (from rest), v2² = v1² + 2·a·d
+  // start of gate1: v1 = a·t1 ... use kinematics
+  // Assume gate1 is at 0.1m from start, gate2 is at (0.1+dist_m)
+  const s1 = 0.12; // distance from start to gate1
+  v1 = Math.sqrt(2 * theoreticalAccel * s1);
+  v2 = Math.sqrt(v1*v1 + 2 * theoreticalAccel * dist_m);
+  t1 = flagWidth / v1;
+  t2 = flagWidth / v2;
+  // time between gates
+  // v2 = v1 + a·t3
+  t3_val = (v2 - v1) / theoreticalAccel;
+}
+
+function updateControls() {
+  M_cart_g = +document.getElementById('slMass').value;
+  m_hang_g  = +document.getElementById('slWeight').value;
+  dist_m    = +document.getElementById('slDist').value;
+  document.getElementById('valMass').textContent   = M_cart_g + ' غ';
+  document.getElementById('valWeight').textContent = m_hang_g  + ' غ';
+  document.getElementById('valDist').textContent   = dist_m.toFixed(2) + ' م';
+  calcPhysics();
+  // update mass label
+  document.getElementById('massLabel').textContent = m_hang_g + 'غ';
+  document.getElementById('cartLabel').textContent = M_cart_g + 'غ';
+  resetDisplays();
+}
+
+function resetDisplays() {
+  document.getElementById('dispF').textContent = '0.00';
+  document.getElementById('dispA').textContent = '0.000';
+  document.getElementById('dispT').textContent = '0.00';
+  document.getElementById('disp_t1').textContent = '—';
+  document.getElementById('disp_t2').textContent = '—';
+  document.getElementById('disp_t3').textContent = '—';
+}
+
+// ══════════ ANIMATION ══════════
+function startExp() {
+  if (running) return;
+  calcPhysics();
+  resetDisplays();
+  running = true;
+  t = 0;
+  cartPos = 0;
+  document.getElementById('btnRun').disabled = true;
+  document.getElementById('btnStop').disabled = false;
+  document.getElementById('btnRecord').disabled = true;
+  document.getElementById('statusDot').style.background = 'var(--gold)';
+  document.getElementById('statusText').textContent = 'التجربة تعمل...';
+
+  let gate1Fired = false, gate2Fired = false;
+  let startTime = performance.now();
+
+  function frame(now) {
+    if (!running) return;
+    const dt = Math.min((now - startTime) / 1000, 5);
+    t = dt;
+
+    // position from kinematics: x = ½·a·t²
+    const x_m = 0.5 * theoreticalAccel * dt * dt;
+    const totalTrack = 0.55; // approx track length in meters
+    cartPos = Math.min(x_m / totalTrack, 1);
+
+    // Move cart (right to left in RTL: starts at right, moves left)
+    const cart = document.getElementById('cart3d');
+    const trackW = document.querySelector('.track-wrapper').offsetWidth || 560;
+    const cartW = 80;
+    const maxTravel = trackW - cartW - 90; // stop before pulley
+    const traveled_px = cartPos * maxTravel;
+    cart.style.right = (260 - traveled_px) + 'px';
+
+    // Adjust string
+    const stringH = document.getElementById('stringH');
+    stringH.style.right = (60 + traveled_px) + 'px';
+
+    // Move hanging mass
+    const massBlock = document.getElementById('massBlock');
+    const fall_px = Math.min(cartPos * 80, 80);
+    massBlock.style.top = (20 + fall_px) + 'px';
+
+    // Rotate wheels
+    wRot += (theoreticalAccel * dt * 30) % 360;
+    ['wR1','wR2','wR3','wR4'].forEach(id => {
+      document.getElementById(id).style.transform = `rotate(${wRot}deg)`;
+    });
+
+    // Display
+    const currentV = theoreticalAccel * dt;
+    document.getElementById('dispF').textContent = theoreticalForce.toFixed(2);
+    document.getElementById('dispA').textContent = theoreticalAccel.toFixed(3);
+    document.getElementById('dispT').textContent = dt.toFixed(2);
+
+    // Gate triggers
+    const s1 = 0.12;
+    const s2 = s1 + dist_m;
+    if (!gate1Fired && x_m >= s1) {
+      gate1Fired = true;
+      document.getElementById('disp_t1').textContent = t1.toFixed(4);
+      flashGate('gate1');
+    }
+    if (!gate2Fired && x_m >= s2) {
+      gate2Fired = true;
+      document.getElementById('disp_t2').textContent = t2.toFixed(4);
+      document.getElementById('disp_t3').textContent = t3_val.toFixed(4);
+      flashGate('gate2');
+    }
+
+    if (cartPos >= 1 || x_m > totalTrack) {
+      finishExp();
+      return;
+    }
+    startTime = now - dt * 1000 + 16; // keep time consistent
+    animId = requestAnimationFrame(frame);
+  }
+
+  animId = requestAnimationFrame(t => {
+    startTime = t;
+    animId = requestAnimationFrame(frame);
+  });
+}
+
+function flashGate(id) {
+  const g = document.getElementById(id);
+  g.querySelector('.gate-sensor').style.background = 'rgba(245,166,35,0.6)';
+  g.querySelector('.gate-sensor').style.boxShadow = '0 0 20px rgba(245,166,35,0.8)';
+  setTimeout(() => {
+    g.querySelector('.gate-sensor').style.background = '';
+    g.querySelector('.gate-sensor').style.boxShadow = '';
+  }, 500);
+}
+
+function finishExp() {
+  running = false;
+  cancelAnimationFrame(animId);
+  document.getElementById('btnStop').disabled = true;
+  document.getElementById('btnRecord').disabled = false;
+  document.getElementById('statusDot').style.background = 'var(--green)';
+  document.getElementById('statusText').textContent = '✓ انتهت التجربة — اضغط تسجيل';
+}
+
+function stopExp() {
+  running = false;
+  cancelAnimationFrame(animId);
+  document.getElementById('btnRun').disabled = false;
+  document.getElementById('btnStop').disabled = true;
+  document.getElementById('statusDot').style.background = 'var(--red)';
+  document.getElementById('statusText').textContent = 'تم الإيقاف';
+}
+
+function resetExp() {
+  stopExp();
+  cartPos = 0;
+  const cart = document.getElementById('cart3d');
+  cart.style.right = '260px';
+  document.getElementById('stringH').style.right = '60px';
+  document.getElementById('massBlock').style.top = '20px';
+  document.getElementById('btnRun').disabled = false;
+  document.getElementById('btnRecord').disabled = true;
+  document.getElementById('statusDot').style.background = 'var(--green)';
+  document.getElementById('statusText').textContent = 'جاهز للتجربة';
+  resetDisplays();
+  wRot = 0;
+}
+
+function recordReading() {
+  if (t1 === 0) return;
+  const trial = {
+    n: expData.length + 1,
+    M: (M_cart_g / 1000).toFixed(3),
+    m: (m_hang_g / 1000).toFixed(3),
+    t1: t1.toFixed(4),
+    t2: t2.toFixed(4),
+    t3: t3_val.toFixed(4),
+    F: theoreticalForce.toFixed(3),
+    a: theoreticalAccel.toFixed(3),
+    ratio: (theoreticalForce / theoreticalAccel).toFixed(3)
+  };
+  expData.push(trial);
+  renderTable();
+  document.getElementById('btnRecord').disabled = true;
+  document.getElementById('btnRun').disabled = false;
+  showAnalysis();
+  resetExp();
+  // auto switch to data tab after 3rd record
+  if (expData.length >= 3) {
+    setTimeout(() => { showTab('data'); }, 400);
+  }
+}
+
+function renderTable() {
+  const body = document.getElementById('tableBody');
+  if (expData.length === 0) {
+    body.innerHTML = '<tr><td colspan="9" style="color:rgba(240,244,255,0.3);padding:30px;font-size:14px;">لم يُسجَّل أي بيانات بعد</td></tr>';
+    return;
+  }
+  body.innerHTML = expData.map(r => `
+    <tr class="recorded">
+      <td>${r.n}</td>
+      <td class="val-cell">${r.M}</td>
+      <td class="val-cell">${r.m}</td>
+      <td>${r.t1}</td>
+      <td>${r.t2}</td>
+      <td>${r.t3}</td>
+      <td class="val-cell" style="color:var(--gold)">${r.F}</td>
+      <td class="val-cell">${r.a}</td>
+      <td style="color:var(--purple)">${r.ratio}</td>
+    </tr>
+  `).join('');
+}
+
+function showAnalysis() {
+  if (expData.length < 2) return;
+  const avg = (expData.reduce((s,r) => s + +r.ratio, 0) / expData.length).toFixed(3);
+  document.getElementById('analysisVal').textContent = avg + ' كغ';
+  document.getElementById('analysisBox').style.display = 'block';
+}
+
+// ══════════ GRAPH ══════════
+function drawGraph() {
+  const canvas = document.getElementById('graphCanvas');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0,0,W,H);
+
+  // Background
+  ctx.fillStyle = '#080f1e';
+  ctx.fillRect(0,0,W,H);
+
+  const pad = { top:40, right:40, bottom:60, left:70 };
+  const plotW = W - pad.left - pad.right;
+  const plotH = H - pad.top - pad.bottom;
+
+  // Grid
+  ctx.strokeStyle = 'rgba(0,188,212,0.08)';
+  ctx.lineWidth = 1;
+  for (let i=0;i<=10;i++) {
+    const x = pad.left + i*plotW/10;
+    const y = pad.top + i*plotH/10;
+    ctx.beginPath(); ctx.moveTo(x, pad.top); ctx.lineTo(x, pad.top+plotH); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(pad.left+plotW, y); ctx.stroke();
+  }
+
+  // Axes
+  ctx.strokeStyle = 'rgba(0,188,212,0.4)';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(pad.left, pad.top);
+  ctx.lineTo(pad.left, pad.top+plotH);
+  ctx.lineTo(pad.left+plotW, pad.top+plotH);
+  ctx.stroke();
+
+  // Labels
+  ctx.fillStyle = 'rgba(240,244,255,0.7)';
+  ctx.font = 'bold 14px Cairo, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('التسارع (ت) م/ث²', pad.left + plotW/2, H - 10);
+  ctx.save(); ctx.translate(18, pad.top + plotH/2); ctx.rotate(-Math.PI/2);
+  ctx.fillText('القوة (ق) نيوتن', 0, 0);
+  ctx.restore();
+
+  if (expData.length === 0) {
+    ctx.fillStyle = 'rgba(240,244,255,0.3)';
+    ctx.font = '16px Tajawal, sans-serif';
+    ctx.fillText('سجّل بيانات التجربة أولاً', W/2, H/2);
+    return;
+  }
+
+  const aVals = expData.map(r => +r.a);
+  const fVals = expData.map(r => +r.F);
+  const maxA = Math.max(...aVals) * 1.2;
+  const maxF = Math.max(...fVals) * 1.2;
+
+  const toX = a => pad.left + (a/maxA)*plotW;
+  const toY = f => pad.top + plotH - (f/maxF)*plotH;
+
+  // Trend line (from origin)
+  if (expData.length >= 2) {
+    const slope = fVals.reduce((s,f,i) => s + f/aVals[i], 0) / fVals.length;
+    ctx.strokeStyle = 'rgba(0,188,212,0.6)';
+    ctx.lineWidth = 2;
+    ctx.setLineDash([8,4]);
+    ctx.beginPath();
+    ctx.moveTo(toX(0), toY(0));
+    ctx.lineTo(toX(maxA * 0.95), toY(slope * maxA * 0.95));
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  // Points
+  expData.forEach((r,i) => {
+    const x = toX(+r.a), y = toY(+r.F);
+    ctx.beginPath();
+    ctx.arc(x, y, 8, 0, Math.PI*2);
+    ctx.fillStyle = 'var(--gold)';
+    ctx.fill();
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    // label
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 12px Cairo';
+    ctx.textAlign = 'center';
+    ctx.fillText(r.n, x, y+4);
+  });
+
+  // Axis ticks
+  ctx.fillStyle = 'rgba(240,244,255,0.5)';
+  ctx.font = '11px Tajawal';
+  for (let i=0;i<=5;i++) {
+    const x = pad.left + i*plotW/5;
+    ctx.textAlign = 'center';
+    ctx.fillText((maxA*i/5).toFixed(1), x, pad.top+plotH+18);
+    const y = pad.top + plotH - i*plotH/5;
+    ctx.textAlign = 'right';
+    ctx.fillText((maxF*i/5).toFixed(2), pad.left-6, y+4);
+  }
+}
+
+// ══════════ QUIZ ══════════
+function answer(el, qid, correct) {
+  if (quizAnswers[qid]) return;
+  quizAnswers[qid] = true;
+  const opts = el.parentElement.querySelectorAll('.quiz-opt');
+  opts.forEach(o => {
+    o.style.pointerEvents = 'none';
+    if (o === el) {
+      const isCorrect = el.textContent.includes('✓');
+      o.classList.add(isCorrect ? 'correct' : 'wrong');
+    } else if (o.textContent.includes('✓')) {
+      o.classList.add('correct');
+    }
+  });
+  const fb = document.getElementById('fb_' + qid);
+  const isCorrect = el.textContent.includes('✓');
+  fb.style.display = 'block';
+  fb.className = 'quiz-feedback ' + (isCorrect ? 'ok' : 'bad');
+  fb.textContent = isCorrect ? '✅ إجابة صحيحة! أحسنت.' : '❌ إجابة خاطئة. راجع الإجابة الصحيحة المميزة باللون الأخضر.';
+  if (isCorrect) quizAnsweredCount++;
+
+  if (Object.keys(quizAnswers).length === 4) {
+    const scoreBox = document.getElementById('scoreBox');
+    scoreBox.style.display = 'block';
+    document.getElementById('scoreVal').textContent = quizAnsweredCount + ' / 4';
+    const msgs = ['حاول مرة أخرى وراجع الدرس 📚','لا بأس، واصل التعلم 💪','جيد جداً! 👍','ممتاز! أحسنت 🌟'];
+    document.getElementById('scoreMsg').textContent = msgs[quizAnsweredCount] || msgs[3];
+  }
+}
+
+// ══════════ TABS ══════════
+function showTab(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    if (b.getAttribute('onclick').includes("'"+id+"'")) b.classList.add('active');
+  });
+  if (id === 'graph') setTimeout(drawGraph, 100);
+  if (id === 'data') renderTable();
+}
+
+// Init
+updateControls();
+</script>
+</body>
+</html>

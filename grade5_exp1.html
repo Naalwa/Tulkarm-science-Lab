@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>تجربة 1 — الصف الخامس</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Tajawal', sans-serif;
+      background: #0A1628;
+      color: #F0F8FF;
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 40px 24px;
+    }
+    .box {
+      background: rgba(13,31,60,0.9);
+      border: 1px solid rgba(0,200,150,0.25);
+      border-radius: 24px;
+      padding: 60px 48px;
+      max-width: 560px;
+      box-shadow: 0 0 60px rgba(0,200,150,0.1);
+    }
+    .icon { font-size: 72px; margin-bottom: 24px; }
+    h1 { font-size: 1.8rem; font-weight: 900; color: #00C896; margin-bottom: 14px; }
+    p { color: rgba(240,248,255,0.65); line-height: 1.8; font-size: 1rem; margin-bottom: 32px; }
+    .filename {
+      background: rgba(0,200,150,0.08);
+      border: 1px dashed rgba(0,200,150,0.3);
+      border-radius: 10px;
+      padding: 12px 24px;
+      font-size: 0.9rem;
+      color: #00C896;
+      font-family: monospace;
+      margin-bottom: 32px;
+      word-break: break-all;
+    }
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(0,200,150,0.12);
+      border: 1px solid rgba(0,200,150,0.3);
+      border-radius: 24px; padding: 10px 24px;
+      color: #00C896; font-weight: 700; font-size: 0.9rem;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .back-btn:hover { background: rgba(0,200,150,0.22); }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <div class="icon">🧪</div>
+    <h1>تجربة 1 — عنوان التجربة الأولى</h1>
+    <p>
+      هذه الصفحة هي صفحة نموذجية (Placeholder).<br>
+      قم باستبدال هذا الملف بملف التجربة الحقيقي الذي أعددته،<br>
+      مع الحرص على أن يحمل اسم الملف التالي:
+    </p>
+    <div class="filename">grade5_exp1.html</div>
+    <a href="grade5.html" class="back-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      العودة لصفحة الصف الخامس
+    </a>
+  </div>
+</body>
+</html>
