@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta http-equiv="Content-Language" content="ar">
+<title>قِمعُ الفَصل — علوم وحياة | الصف الخامس</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700;800;900&family=Tajawal:wght@400;500;700&family=Reem+Kufi:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* ===================== التوكنز (Design Tokens) ===================== */
+:root{
+  --cream:#FBF6EA;
+  --paper:#FFFEFA;
+  --ink:#2E2A22;
+  --ink-soft:#6B6350;
+  --olive-deep:#42521f;
+  --olive-mid:#7C9A46;
+  --olive-pale:#E4EACB;
+  --oil-gold:#E8B93C;
+  --oil-gold-deep:#B8811A;
+  --water-blue:#4FA9DA;
+  --water-deep:#1E6B96;
+  --terracotta:#C1652F;
+  --terracotta-deep:#8F431A;
+  --line:#E4D9BE;
+  --shadow:0 18px 40px -18px rgba(46,42,34,.35);
+  --radius:22px;
+  --font-display:'Cairo',sans-serif;
+  --font-body:'Tajawal',sans-serif;
+  --font-kufi:'Reem Kufi',sans-serif;
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:
+    radial-gradient(1200px 600px at 90% -10%, #f3ecd4 0%, transparent 60%),
+    radial-gradient(900px 500px at -10% 10%, #eef2df 0%, transparent 55%),
+    var(--cream);
+  color:var(--ink);
+  font-family:var(--font-body);
+  line-height:1.75;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+h1,h2,h3,h4{font-family:var(--font-display);margin:0 0 .4em;color:var(--olive-deep);}
+p{margin:0 0 1em;}
+img,svg{display:block;max-width:100%;}
+button{font-family:var(--font-body);cursor:pointer;}
+:focus-visible{outline:3px solid var(--terracotta);outline-offset:3px;}
+
+.eyebrow{
+  font-family:var(--font-kufi);
+  letter-spacing:.04em;
+  color:var(--terracotta-deep);
+  font-size:.95rem;
+  display:inline-flex;
+  align-items:center;
+  gap:.5em;
+  margin-bottom:.6em;
+}
+.eyebrow::before{content:"";width:26px;height:2px;background:var(--terracotta);display:inline-block;}
+
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px;}
+section{padding:74px 0;position:relative;}
+
+/* ===================== شريط التنقل ===================== */
+.nav{
+  position:sticky;top:0;z-index:50;
+  background:rgba(251,246,234,.88);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;padding-top:12px;padding-bottom:12px;}
+.brand{display:flex;align-items:center;gap:12px;}
+.brand-badge{
+  width:42px;height:42px;border-radius:50%;
+  background:conic-gradient(from 210deg, var(--water-blue), var(--oil-gold), var(--olive-mid), var(--water-blue));
+  box-shadow:inset 0 0 0 3px var(--paper), 0 4px 10px -4px rgba(0,0,0,.4);
+}
+.brand-text{font-family:var(--font-display);font-weight:800;font-size:1.05rem;color:var(--olive-deep);}
+.brand-text span{display:block;font-family:var(--font-kufi);font-weight:400;font-size:.72rem;color:var(--ink-soft);}
+.nav-links{display:flex;gap:6px;list-style:none;margin:0;padding:0;}
+.nav-links a{
+  text-decoration:none;color:var(--ink);font-size:.92rem;font-weight:700;
+  padding:8px 14px;border-radius:999px;transition:.25s;
+}
+.nav-links a:hover{background:var(--olive-pale);color:var(--olive-deep);}
+@media(max-width:720px){.nav-links{display:none;}}
+
+/* ===================== الهيرو ===================== */
+.hero{padding-top:56px;}
+.hero .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:50px;align-items:center;}
+.hero h1{font-size:clamp(2.4rem,5vw,3.6rem);line-height:1.15;font-weight:900;}
+.hero h1 em{
+  font-style:normal;
+  background:linear-gradient(90deg,var(--terracotta),var(--oil-gold-deep));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.hero p.lead{font-size:1.12rem;color:var(--ink-soft);max-width:52ch;}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap;margin-top:22px;}
+.btn{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:14px 26px;border-radius:16px;border:none;
+  font-weight:800;font-size:1rem;font-family:var(--font-display);
+  transition:transform .2s, box-shadow .2s;
+  min-height:48px;
+}
+.btn:active{transform:translateY(1px) scale(.98);}
+.btn-primary{
+  background:linear-gradient(135deg,var(--terracotta),var(--terracotta-deep));
+  color:#fff;box-shadow:0 14px 26px -12px rgba(143,67,26,.65);
+}
+.btn-primary:hover{box-shadow:0 18px 30px -10px rgba(143,67,26,.75);transform:translateY(-2px);}
+.btn-ghost{
+  background:var(--paper);color:var(--olive-deep);
+  border:2px solid var(--olive-pale);
+}
+.btn-ghost:hover{border-color:var(--olive-mid);}
+.btn-sm{padding:10px 18px;font-size:.9rem;border-radius:12px;}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none !important;box-shadow:none !important;}
+
+.hero-stage{
+  perspective:1400px;
+}
+.hero-stage-inner{
+  transform:rotateY(-14deg) rotateX(6deg);
+  transition:transform .6s ease;
+  filter:drop-shadow(0 30px 40px rgba(46,42,34,.28));
+}
+.hero-stage:hover .hero-stage-inner{transform:rotateY(-6deg) rotateX(2deg);}
+
+/* ===================== بطاقات عامة ===================== */
+.card{
+  background:var(--paper);
+  border-radius:var(--radius);
+  border:1px solid var(--line);
+  box-shadow:var(--shadow);
+}
+.section-head{max-width:64ch;margin-bottom:44px;}
+.section-head h2{font-size:clamp(1.7rem,3vw,2.3rem);}
+.section-head p{color:var(--ink-soft);font-size:1.05rem;}
+
+/* ===================== قسم شرح الدرس ===================== */
+.lesson-grid{display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:start;}
+.lesson-text ul{margin:0;padding:0;list-style:none;display:grid;gap:14px;}
+.lesson-text li{
+  display:flex;gap:14px;align-items:flex-start;
+  background:var(--paper);border:1px solid var(--line);
+  border-radius:16px;padding:16px 18px;
+}
+.lesson-text li .ico{
+  flex:0 0 auto;width:38px;height:38px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--olive-pale);font-size:1.2rem;
+}
+.lesson-text li strong{display:block;color:var(--olive-deep);margin-bottom:2px;}
+
+.equip-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:26px;}
+.equip-item{
+  background:var(--paper);border:1px solid var(--line);border-radius:16px;
+  padding:14px 8px;text-align:center;transition:transform .25s, box-shadow .25s;
+  cursor:default;
+}
+.equip-item:hover{transform:translateY(-6px);box-shadow:var(--shadow);}
+.equip-item svg{height:64px;margin:0 auto 8px;}
+.equip-item span{font-size:.85rem;font-weight:700;color:var(--ink-soft);}
+@media(max-width:720px){.equip-row{grid-template-columns:repeat(2,1fr);}}
+
+.diagram-card{padding:26px;}
+.diagram-labels{display:grid;gap:10px;margin-top:18px;}
+.diagram-labels .row{display:flex;gap:10px;align-items:center;font-size:.92rem;color:var(--ink-soft);}
+.diagram-labels .dot{width:12px;height:12px;border-radius:50%;flex:0 0 auto;}
+
+@media(max-width:900px){.lesson-grid{grid-template-columns:1fr;}}
+
+/* ===================== قسم المختبر الافتراضي ===================== */
+.lab-section{
+  background:linear-gradient(180deg, var(--olive-deep) 0%, #38451c 100%);
+  color:#f4f1e2;
+  border-radius:36px;
+  margin:0 16px;
+}
+.lab-section .section-head h2{color:#fff;}
+.lab-section .section-head p{color:#d9dcc0;}
+.lab-section .eyebrow{color:var(--oil-gold);}
+.lab-section .eyebrow::before{background:var(--oil-gold);}
+
+.progress-track{
+  display:flex;gap:6px;margin-bottom:34px;
+}
+.progress-track .seg{flex:1;height:6px;border-radius:99px;background:rgba(255,255,255,.18);overflow:hidden;}
+.progress-track .seg i{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--oil-gold),var(--terracotta));transition:width .5s;}
+
+.lab-layout{display:grid;grid-template-columns:1.1fr 1fr;gap:36px;align-items:start;}
+@media(max-width:960px){.lab-layout{grid-template-columns:1fr;}}
+
+.stage-card{
+  background:radial-gradient(120% 120% at 50% 0%, #fffdf6 0%, #f3ecd6 60%, #ece2c4 100%);
+  border-radius:28px;
+  padding:26px 18px 10px;
+  position:relative;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.6), 0 24px 50px -20px rgba(0,0,0,.5);
+  min-height:520px;
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
+}
+.stage-caption{
+  position:absolute;top:16px;right:20px;left:20px;
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:var(--font-kufi);font-size:.85rem;color:var(--ink-soft);
+}
+.stage-caption b{color:var(--terracotta-deep);}
+.rig-wrap{perspective:1200px;width:100%;display:flex;justify-content:center;}
+.rig{transform:rotateY(-8deg) rotateX(2deg);transition:transform .3s;}
+
+.control-card{padding:26px;color:var(--ink);}
+.control-card h3{font-size:1.25rem;}
+.control-card .hint{color:var(--ink-soft);font-size:.95rem;margin-bottom:18px;}
+.control-buttons{display:flex;flex-wrap:wrap;gap:12px;margin-top:6px;}
+
+.quiz-block{margin-top:16px;display:none;}
+.quiz-block.show{display:block;}
+.quiz-options{display:grid;gap:10px;margin-top:12px;}
+.quiz-opt{
+  text-align:right;background:var(--cream);border:2px solid var(--line);
+  border-radius:14px;padding:12px 16px;font-weight:700;font-size:.95rem;
+  transition:.2s;
+}
+.quiz-opt:hover{border-color:var(--olive-mid);}
+.quiz-opt.correct{background:#e4f3e1;border-color:#5c9a55;color:#2f5c2b;}
+.quiz-opt.wrong{background:#f9e4e1;border-color:#c15c4a;color:#7a2e1f;}
+.quiz-feedback{margin-top:12px;font-size:.92rem;font-weight:700;min-height:1.4em;}
+.quiz-feedback.ok{color:#3d7a37;}
+.quiz-feedback.no{color:#a44329;}
+
+.step-nav{display:flex;justify-content:space-between;margin-top:26px;gap:10px;}
+
+.pill{
+  display:inline-block;font-family:var(--font-kufi);font-size:.78rem;
+  background:var(--olive-pale);color:var(--olive-deep);
+  padding:4px 12px;border-radius:99px;margin-inline-end:8px;margin-bottom:10px;
+}
+
+.drop-counter{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--water-blue);color:#fff;font-family:var(--font-display);
+  font-weight:800;padding:6px 14px;border-radius:99px;font-size:.9rem;
+  margin-top:10px;
+}
+
+/* ===================== قسم الاستنتاج ===================== */
+.conclusion-card{padding:32px;}
+.conclusion-summary{
+  background:var(--olive-pale);border-radius:18px;padding:20px 22px;
+  font-weight:700;color:var(--olive-deep);margin-bottom:22px;line-height:1.9;
+}
+textarea{
+  width:100%;min-height:110px;border-radius:16px;border:2px solid var(--line);
+  padding:16px;font-family:var(--font-body);font-size:1rem;resize:vertical;
+  background:var(--cream);color:var(--ink);
+}
+textarea:focus{border-color:var(--terracotta);}
+.save-row{display:flex;gap:12px;align-items:center;margin-top:14px;flex-wrap:wrap;}
+.save-msg{font-size:.88rem;color:var(--olive-deep);font-weight:700;min-height:1.4em;}
+
+/* ===================== صندوق معلومة مفيدة ===================== */
+.info-box{
+  background:linear-gradient(135deg,#fbe6c8,#f6d69f);
+  border:2px solid var(--oil-gold-deep);
+  border-radius:24px;padding:28px 30px;
+  display:flex;gap:20px;align-items:flex-start;
+  box-shadow:var(--shadow);
+}
+.info-box .bulb-ico{flex:0 0 auto;width:56px;height:56px;}
+.info-box h3{margin-bottom:8px;color:var(--terracotta-deep);}
+
+/* ===================== تذييل ===================== */
+footer{
+  text-align:center;padding:40px 20px 60px;color:var(--ink-soft);font-size:.88rem;
+}
+footer strong{color:var(--olive-deep);}
+
+/* ===================== أدوات مساعدة للحركة ===================== */
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:.01ms !important;transition-duration:.01ms !important;}
+}
+.shake{animation:shakeAnim .55s ease-in-out 3;}
+@keyframes shakeAnim{
+  0%,100%{transform:rotate(0deg) translateX(0);}
+  20%{transform:rotate(-9deg) translateX(-6px);}
+  40%{transform:rotate(7deg) translateX(5px);}
+  60%{transform:rotate(-6deg) translateX(-4px);}
+  80%{transform:rotate(4deg) translateX(3px);}
+}
+.pulse{animation:pulseAnim 1.6s ease-in-out infinite;}
+@keyframes pulseAnim{0%,100%{opacity:1;}50%{opacity:.55;}}
+
+.drip{
+  position:absolute; width:10px;height:14px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;
+  background:var(--water-deep); opacity:0; pointer-events:none;
+}
+
+@media(max-width:720px){
+  .hero .wrap{grid-template-columns:1fr;}
+  .hero-stage{order:-1;}
+  section{padding:52px 0;}
+}
+
+  /* ══ RESPONSIVE MOBILE & TABLET ══ */
+  @media (max-width: 768px) {
+    body { padding: 8px !important; font-size: 15px !important; overflow-x: hidden !important; }
+    .container, [class*="container"], [class*="wrapper"] { padding: 8px !important; max-width: 100% !important; }
+    canvas { width: 100% !important; height: auto !important; display: block !important; touch-action: none; max-width: 100% !important; }
+    svg { max-width: 100% !important; height: auto !important; }
+    h1 { font-size: clamp(18px,5vw,32px) !important; }
+    h2 { font-size: clamp(15px,4vw,26px) !important; }
+    h3 { font-size: clamp(13px,3.5vw,20px) !important; }
+    [class*="grid"] { grid-template-columns: 1fr !important; }
+    [class*="flex"] { flex-wrap: wrap !important; }
+    input[type="range"] { width: 100% !important; min-height: 36px; }
+    input[type="number"], input[type="text"], select, textarea {
+      font-size: 16px !important; width: 100% !important; box-sizing: border-box; padding: 8px !important; }
+    button { min-height: 44px !important; font-size: 14px !important; touch-action: manipulation; padding: 10px 14px !important; }
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 13px !important; }
+    th, td { padding: 6px 4px !important; }
+    header { padding: 10px 12px !important; }
+    .controls, [class*="controls"] { flex-direction: column !important; gap: 8px !important; }
+    .lab-window, [class*="lab-window"] { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+  }
+  @media (max-width: 480px) {
+    body { padding: 4px !important; }
+    button { width: 100% !important; }
+  }
+  /* ══ END RESPONSIVE ══ */
+</style>
+</head>
+<body>
+<style>
+.vlab-back{position:fixed;top:10px;left:10px;z-index:99999;
+background:rgba(10,22,40,0.93);border:1px solid rgba(0,200,150,0.4);
+border-radius:22px;padding:8px 16px;display:inline-flex;align-items:center;gap:7px;
+color:#00C896;font-family:Tajawal,Cairo,Arial,sans-serif;font-size:13px;font-weight:700;
+text-decoration:none;backdrop-filter:blur(8px);box-shadow:0 4px 18px rgba(0,0,0,0.3);
+transition:background 0.2s;}
+.vlab-back:hover{background:rgba(0,200,150,0.18);}
+</style>
+<a href="../grade5.html" class="vlab-back">&#8594; العودة للصف</a>
+
+
+<!-- ===================== شريط التنقل ===================== -->
+<nav class="nav">
+  <div class="wrap">
+    <div class="brand">
+      <div class="brand-badge" aria-hidden="true"></div>
+      <div class="brand-text">قِمعُ الفَصل
+        <span>علوم وحياة · الصف الخامس · فلسطين</span>
+      </div>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#lesson">شرح الدرس</a></li>
+      <li><a href="#lab">المختبر الافتراضي</a></li>
+      <li><a href="#conclusion">الاستنتاج</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ===================== الهيرو ===================== -->
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-copy">
+      <div class="eyebrow">نشاط (٦) — فصل الماء عن الزيت</div>
+      <h1>كيف نفصل <em>سائلين</em> لا يمتزجان؟</h1>
+      <p class="lead">
+        زيت الزيتون والماء يجلسان جنبًا إلى جنب في الإناء نفسه، لكنهما لا يذوبان أبدًا في بعضهما.
+        في هذا الدرس سنتعرّف على أداة "قُمع الفَصل"، ونجري تجربة افتراضية ثلاثية الأبعاد
+        نفصل فيها الماء عن الزيت خطوة بخطوة، تمامًا كما لو كنّا في المختبر الحقيقي.
+      </p>
+      <div class="hero-cta">
+        <button class="btn btn-primary" onclick="document.getElementById('lab').scrollIntoView({behavior:'smooth'})">
+          🧪 ابدأ المختبر الافتراضي
+        </button>
+        <button class="btn btn-ghost" onclick="document.getElementById('lesson').scrollIntoView({behavior:'smooth'})">
+          📖 اقرأ شرح الدرس أولًا
+        </button>
+      </div>
+    </div>
+
+    <div class="hero-stage">
+      <div class="hero-stage-inner">
+        <!-- رسم SVG لقمع الفصل الأولي (زخرفي) -->
+        <svg viewBox="0 0 300 420" width="100%" height="420" aria-hidden="true">
+          <defs>
+            <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#ffffff" stop-opacity=".9"/>
+              <stop offset="55%" stop-color="#dfe7ea" stop-opacity=".35"/>
+              <stop offset="100%" stop-color="#ffffff" stop-opacity=".55"/>
+            </linearGradient>
+            <linearGradient id="oilGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#f3cd6b"/>
+              <stop offset="100%" stop-color="#d79f22"/>
+            </linearGradient>
+            <linearGradient id="waterGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#79c3ea"/>
+              <stop offset="100%" stop-color="#2c86b8"/>
+            </linearGradient>
+            <clipPath id="heroBulbClip">
+              <path d="M150,78 C86,78 58,140 58,196 C58,262 96,308 150,308 C204,308 242,262 242,196 C242,140 214,78 150,78 Z"/>
+            </clipPath>
+          </defs>
+
+          <!-- الحامل -->
+          <rect x="30" y="60" width="8" height="330" fill="#8a8578"/>
+          <rect x="30" y="150" width="120" height="10" rx="4" fill="#8a8578"/>
+          <rect x="130" y="130" width="16" height="50" rx="3" fill="#6f6a5d"/>
+
+          <!-- جسم القمع (الفقاعة الكمثرية) -->
+          <path d="M150,78 C86,78 58,140 58,196 C58,262 96,308 150,308 C204,308 242,262 242,196 C242,140 214,78 150,78 Z"
+                fill="url(#glass)" stroke="#b9c0c2" stroke-width="2"/>
+          <!-- طبقة الزيت (أعلى) -->
+          <rect x="55" y="130" width="190" height="66" fill="url(#oilGrad)" clip-path="url(#heroBulbClip)" opacity=".92"/>
+          <!-- طبقة الماء (أسفل) -->
+          <rect x="55" y="196" width="190" height="112" fill="url(#waterGrad)" clip-path="url(#heroBulbClip)" opacity=".92"/>
+
+          <!-- سدادة علوية -->
+          <rect x="134" y="46" width="32" height="34" rx="6" fill="#d9d2bf" stroke="#b9ad8f" stroke-width="2"/>
+          <!-- عنق سفلي -->
+          <rect x="136" y="306" width="28" height="34" fill="url(#glass)" stroke="#b9c0c2" stroke-width="2"/>
+          <!-- الصمام -->
+          <rect x="118" y="338" width="64" height="26" rx="8" fill="#c9821f" stroke="#8f5c12" stroke-width="2"/>
+          <circle cx="150" cy="351" r="7" fill="#5b3a0d"/>
+          <!-- الفوهة -->
+          <path d="M132,364 L168,364 L150,392 Z" fill="url(#glass)" stroke="#b9c0c2" stroke-width="2"/>
+
+          <!-- الدورق المخروطي أسفل -->
+          <path d="M132,404 L168,404 L200,400 L200,404 L188,404 L215,478 Q150,500 85,478 L112,404 L100,404 L100,400 Z"
+                fill="url(#glass)" stroke="#b9c0c2" stroke-width="2" opacity=".85"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ===================== شرح الدرس ===================== -->
+<section id="lesson">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">شرح الدرس</div>
+      <h2>ما هو قُمعُ الفَصل، ولماذا نستخدمه؟</h2>
+      <p>تعرّف على الأداة، وعلى الخاصية العلمية التي تجعل فصل السوائل ممكنًا.</p>
+    </div>
+
+    <div class="lesson-grid">
+      <div class="lesson-text">
+        <ul>
+          <li>
+            <div class="ico">🧴</div>
+            <div>
+              <strong>قُمعُ الفَصل</strong>
+              أداة زجاجية على شكل كمثرى، بها صمّام (حنفية) في أسفلها، تُستخدم لفصل السوائل
+              الممتزجة فيما بينها مثل الزيت والماء.
+            </div>
+          </li>
+          <li>
+            <div class="ico">⚖️</div>
+            <div>
+              <strong>الكثافة هي السر</strong>
+              كل سائل له كثافة مختلفة. كثافة الماء أكبر من كثافة زيت الزيتون، لذلك يستقر
+              الماء دائمًا في الأسفل، ويطفو الزيت في الأعلى.
+            </div>
+          </li>
+          <li>
+            <div class="ico">🚫💧</div>
+            <div>
+              <strong>سائلان غير قابلين للامتزاج</strong>
+              مهما رجَجْنا الزيت والماء معًا، فإنهما سرعان ما ينفصلان من جديد إلى طبقتين
+              واضحتين بعد فترة قصيرة من الزمن.
+            </div>
+          </li>
+          <li>
+            <div class="ico">🔽</div>
+            <div>
+              <strong>فتح الصمّام</strong>
+              عند فتح صمّام القمع، يخرج السائل الأثقل (الماء) أولًا من الأسفل، ثم يُغلَق
+              الصمّام قبل خروج السائل الأخف (الزيت)، فينفصل السائلان تمامًا.
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="diagram-card card">
+        <div class="eyebrow">أدوات التجربة</div>
+        <div class="equip-row">
+          <div class="equip-item">
+            <svg viewBox="0 0 60 70"><path d="M30,4 C16,4 10,22 10,32 C10,46 18,58 30,58 C42,58 50,46 50,32 C50,22 44,4 30,4 Z" fill="#eef3f2" stroke="#9aa3a3" stroke-width="2"/><rect x="24" y="60" width="12" height="8" fill="#c9821f"/></svg>
+            <span>قُمعُ الفَصل</span>
+          </div>
+          <div class="equip-item">
+            <svg viewBox="0 0 60 70"><path d="M22,4 L38,4 L38,20 L52,60 Q30,70 8,60 L22,20 Z" fill="#eef3f2" stroke="#9aa3a3" stroke-width="2"/></svg>
+            <span>دورق مخروطي</span>
+          </div>
+          <div class="equip-item">
+            <svg viewBox="0 0 60 70"><rect x="10" y="14" width="40" height="46" rx="4" fill="#eef3f2" stroke="#9aa3a3" stroke-width="2"/><rect x="14" y="34" width="32" height="22" fill="#79c3ea"/><rect x="42" y="10" width="12" height="34" rx="3" fill="#e2665b"/></svg>
+            <span>كوب قياس ماء</span>
+          </div>
+          <div class="equip-item">
+            <svg viewBox="0 0 60 70"><path d="M20,4 L34,4 L36,14 L30,20 L36,60 L18,60 L24,20 L18,14 Z" fill="#f3cd6b" stroke="#b8811a" stroke-width="2"/></svg>
+            <span>زيت زيتون</span>
+          </div>
+        </div>
+
+        <div class="diagram-labels">
+          <div class="row"><span class="dot" style="background:var(--oil-gold-deep)"></span> زيت الزيتون: الأخفّ، يطفو دائمًا في الأعلى.</div>
+          <div class="row"><span class="dot" style="background:var(--water-deep)"></span> الماء: الأثقل، يستقرّ دائمًا في الأسفل.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== المعلومة المفيدة ===================== -->
+<section style="padding-top:0;">
+  <div class="wrap">
+    <div class="info-box">
+      <svg class="bulb-ico" viewBox="0 0 60 70" aria-hidden="true"><path d="M30,4 C16,4 10,22 10,32 C10,46 18,58 30,58 C42,58 50,46 50,32 C50,22 44,4 30,4 Z" fill="#fff8e6" stroke="#b8811a" stroke-width="2.5"/><rect x="24" y="60" width="12" height="8" fill="#8f5c12"/></svg>
+      <div>
+        <h3>معلومة مفيدة</h3>
+        <p style="margin:0;color:#5b3a0d;">
+          <strong>قُمعُ الفَصل:</strong> أداة تشبه القُمع المخروطي، تُستخدَم في فصل المواد
+          السائلة الممتزجة فيما بينها والتي لا تذوب إحداها في الأخرى، مثل الزيت والماء،
+          وذلك بالاعتماد على اختلاف كثافة كل منهما.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== المختبر الافتراضي ===================== -->
+<section id="lab" class="lab-section">
+  <div class="wrap" style="padding:60px 32px;">
+    <div class="section-head">
+      <div class="eyebrow">المختبر الافتراضي — ثلاثي الأبعاد</div>
+      <h2>نفّذ التجربة بنفسك خطوة بخطوة</h2>
+      <p>اتبع الخطوات، وأجب عن الأسئلة في كل مرحلة، لتصل إلى الاستنتاج النهائي بنفسك.</p>
+    </div>
+
+    <div class="progress-track" id="progressTrack"></div>
+
+    <div class="lab-layout">
+      <!-- منصة العرض ثلاثية الأبعاد -->
+      <div class="stage-card">
+        <div class="stage-caption">
+          <span>المرحلة: <b id="stageLabel">التحضير</b></span>
+          <span id="dropCounterWrap"></span>
+        </div>
+        <div class="rig-wrap">
+          <div class="rig">
+            <svg id="rig" viewBox="0 0 300 640" width="280" height="620" aria-hidden="true">
+              <defs>
+                <linearGradient id="glass2" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#ffffff" stop-opacity=".95"/>
+                  <stop offset="55%" stop-color="#dfe7ea" stop-opacity=".4"/>
+                  <stop offset="100%" stop-color="#ffffff" stop-opacity=".6"/>
+                </linearGradient>
+                <linearGradient id="oilGrad2" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#f6d581"/>
+                  <stop offset="100%" stop-color="#d79f22"/>
+                </linearGradient>
+                <linearGradient id="waterGrad2" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#83c9ed"/>
+                  <stop offset="100%" stop-color="#2c86b8"/>
+                </linearGradient>
+                <linearGradient id="mixGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#e7c977"/>
+                  <stop offset="100%" stop-color="#c7a45e"/>
+                </linearGradient>
+                <clipPath id="bulbClip">
+                  <path d="M150,78 C86,78 58,140 58,196 C58,262 96,308 150,308 C204,308 242,262 242,196 C242,140 214,78 150,78 Z M136,308 L164,308 L164,340 L136,340 Z"/>
+                </clipPath>
+                <clipPath id="flaskClip">
+                  <path d="M132,540 L168,540 L200,536 L200,540 L188,540 L216,614 Q150,636 84,614 L112,540 L100,540 L100,536 Z"/>
+                </clipPath>
+              </defs>
+
+              <!-- الحامل: قاعدة + عمود -->
+              <rect x="18" y="600" width="140" height="14" rx="4" fill="#7d7768"/>
+              <rect x="28" y="60" width="9" height="548" fill="#8a8578"/>
+              <!-- ذراع المشبك -->
+              <g id="clampArm" style="transform-origin:33px 250px; transition:transform .8s ease;">
+                <rect x="28" y="244" width="118" height="10" rx="4" fill="#8a8578"/>
+                <rect x="138" y="224" width="16" height="50" rx="3" fill="#6f6a5d"/>
+              </g>
+
+              <!-- جسم القمع -->
+              <g id="funnelBody" style="transform-origin:150px 190px;">
+                <path d="M150,78 C86,78 58,140 58,196 C58,262 96,308 150,308 C204,308 242,262 242,196 C242,140 214,78 150,78 Z"
+                      fill="url(#glass2)" stroke="#b0b8ba" stroke-width="2.5"/>
+
+                <!-- طبقة الخليط الممزوج أثناء الرج -->
+                <rect id="mixLayer" x="55" y="130" width="190" height="66" fill="url(#mixGrad)" clip-path="url(#bulbClip)" opacity="0"/>
+                <!-- طبقة الزيت -->
+                <rect id="oilLayer" x="55" y="130" width="190" height="0" fill="url(#oilGrad2)" clip-path="url(#bulbClip)" opacity="0"/>
+                <!-- طبقة الماء -->
+                <rect id="waterLayer" x="55" y="130" width="190" height="0" fill="url(#waterGrad2)" clip-path="url(#bulbClip)" opacity="0"/>
+
+                <path d="M150,78 C86,78 58,140 58,196 C58,262 96,308 150,308 C204,308 242,262 242,196 C242,140 214,78 150,78 Z"
+                      fill="none" stroke="#ffffff" stroke-width="2" opacity=".5"/>
+
+                <!-- سدادة علوية -->
+                <rect x="134" y="46" width="32" height="34" rx="6" fill="#d9d2bf" stroke="#b9ad8f" stroke-width="2"/>
+                <!-- عنق سفلي -->
+                <rect x="136" y="306" width="28" height="34" fill="url(#glass2)" stroke="#b0b8ba" stroke-width="2.5"/>
+
+                <!-- الصمّام: قابل للدوران -->
+                <g id="valveGroup" style="transform-origin:150px 351px; transition:transform .6s ease;">
+                  <rect x="118" y="338" width="64" height="26" rx="8" fill="#c9821f" stroke="#8f5c12" stroke-width="2"/>
+                  <rect x="146" y="330" width="8" height="42" rx="3" fill="#5b3a0d"/>
+                </g>
+
+                <!-- الفوهة -->
+                <path d="M132,364 L168,364 L150,392 Z" fill="url(#glass2)" stroke="#b0b8ba" stroke-width="2.5"/>
+              </g>
+
+              <!-- الدورق السفلي -->
+              <path d="M132,540 L168,540 L200,536 L200,540 L188,540 L216,614 Q150,636 84,614 L112,540 L100,540 L100,536 Z"
+                    fill="url(#glass2)" stroke="#b0b8ba" stroke-width="2.5"/>
+              <rect id="collectedLiquid" x="90" y="605" width="120" height="0" fill="url(#waterGrad2)" clip-path="url(#flaskClip)" opacity=".92"/>
+
+              <!-- منطقة القطرات -->
+              <g id="dropsLayer"></g>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- لوحة التحكم -->
+      <div class="control-card card">
+
+        <!-- الخطوة 0 -->
+        <div class="lab-step" data-step="0">
+          <span class="pill">الخطوة ١</span>
+          <h3>جهّز الأدوات وابدأ</h3>
+          <p class="hint">أمامك قُمع الفَصل فارغًا، مثبّتًا فوق الحامل. اضغط الزر لتبدأ بصبّ الزيت والماء بداخله.</p>
+          <div class="control-buttons">
+            <button class="btn btn-primary" onclick="Lab.pour()">🧪 اصبّ الزيت والماء في القمع</button>
+          </div>
+        </div>
+
+        <!-- الخطوة 1 -->
+        <div class="lab-step" data-step="1" style="display:none;">
+          <span class="pill">الخطوة ٢</span>
+          <h3>هل امتزج الزيت مع الماء؟</h3>
+          <p class="hint">لاحظ الطبقتين داخل القمع. أغلق السدادة العلوية، ثم رُجّ القمع جيدًا لتختبر الامتزاج.</p>
+          <div class="control-buttons">
+            <button class="btn btn-primary" onclick="Lab.shake()">🌀 أَرُجّ الخليط</button>
+          </div>
+
+          <div class="quiz-block" id="quiz1">
+            <p style="font-weight:800;margin-top:14px;">بعد الرَّج والانتظار قليلًا... هل امتزج الزيت مع الماء؟</p>
+            <div class="quiz-options">
+              <button class="quiz-opt" onclick="Lab.answer(this,false,'quiz1')">نعم، أصبحا سائلًا واحدًا</button>
+              <button class="quiz-opt" onclick="Lab.answer(this,true,'quiz1')">لا، عادا طبقتين منفصلتين</button>
+            </div>
+            <div class="quiz-feedback" id="fb1"></div>
+            <div class="control-buttons" id="next1" style="display:none;">
+              <button class="btn btn-primary" onclick="Lab.goto(2)">التالي: ثبّت القمع على الحامل ⬅</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- الخطوة 2 -->
+        <div class="lab-step" data-step="2" style="display:none;">
+          <span class="pill">الخطوة ٣</span>
+          <h3>ثبّت القمع على الحامل</h3>
+          <p class="hint">اضغط الزر ليتحرّك المشبك ويُثبّت قمع الفصل بإحكام فوق الدورق المخروطي.</p>
+          <div class="control-buttons">
+            <button class="btn btn-primary" id="clampBtn" onclick="Lab.clamp()">📌 ثبّت القمع على الحامل</button>
+          </div>
+        </div>
+
+        <!-- الخطوة 3 -->
+        <div class="lab-step" data-step="3" style="display:none;">
+          <span class="pill">الخطوة ٤</span>
+          <h3>اترك القمع فترة من الزمن</h3>
+          <p class="hint">امنح السائلين وقتًا كافيًا ليستقرّا تمامًا كلٌّ في طبقته بحسب كثافته.</p>
+          <div class="control-buttons">
+            <button class="btn btn-primary" id="waitBtn" onclick="Lab.wait()">⏳ انتظر فترة من الزمن</button>
+          </div>
+        </div>
+
+        <!-- الخطوة 4 -->
+        <div class="lab-step" data-step="4" style="display:none;">
+          <span class="pill">الخطوة ٥</span>
+          <h3>افتح صمّام القمع</h3>
+          <p class="hint">افتح الصمّام ببطء وراقب أيّ السائلين يخرج أولًا. أغلق الصمّام بمجرّد أن ترى الزيت يقترب من الفوهة!</p>
+          <div class="control-buttons">
+            <button class="btn btn-primary" id="openValveBtn" onclick="Lab.openValve()">🔓 افتح الصمّام</button>
+            <button class="btn btn-ghost" id="closeValveBtn" onclick="Lab.closeValve()" style="display:none;">🔒 أغلق الصمّام الآن</button>
+          </div>
+          <div id="valveNote" style="margin-top:10px;font-size:.9rem;color:var(--ink-soft);"></div>
+        </div>
+
+        <!-- الخطوة 5: سؤال أي سائل نزل أولا -->
+        <div class="lab-step" data-step="5" style="display:none;">
+          <span class="pill">الخطوة ٦</span>
+          <h3>أيّ السّائلين ينزل من القمع أوّلًا؟</h3>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="Lab.answer(this,true,'quiz2')">الماء</button>
+            <button class="quiz-opt" onclick="Lab.answer(this,false,'quiz2')">الزيت</button>
+          </div>
+          <div class="quiz-feedback" id="fbquiz2"></div>
+          <div class="control-buttons" id="nextquiz2" style="display:none;">
+            <button class="btn btn-primary" onclick="Lab.goto(6)">التالي ⬅</button>
+          </div>
+        </div>
+
+        <!-- الخطوة 6: لماذا -->
+        <div class="lab-step" data-step="6" style="display:none;">
+          <span class="pill">الخطوة ٧</span>
+          <h3>لماذا نزل هذا السائل أوّلًا؟</h3>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="Lab.answer(this,true,'quiz3')">لأن كثافته أكبر من كثافة السائل الآخر</button>
+            <button class="quiz-opt" onclick="Lab.answer(this,false,'quiz3')">لأن لونه أغمق</button>
+            <button class="quiz-opt" onclick="Lab.answer(this,false,'quiz3')">لأنه صُبّ أولًا في القمع</button>
+          </div>
+          <div class="quiz-feedback" id="fbquiz3"></div>
+          <div class="control-buttons" id="nextquiz3" style="display:none;">
+            <button class="btn btn-primary" onclick="Lab.goto(7)">التالي ⬅</button>
+          </div>
+        </div>
+
+        <!-- الخطوة 7: الخاصية المعتمدة -->
+        <div class="lab-step" data-step="7" style="display:none;">
+          <span class="pill">الخطوة ٨</span>
+          <h3>ما الخاصيّة التي اعتمدت عليها طريقة الفصل؟</h3>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="Lab.answer(this,false,'quiz4')">حجم السائل</button>
+            <button class="quiz-opt" onclick="Lab.answer(this,true,'quiz4')">اختلاف الكثافة وعدم الامتزاج</button>
+            <button class="quiz-opt" onclick="Lab.answer(this,false,'quiz4')">لون السائل</button>
+          </div>
+          <div class="quiz-feedback" id="fbquiz4"></div>
+          <div class="control-buttons" id="nextquiz4" style="display:none;">
+            <button class="btn btn-primary" onclick="Lab.goto(8)">إنهاء التجربة والانتقال للاستنتاج ⬅</button>
+          </div>
+        </div>
+
+        <!-- الخطوة 8: تم -->
+        <div class="lab-step" data-step="8" style="display:none;">
+          <span class="pill">أحسنت!</span>
+          <h3>🎉 أنجزت التجربة بنجاح</h3>
+          <p class="hint" id="scoreText"></p>
+          <div class="control-buttons">
+            <button class="btn btn-ghost" onclick="Lab.restart()">🔁 أعِد التجربة</button>
+            <button class="btn btn-primary" onclick="document.getElementById('conclusion').scrollIntoView({behavior:'smooth'})">📝 اذهب إلى الاستنتاج</button>
+          </div>
+        </div>
+
+        <div class="step-nav">
+          <button class="btn btn-ghost btn-sm" id="backBtn" onclick="Lab.back()">➡ السابق</button>
+          <span style="align-self:center;font-size:.85rem;color:var(--ink-soft);" id="stepCounter"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== الاستنتاج ===================== -->
+<section id="conclusion">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">أستنتج أنّ</div>
+      <h2>ماذا تعلّمنا من هذه التجربة؟</h2>
+    </div>
+
+    <div class="conclusion-card card">
+      <div class="conclusion-summary" id="autoSummary">
+        أكمل خطوات المختبر الافتراضي أعلاه أولًا، وسيظهر هنا استنتاجٌ تلقائيّ بناءً على إجاباتك.
+      </div>
+
+      <h3 style="font-size:1.05rem;">✍️ اكتب بلغتي تعريفًا لعمليّة فصل السوائل بقُمع الفَصل:</h3>
+      <textarea id="ownDefinition" placeholder="مثال: قُمع الفَصل أداة تُستخدَم لفصل سائلين لا يمتزجان..."></textarea>
+      <div class="save-row">
+        <button class="btn btn-primary btn-sm" onclick="saveDefinition()">💾 احفظ إجابتي</button>
+        <span class="save-msg" id="saveMsg"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  صُمِّمَت هذه الصفحة كمختبر افتراضيّ تفاعليّ لدرس <strong>قُمعُ الفَصل</strong> — منهاج العلوم والحياة، الصف الخامس، فلسطين.
+</footer>
+
+<script>
+/* ===================== محرّك المختبر الافتراضي ===================== */
+const Lab = (function(){
+  const totalSteps = 9; // 0..8
+  let step = 0;
+  let score = 0;
+  let maxScore = 4;
+  let dripInterval = null;
+  let dropCount = 0;
+  let waterDrained = false;
+
+  const $ = id => document.getElementById(id);
+
+  const stepNames = [
+    'التحضير','الرَّج والملاحظة','التثبيت على الحامل','الانتظار',
+    'فتح الصمّام','سؤال: أيّهما أولًا','سؤال: لماذا','سؤال: الخاصيّة','الخلاصة'
+  ];
+
+  function renderProgress(){
+    const track = $('progressTrack');
+    track.innerHTML = '';
+    for(let i=0;i<totalSteps;i++){
+      const seg = document.createElement('div');
+      seg.className='seg';
+      const bar = document.createElement('i');
+      bar.style.width = i < step ? '100%' : (i===step ? '55%' : '0%');
+      seg.appendChild(bar);
+      track.appendChild(seg);
+    }
+    $('stageLabel').textContent = stepNames[step];
+    $('stepCounter').textContent = 'الخطوة ' + (step+1) + ' من ' + totalSteps;
+    $('backBtn').disabled = step===0;
+  }
+
+  function showStep(){
+    document.querySelectorAll('.lab-step').forEach(el=>{
+      el.style.display = (parseInt(el.dataset.step)===step) ? 'block' : 'none';
+    });
+    renderProgress();
+  }
+
+  function goto(n){ step = n; showStep(); }
+  function back(){ if(step>0){ step--; showStep(); } }
+
+  /* ---------- رسوم متحركة عامة لخصائص SVG ---------- */
+  function animateAttr(el, attr, from, to, duration, cb){
+    const start = performance.now();
+    function frame(now){
+      let t = Math.min(1,(now-start)/duration);
+      const eased = t<.5 ? 2*t*t : -1+(4-2*t)*t; // ease-in-out
+      const val = from + (to-from)*eased;
+      el.setAttribute(attr, val);
+      if(t<1){ requestAnimationFrame(frame); } else if(cb){ cb(); }
+    }
+    requestAnimationFrame(frame);
+  }
+  function animateOpacity(el, from, to, duration){
+    el.style.opacity = from;
+    el.style.transition = 'opacity '+duration+'ms ease';
+    requestAnimationFrame(()=>{ el.style.opacity = to; });
+  }
+
+  /* ---------- الخطوة 0: صبّ السوائل ---------- */
+  function pour(){
+    const oil = $('oilLayer'), water = $('waterLayer');
+    // نفرغ الأولى: الزيت ينزل من الأعلى، الماء يملأ الأسفل
+    animateOpacity(oil, 0, 1, 400);
+    animateOpacity(water, 0, 1, 400);
+    animateAttr(oil, 'y', 130, 130, 10);
+    animateAttr(oil, 'height', 0, 66, 900);
+    setTimeout(()=>{
+      animateAttr(water, 'y', 300, 196, 900);
+      animateAttr(water, 'height', 0, 112, 900);
+    }, 250);
+    setTimeout(()=> goto(1), 1300);
+  }
+
+  /* ---------- الخطوة 1: الرَّج ---------- */
+  function shake(){
+    const body = $('funnelBody');
+    const oil = $('oilLayer'), water = $('waterLayer'), mix = $('mixLayer');
+    body.classList.add('shake');
+
+    // أثناء الرج: إخفاء الطبقتين وإظهار خليط ضبابي واحد
+    setTimeout(()=>{
+      animateOpacity(oil,1,0,300);
+      animateOpacity(water,1,0,300);
+      mix.setAttribute('y',130); mix.setAttribute('height',176);
+      animateOpacity(mix,0,1,300);
+    }, 150);
+
+    setTimeout(()=>{ body.classList.remove('shake'); }, 1750);
+
+    // بعد الرج: يعودان طبقتين منفصلتين لأنهما غير قابلين للامتزاج
+    setTimeout(()=>{
+      animateOpacity(mix,1,0,700);
+      animateOpacity(oil,0,1,700);
+      animateOpacity(water,0,1,700);
+      oil.setAttribute('y',130); oil.setAttribute('height',66);
+      water.setAttribute('y',196); water.setAttribute('height',112);
+    }, 1900);
+
+    setTimeout(()=>{
+      $('quiz1').classList.add('show');
+    }, 2700);
+  }
+
+  /* ---------- الخطوة 2: التثبيت على الحامل ---------- */
+  function clamp(){
+    const arm = $('clampArm');
+    arm.style.transform = 'translateY(-4px) rotate(1deg)';
+    $('clampBtn').textContent = '✔ تمّ التثبيت بإحكام';
+    $('clampBtn').disabled = true;
+    setTimeout(()=> goto(3), 700);
+  }
+
+  /* ---------- الخطوة 3: الانتظار ---------- */
+  function wait(){
+    const btn = $('waitBtn');
+    btn.disabled = true;
+    let secs = 3;
+    btn.textContent = '⏳ يستقرّ السائلان... ('+secs+')';
+    const timer = setInterval(()=>{
+      secs--;
+      if(secs<=0){
+        clearInterval(timer);
+        btn.textContent = '✔ اكتمل الاستقرار';
+        setTimeout(()=> goto(4), 500);
+      } else {
+        btn.textContent = '⏳ يستقرّ السائلان... ('+secs+')';
+      }
+    },600);
+  }
+
+  /* ---------- الخطوة 4: فتح الصمّام والتنقيط ---------- */
+  function spawnDrop(){
+    const layer = $('dropsLayer');
+    const d = document.createElementNS('http://www.w3.org/2000/svg','ellipse');
+    d.setAttribute('cx',150); d.setAttribute('cy',392);
+    d.setAttribute('rx',5); d.setAttribute('ry',7);
+    d.setAttribute('fill', waterDrained ? '#d79f22' : '#2c86b8');
+    layer.appendChild(d);
+    animateAttr(d,'cy',392,600,650,()=>{ layer.removeChild(d); });
+  }
+
+  function openValve(){
+    $('valveGroup').style.transform = 'rotate(90deg)';
+    $('openValveBtn').style.display='none';
+    $('closeValveBtn').style.display='inline-flex';
+    $('valveNote').textContent = 'يتدفّق السائل السّفلي (الأثقل) أوّلًا عبر الفوهة...';
+    $('dropCounterWrap').innerHTML = '<span class="drop-counter">💧 قطرات: <span id="dc">0</span></span>';
+
+    const water = $('waterLayer');
+    const collected = $('collectedLiquid');
+    animateOpacity(collected, 0, .92, 300);
+    collected.setAttribute('width',120);
+    animateAttr(collected,'y',624,610,600);
+    animateAttr(collected,'height',0,24,600);
+
+    let waterHeight = 112;
+    dripInterval = setInterval(()=>{
+      dropCount++;
+      $('dc') && ($('dc').textContent = dropCount);
+      spawnDrop();
+      if(waterHeight>0){
+        waterHeight = Math.max(0, waterHeight-8);
+        water.setAttribute('height', waterHeight);
+        water.setAttribute('y', 308 - waterHeight);
+        // رفع منسوب السائل المجموع في الدورق
+        const h = Math.min(70, 24 + (112-waterHeight)/112*46);
+        collected.setAttribute('height', h);
+        collected.setAttribute('y', 634-h);
+      } else if(!waterDrained){
+        waterDrained = true;
+        clearInterval(dripInterval);
+        $('valveNote').textContent = '⚠️ نفد الماء! أغلق الصمّام الآن قبل أن يبدأ الزيت بالخروج.';
+        $('valveNote').style.color = '#a44329';
+        $('valveNote').style.fontWeight = '800';
+      }
+    }, 260);
+  }
+
+  function closeValve(){
+    clearInterval(dripInterval);
+    $('valveGroup').style.transform = 'rotate(0deg)';
+    $('closeValveBtn').style.display='none';
+    if(waterDrained){
+      $('valveNote').textContent = '✔ ممتاز! أغلقت الصمّام في الوقت المناسب. بقي الزيت وحده داخل القمع، وتجمّع الماء في الدورق أسفله.';
+      $('valveNote').style.color = 'var(--olive-deep)';
+      setTimeout(()=> goto(5), 1200);
+    } else {
+      $('valveNote').textContent = 'أُغلق الصمّام مبكرًا قليلًا — افتحه من جديد لإكمال تصريف الماء.';
+      $('openValveBtn').style.display='inline-flex';
+    }
+  }
+
+  /* ---------- الأسئلة ---------- */
+  function answer(btn, isCorrect, quizId){
+    const container = btn.parentElement;
+    container.querySelectorAll('.quiz-opt').forEach(b=> b.disabled = true);
+    const fb = document.getElementById('fb'+quizId.replace('quiz','') === 'fb' ? null : null); // placeholder unused
+    let fbEl;
+    if(quizId==='quiz1') fbEl = $('fb1');
+    else fbEl = $('fb'+quizId.slice(-1));
+
+    if(isCorrect){
+      btn.classList.add('correct');
+      score++;
+      if(quizId==='quiz1'){
+        fbEl.textContent = '✔ صحيح! زيت الزيتون والماء سائلان لا يمتزجان، فسرعان ما يعودان طبقتين منفصلتين.';
+      } else if(quizId==='quiz2'){
+        fbEl.textContent = '✔ صحيح! الماء هو الأثقل (الأعلى كثافة)، لذلك ينزل أوّلًا من الأسفل.';
+      } else if(quizId==='quiz3'){
+        fbEl.textContent = '✔ صحيح! السائل الأكثر كثافة يستقرّ دائمًا في الأسفل، فيخرج أوّلًا عند فتح الصمّام.';
+      } else if(quizId==='quiz4'){
+        fbEl.textContent = '✔ صحيح! اعتمدت طريقة الفصل على اختلاف الكثافة، وعلى أنّ السائلين غير قابلين للامتزاج.';
+      }
+      fbEl.className = 'quiz-feedback ok';
+    } else {
+      btn.classList.add('wrong');
+      fbEl.textContent = 'إجابة غير دقيقة، حاول التفكير في خاصيّة الكثافة، ثم انتقل للتالي.';
+      fbEl.className = 'quiz-feedback no';
+    }
+    const nextId = quizId==='quiz1' ? 'next1' : 'next'+quizId;
+    document.getElementById(nextId).style.display='flex';
+  }
+
+  /* ---------- الخلاصة والدرجة ---------- */
+  function finish(){
+    $('scoreText').textContent = 'أجبت بشكل صحيح عن '+score+' من '+maxScore+' أسئلة. أحسنت العمل كعالم/ة صغير/ة! 🔬';
+    const summary = document.getElementById('autoSummary');
+    summary.innerHTML =
+      'طريقة الفصل المستخدمة هي <strong>الفصل بواسطة قُمع الفَصل</strong>.<br>'+
+      'اعتمدت هذه الطريقة على <strong>اختلاف الكثافة</strong> بين الماء والزيت، وعلى كونهما '+
+      '<strong>سائلين غير قابلين للامتزاج</strong>. لذلك نزل الماء (الأثقل) أوّلًا من صمّام القمع، '+
+      'بينما بقي زيت الزيتون (الأخفّ) طافيًا في الأعلى.';
+  }
+
+  function restart(){
+    location.reload();
+  }
+
+  function init(){
+    showStep();
+    document.querySelectorAll('.lab-step[data-step="8"]').forEach(()=>{});
+  }
+
+  // مراقبة الانتقال إلى الخطوة الأخيرة لعرض الخلاصة
+  const origGoto = goto;
+  function gotoWrapped(n){
+    origGoto(n);
+    if(n===8){ finish(); }
+  }
+
+  return {
+    pour, shake, clamp, wait, openValve, closeValve, answer,
+    goto: gotoWrapped, back, restart, init
+  };
+})();
+
+Lab.init();
+
+function saveDefinition(){
+  const val = document.getElementById('ownDefinition').value.trim();
+  const msg = document.getElementById('saveMsg');
+  if(!val){
+    msg.textContent = 'اكتب تعريفك أولًا ثم اضغط حفظ.';
+    msg.style.color = '#a44329';
+    return;
+  }
+  try{
+    localStorage.setItem('qamacFasl_definition', val);
+    msg.textContent = '✔ تم حفظ إجابتك على هذا الجهاز.';
+    msg.style.color = 'var(--olive-deep)';
+  }catch(e){
+    msg.textContent = 'تعذّر الحفظ على هذا المتصفح، لكن يمكنك نسخ إجابتك يدويًا.';
+    msg.style.color = '#a44329';
+  }
+}
+
+// استرجاع إجابة محفوظة سابقًا إن وُجدت
+(function(){
+  try{
+    const saved = localStorage.getItem('qamacFasl_definition');
+    if(saved){ document.getElementById('ownDefinition').value = saved; }
+  }catch(e){}
+})();
+</script>
+</body>
+</html>

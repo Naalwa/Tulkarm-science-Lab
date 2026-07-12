@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نشاط (١): المادة - العلوم والحياة - الصف الخامس</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Tajawal:wght@400;500;700;800&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --sky: #1a3a5c;
+    --sky-light: #2256a0;
+    --gold: #f5a623;
+    --gold-light: #ffd166;
+    --teal: #06b6d4;
+    --teal-dark: #0e7490;
+    --green: #10b981;
+    --red: #ef4444;
+    --bg: #0d1f35;
+    --card: #132d4a;
+    --card2: #0f2540;
+    --glass: rgba(255,255,255,0.06);
+    --border: rgba(255,255,255,0.1);
+    --text: #e8f4fd;
+    --muted: #8fb4d4;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Cairo', 'Tajawal', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, #0d1f35 0%, #1a3a5c 50%, #0d2d4a 100%);
+    padding: 60px 20px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(6,182,212,0.15) 0%, transparent 70%);
+  }
+  .hero-badge {
+    display: inline-block;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light));
+    color: #0d1f35;
+    font-weight: 900;
+    font-size: 0.85rem;
+    padding: 6px 18px;
+    border-radius: 30px;
+    margin-bottom: 18px;
+    letter-spacing: 1px;
+  }
+  .hero h1 {
+    font-size: clamp(2.2rem, 8vw, 4.5rem);
+    font-weight: 900;
+    line-height: 1.1;
+    background: linear-gradient(135deg, #fff 30%, var(--teal) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 12px;
+  }
+  .hero p {
+    font-size: clamp(1rem, 3vw, 1.25rem);
+    color: var(--muted);
+    max-width: 600px;
+    margin: 0 auto 30px;
+  }
+  .hero-atoms {
+    position: absolute;
+    width: 100%; height: 100%;
+    top: 0; left: 0;
+    pointer-events: none;
+  }
+  .atom {
+    position: absolute;
+    border-radius: 50%;
+    animation: float 6s ease-in-out infinite;
+    opacity: 0.15;
+  }
+  @keyframes float {
+    0%,100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-20px) scale(1.05); }
+  }
+
+  /* ── SECTIONS ── */
+  .container { max-width: 1000px; margin: 0 auto; padding: 0 16px; }
+
+  section { padding: 50px 0; }
+
+  .section-title {
+    font-size: clamp(1.4rem, 4vw, 2rem);
+    font-weight: 900;
+    color: var(--gold);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-title .icon { font-size: 1.6em; }
+
+  .section-sub {
+    color: var(--muted);
+    margin-bottom: 30px;
+    font-size: 1rem;
+  }
+
+  /* ── DEFINITION CARDS ── */
+  .def-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 28px;
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .def-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(6,182,212,0.2);
+  }
+  .def-card::before {
+    content: '';
+    position: absolute; top: 0; right: 0;
+    width: 4px; height: 100%;
+    background: linear-gradient(180deg, var(--teal), var(--gold));
+  }
+  .def-card h3 { font-size: 1.3rem; font-weight: 800; color: var(--teal); margin-bottom: 10px; }
+  .def-card p { line-height: 1.8; color: var(--text); }
+
+  /* ── STATES OF MATTER ── */
+  .states-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 24px;
+  }
+  @media (max-width: 600px) { .states-grid { grid-template-columns: 1fr; } }
+
+  .state-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 24px 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.35s;
+    position: relative;
+    overflow: hidden;
+  }
+  .state-card:hover { transform: scale(1.05); }
+  .state-card.active { border-color: var(--teal); box-shadow: 0 0 30px rgba(6,182,212,0.3); }
+  .state-3d {
+    width: 80px; height: 80px;
+    margin: 0 auto 16px;
+    border-radius: 50%;
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.5rem;
+  }
+  .solid-3d {
+    background: radial-gradient(circle at 35% 35%, #7dd3fc, #1e40af);
+    box-shadow: 4px 4px 0 #1e3a8a, inset -3px -3px 8px rgba(0,0,0,0.4);
+    border-radius: 12px;
+  }
+  .liquid-3d {
+    background: radial-gradient(circle at 35% 30%, #67e8f9, #0e7490);
+    box-shadow: 4px 8px 16px rgba(6,182,212,0.5);
+    border-radius: 50% 50% 60% 60%;
+    animation: liquid-bounce 2s ease-in-out infinite;
+  }
+  @keyframes liquid-bounce {
+    0%,100% { border-radius: 50% 50% 60% 60%; }
+    50% { border-radius: 60% 60% 50% 50%; }
+  }
+  .gas-3d {
+    background: radial-gradient(circle at 40% 40%, rgba(167,243,208,0.9), rgba(6,182,212,0.3));
+    box-shadow: 0 0 20px rgba(167,243,208,0.4);
+    border-radius: 50%;
+    animation: gas-pulse 3s ease-in-out infinite;
+  }
+  @keyframes gas-pulse {
+    0%,100% { transform: scale(1); opacity:0.9; }
+    50% { transform: scale(1.1); opacity:0.6; }
+  }
+  .state-card h3 { font-size: 1.2rem; font-weight: 800; margin-bottom: 8px; }
+  .state-card p { font-size: 0.88rem; color: var(--muted); line-height: 1.7; }
+
+  .molecules-canvas {
+    width: 100%; height: 100px;
+    margin-top: 14px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: rgba(0,0,0,0.2);
+  }
+
+  /* ── LAB SECTION ── */
+  .lab-wrapper {
+    background: linear-gradient(135deg, #0a1e32, #132d4a);
+    border: 1px solid rgba(6,182,212,0.3);
+    border-radius: 28px;
+    padding: 30px;
+    margin-top: 20px;
+    box-shadow: 0 0 60px rgba(6,182,212,0.1), inset 0 0 40px rgba(0,0,0,0.3);
+  }
+  .lab-title {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--teal);
+    margin-bottom: 6px;
+  }
+  .lab-subtitle {
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin-bottom: 28px;
+  }
+
+  /* Steps */
+  .steps-nav {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+  }
+  .step-btn {
+    background: var(--glass);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 8px 16px;
+    border-radius: 30px;
+    font-family: 'Cairo', sans-serif;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: 600;
+  }
+  .step-btn.active {
+    background: linear-gradient(90deg, var(--teal-dark), var(--teal));
+    border-color: var(--teal);
+    color: #fff;
+    box-shadow: 0 4px 20px rgba(6,182,212,0.4);
+  }
+  .step-btn:hover:not(.active) { border-color: var(--teal); color: var(--teal); }
+
+  .step-panel { display: none; }
+  .step-panel.active { display: block; }
+
+  /* Lab equipment 3D */
+  .lab-scene {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 40px;
+    min-height: 280px;
+    flex-wrap: wrap;
+  }
+
+  /* Graduated cylinder */
+  .cylinder-wrap {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .cylinder-label { font-size: 0.8rem; color: var(--muted); font-weight: 700; }
+  .cylinder {
+    width: 70px;
+    height: 200px;
+    border: 3px solid rgba(100,200,255,0.5);
+    border-bottom: none;
+    border-radius: 4px 4px 0 0;
+    position: relative;
+    background: linear-gradient(90deg, rgba(100,200,255,0.1), rgba(100,200,255,0.05), rgba(100,200,255,0.15));
+    box-shadow: inset -6px 0 12px rgba(100,200,255,0.15), 4px 4px 20px rgba(0,0,0,0.4);
+    overflow: hidden;
+  }
+  .cylinder-base {
+    width: 80px; height: 12px;
+    background: linear-gradient(180deg, rgba(100,200,255,0.4), rgba(100,200,255,0.2));
+    border-radius: 0 0 8px 8px;
+    border: 3px solid rgba(100,200,255,0.5);
+    border-top: none;
+    box-shadow: 4px 4px 12px rgba(0,0,0,0.4);
+  }
+  .water-fill {
+    position: absolute;
+    bottom: 0;
+    left: 0; right: 0;
+    background: linear-gradient(180deg, rgba(6,182,212,0.85), rgba(14,116,144,0.95));
+    transition: height 1.2s cubic-bezier(0.4,0,0.2,1);
+    height: 0;
+  }
+  .water-surface {
+    position: absolute;
+    top: -3px; left: 0; right: 0;
+    height: 6px;
+    background: rgba(6,182,212,0.5);
+    border-radius: 50%;
+    animation: wave 2s ease-in-out infinite;
+  }
+  @keyframes wave {
+    0%,100% { transform: scaleX(1); }
+    50% { transform: scaleX(0.97); }
+  }
+  .cylinder-ticks {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: space-between;
+    padding: 6px 4px;
+  }
+  .tick {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.6rem;
+    color: rgba(100,200,255,0.7);
+  }
+  .tick-line { width: 12px; height: 1px; background: rgba(100,200,255,0.5); }
+  .stone-in-water {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 18px; height: 14px;
+    background: radial-gradient(circle at 40% 35%, #9ca3af, #4b5563);
+    border-radius: 50% 40% 50% 45%;
+    box-shadow: 2px 2px 6px rgba(0,0,0,0.5);
+    display: none;
+    animation: settle 0.5s ease-out;
+  }
+  @keyframes settle { from { transform: translateX(-50%) translateY(-30px); } to { transform: translateX(-50%) translateY(0); } }
+
+  /* Scale 3D */
+  .scale-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .scale-3d {
+    position: relative;
+    width: 130px;
+  }
+  .scale-platform {
+    width: 110px; height: 8px;
+    background: linear-gradient(180deg, #d1d5db, #9ca3af);
+    border-radius: 50%;
+    margin: 0 auto;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4), inset 0 2px 4px rgba(255,255,255,0.3);
+    position: relative;
+    z-index: 2;
+  }
+  .scale-body {
+    width: 100px; height: 50px;
+    background: linear-gradient(180deg, #e5e7eb, #9ca3af, #6b7280);
+    border-radius: 10px 10px 20px 20px;
+    margin: 0 auto;
+    box-shadow: 4px 8px 20px rgba(0,0,0,0.5), inset 0 2px 6px rgba(255,255,255,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .scale-display {
+    background: #1a1a2e;
+    border: 2px solid #374151;
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-family: 'Courier New', monospace;
+    font-size: 1rem;
+    color: #00ff88;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-shadow: 0 0 8px #00ff88;
+    min-width: 70px;
+    text-align: center;
+  }
+  .scale-base {
+    width: 120px; height: 10px;
+    background: linear-gradient(180deg, #6b7280, #4b5563);
+    border-radius: 4px;
+    margin: 0 auto;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+  }
+  .stone-on-scale {
+    width: 24px; height: 18px;
+    background: radial-gradient(circle at 40% 35%, #9ca3af, #4b5563);
+    border-radius: 50% 40% 50% 45%;
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 2px 2px 6px rgba(0,0,0,0.5);
+    display: none;
+  }
+
+  /* Stone standalone */
+  .stone-standalone {
+    width: 50px; height: 38px;
+    background: radial-gradient(circle at 38% 32%, #c4c9d4, #6b7280 50%, #3f4552);
+    border-radius: 50% 45% 52% 48% / 40% 50% 45% 55%;
+    box-shadow: 4px 6px 16px rgba(0,0,0,0.5), inset -4px -4px 8px rgba(0,0,0,0.3), inset 2px 2px 6px rgba(255,255,255,0.2);
+    cursor: grab;
+    transition: transform 0.2s;
+    position: relative;
+  }
+  .stone-standalone:hover { transform: scale(1.1); cursor: grab; }
+  .stone-standalone:active { cursor: grabbing; transform: scale(0.95); }
+  .stone-wrap { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+
+  /* Instruction box */
+  .instruction-box {
+    background: rgba(6,182,212,0.1);
+    border: 1px solid rgba(6,182,212,0.3);
+    border-radius: 16px;
+    padding: 16px 20px;
+    margin-top: 24px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .inst-icon { font-size: 1.8rem; flex-shrink: 0; }
+  .inst-text { font-size: 0.95rem; line-height: 1.8; }
+  .inst-text strong { color: var(--gold); }
+
+  /* Action button */
+  .action-btn {
+    display: block;
+    background: linear-gradient(90deg, var(--teal-dark), var(--teal));
+    color: #fff;
+    border: none;
+    padding: 14px 36px;
+    border-radius: 50px;
+    font-family: 'Cairo', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 800;
+    cursor: pointer;
+    margin: 20px auto 0;
+    transition: all 0.3s;
+    box-shadow: 0 6px 24px rgba(6,182,212,0.4);
+    letter-spacing: 0.5px;
+  }
+  .action-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(6,182,212,0.5); }
+  .action-btn:active { transform: translateY(0); }
+  .action-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  /* Results */
+  .result-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--card2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px 18px;
+    margin-top: 12px;
+    animation: slide-in 0.4s ease-out;
+  }
+  @keyframes slide-in { from { opacity:0; transform:translateY(10px);} to { opacity:1; transform:translateY(0);} }
+  .result-label { font-weight: 700; color: var(--muted); min-width: 160px; font-size: 0.9rem; }
+  .result-value { font-size: 1.2rem; font-weight: 900; color: var(--teal); }
+  .result-unit { color: var(--muted); font-size: 0.85rem; }
+
+  /* Conclusion */
+  .conclusion-box {
+    background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(6,182,212,0.1));
+    border: 1px solid rgba(16,185,129,0.4);
+    border-radius: 20px;
+    padding: 24px 28px;
+    margin-top: 24px;
+  }
+  .conclusion-box h4 { color: var(--green); font-size: 1.1rem; font-weight: 900; margin-bottom: 12px; }
+  .conclusion-box p { line-height: 1.9; font-size: 0.95rem; }
+
+  /* Quiz */
+  .quiz-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 24px;
+    margin-top: 16px;
+  }
+  .quiz-q { font-size: 1.1rem; font-weight: 800; margin-bottom: 18px; line-height: 1.7; }
+  .quiz-options { display: grid; gap: 10px; }
+  .quiz-opt {
+    background: var(--card2);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 16px;
+    cursor: pointer;
+    font-family: 'Cairo', sans-serif;
+    font-size: 0.95rem;
+    color: var(--text);
+    text-align: right;
+    transition: all 0.25s;
+    font-weight: 600;
+  }
+  .quiz-opt:hover:not(:disabled) { border-color: var(--teal); color: var(--teal); }
+  .quiz-opt.correct { background: rgba(16,185,129,0.2); border-color: var(--green); color: var(--green); }
+  .quiz-opt.wrong { background: rgba(239,68,68,0.2); border-color: var(--red); color: var(--red); }
+  .quiz-feedback {
+    margin-top: 14px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    display: none;
+  }
+  .quiz-feedback.show { display: block; animation: slide-in 0.3s; }
+  .quiz-feedback.correct { background: rgba(16,185,129,0.2); color: var(--green); }
+  .quiz-feedback.wrong { background: rgba(239,68,68,0.2); color: var(--red); }
+
+  /* Progress bar */
+  .progress-bar-wrap {
+    background: rgba(255,255,255,0.08);
+    border-radius: 50px;
+    height: 6px;
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+  .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--teal), var(--green));
+    border-radius: 50px;
+    transition: width 0.6s ease;
+  }
+
+  /* Score badge */
+  .score-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--card);
+    border: 1px solid var(--gold);
+    border-radius: 30px;
+    padding: 8px 20px;
+    font-weight: 800;
+    color: var(--gold);
+    font-size: 0.9rem;
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 30px 20px;
+    color: var(--muted);
+    font-size: 0.85rem;
+    border-top: 1px solid var(--border);
+    margin-top: 20px;
+  }
+
+  /* Particle animation */
+  .particles {
+    position: relative;
+    height: 80px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: rgba(0,0,0,0.2);
+    margin-top: 14px;
+  }
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    animation: particle-anim var(--dur, 3s) ease-in-out infinite;
+    animation-delay: var(--delay, 0s);
+  }
+  @keyframes particle-anim {
+    0%   { transform: translate(0,0); }
+    25%  { transform: translate(var(--dx1,10px), var(--dy1,-15px)); }
+    50%  { transform: translate(var(--dx2,-8px), var(--dy2,5px)); }
+    75%  { transform: translate(var(--dx3,15px), var(--dy3,-10px)); }
+    100% { transform: translate(0,0); }
+  }
+
+  /* Notification */
+  .notif {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    background: linear-gradient(90deg, var(--teal-dark), var(--teal));
+    color: #fff;
+    padding: 14px 28px;
+    border-radius: 50px;
+    font-family: 'Cairo', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    z-index: 9999;
+    transition: transform 0.5s cubic-bezier(0.4,0,0.2,1);
+    box-shadow: 0 8px 32px rgba(6,182,212,0.4);
+  }
+  .notif.show { transform: translateX(-50%) translateY(0); }
+
+  /* Nav tabs */
+  .nav-tabs {
+    display: flex;
+    gap: 6px;
+    background: rgba(255,255,255,0.04);
+    padding: 6px;
+    border-radius: 50px;
+    width: fit-content;
+    margin: 0 auto 40px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .nav-tab {
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    padding: 10px 22px;
+    border-radius: 50px;
+    font-family: 'Cairo', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .nav-tab.active {
+    background: linear-gradient(90deg, var(--sky-light), var(--teal-dark));
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(6,182,212,0.3);
+  }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* Responsive */
+  @media (max-width: 500px) {
+    .lab-scene { gap: 20px; }
+    .cylinder { width: 56px; height: 160px; }
+    .steps-nav { gap: 4px; }
+    .step-btn { font-size: 0.78rem; padding: 6px 10px; }
+  }
+
+  .highlight { color: var(--gold); font-weight: 800; }
+  .teal { color: var(--teal); }
+
+  /* ══ RESPONSIVE MOBILE & TABLET ══ */
+  @media (max-width: 768px) {
+    body { padding: 8px !important; font-size: 15px !important; overflow-x: hidden !important; }
+    .container, [class*="container"], [class*="wrapper"] { padding: 8px !important; max-width: 100% !important; }
+    canvas { width: 100% !important; height: auto !important; display: block !important; touch-action: none; max-width: 100% !important; }
+    svg { max-width: 100% !important; height: auto !important; }
+    h1 { font-size: clamp(18px,5vw,32px) !important; }
+    h2 { font-size: clamp(15px,4vw,26px) !important; }
+    h3 { font-size: clamp(13px,3.5vw,20px) !important; }
+    [class*="grid"] { grid-template-columns: 1fr !important; }
+    [class*="flex"] { flex-wrap: wrap !important; }
+    input[type="range"] { width: 100% !important; min-height: 36px; }
+    input[type="number"], input[type="text"], select, textarea {
+      font-size: 16px !important; width: 100% !important; box-sizing: border-box; padding: 8px !important; }
+    button { min-height: 44px !important; font-size: 14px !important; touch-action: manipulation; padding: 10px 14px !important; }
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 13px !important; }
+    th, td { padding: 6px 4px !important; }
+    header { padding: 10px 12px !important; }
+    .controls, [class*="controls"] { flex-direction: column !important; gap: 8px !important; }
+    .lab-window, [class*="lab-window"] { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+  }
+  @media (max-width: 480px) {
+    body { padding: 4px !important; }
+    button { width: 100% !important; }
+  }
+  /* ══ END RESPONSIVE ══ */
+</style>
+</head>
+<body>
+<style>
+.vlab-back{position:fixed;top:10px;left:10px;z-index:99999;
+background:rgba(10,22,40,0.93);border:1px solid rgba(0,200,150,0.4);
+border-radius:22px;padding:8px 16px;display:inline-flex;align-items:center;gap:7px;
+color:#00C896;font-family:Tajawal,Cairo,Arial,sans-serif;font-size:13px;font-weight:700;
+text-decoration:none;backdrop-filter:blur(8px);box-shadow:0 4px 18px rgba(0,0,0,0.3);
+transition:background 0.2s;}
+.vlab-back:hover{background:rgba(0,200,150,0.18);}
+</style>
+<a href="../grade5.html" class="vlab-back">&#8594; العودة للصف</a>
+
+
+<div class="notif" id="notif">✅ أحسنت!</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-atoms">
+    <div class="atom" style="width:80px;height:80px;background:var(--teal);top:10%;right:8%;animation-delay:-1s;opacity:0.08;"></div>
+    <div class="atom" style="width:40px;height:40px;background:var(--gold);top:60%;right:15%;animation-delay:-3s;opacity:0.12;"></div>
+    <div class="atom" style="width:60px;height:60px;background:var(--teal);top:30%;left:6%;animation-delay:-2s;opacity:0.08;"></div>
+    <div class="atom" style="width:25px;height:25px;background:#fff;bottom:20%;left:12%;animation-delay:-4s;opacity:0.1;"></div>
+  </div>
+  <div style="position:relative;z-index:1;">
+    <div class="hero-badge">🔬 العلوم والحياة · الصف الخامس</div>
+    <h1>نشاط (١): المادة</h1>
+    <p>اكتشف أسرار المادة من خلال مختبر افتراضي تفاعلي ثلاثي الأبعاد</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:30px;padding:8px 18px;font-size:0.85rem;color:var(--muted);">⚗️ تجربة حجم الحجر</div>
+      <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:30px;padding:8px 18px;font-size:0.85rem;color:var(--muted);">⚖️ قياس الكتلة</div>
+      <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:30px;padding:8px 18px;font-size:0.85rem;color:var(--muted);">🧠 اختبر نفسك</div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- NAV TABS -->
+  <div style="padding:40px 0 0;">
+    <div class="nav-tabs">
+      <button class="nav-tab active" onclick="showTab('theory')">📚 الشرح النظري</button>
+      <button class="nav-tab" onclick="showTab('lab')">🧪 المختبر الافتراضي</button>
+      <button class="nav-tab" onclick="showTab('quiz')">🎯 اختبر نفسك</button>
+    </div>
+  </div>
+
+  <!-- ===== TAB 1: THEORY ===== -->
+  <div id="tab-theory" class="tab-content active">
+
+    <section>
+      <div class="section-title"><span class="icon">🌍</span> ما هي المادة؟</div>
+      <div class="section-sub">كل شيء من حولنا مصنوع من مادة</div>
+
+      <div class="def-card">
+        <h3>🔑 تعريف المادة</h3>
+        <p>
+          <span class="highlight">المادة</span> هي كل شيء يشغل حيزاً من الفراغ وله كتلة.
+          الهواء الذي نتنفسه، الماء الذي نشربه، الكتاب الذي تقرأه — كلها مادة!
+          حتى الغازات التي لا نراها هي مادة لأنها تشغل مكاناً وتمتلك كتلة.
+        </p>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;">
+        <div class="def-card">
+          <h3>📦 الحجم</h3>
+          <p>
+            <span class="highlight">الحجم</span> هو المكان الذي تشغله المادة. نقيسه بـ<span class="teal">السنتيمتر المكعب (سم³)</span> أو المليلتر (مل).
+          </p>
+        </div>
+        <div class="def-card">
+          <h3>⚖️ الكتلة</h3>
+          <p>
+            <span class="highlight">الكتلة</span> هي مقدار المادة في الجسم. نقيسها بـ<span class="teal">الغرام (غ)</span> أو الكيلوغرام (كغ).
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-title"><span class="icon">🧊</span> حالات المادة الثلاث</div>
+      <div class="section-sub">انقر على كل حالة لتعرف أكثر عنها</div>
+
+      <div class="states-grid">
+        <!-- SOLID -->
+        <div class="state-card active" onclick="selectState('solid', this)">
+          <div class="state-3d solid-3d">🧊</div>
+          <h3 style="color:#60a5fa;">المادة الصلبة</h3>
+          <p>لها شكل وحجم ثابتان. جزيئاتها متراصة بإحكام.</p>
+          <div class="particles" id="p-solid"></div>
+        </div>
+        <!-- LIQUID -->
+        <div class="state-card" onclick="selectState('liquid', this)">
+          <div class="state-3d liquid-3d">💧</div>
+          <h3 style="color:#22d3ee;">المادة السائلة</h3>
+          <p>لها حجم ثابت لكن شكل الإناء الذي فيها. جزيئاتها تتحرك.</p>
+          <div class="particles" id="p-liquid"></div>
+        </div>
+        <!-- GAS -->
+        <div class="state-card" onclick="selectState('gas', this)">
+          <div class="state-3d gas-3d">💨</div>
+          <h3 style="color:#86efac;">المادة الغازية</h3>
+          <p>ليس لها شكل أو حجم ثابتان. جزيئاتها تتحرك بحرية تامة.</p>
+          <div class="particles" id="p-gas"></div>
+        </div>
+      </div>
+
+      <div class="instruction-box" id="state-info">
+        <div class="inst-icon">🧊</div>
+        <div class="inst-text">
+          <strong>المادة الصلبة:</strong> الجزيئات قريبة جداً من بعضها ومتراصة، لذلك الصلب يحافظ على شكله. مثال: الحجر، الخشب، الحديد.
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-title"><span class="icon">📏</span> كيف نقيس الأشياء؟</div>
+      <div class="section-sub">الأدوات التي سنستخدمها في التجربة</div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;">
+        <div class="def-card" style="text-align:center;">
+          <div style="font-size:3rem;margin-bottom:12px;">⚗️</div>
+          <h3>المخبار المدرّج</h3>
+          <p>أداة زجاجية لقياس حجم السوائل. الوحدة: <span class="teal">سم³ أو مل</span></p>
+        </div>
+        <div class="def-card" style="text-align:center;">
+          <div style="font-size:3rem;margin-bottom:12px;">⚖️</div>
+          <h3>الميزان الحساس</h3>
+          <p>جهاز إلكتروني لقياس الكتلة بدقة. الوحدة: <span class="teal">غرام (غ)</span></p>
+        </div>
+        <div class="def-card" style="text-align:center;">
+          <div style="font-size:3rem;margin-bottom:12px;">🪨</div>
+          <h3>الحجر الصغير</h3>
+          <p>نموذج للمادة الصلبة، سنقيس كتلته وحجمه في التجربة.</p>
+        </div>
+      </div>
+
+      <div class="conclusion-box" style="margin-top:20px;">
+        <h4>💡 طريقة النزوح (قياس حجم الجسم الصلب)</h4>
+        <p>
+          لقياس حجم جسم صلب غير منتظم الشكل كالحجر، نضعه في مخبار يحتوي على ماء ونلاحظ كمية الماء التي ارتفعت (نزحت). 
+          <span class="highlight">حجم الحجر = قراءة الماء بعد وضع الحجر − قراءة الماء قبل وضع الحجر</span>
+        </p>
+      </div>
+    </section>
+
+  </div><!-- /tab-theory -->
+
+  <!-- ===== TAB 2: LAB ===== -->
+  <div id="tab-lab" class="tab-content">
+    <section>
+      <div class="section-title"><span class="icon">🔬</span> المختبر الافتراضي</div>
+      <div class="section-sub">نفّذ خطوات التجربة بنفسك!</div>
+
+      <div class="lab-wrapper">
+        <div class="lab-title">⚗️ تجربة: قياس كتلة الحجر وحجمه</div>
+        <div class="lab-subtitle">اتبع الخطوات بالترتيب لإتمام التجربة</div>
+
+        <!-- Step nav -->
+        <div class="steps-nav">
+          <button class="step-btn active" id="sbtn-1" onclick="goStep(1)">الخطوة ١</button>
+          <button class="step-btn" id="sbtn-2" onclick="goStep(2)">الخطوة ٢</button>
+          <button class="step-btn" id="sbtn-3" onclick="goStep(3)">الخطوة ٣</button>
+          <button class="step-btn" id="sbtn-4" onclick="goStep(4)">📊 النتائج</button>
+        </div>
+
+        <!-- STEP 1: Prepare -->
+        <div class="step-panel active" id="step-1">
+          <div class="lab-scene">
+            <!-- stone -->
+            <div class="stone-wrap">
+              <div class="stone-standalone" id="stone1"></div>
+              <div class="cylinder-label">الحجر الصغير</div>
+            </div>
+            <!-- scale -->
+            <div class="scale-wrap">
+              <div class="scale-3d">
+                <div class="scale-platform">
+                  <div class="stone-on-scale" id="stone-on-scale"></div>
+                </div>
+                <div class="scale-body">
+                  <div class="scale-display" id="scale-display">0.0</div>
+                </div>
+                <div class="scale-base"></div>
+              </div>
+              <div class="cylinder-label">الميزان الحساس</div>
+            </div>
+            <!-- cylinder -->
+            <div class="cylinder-wrap">
+              <div class="cylinder" id="cylinder1">
+                <div class="cylinder-ticks">
+                  <div class="tick"><div class="tick-line"></div>100</div>
+                  <div class="tick"><div class="tick-line"></div>200</div>
+                  <div class="tick"><div class="tick-line"></div>300</div>
+                  <div class="tick"><div class="tick-line"></div>400</div>
+                  <div class="tick"><div class="tick-line"></div>500</div>
+                </div>
+                <div class="water-fill" id="water-fill-1" style="height:0%;"></div>
+              </div>
+              <div class="cylinder-base"></div>
+              <div class="cylinder-label">المخبار المدرّج</div>
+            </div>
+          </div>
+
+          <div class="instruction-box">
+            <div class="inst-icon">📋</div>
+            <div class="inst-text">
+              <strong>الخطوة الأولى:</strong> جهّز أدوات التجربة — الحجر الصغير، الميزان الحساس، والمخبار المدرّج. 
+              انقر الزر أدناه لتبدأ!
+            </div>
+          </div>
+          <button class="action-btn" onclick="step1Action()">▶ ابدأ التجربة</button>
+        </div>
+
+        <!-- STEP 2: Weigh stone -->
+        <div class="step-panel" id="step-2">
+          <div class="lab-scene">
+            <div class="scale-wrap">
+              <div class="scale-3d">
+                <div class="scale-platform" style="position:relative;">
+                  <div class="stone-on-scale" id="stone-on-scale-2" style="display:block;"></div>
+                </div>
+                <div class="scale-body">
+                  <div class="scale-display" id="scale-display-2">0.0</div>
+                </div>
+                <div class="scale-base"></div>
+              </div>
+              <div class="cylinder-label">الميزان الحساس</div>
+            </div>
+          </div>
+          <div class="instruction-box">
+            <div class="inst-icon">⚖️</div>
+            <div class="inst-text">
+              <strong>الخطوة الثانية:</strong> ضع الحجر فوق الميزان الحساس، 
+              ثم انقر <strong>"قِس الكتلة"</strong> لتسجيل قراءة الميزان.
+            </div>
+          </div>
+          <button class="action-btn" id="weigh-btn" onclick="weighStone()">⚖️ قِس الكتلة</button>
+          <div id="mass-result" style="display:none;">
+            <div class="result-row">
+              <span class="result-label">⚖️ كتلة الحجر:</span>
+              <span class="result-value" id="mass-val">--</span>
+              <span class="result-unit">غرام</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 3: Volume -->
+        <div class="step-panel" id="step-3">
+          <div class="lab-scene">
+            <div class="cylinder-wrap">
+              <div class="cylinder" id="cylinder3">
+                <div class="cylinder-ticks">
+                  <div class="tick"><div class="tick-line"></div>100</div>
+                  <div class="tick"><div class="tick-line"></div>200</div>
+                  <div class="tick"><div class="tick-line"></div>300</div>
+                  <div class="tick"><div class="tick-line"></div>400</div>
+                  <div class="tick"><div class="tick-line"></div>500</div>
+                </div>
+                <div class="water-fill" id="water-fill-3"></div>
+                <div class="stone-in-water" id="stone-in-water-3"></div>
+              </div>
+              <div class="cylinder-base"></div>
+              <div class="cylinder-label">المخبار المدرّج</div>
+            </div>
+          </div>
+          <div class="instruction-box">
+            <div class="inst-icon">💧</div>
+            <div class="inst-text">
+              <strong>الخطوة الثالثة:</strong>
+              أولاً انقر <strong>"صب الماء"</strong> لملء المخبار بـ 200 سم³ من الماء.
+              ثم انقر <strong>"أدخل الحجر"</strong> لتسجيل الحجم الجديد.
+            </div>
+          </div>
+          <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:20px;">
+            <button class="action-btn" id="water-btn" onclick="pourWater()" style="margin:0;">💧 صب الماء (200 سم³)</button>
+            <button class="action-btn" id="stone-btn" onclick="addStone()" style="margin:0;background:linear-gradient(90deg,#7c3aed,#a855f7);" disabled>🪨 أدخل الحجر</button>
+          </div>
+          <div id="volume-results" style="margin-top:16px;"></div>
+        </div>
+
+        <!-- STEP 4: Results -->
+        <div class="step-panel" id="step-4">
+          <div style="text-align:center;margin-bottom:24px;">
+            <div style="font-size:4rem;margin-bottom:10px;">🏆</div>
+            <div style="font-size:1.5rem;font-weight:900;color:var(--gold);">نتائج التجربة</div>
+          </div>
+
+          <div id="final-results">
+            <div class="result-row">
+              <span class="result-label">⚖️ كتلة الحجر:</span>
+              <span class="result-value" id="final-mass">--</span>
+              <span class="result-unit">غرام</span>
+            </div>
+            <div class="result-row">
+              <span class="result-label">💧 حجم الماء الأول:</span>
+              <span class="result-value">200</span>
+              <span class="result-unit">سم³</span>
+            </div>
+            <div class="result-row">
+              <span class="result-label">💧 حجم الماء بعد الحجر:</span>
+              <span class="result-value" id="final-water2">--</span>
+              <span class="result-unit">سم³</span>
+            </div>
+            <div class="result-row" style="border-color:var(--teal);background:rgba(6,182,212,0.1);">
+              <span class="result-label">📦 <strong>حجم الحجر:</strong></span>
+              <span class="result-value" id="final-volume" style="color:var(--gold);font-size:1.5rem;">--</span>
+              <span class="result-unit">سم³</span>
+            </div>
+          </div>
+
+          <div class="conclusion-box">
+            <h4>🔍 الاستنتاجات</h4>
+            <p>
+              ١. الحجر <span class="highlight">مادة</span> لأنه يشغل حيزاً من الفراغ وله كتلة.<br>
+              ٢. الحجم يُقاس بطريقة <span class="highlight">النزوح</span>: الماء الذي ارتفع = حجم الحجر.<br>
+              ٣. الكتلة تُقاس بالميزان الحساس بوحدة <span class="highlight">الغرام</span>.<br>
+              ٤. المادة الصلبة (الحجر) لها <span class="highlight">شكل وحجم ثابتان</span>.<br>
+              ٥. الماء مادة سائلة لها حجم ثابت لكن يأخذ <span class="highlight">شكل إنائه</span>.
+            </p>
+          </div>
+
+          <button class="action-btn" onclick="resetLab()" style="background:linear-gradient(90deg,#7c3aed,#a855f7);">🔄 أعِد التجربة</button>
+        </div>
+
+      </div><!-- /lab-wrapper -->
+    </section>
+  </div><!-- /tab-lab -->
+
+  <!-- ===== TAB 3: QUIZ ===== -->
+  <div id="tab-quiz" class="tab-content">
+    <section>
+      <div class="section-title"><span class="icon">🎯</span> اختبر نفسك</div>
+      <div class="section-sub">أجب على الأسئلة واحصل على نقاطك</div>
+
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
+        <div class="score-badge">⭐ النقاط: <span id="score">0</span> / <span id="total-q">5</span></div>
+        <div class="score-badge" style="border-color:var(--teal);color:var(--teal);">❓ السؤال: <span id="q-num">1</span> / <span id="total-q2">5</span></div>
+      </div>
+      <div class="progress-bar-wrap"><div class="progress-bar" id="quiz-progress" style="width:0%;"></div></div>
+
+      <div id="quiz-area"></div>
+
+      <div id="quiz-done" style="display:none;text-align:center;padding:40px;">
+        <div style="font-size:5rem;margin-bottom:16px;" id="trophy-emoji">🏆</div>
+        <div style="font-size:1.8rem;font-weight:900;color:var(--gold);margin-bottom:10px;" id="final-score-msg"></div>
+        <div style="color:var(--muted);margin-bottom:24px;" id="final-grade"></div>
+        <button class="action-btn" onclick="restartQuiz()">🔄 أعِد الاختبار</button>
+      </div>
+    </section>
+  </div>
+
+</div><!-- /container -->
+
+<footer>
+  🔬 مختبر المادة الافتراضي · العلوم والحياة · الصف الخامس · فلسطين<br>
+  <span style="font-size:0.8rem;opacity:0.6;">صُمِّم لمساعدة الطلاب على التعلم التفاعلي</span>
+</footer>
+
+<script>
+// ──────────── STATE ────────────
+let currentStep = 1;
+let massValue = 0;
+let volume1 = 200;
+let volume2 = 0;
+let waterPouredStep3 = false;
+let stoneAddedStep3 = false;
+let stepsCompleted = { 1: false, 2: false, 3: false };
+
+// ──────────── TABS ────────────
+function showTab(id) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  event.target.classList.add('active');
+  if (id === 'quiz') initQuiz();
+}
+
+// ──────────── STATES OF MATTER ────────────
+const stateInfo = {
+  solid: { icon: '🧊', text: '<strong>المادة الصلبة:</strong> الجزيئات قريبة جداً ومتراصة، لذلك تحافظ على شكلها وحجمها. مثال: الحجر، الخشب، الجليد.' },
+  liquid: { icon: '💧', text: '<strong>المادة السائلة:</strong> الجزيئات قريبة لكنها تتحرك. لها حجم ثابت لكن تأخذ شكل الإناء. مثال: الماء، الزيت، العصير.' },
+  gas: { icon: '💨', text: '<strong>المادة الغازية:</strong> الجزيئات تتحرك بسرعة وبحرية. ليس لها شكل أو حجم ثابتان. مثال: الهواء، بخار الماء.' }
+};
+
+function selectState(state, el) {
+  document.querySelectorAll('.state-card').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  const info = stateInfo[state];
+  document.getElementById('state-info').innerHTML = `<div class="inst-icon">${info.icon}</div><div class="inst-text">${info.text}</div>`;
+}
+
+// ──────────── PARTICLES ────────────
+function createParticles(containerId, type) {
+  const c = document.getElementById(containerId);
+  if (!c) return;
+  c.innerHTML = '';
+  const colors = { solid: '#60a5fa', liquid: '#22d3ee', gas: '#86efac' };
+  const count = type === 'solid' ? 16 : type === 'liquid' ? 12 : 8;
+  const spread = type === 'solid' ? 5 : type === 'liquid' ? 20 : 60;
+  for (let i = 0; i < count; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = type === 'solid' ? 8 : type === 'liquid' ? 9 : 11;
+    const x = 5 + Math.random() * 90;
+    const y = 10 + Math.random() * 80;
+    const dur = 2 + Math.random() * 3;
+    const delay = -(Math.random() * dur);
+    const dx = (Math.random() - 0.5) * spread;
+    const dy = (Math.random() - 0.5) * spread;
+    p.style.cssText = `
+      width:${size}px;height:${size}px;
+      background:${colors[type]};
+      left:${x}%;top:${y}%;
+      --dur:${dur}s;--delay:${delay}s;
+      --dx1:${dx}px;--dy1:${dy}px;
+      --dx2:${-dx*0.7}px;--dy2:${dy*0.5}px;
+      --dx3:${dx*0.4}px;--dy3:${-dy*0.8}px;
+      opacity:${type === 'gas' ? 0.5 : 0.9};
+    `;
+    c.appendChild(p);
+  }
+}
+
+createParticles('p-solid', 'solid');
+createParticles('p-liquid', 'liquid');
+createParticles('p-gas', 'gas');
+
+// ──────────── LAB STEPS ────────────
+function goStep(n) {
+  if (n > 1 && !stepsCompleted[n - 1]) {
+    showNotif('⚠️ أكمل الخطوة السابقة أولاً!', '#e67e22');
+    return;
+  }
+  currentStep = n;
+  document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.step-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('step-' + n).classList.add('active');
+  document.getElementById('sbtn-' + n).classList.add('active');
+}
+
+function step1Action() {
+  stepsCompleted[1] = true;
+  showNotif('✅ تم تجهيز الأدوات! انتقل للخطوة الثانية');
+  setTimeout(() => goStep(2), 800);
+}
+
+function weighStone() {
+  const btn = document.getElementById('weigh-btn');
+  btn.disabled = true;
+  btn.textContent = '⏳ جاري القياس...';
+
+  // Animate scale display
+  massValue = Math.floor(Math.random() * 30) + 35; // 35-65g
+  let count = 0;
+  const interval = setInterval(() => {
+    const random = (Math.random() * massValue * 1.5).toFixed(1);
+    document.getElementById('scale-display-2').textContent = random;
+    count++;
+    if (count > 15) {
+      clearInterval(interval);
+      document.getElementById('scale-display-2').textContent = massValue.toFixed(1);
+      document.getElementById('mass-result').style.display = 'block';
+      document.getElementById('mass-val').textContent = massValue.toFixed(1);
+      document.getElementById('final-mass').textContent = massValue.toFixed(1);
+      btn.textContent = '✅ تم القياس';
+      stepsCompleted[2] = true;
+      showNotif('✅ تم قياس الكتلة بنجاح!');
+      setTimeout(() => {
+        document.getElementById('sbtn-3').classList.remove('active');
+      }, 100);
+    }
+  }, 80);
+}
+
+function pourWater() {
+  if (waterPouredStep3) return;
+  waterPouredStep3 = true;
+  const fill = document.getElementById('water-fill-3');
+  // 200 sml = 40% of 500 cylinder
+  fill.style.height = '40%';
+  fill.innerHTML = '<div class="water-surface"></div>';
+  document.getElementById('water-btn').textContent = '✅ تم صب الماء';
+  document.getElementById('water-btn').disabled = true;
+  document.getElementById('stone-btn').disabled = false;
+  showNotif('💧 تم صب 200 سم³ من الماء');
+}
+
+function addStone() {
+  if (!waterPouredStep3 || stoneAddedStep3) return;
+  stoneAddedStep3 = true;
+  const fill = document.getElementById('water-fill-3');
+  volume2 = volume1 + Math.floor(Math.random() * 15) + 10; // +10 to +25
+  const newPct = (volume2 / 500) * 100;
+  fill.style.height = newPct + '%';
+  document.getElementById('stone-in-water-3').style.display = 'block';
+
+  setTimeout(() => {
+    const stoneVol = volume2 - volume1;
+    document.getElementById('volume-results').innerHTML = `
+      <div class="result-row">
+        <span class="result-label">💧 قبل الحجر:</span>
+        <span class="result-value">200</span>
+        <span class="result-unit">سم³</span>
+      </div>
+      <div class="result-row">
+        <span class="result-label">💧 بعد الحجر:</span>
+        <span class="result-value">${volume2}</span>
+        <span class="result-unit">سم³</span>
+      </div>
+      <div class="result-row" style="border-color:var(--gold);background:rgba(245,166,35,0.1);">
+        <span class="result-label">📦 حجم الحجر:</span>
+        <span class="result-value" style="color:var(--gold);font-size:1.4rem;">${stoneVol}</span>
+        <span class="result-unit">سم³</span>
+      </div>
+    `;
+    document.getElementById('final-water2').textContent = volume2;
+    document.getElementById('final-volume').textContent = stoneVol;
+    document.getElementById('stone-btn').textContent = '✅ تم إدخال الحجر';
+    document.getElementById('stone-btn').disabled = true;
+    stepsCompleted[3] = true;
+    showNotif('🎉 ممتاز! تم قياس حجم الحجر');
+    setTimeout(() => goStep(4), 1200);
+  }, 800);
+}
+
+function resetLab() {
+  currentStep = 1;
+  massValue = 0; volume2 = 0;
+  waterPouredStep3 = false; stoneAddedStep3 = false;
+  stepsCompleted = { 1: false, 2: false, 3: false };
+  document.getElementById('scale-display-2').textContent = '0.0';
+  document.getElementById('mass-result').style.display = 'none';
+  document.getElementById('weigh-btn').disabled = false;
+  document.getElementById('weigh-btn').textContent = '⚖️ قِس الكتلة';
+  document.getElementById('water-fill-3').style.height = '0%';
+  document.getElementById('stone-in-water-3').style.display = 'none';
+  document.getElementById('volume-results').innerHTML = '';
+  document.getElementById('water-btn').textContent = '💧 صب الماء (200 سم³)';
+  document.getElementById('water-btn').disabled = false;
+  document.getElementById('stone-btn').disabled = true;
+  document.getElementById('stone-btn').textContent = '🪨 أدخل الحجر';
+  document.getElementById('final-mass').textContent = '--';
+  document.getElementById('final-water2').textContent = '--';
+  document.getElementById('final-volume').textContent = '--';
+  goStep(1);
+}
+
+// ──────────── QUIZ ────────────
+const questions = [
+  {
+    q: 'ما تعريف المادة؟',
+    opts: ['كل شيء يشغل حيزاً من الفراغ وله كتلة', 'كل شيء يمكن رؤيته بالعين', 'كل شيء يمكن لمسه فقط', 'الأشياء التي لها لون فقط'],
+    correct: 0,
+    exp: '✅ المادة هي كل شيء يشغل حيزاً من الفراغ وله كتلة، حتى الغازات التي لا نراها!'
+  },
+  {
+    q: 'ما الأداة المستخدمة لقياس حجم جسم صلب غير منتظم الشكل؟',
+    opts: ['الميزان الحساس', 'المسطرة', 'المخبار المدرّج وطريقة النزوح', 'الترمومتر'],
+    correct: 2,
+    exp: '✅ نستخدم المخبار المدرّج وطريقة النزوح: الزيادة في مستوى الماء = حجم الجسم.'
+  },
+  {
+    q: 'حجر وُضع في مخبار يحتوي على 200 سم³ من الماء، فأصبح الحجم 215 سم³. ما حجم الحجر؟',
+    opts: ['15 سم³', '200 سم³', '215 سم³', '415 سم³'],
+    correct: 0,
+    exp: '✅ حجم الحجر = 215 - 200 = 15 سم³. هذا ما يسمى بمبدأ النزوح!'
+  },
+  {
+    q: 'أي من الحالات الآتية تصف المادة السائلة؟',
+    opts: ['لها شكل وحجم ثابتان', 'ليس لها شكل أو حجم ثابتان', 'لها حجم ثابت وتأخذ شكل الإناء', 'تتمدد لتملأ أي حجم'],
+    correct: 2,
+    exp: '✅ السائل له حجم ثابت لكنه يأخذ شكل الإناء الذي يوجد فيه.'
+  },
+  {
+    q: 'بأي وحدة نقيس الكتلة في المختبر؟',
+    opts: ['المتر', 'الغرام', 'الليتر', 'النيوتن'],
+    correct: 1,
+    exp: '✅ نقيس الكتلة بالغرام (غ) أو الكيلوغرام (كغ) باستخدام الميزان الحساس.'
+  }
+];
+
+let currentQ = 0;
+let score = 0;
+let quizInitialized = false;
+
+function initQuiz() {
+  if (quizInitialized) return;
+  quizInitialized = true;
+  currentQ = 0; score = 0;
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const qa = document.getElementById('quiz-area');
+  const done = document.getElementById('quiz-done');
+  if (currentQ >= questions.length) {
+    qa.style.display = 'none';
+    done.style.display = 'block';
+    const pct = Math.round((score / questions.length) * 100);
+    document.getElementById('final-score-msg').textContent = `النتيجة: ${score} / ${questions.length} (${pct}%)`;
+    let grade, emoji;
+    if (pct >= 80) { grade = '🌟 ممتاز! أنت طالب متفوق!'; emoji = '🏆'; }
+    else if (pct >= 60) { grade = '👍 جيد! يمكنك التحسن أكثر'; emoji = '⭐'; }
+    else { grade = '💪 راجع الدرس وحاول مجدداً'; emoji = '📚'; }
+    document.getElementById('trophy-emoji').textContent = emoji;
+    document.getElementById('final-grade').textContent = grade;
+    return;
+  }
+
+  const q = questions[currentQ];
+  document.getElementById('q-num').textContent = currentQ + 1;
+  document.getElementById('quiz-progress').style.width = ((currentQ / questions.length) * 100) + '%';
+
+  qa.innerHTML = `
+    <div class="quiz-card">
+      <div class="quiz-q">❓ ${q.q}</div>
+      <div class="quiz-options">
+        ${q.opts.map((o, i) => `<button class="quiz-opt" onclick="answerQ(${i})">${o}</button>`).join('')}
+      </div>
+      <div class="quiz-feedback" id="q-feedback"></div>
+    </div>
+  `;
+}
+
+function answerQ(idx) {
+  const q = questions[currentQ];
+  const opts = document.querySelectorAll('.quiz-opt');
+  opts.forEach(o => o.disabled = true);
+
+  const fb = document.getElementById('q-feedback');
+  if (idx === q.correct) {
+    opts[idx].classList.add('correct');
+    fb.textContent = q.exp;
+    fb.className = 'quiz-feedback correct show';
+    score++;
+    document.getElementById('score').textContent = score;
+    showNotif('✅ إجابة صحيحة! +1 نقطة');
+  } else {
+    opts[idx].classList.add('wrong');
+    opts[q.correct].classList.add('correct');
+    fb.textContent = '❌ خطأ. ' + q.exp;
+    fb.className = 'quiz-feedback wrong show';
+    showNotif('❌ حاول مرة أخرى في المرة القادمة', '#ef4444');
+  }
+
+  setTimeout(() => {
+    currentQ++;
+    document.getElementById('quiz-progress').style.width = ((currentQ / questions.length) * 100) + '%';
+    renderQuestion();
+  }, 2200);
+}
+
+function restartQuiz() {
+  currentQ = 0; score = 0;
+  document.getElementById('score').textContent = 0;
+  document.getElementById('q-num').textContent = 1;
+  document.getElementById('quiz-done').style.display = 'none';
+  document.getElementById('quiz-area').style.display = 'block';
+  renderQuestion();
+}
+
+// ──────────── NOTIFICATION ────────────
+let notifTimer;
+function showNotif(msg, color = '') {
+  const el = document.getElementById('notif');
+  el.textContent = msg;
+  if (color) el.style.background = color;
+  else el.style.background = 'linear-gradient(90deg, var(--teal-dark), var(--teal))';
+  el.classList.add('show');
+  clearTimeout(notifTimer);
+  notifTimer = setTimeout(() => el.classList.remove('show'), 2800);
+}
+</script>
+</body>
+</html>

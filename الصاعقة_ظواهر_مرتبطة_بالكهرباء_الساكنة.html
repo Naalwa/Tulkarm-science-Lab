@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>الصاعقة | ظواهر مرتبطة بالكهرباء الساكنة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700;800;900&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sky-deep:#0c1330;
+    --sky-mid:#1b2a52;
+    --cloud-body:#5c6f92;
+    --cloud-light:#8fa0c2;
+    --cloud-dark:#3a4665;
+    --charge-neg:#3fa9f5;
+    --charge-neg-glow:#8fd4ff;
+    --charge-pos:#ffc93c;
+    --charge-pos-glow:#ffe28a;
+    --bolt-core:#fff6d8;
+    --bolt-edge:#ffd23f;
+    --leaf-1:#3f7d4a;
+    --leaf-2:#2c5c37;
+    --leaf-3:#5a9a63;
+    --trunk:#6b4a30;
+    --card:#f6f3ea;
+    --card-2:#ffffff;
+    --ink:#1c2438;
+    --ink-soft:#4a5169;
+    --amber-box:#fbe6a8;
+    --amber-box-edge:#e0a921;
+    --danger:#c65033;
+    --safe:#2c7a5b;
+    --radius:22px;
+    --shadow-lg: 0 24px 60px rgba(6,10,26,.45);
+    --shadow-sm: 0 8px 20px rgba(6,10,26,.25);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:'Tajawal',sans-serif;
+    background:var(--sky-deep);
+    color:var(--ink);
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.display{font-family:'Cairo',sans-serif;}
+  ::selection{background:var(--charge-pos);color:var(--ink);}
+
+  a{color:inherit;text-decoration:none;}
+  button{font-family:'Cairo',sans-serif;cursor:pointer;border:none;}
+
+  /* ---------- NAV ---------- */
+  .nav{
+    position:sticky;top:0;z-index:50;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:14px clamp(16px,4vw,40px);
+    background:rgba(12,19,48,.82);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid rgba(255,255,255,.08);
+  }
+  .nav .brand{display:flex;align-items:center;gap:10px;color:#fff;font-weight:800;font-size:1.05rem;}
+  .nav .brand span.bolt-mini{font-size:1.3rem;filter:drop-shadow(0 0 6px var(--charge-pos));}
+  .nav ul{list-style:none;display:flex;gap:4px;margin:0;padding:0;flex-wrap:wrap;}
+  .nav ul li a{
+    color:#cfd7ee;font-size:.88rem;font-weight:700;padding:8px 12px;border-radius:100px;
+    transition:.25s;
+  }
+  .nav ul li a:hover, .nav ul li a:focus-visible{background:rgba(255,255,255,.1);color:#fff;outline:2px solid var(--charge-pos);}
+  @media(max-width:760px){ .nav ul{display:none;} }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    min-height:92vh;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;
+    padding:60px 18px 90px;
+    background:
+      radial-gradient(ellipse at 50% -10%, #29396b 0%, transparent 55%),
+      linear-gradient(180deg, var(--sky-deep) 0%, var(--sky-mid) 60%, #223864 100%);
+    overflow:hidden;
+  }
+  .stars{position:absolute;inset:0;background-image:
+      radial-gradient(2px 2px at 20% 30%, #fff, transparent),
+      radial-gradient(1.5px 1.5px at 70% 20%, #fff, transparent),
+      radial-gradient(1.5px 1.5px at 40% 70%, #fff, transparent),
+      radial-gradient(2px 2px at 85% 55%, #fff, transparent),
+      radial-gradient(1.5px 1.5px at 10% 80%, #fff, transparent),
+      radial-gradient(1.5px 1.5px at 60% 85%, #fff, transparent);
+    opacity:.5;
+  }
+  .hero-eyebrow{
+    color:var(--charge-pos-glow);font-weight:700;letter-spacing:.5px;font-size:.95rem;
+    background:rgba(255,201,60,.12);border:1px solid rgba(255,201,60,.4);
+    padding:6px 18px;border-radius:100px;margin-bottom:22px;position:relative;z-index:2;
+  }
+  .hero h1{
+    color:#fff;font-size:clamp(2.1rem,6vw,3.6rem);font-weight:900;line-height:1.25;
+    margin:0 0 16px;position:relative;z-index:2;text-shadow:0 10px 40px rgba(0,0,0,.4);
+  }
+  .hero h1 em{font-style:normal;color:var(--charge-pos);}
+  .hero p.lead{
+    color:#c3cce6;font-size:clamp(1rem,2vw,1.2rem);max-width:600px;margin:0 auto 34px;
+    position:relative;z-index:2;line-height:1.9;
+  }
+  .hero-ctas{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;position:relative;z-index:2;}
+  .btn{
+    font-weight:800;font-size:1rem;padding:15px 30px;border-radius:16px;
+    transition:transform .18s ease, box-shadow .18s ease;
+    display:inline-flex;align-items:center;gap:8px;
+  }
+  .btn-primary{
+    background:linear-gradient(180deg,#ffd968,var(--charge-pos));color:#2b1c00;
+    box-shadow:0 10px 0 var(--amber-box-edge), 0 16px 30px rgba(255,201,60,.25);
+  }
+  .btn-primary:hover{transform:translateY(-3px);}
+  .btn-primary:active{transform:translateY(4px);box-shadow:0 6px 0 var(--amber-box-edge);}
+  .btn-ghost{
+    background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.35)!important;
+  }
+  .btn-ghost:hover{background:rgba(255,255,255,.16);}
+
+  .hero-scene{position:relative;z-index:2;margin-top:52px;width:min(560px,92vw);}
+  .hero-scene svg{width:100%;height:auto;filter:drop-shadow(0 30px 40px rgba(0,0,0,.5));}
+
+  /* ---------- SECTIONS ---------- */
+  main{background:linear-gradient(180deg,#223864 0%, #eef0e8 6%, #eef0e8 100%);}
+  section{padding:70px clamp(16px,5vw,60px);max-width:1180px;margin:0 auto;}
+  .section-head{max-width:720px;margin:0 auto 44px;text-align:center;}
+  .section-head .kicker{
+    display:inline-block;font-weight:800;color:var(--danger);background:#fbe3da;
+    padding:5px 16px;border-radius:100px;font-size:.85rem;margin-bottom:14px;
+  }
+  .section-head h2{font-size:clamp(1.6rem,4vw,2.3rem);margin:0 0 12px;color:var(--ink);}
+  .section-head p{color:var(--ink-soft);line-height:1.9;font-size:1.02rem;margin:0;}
+
+  /* lesson cards */
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  @media(max-width:840px){.grid3{grid-template-columns:1fr;}}
+  .lcard{
+    background:var(--card-2);border-radius:var(--radius);padding:26px 22px;
+    box-shadow:var(--shadow-sm);border:1px solid #e7e2d3;
+    transition:transform .25s ease, box-shadow .25s ease;
+  }
+  .lcard:hover{transform:translateY(-6px) rotateX(2deg);box-shadow:var(--shadow-lg);}
+  .lcard .icon{
+    width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;
+    font-size:1.6rem;margin-bottom:16px;
+  }
+  .lcard h3{margin:0 0 10px;font-size:1.15rem;}
+  .lcard p{margin:0;color:var(--ink-soft);line-height:1.85;font-size:.95rem;}
+  .icon.i1{background:#e2ecff;color:#2f5dcf;}
+  .icon.i2{background:#fff0d6;color:#c47f10;}
+  .icon.i3{background:#fde3e0;color:var(--danger);}
+
+  .callout{
+    display:flex;gap:16px;align-items:flex-start;background:#eef2ff;border:1px solid #d3ddff;
+    border-radius:18px;padding:20px 22px;margin-top:30px;
+  }
+  .callout .emoji{font-size:1.6rem;}
+  .callout p{margin:0;color:#31406e;line-height:1.9;font-size:.96rem;}
+
+  /* ---------- LAB ---------- */
+  .lab-wrap{
+    background:linear-gradient(180deg,#101a3e,#1c2c58);
+    border-radius:28px;padding:clamp(18px,4vw,40px);box-shadow:var(--shadow-lg);
+    border:1px solid rgba(255,255,255,.08);
+  }
+  .lab-steps{display:flex;gap:10px;justify-content:center;margin-bottom:26px;flex-wrap:wrap;}
+  .step-pill{
+    display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.07);color:#aeb9dc;
+    padding:9px 16px;border-radius:100px;font-weight:700;font-size:.85rem;border:1px solid rgba(255,255,255,.1);
+    transition:.3s;
+  }
+  .step-pill .dot{width:9px;height:9px;border-radius:50%;background:#4a5480;}
+  .step-pill.active{background:rgba(255,201,60,.18);color:#ffe28a;border-color:rgba(255,201,60,.5);}
+  .step-pill.active .dot{background:var(--charge-pos);box-shadow:0 0 8px var(--charge-pos);}
+  .step-pill.done{background:rgba(63,169,245,.15);color:#bfe3ff;}
+  .step-pill.done .dot{background:var(--charge-neg);}
+
+  .scene-frame{
+    position:relative;border-radius:22px;overflow:hidden;
+    background:linear-gradient(180deg,#2a3c72 0%, #4a6191 45%, #7f9cb8 70%, #a9c2b0 100%);
+    box-shadow:inset 0 0 60px rgba(0,0,0,.25);
+  }
+  .scene-frame svg{display:block;width:100%;height:auto;}
+  #flash-overlay{
+    position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;transition:opacity .08s;
+  }
+
+  .lab-controls{
+    display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:26px;
+  }
+  .lab-btn{
+    background:linear-gradient(180deg,#2c3d70,#1a2750);color:#fff;font-weight:800;
+    padding:14px 22px;border-radius:14px;font-size:.95rem;border:1px solid rgba(255,255,255,.12);
+    box-shadow:0 6px 0 #0c142f, var(--shadow-sm);
+    transition:transform .15s, box-shadow .15s, opacity .2s;
+    display:flex;align-items:center;gap:8px;
+  }
+  .lab-btn:not(:disabled):hover{transform:translateY(-2px);}
+  .lab-btn:not(:disabled):active{transform:translateY(4px);box-shadow:0 2px 0 #0c142f;}
+  .lab-btn:disabled{opacity:.35;cursor:not-allowed;}
+  .lab-btn.charge{background:linear-gradient(180deg,#4fb6ff,#1c86d6);box-shadow:0 6px 0 #0f5891,var(--shadow-sm);}
+  .lab-btn.fire{background:linear-gradient(180deg,#ffdb70,#f5a623);color:#2b1c00;box-shadow:0 6px 0 #a86c0c,var(--shadow-sm);}
+  .lab-btn.reset{background:linear-gradient(180deg,#5a6690,#333d63);}
+
+  .lab-note{
+    text-align:center;color:#cfd7ee;font-size:.92rem;margin-top:16px;min-height:1.4em;line-height:1.8;
+  }
+
+  /* charge label chips popping on canvas — handled via SVG text, not html */
+
+  /* ---------- QUESTIONS ---------- */
+  .qcard{
+    background:var(--card-2);border-radius:20px;padding:24px;box-shadow:var(--shadow-sm);
+    border:1px solid #e7e2d3;margin-bottom:18px;
+  }
+  .qcard .qnum{
+    display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;
+    border-radius:9px;background:var(--sky-mid);color:#fff;font-weight:800;font-size:.9rem;margin-left:10px;
+  }
+  .qcard label{display:flex;align-items:center;font-weight:800;font-size:1.02rem;margin-bottom:12px;}
+  .qcard textarea, .qcard input[type=text]{
+    width:100%;border:2px solid #e2ddc9;border-radius:12px;padding:12px 14px;font-family:'Tajawal',sans-serif;
+    font-size:.98rem;resize:vertical;min-height:48px;transition:border-color .2s;background:#fbfaf5;
+  }
+  .qcard textarea:focus, .qcard input[type=text]:focus{outline:none;border-color:var(--charge-neg);}
+  .qcheck{
+    margin-top:10px;background:var(--sky-mid);color:#fff;padding:9px 18px;border-radius:10px;font-weight:800;font-size:.85rem;
+  }
+  .qfeedback{margin-top:12px;padding:12px 14px;border-radius:12px;font-size:.9rem;line-height:1.8;display:none;}
+  .qfeedback.show{display:block;}
+  .qfeedback.good{background:#e4f5ec;color:var(--safe);border:1px solid #b8e3cb;}
+  .qfeedback.hint{background:#fef3e0;color:#a3690c;border:1px solid #f4dba8;}
+
+  /* ---------- CONCLUSION BOX ---------- */
+  .amber-box{
+    background:linear-gradient(180deg,var(--amber-box),#f6d883);
+    border:2px solid var(--amber-box-edge);border-radius:20px;padding:26px 28px;
+    box-shadow:var(--shadow-sm); position:relative;
+  }
+  .amber-box:before{
+    content:"⚡";position:absolute;top:-18px;right:24px;font-size:2rem;
+    background:var(--charge-pos);width:44px;height:44px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-sm);
+  }
+  .amber-box h3{margin:0 0 8px;font-size:1.15rem;color:#5c3d05;}
+  .amber-box p{margin:0;color:#4a3406;line-height:1.95;font-size:1.02rem;}
+
+  /* ---------- SAFETY ---------- */
+  .safety-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:10px;}
+  @media(max-width:700px){.safety-grid{grid-template-columns:1fr;}}
+  .safety-item{
+    display:flex;gap:14px;align-items:flex-start;background:#fff;border-radius:16px;padding:18px;
+    box-shadow:var(--shadow-sm);border:1px solid #e7e2d3;
+  }
+  .safety-item .mark{
+    flex:0 0 auto;width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;
+    font-weight:900;color:#fff;font-size:1.05rem;
+  }
+  .safety-item.do .mark{background:var(--safe);}
+  .safety-item.dont .mark{background:var(--danger);}
+  .safety-item p{margin:0;color:var(--ink-soft);line-height:1.8;font-size:.93rem;}
+
+  /* ---------- QUIZ ---------- */
+  .quiz-wrap{background:linear-gradient(180deg,#101a3e,#1c2c58);border-radius:28px;padding:clamp(18px,4vw,40px);color:#fff;}
+  .quiz-q{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:20px;margin-bottom:16px;}
+  .quiz-q p.qtext{font-weight:800;margin:0 0 14px;font-size:1.02rem;}
+  .opt{
+    display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);
+    padding:11px 14px;border-radius:12px;margin-bottom:8px;cursor:pointer;transition:.2s;font-size:.93rem;
+  }
+  .opt:hover{background:rgba(255,255,255,.12);}
+  .opt input{accent-color:var(--charge-pos);}
+  .opt.correct{background:rgba(63,169,80,.25);border-color:#5fc27f;}
+  .opt.wrong{background:rgba(198,80,51,.28);border-color:var(--danger);}
+  #quizResult{
+    text-align:center;font-weight:800;font-size:1.15rem;margin-top:10px;min-height:1.6em;color:var(--charge-pos);
+  }
+
+  footer{
+    background:var(--sky-deep);color:#8b95bc;text-align:center;padding:34px 18px;font-size:.85rem;line-height:2;
+  }
+  footer strong{color:#cfd7ee;}
+
+  .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);}
+  @media(prefers-reduced-motion: reduce){
+    *{animation-duration:.001ms !important; transition-duration:.001ms !important;}
+  }
+
+  /* ══ RESPONSIVE MOBILE & TABLET ══ */
+  @media (max-width: 768px) {
+    body { padding: 8px !important; font-size: 15px !important; overflow-x: hidden !important; }
+    .container, [class*="container"], [class*="wrapper"] { padding: 8px !important; max-width: 100% !important; }
+    canvas { width: 100% !important; height: auto !important; display: block !important; touch-action: none; max-width: 100% !important; }
+    svg { max-width: 100% !important; height: auto !important; }
+    h1 { font-size: clamp(18px,5vw,32px) !important; }
+    h2 { font-size: clamp(15px,4vw,26px) !important; }
+    h3 { font-size: clamp(13px,3.5vw,20px) !important; }
+    [class*="grid"] { grid-template-columns: 1fr !important; }
+    [class*="flex"] { flex-wrap: wrap !important; }
+    input[type="range"] { width: 100% !important; min-height: 36px; }
+    input[type="number"], input[type="text"], select, textarea {
+      font-size: 16px !important; width: 100% !important; box-sizing: border-box; padding: 8px !important; }
+    button { min-height: 44px !important; font-size: 14px !important; touch-action: manipulation; padding: 10px 14px !important; }
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 13px !important; }
+    th, td { padding: 6px 4px !important; }
+    header { padding: 10px 12px !important; }
+    .controls, [class*="controls"] { flex-direction: column !important; gap: 8px !important; }
+    .lab-window, [class*="lab-window"] { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+  }
+  @media (max-width: 480px) {
+    body { padding: 4px !important; }
+    button { width: 100% !important; }
+  }
+  /* ══ END RESPONSIVE ══ */
+</style>
+</head>
+<body>
+<style>
+.vlab-back{position:fixed;top:10px;left:10px;z-index:99999;
+background:rgba(10,22,40,0.93);border:1px solid rgba(0,200,150,0.4);
+border-radius:22px;padding:8px 16px;display:inline-flex;align-items:center;gap:7px;
+color:#00C896;font-family:Tajawal,Cairo,Arial,sans-serif;font-size:13px;font-weight:700;
+text-decoration:none;backdrop-filter:blur(8px);box-shadow:0 4px 18px rgba(0,0,0,0.3);
+transition:background 0.2s;}
+.vlab-back:hover{background:rgba(0,200,150,0.18);}
+</style>
+<a href="../grade5.html" class="vlab-back">&#8594; العودة للصف</a>
+
+
+<nav class="nav">
+  <div class="brand"><span class="bolt-mini">⚡</span> نشاط الصاعقة</div>
+  <ul>
+    <li><a href="#lesson">الدرس</a></li>
+    <li><a href="#lab">المختبر الافتراضي</a></li>
+    <li><a href="#questions">الأسئلة</a></li>
+    <li><a href="#conclusion">الاستنتاج</a></li>
+    <li><a href="#quiz">اختبر نفسك</a></li>
+  </ul>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="stars"></div>
+  <span class="hero-eyebrow">العلوم والحياة · الصف الخامس · فلسطين</span>
+  <h1>الصاعقة: حين تبحث <em>الشحنة</em><br>عن طريقها إلى الأرض</h1>
+  <p class="lead">
+    درس تفاعلي ومختبر افتراضي ثلاثي الأبعاد نكتشف فيه كيف تتكوّن الشحنات الكهربائية الساكنة في السحب،
+    ولماذا تنطلق الصاعقة نحو أعلى شجرة في الحقل.
+  </p>
+  <div class="hero-ctas">
+    <a href="#lab" class="btn btn-primary">🧪 ابدأ التجربة الافتراضية</a>
+    <a href="#lesson" class="btn btn-ghost">📖 اقرأ الدرس أولًا</a>
+  </div>
+
+  <div class="hero-scene" aria-hidden="true">
+    <svg viewBox="0 0 520 340" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="260" cy="300" rx="230" ry="30" fill="#0a1230" opacity=".5"/>
+      <!-- cloud -->
+      <g id="heroCloud">
+        <ellipse cx="180" cy="90" rx="70" ry="42" fill="#3a4665"/>
+        <ellipse cx="250" cy="70" rx="90" ry="52" fill="#5c6f92"/>
+        <ellipse cx="330" cy="95" rx="75" ry="44" fill="#4a5b7a"/>
+        <ellipse cx="260" cy="115" rx="120" ry="38" fill="#6d7fa3"/>
+        <g id="heroPlus" font-family="Cairo" font-weight="900" font-size="15" fill="#ffe28a">
+          <text x="200" y="75">+</text><text x="240" y="55">+</text><text x="290" y="70">+</text>
+          <text x="320" y="90">+</text><text x="170" y="100">+</text><text x="260" y="45">+</text>
+        </g>
+        <g id="heroMinus" font-family="Cairo" font-weight="900" font-size="16" fill="#8fd4ff">
+          <text x="195" y="125">−</text><text x="230" y="132">−</text><text x="270" y="130">−</text>
+          <text x="300" y="120">−</text><text x="255" y="140">−</text>
+        </g>
+      </g>
+      <!-- bolt -->
+      <path id="heroBolt" d="M258 150 L238 210 L262 210 L245 270" stroke="var(--bolt-edge)" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0"/>
+      <!-- tree -->
+      <rect x="248" y="270" width="16" height="55" rx="4" fill="#6b4a30"/>
+      <g id="heroTreeTop">
+        <ellipse cx="256" cy="255" rx="46" ry="34" fill="#2c5c37"/>
+        <ellipse cx="228" cy="270" rx="34" ry="26" fill="#3f7d4a"/>
+        <ellipse cx="286" cy="268" rx="34" ry="26" fill="#3f7d4a"/>
+        <ellipse cx="256" cy="240" rx="34" ry="24" fill="#5a9a63"/>
+      </g>
+      <g id="heroTreePlus" font-family="Cairo" font-weight="900" font-size="13" fill="#ffe28a" opacity="0">
+        <text x="240" y="250">+</text><text x="266" y="255">+</text>
+      </g>
+      <ellipse cx="400" cy="300" rx="55" ry="14" fill="#284a30" opacity=".7"/>
+      <rect x="392" y="286" width="10" height="16" fill="#6b4a30"/>
+      <ellipse cx="397" cy="278" rx="26" ry="18" fill="#3f7d4a"/>
+    </svg>
+  </div>
+</header>
+
+<main>
+
+<!-- ============ LESSON ============ -->
+<section id="lesson">
+  <div class="section-head">
+    <span class="kicker">الدرس</span>
+    <h2>ظواهر مرتبطة بالكهرباء الساكنة</h2>
+    <p>
+      الأجسام تُشحن كهربائيًا عندما يزيد فيها عدد الشحنات السالبة (إلكترونات) أو الشحنات الموجبة عن الآخر.
+      وحين تلتقي شحنتان مختلفتان، ينتقل تيار كهربائي قوي بينهما في لحظة واحدة — وهذا بالضبط ما يحدث في السماء
+      أثناء العاصفة الرعدية.
+    </p>
+  </div>
+
+  <div class="grid3">
+    <div class="lcard">
+      <div class="icon i1">🌩️</div>
+      <h3>١. شحن السحابة</h3>
+      <p>
+        داخل السحابة الرعدية، تتصادم قطرات الماء وبلورات الجليد باستمرار، فتتجمّع الشحنات السالبة
+        في الجزء السفلي من السحابة القريب من سطح الأرض، بينما تبقى الشحنات الموجبة في أعلاها.
+      </p>
+    </div>
+    <div class="lcard">
+      <div class="icon i2">🌳</div>
+      <h3>٢. الحث الكهربائي</h3>
+      <p>
+        الشحنات السالبة أسفل السحابة "تنفر" الشحنات السالبة الموجودة في الأرض والأشجار المرتفعة،
+        فتتجمّع شحنات موجبة على قمة أعلى جسم قريب — غالبًا أعلى شجرة في المكان.
+      </p>
+    </div>
+    <div class="lcard">
+      <div class="icon i3">⚡</div>
+      <h3>٣. التفريغ الكهربائي</h3>
+      <p>
+        حين تصبح المسافة بين الشحنتين المختلفتين (السالبة والموجبة) صغيرة كفاية، يندفع تيار كهربائي
+        هائل بينهما دفعة واحدة — فتحدث الصاعقة، ومعها الحرارة الشديدة والضوء والصوت (الرعد).
+      </p>
+    </div>
+  </div>
+
+  <div class="callout">
+    <span class="emoji">💡</span>
+    <p>
+      <strong>تذكّر:</strong> الشحنات المتشابهة (سالبة مع سالبة، أو موجبة مع موجبة) تتنافر وتبتعد عن بعضها،
+      أمّا الشحنات المختلفة (سالبة مع موجبة) فتتجاذب وتنجذب نحو بعضها — وهذا التجاذب هو الذي يُطلق الصاعقة.
+    </p>
+  </div>
+</section>
+
+<!-- ============ LAB ============ -->
+<section id="lab">
+  <div class="section-head">
+    <span class="kicker">المختبر الافتراضي</span>
+    <h2>نفّذ تجربة الصاعقة بنفسك</h2>
+    <p>اتبع الخطوات بالترتيب: اشحن السحابة، راقب ماذا يحدث لقمة الشجرة، ثم أطلق الصاعقة وسجّل ملاحظاتك.</p>
+  </div>
+
+  <div class="lab-wrap">
+    <div class="lab-steps">
+      <div class="step-pill active" id="pill1"><span class="dot"></span> ١. اشحن السحابة</div>
+      <div class="step-pill" id="pill2"><span class="dot"></span> ٢. لاحظ الشجرة</div>
+      <div class="step-pill" id="pill3"><span class="dot"></span> ٣. أطلق الصاعقة</div>
+      <div class="step-pill" id="pill4"><span class="dot"></span> ٤. النتيجة</div>
+    </div>
+
+    <div class="scene-frame">
+      <div id="flash-overlay"></div>
+      <svg id="labScene" viewBox="0 0 700 460" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="cloudShade" cx="50%" cy="30%" r="75%">
+            <stop offset="0%" stop-color="#7d8fb8"/>
+            <stop offset="100%" stop-color="#404f75"/>
+          </radialGradient>
+          <linearGradient id="boltGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#fff6d8"/>
+            <stop offset="100%" stop-color="#ffd23f"/>
+          </linearGradient>
+        </defs>
+
+        <!-- distant hills -->
+        <ellipse cx="120" cy="440" rx="220" ry="60" fill="#7f9a86" opacity=".6"/>
+        <ellipse cx="560" cy="450" rx="260" ry="60" fill="#6d8c76" opacity=".6"/>
+
+        <!-- cloud group -->
+        <g id="cloud">
+          <ellipse cx="330" cy="95" rx="95" ry="52" fill="url(#cloudShade)"/>
+          <ellipse cx="420" cy="75" rx="115" ry="62" fill="#5c6f92"/>
+          <ellipse cx="520" cy="100" rx="95" ry="54" fill="#4a5b7a"/>
+          <ellipse cx="420" cy="128" rx="160" ry="46" fill="#6d7fa3"/>
+          <ellipse cx="330" cy="120" rx="100" ry="34" fill="#5c6f92"/>
+
+          <!-- static positive charges (top) -->
+          <g id="cloudPlus" font-family="Cairo" font-weight="900" font-size="20" fill="#ffe28a">
+            <text x="330" y="75">+</text><text x="380" y="55">+</text><text x="430" y="48">+</text>
+            <text x="480" y="60">+</text><text x="520" y="80">+</text><text x="300" y="100">+</text>
+            <text x="460" y="95">+</text><text x="390" y="90">+</text>
+          </g>
+
+          <!-- negative charges appear here on "charge" step -->
+          <g id="cloudMinus" font-family="Cairo" font-weight="900" font-size="22" fill="#8fd4ff"></g>
+        </g>
+
+        <!-- lightning bolt path (hidden initially) -->
+        <path id="bolt" d="M415 168 L385 250 L420 250 L390 335" stroke="url(#boltGrad)" stroke-width="9"
+              fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0"
+              stroke-dasharray="260" stroke-dashoffset="260"/>
+        <path id="boltGlow" d="M415 168 L385 250 L420 250 L390 335" stroke="#ffd23f" stroke-width="22"
+              fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0" filter="blur(6px)"/>
+
+        <!-- ground -->
+        <ellipse cx="400" cy="420" rx="320" ry="40" fill="#4c7a55"/>
+        <ellipse cx="400" cy="410" rx="320" ry="34" fill="#5b8f62"/>
+
+        <!-- small tree left -->
+        <rect x="145" y="368" width="12" height="45" rx="4" fill="#6b4a30"/>
+        <ellipse cx="151" cy="355" rx="34" ry="26" fill="#3f7d4a"/>
+        <ellipse cx="130" cy="368" rx="24" ry="18" fill="#357247"/>
+        <ellipse cx="172" cy="368" rx="24" ry="18" fill="#357247"/>
+
+        <!-- main tree (target) -->
+        <g id="mainTree">
+          <rect x="393" y="330" width="20" height="80" rx="5" fill="#6b4a30"/>
+          <rect x="393" y="330" width="20" height="80" rx="5" fill="#000" opacity="0" id="scorch"/>
+          <ellipse cx="403" cy="300" rx="70" ry="46" fill="#2c5c37"/>
+          <ellipse cx="355" cy="325" rx="48" ry="36" fill="#3f7d4a"/>
+          <ellipse cx="455" cy="322" rx="50" ry="38" fill="#3f7d4a"/>
+          <ellipse cx="403" cy="278" rx="52" ry="34" fill="#5a9a63"/>
+        </g>
+
+        <!-- induced positive charges on tree top -->
+        <g id="treePlus" font-family="Cairo" font-weight="900" font-size="19" fill="#ffe28a" opacity="0">
+          <text x="378" y="285">+</text><text x="410" y="270">+</text><text x="430" y="290">+</text>
+          <text x="392" y="300">+</text>
+        </g>
+
+        <!-- smoke after strike -->
+        <g id="smoke" opacity="0">
+          <circle cx="403" cy="320" r="10" fill="#888"/>
+          <circle cx="415" cy="300" r="8" fill="#999"/>
+          <circle cx="392" cy="305" r="7" fill="#aaa"/>
+        </g>
+      </svg>
+    </div>
+
+    <div class="lab-controls">
+      <button class="lab-btn charge" id="btnCharge">🌩️ اشحن السحابة</button>
+      <button class="lab-btn" id="btnInduce" disabled>🌳 لاحظ الشجرة</button>
+      <button class="lab-btn fire" id="btnFire" disabled>⚡ أطلق الصاعقة</button>
+      <button class="lab-btn reset" id="btnReset">🔄 إعادة التجربة</button>
+    </div>
+    <p class="lab-note" id="labNote">اضغط "اشحن السحابة" لتبدأ بتجميع الشحنات السالبة أسفل السحابة.</p>
+  </div>
+</section>
+
+<!-- ============ QUESTIONS ============ -->
+<section id="questions">
+  <div class="section-head">
+    <span class="kicker">سجّل ملاحظاتك</span>
+    <h2>أتأمل الشكل وأجيب</h2>
+    <p>بعد تنفيذ التجربة في المختبر الافتراضي أعلاه، أجب عن الأسئلة التالية بأسلوبك الخاص.</p>
+  </div>
+
+  <div class="qcard">
+    <label><span class="qnum">١</span> صفْ ما شاهدته في الصورة/التجربة.</label>
+    <textarea id="q1" placeholder="اكتب وصفك هنا... مثال: سحابة فيها شحنات موجبة وسالبة، وشجرة تحتها، وخط ضوء يصلهما"></textarea>
+    <button class="qcheck" data-q="1">✓ عرض إجابة نموذجية</button>
+    <div class="qfeedback" id="fb1"></div>
+  </div>
+
+  <div class="qcard">
+    <label><span class="qnum">٢</span> ما نوع الشحنات الموجودة على الجزء السفلي من السحابة القريب من سطح الأرض؟</label>
+    <input type="text" id="q2" placeholder="اكتب إجابتك...">
+    <button class="qcheck" data-q="2">✓ تحقق من إجابتي</button>
+    <div class="qfeedback" id="fb2"></div>
+  </div>
+
+  <div class="qcard">
+    <label><span class="qnum">٣</span> ما نوع الشحنات الموجودة على الجزء العلوي من الشجرة؟</label>
+    <input type="text" id="q3" placeholder="اكتب إجابتك...">
+    <button class="qcheck" data-q="3">✓ تحقق من إجابتي</button>
+    <div class="qfeedback" id="fb3"></div>
+  </div>
+
+  <div class="qcard">
+    <label><span class="qnum">٤</span> برأيك، ما سبب احتراق الشجرة؟</label>
+    <textarea id="q4" placeholder="فكّر في كمية الطاقة الكهربائية التي تمر عبر جذع الشجرة..."></textarea>
+    <button class="qcheck" data-q="4">✓ عرض إجابة نموذجية</button>
+    <div class="qfeedback" id="fb4"></div>
+  </div>
+</section>
+
+<!-- ============ CONCLUSION ============ -->
+<section id="conclusion">
+  <div class="section-head">
+    <span class="kicker">الاستنتاج</span>
+    <h2>ماذا تعلّمنا؟</h2>
+  </div>
+  <div class="amber-box">
+    <h3>الصاعقة</h3>
+    <p>
+      شرارة قويّة تنتج عن انتقال الشحنات الكهربائية السالبة بين السحابة والأجسام المشحونة بشحنة موجبة
+      على الأرض.
+    </p>
+  </div>
+
+  <div class="safety-grid" style="margin-top:34px;">
+    <div class="safety-item do">
+      <div class="mark">✓</div>
+      <p>ابقَ داخل مبنى أو سيارة مغلقة أثناء العاصفة الرعدية حتى تنتهي تمامًا.</p>
+    </div>
+    <div class="safety-item dont">
+      <div class="mark">✕</div>
+      <p>لا تحتمِ تحت شجرة مرتفعة أو منفردة في العراء، فهي أكثر عرضة لجذب الصاعقة.</p>
+    </div>
+    <div class="safety-item do">
+      <div class="mark">✓</div>
+      <p>ابتعد عن الأجسام المعدنية المرتفعة والمياه المفتوحة أثناء الرعد والبرق.</p>
+    </div>
+    <div class="safety-item dont">
+      <div class="mark">✕</div>
+      <p>لا تستخدم الهاتف الموصول بالشحن أو تلمس أسلاكًا كهربائية أثناء العاصفة.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ QUIZ ============ -->
+<section id="quiz">
+  <div class="section-head">
+    <span class="kicker">اختبر فهمك</span>
+    <h2>أربعة أسئلة سريعة</h2>
+    <p>اختر الإجابة الصحيحة لكل سؤال ثم اضغط "تحقق من إجاباتي".</p>
+  </div>
+
+  <div class="quiz-wrap">
+    <div class="quiz-q" data-correct="b">
+      <p class="qtext">١. تتجمّع الشحنات السالبة في السحابة الرعدية عادةً في:</p>
+      <label class="opt"><input type="radio" name="quiz1" value="a"> الجزء العلوي من السحابة</label>
+      <label class="opt"><input type="radio" name="quiz1" value="b"> الجزء السفلي القريب من الأرض</label>
+      <label class="opt"><input type="radio" name="quiz1" value="c"> منتصف السحابة فقط</label>
+    </div>
+
+    <div class="quiz-q" data-correct="a">
+      <p class="qtext">٢. الشحنات المتشابهة (سالبة مع سالبة):</p>
+      <label class="opt"><input type="radio" name="quiz2" value="a"> تتنافر وتبتعد عن بعضها</label>
+      <label class="opt"><input type="radio" name="quiz2" value="b"> تتجاذب وتقترب من بعضها</label>
+      <label class="opt"><input type="radio" name="quiz2" value="c"> لا تتأثر ببعضها إطلاقًا</label>
+    </div>
+
+    <div class="quiz-q" data-correct="c">
+      <p class="qtext">٣. الصاعقة هي نتيجة لـ:</p>
+      <label class="opt"><input type="radio" name="quiz3" value="a"> تبخّر مياه السحابة</label>
+      <label class="opt"><input type="radio" name="quiz3" value="b"> ارتفاع درجة حرارة الهواء فقط</label>
+      <label class="opt"><input type="radio" name="quiz3" value="c"> تفريغ الشحنات الكهربائية بين السحابة والأرض</label>
+    </div>
+
+    <div class="quiz-q" data-correct="b">
+      <p class="qtext">٤. أثناء العاصفة الرعدية، الأكثر أمانًا هو:</p>
+      <label class="opt"><input type="radio" name="quiz4" value="a"> الوقوف تحت شجرة مرتفعة منفردة</label>
+      <label class="opt"><input type="radio" name="quiz4" value="b"> البقاء داخل مبنى مغلق</label>
+      <label class="opt"><input type="radio" name="quiz4" value="c"> السباحة في بركة مفتوحة</label>
+    </div>
+
+    <div style="text-align:center;">
+      <button class="lab-btn fire" id="btnQuizCheck">✓ تحقق من إجاباتي</button>
+    </div>
+    <p id="quizResult"></p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  صُمم هذا الدرس التفاعلي وفق منهاج <strong>العلوم والحياة — الصف الخامس — فلسطين</strong><br>
+  نشاط (٢): الصاعقة — ظواهر مرتبطة بالكهرباء الساكنة ⚡
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  // ---------- LAB LOGIC ----------
+  var btnCharge = document.getElementById('btnCharge');
+  var btnInduce = document.getElementById('btnInduce');
+  var btnFire   = document.getElementById('btnFire');
+  var btnReset  = document.getElementById('btnReset');
+  var labNote   = document.getElementById('labNote');
+  var cloudMinus= document.getElementById('cloudMinus');
+  var treePlus  = document.getElementById('treePlus');
+  var bolt      = document.getElementById('bolt');
+  var boltGlow  = document.getElementById('boltGlow');
+  var flash     = document.getElementById('flash-overlay');
+  var scorch    = document.getElementById('scorch');
+  var smoke     = document.getElementById('smoke');
+  var pills     = [document.getElementById('pill1'),document.getElementById('pill2'),document.getElementById('pill3'),document.getElementById('pill4')];
+
+  var minusSpots = [
+    {x:340,y:150},{x:380,y:160},{x:420,y:165},{x:460,y:158},
+    {x:400,y:145},{x:360,y:165},{x:440,y:145}
+  ];
+
+  function setActivePill(idx){
+    pills.forEach(function(p,i){
+      p.classList.remove('active');
+      if(i < idx) p.classList.add('done');
+    });
+    if(idx < pills.length) pills[idx].classList.add('active');
+  }
+
+  function chargeCloud(){
+    cloudMinus.innerHTML = '';
+    var i = 0;
+    var timer = setInterval(function(){
+      if(i >= minusSpots.length){ clearInterval(timer); return; }
+      var s = minusSpots[i];
+      var t = document.createElementNS('http://www.w3.org/2000/svg','text');
+      t.setAttribute('x', s.x); t.setAttribute('y', s.y);
+      t.setAttribute('opacity','0');
+      t.textContent = '−';
+      t.style.transition = 'opacity .3s, transform .3s';
+      cloudMinus.appendChild(t);
+      requestAnimationFrame(function(){ t.setAttribute('opacity','1'); });
+      i++;
+    }, 140);
+
+    btnCharge.disabled = true;
+    labNote.textContent = 'جارٍ شحن الجزء السفلي من السحابة بشحنات سالبة (−)... راقب السحابة.';
+    setActivePill(1);
+    setTimeout(function(){
+      labNote.textContent = 'تمّت شحن السحابة! لاحظ أن الشحنات السالبة تجمّعت أسفلها بالقرب من سطح الأرض. الآن اضغط "لاحظ الشجرة".';
+      btnInduce.disabled = false;
+    }, minusSpots.length*140 + 300);
+  }
+
+  function induceTree(){
+    treePlus.setAttribute('opacity','0');
+    treePlus.style.transition = 'opacity .6s';
+    requestAnimationFrame(function(){ treePlus.setAttribute('opacity','1'); });
+    btnInduce.disabled = true;
+    setActivePill(2);
+    labNote.textContent = 'بفعل الحث الكهربائي، تجمّعت شحنات موجبة (+) على قمة أعلى شجرة قريبة. الشحنتان المختلفتان الآن متقابلتان وتتجاذبان!';
+    setTimeout(function(){
+      btnFire.disabled = false;
+      labNote.textContent = 'المسافة بين الشحنتين أوشكت أن تُختَرق. اضغط "أطلق الصاعقة" لترى ماذا يحدث.';
+    }, 900);
+  }
+
+  function fireBolt(){
+    btnFire.disabled = true;
+    setActivePill(3);
+    labNote.textContent = 'اندفع تيار كهربائي هائل بين السحابة والشجرة خلال أجزاء من الثانية...';
+
+    bolt.style.transition = 'none';
+    bolt.setAttribute('stroke-dashoffset','260');
+    bolt.setAttribute('opacity','1');
+    boltGlow.setAttribute('opacity','.55');
+    void bolt.getBoundingClientRect();
+    bolt.style.transition = 'stroke-dashoffset .28s ease-out';
+    bolt.setAttribute('stroke-dashoffset','0');
+
+    setTimeout(function(){
+      flash.style.transition = 'none';
+      flash.style.opacity = '.9';
+      void flash.getBoundingClientRect();
+      flash.style.transition = 'opacity .5s ease-out';
+      flash.style.opacity = '0';
+    }, 260);
+
+    setTimeout(function(){
+      bolt.style.transition = 'opacity .4s';
+      boltGlow.style.transition = 'opacity .4s';
+      bolt.setAttribute('opacity','0');
+      boltGlow.setAttribute('opacity','0');
+
+      scorch.style.transition = 'opacity .6s';
+      scorch.setAttribute('opacity','.55');
+      smoke.style.transition = 'opacity 1.2s, transform 1.2s';
+      smoke.setAttribute('opacity','.6');
+      smoke.style.transform = 'translateY(-18px)';
+
+      labNote.textContent = 'حدثت الصاعقة! تولّدت حرارة شديدة وضوء ساطع نتيجة مرور التيار الكهربائي القوي عبر الهواء وجذع الشجرة، مما تسبب باحتراق جزء منها.';
+      setActivePill(4);
+
+      var qsec = document.getElementById('questions');
+      qsec.scrollIntoView({behavior:'smooth', block:'start'});
+    }, 850);
+  }
+
+  function resetLab(){
+    cloudMinus.innerHTML = '';
+    treePlus.setAttribute('opacity','0');
+    bolt.setAttribute('opacity','0'); bolt.setAttribute('stroke-dashoffset','260');
+    boltGlow.setAttribute('opacity','0');
+    scorch.setAttribute('opacity','0');
+    smoke.setAttribute('opacity','0'); smoke.style.transform='translateY(0)';
+    btnCharge.disabled = false;
+    btnInduce.disabled = true;
+    btnFire.disabled = true;
+    labNote.textContent = 'اضغط "اشحن السحابة" لتبدأ بتجميع الشحنات السالبة أسفل السحابة.';
+    setActivePill(0);
+  }
+
+  btnCharge.addEventListener('click', chargeCloud);
+  btnInduce.addEventListener('click', induceTree);
+  btnFire.addEventListener('click', fireBolt);
+  btnReset.addEventListener('click', resetLab);
+
+  // ---------- HERO looping ambient animation ----------
+  (function heroLoop(){
+    var bolt = document.getElementById('heroBolt');
+    var plus = document.getElementById('heroTreePlus');
+    function cycle(){
+      bolt.style.transition='none'; bolt.setAttribute('opacity','0');
+      plus.style.transition='none'; plus.setAttribute('opacity','0');
+      setTimeout(function(){
+        plus.style.transition='opacity .5s';
+        plus.setAttribute('opacity','1');
+      }, 1400);
+      setTimeout(function(){
+        bolt.style.transition='opacity .15s';
+        bolt.setAttribute('opacity','1');
+        setTimeout(function(){ bolt.setAttribute('opacity','0'); }, 220);
+      }, 2000);
+    }
+    cycle();
+    setInterval(cycle, 4200);
+  })();
+
+  // ---------- QUESTIONS CHECK ----------
+  var modelAnswers = {
+    1: 'إجابة نموذجية: أشاهد سحابة بها شحنات موجبة أعلاها وشحنات سالبة أسفلها القريب من الأرض، وشجرة تحتها تجمّعت على قمتها شحنات موجبة، وخط ضوئي متعرّج (الصاعقة) يصل بين السحابة وقمة الشجرة.',
+    4: 'إجابة نموذجية: يمرّ عبر جذع الشجرة تيار كهربائي قوي جدًا خلال جزء من الثانية، وهذا التيار الكبير ينتج طاقة حرارية هائلة تكفي لإحراق جزء من الشجرة.'
+  };
+  document.querySelectorAll('.qcheck').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var qn = btn.getAttribute('data-q');
+      var fb = document.getElementById('fb'+qn);
+      var val = (document.getElementById('q'+qn).value || '').trim();
+
+      if(qn === '2' || qn === '3'){
+        var correctWord = (qn === '2') ? 'سالب' : 'موجب';
+        var wrongWord = (qn === '2') ? 'موجب' : 'سالب';
+        if(val.indexOf(correctWord) !== -1){
+          fb.className = 'qfeedback show good';
+          fb.textContent = 'إجابة صحيحة! ✓ ' + (qn==='2' ? 'الجزء السفلي من السحابة يحمل شحنات سالبة.' : 'قمة الشجرة تحمل شحنات موجبة بسبب الحث الكهربائي.');
+        } else if(val.indexOf(wrongWord) !== -1){
+          fb.className = 'qfeedback show hint';
+          fb.textContent = 'راجع إجابتك: ' + (qn==='2' ? 'أسفل السحابة القريب من الأرض يحمل شحنات سالبة (−) وليست موجبة.' : 'قمة الشجرة تحمل شحنات موجبة (+) وليست سالبة، بسبب الحث الكهربائي من السحابة.');
+        } else {
+          fb.className = 'qfeedback show hint';
+          fb.textContent = 'حاول مرة أخرى، وارجع إلى المختبر الافتراضي أعلاه ولاحظ رمز الشحنة الظاهر في ' + (qn==='2' ? 'أسفل السحابة' : 'أعلى الشجرة') + '.';
+        }
+      } else {
+        fb.className = 'qfeedback show good';
+        fb.textContent = modelAnswers[qn];
+      }
+    });
+  });
+
+  // ---------- QUIZ ----------
+  document.getElementById('btnQuizCheck').addEventListener('click', function(){
+    var questions = document.querySelectorAll('.quiz-q');
+    var score = 0;
+    questions.forEach(function(q){
+      var correct = q.getAttribute('data-correct');
+      var name = q.querySelector('input').name;
+      var chosen = document.querySelector('input[name="'+name+'"]:checked');
+      var opts = q.querySelectorAll('.opt');
+      opts.forEach(function(o){ o.classList.remove('correct','wrong'); });
+      if(chosen){
+        var chosenLabel = chosen.closest('.opt');
+        if(chosen.value === correct){
+          chosenLabel.classList.add('correct');
+          score++;
+        } else {
+          chosenLabel.classList.add('wrong');
+          q.querySelector('input[value="'+correct+'"]').closest('.opt').classList.add('correct');
+        }
+      } else {
+        q.querySelector('input[value="'+correct+'"]').closest('.opt').classList.add('correct');
+      }
+    });
+    var result = document.getElementById('quizResult');
+    result.textContent = 'نتيجتك: ' + score + ' من ' + questions.length +
+      (score === questions.length ? ' 🎉 ممتاز! فهمت الدرس بشكل رائع.' : ' — راجع الأجزاء التي أخطأت فيها وحاول مجددًا.');
+  });
+
+})();
+</script>
+</body>
+</html>

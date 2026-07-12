@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta http-equiv="Content-Language" content="ar">
+<title>أحاكي الخلية | العلوم والحياة - الصف الخامس</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg-deep:#0b1f17;
+  --bg-panel:#12291f;
+  --bg-panel-2:#16342671;
+  --bg-card:#f7f4ea;
+  --ink:#eef3ea;
+  --ink-soft:#cfe0d3;
+  --muted:#8fac9c;
+  --wall:#d9a441;
+  --wall-dark:#a97a26;
+  --membrane:#e8c76b;
+  --nucleus:#7a5cc7;
+  --nucleus-light:#a68ce0;
+  --chloro:#3f9d5c;
+  --chloro-light:#6bc986;
+  --cyto:#2f6b52;
+  --gene:#e0577a;
+  --danger:#d9534f;
+  --success:#58c77c;
+  --radius:14px;
+  --font-display:'Cairo', 'Tahoma', sans-serif;
+  --font-body:'Tajawal','Tahoma', sans-serif;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--bg-deep);
+  color:var(--ink);
+  font-family:var(--font-body);
+  line-height:1.8;
+  overflow-x:hidden;
+}
+h1,h2,h3,.display{font-family:var(--font-display);}
+::selection{background:var(--chloro);color:#08150e;}
+
+/* ===== NAV ===== */
+.topnav{
+  position:sticky; top:0; z-index:50;
+  background:rgba(11,31,23,.92);
+  backdrop-filter:blur(8px);
+  border-bottom:1px solid rgba(255,255,255,.08);
+  display:flex; align-items:center; justify-content:space-between;
+  padding:.7rem 1.2rem;
+  flex-wrap:wrap; gap:.6rem;
+}
+.brand{display:flex; align-items:center; gap:.5rem; font-weight:800; font-size:1.05rem;}
+.brand .dot{width:10px;height:10px;border-radius:50%;background:var(--chloro);box-shadow:0 0 10px var(--chloro);}
+.nav-links{display:flex; gap:.3rem; flex-wrap:wrap;}
+.nav-links a{
+  color:var(--ink-soft); text-decoration:none; font-size:.85rem;
+  padding:.45rem .8rem; border-radius:999px; border:1px solid transparent;
+  transition:.2s;
+}
+.nav-links a:hover, .nav-links a:focus-visible{border-color:rgba(255,255,255,.18); background:rgba(255,255,255,.05); color:#fff;}
+
+/* ===== HERO ===== */
+.hero{
+  position:relative;
+  min-height:92vh;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  text-align:center;
+  padding:5rem 1.2rem 3rem;
+  background:
+    radial-gradient(60% 50% at 50% 8%, rgba(63,157,92,.18), transparent 60%),
+    radial-gradient(50% 40% at 80% 90%, rgba(122,92,199,.14), transparent 60%),
+    var(--bg-deep);
+}
+.eyebrow{
+  font-size:.78rem; letter-spacing:.14em; color:var(--muted);
+  border:1px solid rgba(255,255,255,.15); padding:.35rem 1rem; border-radius:999px;
+  margin-bottom:1.4rem;
+}
+.hero h1{
+  font-size:clamp(2.4rem, 6vw, 4.4rem);
+  font-weight:900;
+  margin:0 0 .6rem;
+  background:linear-gradient(90deg, #fff, var(--chloro-light));
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.hero p.sub{color:var(--ink-soft); font-size:clamp(1rem,2vw,1.2rem); max-width:640px; margin:0 auto 2.6rem;}
+
+/* 3D cell stage */
+.stage-wrap{perspective:1400px; touch-action:none; cursor:grab; user-select:none;}
+.stage-wrap:active{cursor:grabbing;}
+.cell3d{
+  width:min(70vw,320px); height:min(70vw,320px);
+  position:relative; transform-style:preserve-3d;
+  transform:rotateX(-14deg) rotateY(0deg);
+  animation:autorotate 26s linear infinite;
+}
+@keyframes autorotate{from{transform:rotateX(-14deg) rotateY(0deg);} to{transform:rotateX(-14deg) rotateY(360deg);}}
+.cell3d.dragging{animation-play-state:paused;}
+.shellA,.shellB{
+  position:absolute; inset:0; border-radius:50%;
+  border:3px solid var(--wall-dark);
+  background:radial-gradient(circle at 35% 30%, rgba(216,167,65,.18), rgba(63,157,92,.10) 55%, rgba(20,50,35,.35));
+}
+.shellB{transform:rotateY(90deg);}
+.orbit{position:absolute; inset:0; transform-style:preserve-3d;}
+.blob{
+  position:absolute; border-radius:50%;
+  box-shadow:0 0 18px rgba(0,0,0,.35) inset, 0 0 14px rgba(0,0,0,.25);
+}
+.blob.nuc{
+  width:34%; height:34%; top:33%; left:33%;
+  background:radial-gradient(circle at 38% 32%, var(--nucleus-light), var(--nucleus) 65%, #4c3a86);
+  transform:translateZ(30px);
+}
+.blob.nuc::after{
+  content:''; position:absolute; inset:22%; border-radius:50%;
+  background:
+    radial-gradient(circle at 30% 30%, var(--gene) 0 8%, transparent 9%),
+    radial-gradient(circle at 65% 55%, var(--gene) 0 7%, transparent 8%),
+    radial-gradient(circle at 45% 70%, var(--gene) 0 6%, transparent 7%);
+}
+.blob.ch{width:15%; height:15%; background:radial-gradient(circle at 35% 30%, var(--chloro-light), var(--chloro) 70%, #1f5e35);}
+.blob.ch1{top:14%; left:20%; transform:translateZ(46px);}
+.blob.ch2{top:60%; left:12%; transform:translateZ(-30px) rotateY(40deg);}
+.blob.ch3{top:20%; left:66%; transform:translateZ(-10px) rotateY(-30deg);}
+.blob.ch4{top:66%; left:64%; transform:translateZ(40px);}
+.blob.ch5{top:40%; left:6%; transform:translateZ(10px) rotateY(80deg);}
+.hero small.hint{display:block; margin-top:1.2rem; color:var(--muted); font-size:.8rem;}
+
+/* ===== SECTIONS shared ===== */
+section{padding:5rem 1.2rem; max-width:1080px; margin:0 auto;}
+.section-head{text-align:center; margin-bottom:2.6rem;}
+.section-head .k{color:var(--chloro-light); font-size:.8rem; letter-spacing:.12em;}
+.section-head h2{font-size:clamp(1.6rem,3.4vw,2.4rem); margin:.3rem 0 .6rem;}
+.section-head p{color:var(--ink-soft); max-width:620px; margin:0 auto;}
+
+/* ===== ORGANELLE CARDS (flip) ===== */
+.card-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.1rem;}
+.flip{perspective:1200px; height:200px;}
+.flip-inner{position:relative; width:100%; height:100%; transform-style:preserve-3d; transition:transform .6s cubic-bezier(.2,.8,.2,1);}
+.flip:hover .flip-inner, .flip:focus-within .flip-inner{transform:rotateY(180deg);}
+.face{position:absolute; inset:0; backface-visibility:hidden; border-radius:var(--radius); padding:1.3rem; display:flex; flex-direction:column; justify-content:center;}
+.face.front{background:var(--bg-panel); border:1px solid rgba(255,255,255,.08);}
+.face.back{background:var(--bg-panel); border:1px solid rgba(255,255,255,.08); transform:rotateY(180deg); overflow:auto;}
+.face.front .swatch{width:46px; height:46px; border-radius:12px; margin-bottom:.8rem;}
+.face.front h3{margin:0 0 .3rem; font-size:1.05rem;}
+.face.front span{color:var(--muted); font-size:.82rem;}
+.face.back p{margin:0; font-size:.9rem; color:var(--ink-soft);}
+.face.back strong{color:#fff;}
+.flip button{all:unset; cursor:pointer;}
+
+/* ===== VIRTUAL LAB ===== */
+.lab-shell{
+  background:var(--bg-panel); border:1px solid rgba(255,255,255,.08);
+  border-radius:20px; padding:2rem 1.4rem;
+}
+.lab-grid{display:grid; grid-template-columns:1fr; gap:2rem; align-items:start;}
+@media(min-width:860px){.lab-grid{grid-template-columns:1fr 1fr;}}
+.diagram-wrap{position:relative; width:min(100%,440px); aspect-ratio:1; margin:0 auto;}
+.hex{
+  position:absolute; inset:0;
+  clip-path:polygon(50% 2%, 95% 26%, 95% 74%, 50% 98%, 5% 74%, 5% 26%);
+  background:
+    radial-gradient(circle at 50% 50%, rgba(63,157,92,.08), rgba(47,107,82,.28));
+  border:4px solid var(--wall-dark);
+}
+.hex.membrane-ring{
+  inset:5%;
+  clip-path:polygon(50% 4%, 92% 27%, 92% 73%, 50% 96%, 8% 73%, 8% 27%);
+  background:transparent;
+  border:3px dashed var(--membrane);
+  opacity:.55;
+}
+.slot{
+  position:absolute; transform:translate(-50%,-50%);
+  width:64px; height:64px; border-radius:50%;
+  border:2px dashed rgba(255,255,255,.35);
+  display:flex; align-items:center; justify-content:center;
+  font-size:.65rem; text-align:center; color:var(--muted);
+  cursor:pointer; background:rgba(255,255,255,.03);
+  transition:.2s; padding:4px;
+}
+.slot:hover{border-color:#fff;}
+.slot.big{width:120px; height:120px; font-size:.7rem;}
+.slot.tiny{width:40px; height:40px; font-size:.55rem;}
+.slot.filled{border-style:solid; color:#08150e; font-weight:700;}
+.slot.wrong{animation:shake .3s;}
+@keyframes shake{25%{transform:translate(-50%,-50%) translateX(-6px);}75%{transform:translate(-50%,-50%) translateX(6px);}}
+
+.slot[data-zone="wall"]{top:4%; left:50%;}
+.slot[data-zone="membrane"]{top:16%; left:50%;}
+.slot[data-zone="nucleus"]{top:50%; left:38%;}
+.slot[data-zone="gene"]{top:44%; left:50%;}
+.slot[data-zone="chloro"]{top:74%; left:70%;}
+.slot[data-zone="cyto"]{top:80%; left:22%;}
+
+.chips{display:flex; flex-wrap:wrap; gap:.55rem; margin-top:1.4rem; justify-content:center;}
+.chip{
+  border:1px solid rgba(255,255,255,.2); background:rgba(255,255,255,.04);
+  color:var(--ink); padding:.5rem .9rem; border-radius:999px; cursor:pointer;
+  font-family:var(--font-body); font-size:.85rem; transition:.15s;
+}
+.chip.selected{border-color:#fff; background:rgba(255,255,255,.14);}
+.chip.done{opacity:.35; text-decoration:line-through; cursor:default;}
+.chip:disabled{cursor:default;}
+
+.lab-side{display:flex; flex-direction:column; gap:1.1rem;}
+.progress-bar{height:10px; border-radius:999px; background:rgba(255,255,255,.08); overflow:hidden;}
+.progress-fill{height:100%; width:0%; background:linear-gradient(90deg,var(--chloro),var(--chloro-light)); transition:width .4s;}
+.result-box{background:var(--bg-panel-2); border:1px solid rgba(255,255,255,.08); border-radius:12px; padding:1rem 1.1rem; font-size:.9rem; color:var(--ink-soft);}
+.result-box.ok{border-color:var(--success); color:#c9f4d6;}
+.feed-msg{min-height:1.4em; font-size:.85rem; color:var(--muted);}
+
+/* ===== CONCLUSIONS / QUIZ ===== */
+.quiz-card{
+  background:var(--bg-panel); border:1px solid rgba(255,255,255,.08);
+  border-radius:16px; padding:1.4rem 1.5rem; margin-bottom:1.2rem;
+}
+.quiz-card h3{margin:0 0 .8rem; font-size:1rem;}
+.opt{display:flex; align-items:center; gap:.6rem; padding:.5rem .6rem; border-radius:10px; cursor:pointer; margin-bottom:.4rem; transition:.15s;}
+.opt:hover{background:rgba(255,255,255,.04);}
+.opt input{accent-color:var(--chloro);}
+.check-btn{
+  margin-top:.6rem; border:1px solid var(--chloro); background:transparent; color:var(--chloro-light);
+  padding:.5rem 1.1rem; border-radius:999px; cursor:pointer; font-family:var(--font-body); font-size:.85rem;
+}
+.check-btn:hover{background:rgba(63,157,92,.12);}
+.explain{margin-top:.7rem; padding:.8rem 1rem; border-radius:10px; font-size:.87rem; display:none;}
+.explain.show{display:block;}
+.explain.right{background:rgba(88,199,124,.12); border:1px solid var(--success); color:#cdf5da;}
+.explain.wrong{background:rgba(217,83,79,.12); border:1px solid var(--danger); color:#ffd8d6;}
+.think-box{
+  background:linear-gradient(135deg, rgba(122,92,199,.14), rgba(63,157,92,.1));
+  border:1px solid rgba(255,255,255,.1); border-radius:16px; padding:1.4rem 1.5rem;
+}
+.think-box h3{margin-top:0;}
+
+/* ===== COMPARE ===== */
+.tabbar{display:flex; gap:.5rem; justify-content:center; margin-bottom:1.6rem; flex-wrap:wrap;}
+.tabbar button{
+  border:1px solid rgba(255,255,255,.18); background:var(--bg-panel); color:var(--ink-soft);
+  padding:.55rem 1.2rem; border-radius:999px; cursor:pointer; font-family:var(--font-body); font-size:.9rem;
+}
+.tabbar button.active{background:var(--chloro); color:#08150e; border-color:var(--chloro); font-weight:700;}
+.compare-visual{display:flex; justify-content:center; margin-bottom:1.8rem;}
+.mini-cell{width:210px; height:210px; position:relative; transition:.3s;}
+.mini-cell .hexmini{position:absolute; inset:0; border:4px solid var(--wall-dark); border-radius:50%; background:radial-gradient(circle,rgba(63,157,92,.1),rgba(47,107,82,.25));}
+.mini-cell.animal .hexmini{border-radius:50%; border-style:solid;}
+.mini-cell.plant .hexmini{border-radius:18%;}
+.mini-cell.bacteria .hexmini{border-radius:40%; border-color:var(--membrane);}
+.mini-cell .nuc-m{position:absolute; width:38%; height:38%; top:31%; left:31%; border-radius:50%; background:radial-gradient(circle at 35% 30%, var(--nucleus-light), var(--nucleus));}
+.mini-cell.bacteria .nuc-m{width:24%; height:14%; top:43%; left:38%; border-radius:40%; opacity:.7;}
+.mini-cell .ch-m{position:absolute; width:16%; height:16%; border-radius:50%; background:var(--chloro);}
+.mini-cell .ch-m.a{top:14%; left:18%;} .mini-cell .ch-m.b{top:62%; left:12%;} .mini-cell .ch-m.c{top:18%; left:66%;}
+.mini-cell.animal .ch-m, .mini-cell.bacteria .ch-m{display:none;}
+table.cmp{width:100%; border-collapse:collapse; font-size:.86rem;}
+table.cmp th, table.cmp td{padding:.6rem .5rem; text-align:center; border-bottom:1px solid rgba(255,255,255,.08);}
+table.cmp th{color:var(--muted); font-weight:600;}
+table.cmp td:first-child, table.cmp th:first-child{text-align:right; color:var(--ink-soft);}
+.yes{color:var(--success); font-weight:700;}
+.no{color:var(--danger); font-weight:700;}
+
+/* ===== PROJECT ===== */
+.materials{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:.9rem; margin-bottom:2rem;}
+.mat-card{background:var(--bg-panel); border:1px solid rgba(255,255,255,.08); border-radius:12px; padding:1rem; text-align:center; font-size:.85rem;}
+.mat-card .ic{font-size:1.6rem; margin-bottom:.4rem;}
+.steps{display:flex; flex-direction:column; gap:.6rem;}
+.step-item{display:flex; align-items:flex-start; gap:.7rem; background:var(--bg-panel); border:1px solid rgba(255,255,255,.08); border-radius:12px; padding:.8rem 1rem;}
+.step-item input{margin-top:.25rem; accent-color:var(--chloro);}
+.step-item.checked span{text-decoration:line-through; color:var(--muted);}
+
+footer{text-align:center; padding:3rem 1rem 2.4rem; color:var(--muted); font-size:.8rem; border-top:1px solid rgba(255,255,255,.06);}
+
+@media(prefers-reduced-motion:reduce){.cell3d{animation:none;} html{scroll-behavior:auto;}}
+
+  /* ══ RESPONSIVE MOBILE & TABLET ══ */
+  @media (max-width: 768px) {
+    body { padding: 8px !important; font-size: 15px !important; overflow-x: hidden !important; }
+    .container, [class*="container"], [class*="wrapper"] { padding: 8px !important; max-width: 100% !important; }
+    canvas { width: 100% !important; height: auto !important; display: block !important; touch-action: none; max-width: 100% !important; }
+    svg { max-width: 100% !important; height: auto !important; }
+    h1 { font-size: clamp(18px,5vw,32px) !important; }
+    h2 { font-size: clamp(15px,4vw,26px) !important; }
+    h3 { font-size: clamp(13px,3.5vw,20px) !important; }
+    [class*="grid"] { grid-template-columns: 1fr !important; }
+    [class*="flex"] { flex-wrap: wrap !important; }
+    input[type="range"] { width: 100% !important; min-height: 36px; }
+    input[type="number"], input[type="text"], select, textarea {
+      font-size: 16px !important; width: 100% !important; box-sizing: border-box; padding: 8px !important; }
+    button { min-height: 44px !important; font-size: 14px !important; touch-action: manipulation; padding: 10px 14px !important; }
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 13px !important; }
+    th, td { padding: 6px 4px !important; }
+    header { padding: 10px 12px !important; }
+    .controls, [class*="controls"] { flex-direction: column !important; gap: 8px !important; }
+    .lab-window, [class*="lab-window"] { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+  }
+  @media (max-width: 480px) {
+    body { padding: 4px !important; }
+    button { width: 100% !important; }
+  }
+  /* ══ END RESPONSIVE ══ */
+</style>
+</head>
+<body>
+<style>
+.vlab-back{position:fixed;top:10px;left:10px;z-index:99999;
+background:rgba(10,22,40,0.93);border:1px solid rgba(0,200,150,0.4);
+border-radius:22px;padding:8px 16px;display:inline-flex;align-items:center;gap:7px;
+color:#00C896;font-family:Tajawal,Cairo,Arial,sans-serif;font-size:13px;font-weight:700;
+text-decoration:none;backdrop-filter:blur(8px);box-shadow:0 4px 18px rgba(0,0,0,0.3);
+transition:background 0.2s;}
+.vlab-back:hover{background:rgba(0,200,150,0.18);}
+</style>
+<a href="../grade5.html" class="vlab-back">&#8594; العودة للصف</a>
+
+
+<nav class="topnav">
+  <div class="brand"><span class="dot"></span> أحاكي الخلية</div>
+  <div class="nav-links">
+    <a href="#lesson">الدرس</a>
+    <a href="#lab">المختبر الافتراضي</a>
+    <a href="#conclude">الاستنتاجات</a>
+    <a href="#compare">قارن</a>
+    <a href="#project">المشروع</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="eyebrow">نشاط (٦) · العلوم والحياة · الصف الخامس · فلسطين</div>
+  <h1>أحاكي الخلية</h1>
+  <p class="sub">حرّك الخلية بإصبعك أو بالفأرة لتشاهدها من كل جانب، ثم انزل للأسفل لتبني خليتك الخاصة في المختبر الافتراضي.</p>
+
+  <div class="stage-wrap" id="stageWrap">
+    <div class="cell3d" id="cell3d">
+      <div class="shellA"></div>
+      <div class="shellB"></div>
+      <div class="orbit">
+        <div class="blob nuc"></div>
+        <div class="blob ch ch1"></div>
+        <div class="blob ch ch2"></div>
+        <div class="blob ch ch3"></div>
+        <div class="blob ch ch4"></div>
+        <div class="blob ch ch5"></div>
+      </div>
+    </div>
+  </div>
+  <small class="hint">اسحب الخلية لتدويرها ← 360°</small>
+</header>
+
+<section id="lesson">
+  <div class="section-head">
+    <div class="k">الحوار بين مكوّنات الخلية</div>
+    <h2>كل عضية تحكي قصتها</h2>
+    <p>مرّر الفأرة فوق كل بطاقة (أو اضغط عليها في الهاتف) لتسمع كل مكوّن من مكوّنات الخلية النباتية يعرّف عن نفسه.</p>
+  </div>
+  <div class="card-grid" id="organelleGrid"></div>
+</section>
+
+<section id="lab">
+  <div class="section-head">
+    <div class="k">التجربة</div>
+    <h2>المختبر الافتراضي: ابنِ الخلية النباتية</h2>
+    <p>اختر اسم المكوّن من القائمة، ثم اضغط على المكان الصحيح له داخل رسم الخلية. أكمل التجربة لتصل إلى النتائج.</p>
+  </div>
+
+  <div class="lab-shell">
+    <div class="lab-grid">
+      <div class="diagram-wrap" id="diagram">
+        <div class="hex"></div>
+        <div class="hex membrane-ring"></div>
+        <div class="slot" data-zone="wall" data-label="الجدار الخلوي">الجدار الخلوي</div>
+        <div class="slot" data-zone="membrane" data-label="الغشاء الخلوي">الغشاء الخلوي</div>
+        <div class="slot big" data-zone="nucleus" data-label="النواة">النواة</div>
+        <div class="slot tiny" data-zone="gene" data-label="المادة الوراثية">المادة الوراثية</div>
+        <div class="slot" data-zone="chloro" data-label="البلاستيدات الخضراء">البلاستيدات</div>
+        <div class="slot" data-zone="cyto" data-label="السيتوبلازم">السيتوبلازم</div>
+      </div>
+
+      <div class="lab-side">
+        <div>
+          <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+          <p class="feed-msg" id="feedMsg">اختر مكوّنًا من القائمة أدناه للبدء.</p>
+        </div>
+        <div class="chips" id="chipsRow"></div>
+        <div class="result-box" id="resultBox">نتيجة التجربة: لم تكتمل بعد — أكمل وضع كل المكوّنات في مكانها.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="conclude">
+  <div class="section-head">
+    <div class="k">التوصل إلى الاستنتاجات</div>
+    <h2>أجب ثم تحقق من استنتاجك</h2>
+    <p>بعد إجراء التجربة، أجب عن الأسئلة التالية بناءً على ما لاحظته.</p>
+  </div>
+  <div id="quizArea"></div>
+
+  <div class="think-box">
+    <h3>أُفكّر 🤔</h3>
+    <p>ما سبب تلوّن النباتات بألوان مختلفة (ليس الأخضر فقط)؟</p>
+    <div id="thinkOptions"></div>
+    <button class="check-btn" id="thinkCheck">تحقق من إجابتي</button>
+    <div class="explain" id="thinkExplain"></div>
+  </div>
+</section>
+
+<section id="compare">
+  <div class="section-head">
+    <div class="k">قارن</div>
+    <h2>حوار بين ثلاث خلايا</h2>
+    <p>اختر نوع الخلية لترى الفرق في مكوّناتها.</p>
+  </div>
+  <div class="tabbar">
+    <button data-cell="plant" class="active">الخلية النباتية</button>
+    <button data-cell="animal">الخلية الحيوانية</button>
+    <button data-cell="bacteria">الخلية البكتيرية</button>
+  </div>
+  <div class="compare-visual">
+    <div class="mini-cell plant" id="miniCell">
+      <div class="hexmini"></div>
+      <div class="nuc-m"></div>
+      <div class="ch-m a"></div><div class="ch-m b"></div><div class="ch-m c"></div>
+    </div>
+  </div>
+  <table class="cmp">
+    <thead><tr><th>المكوّن</th><th>نباتية</th><th>حيوانية</th><th>بكتيرية</th></tr></thead>
+    <tbody>
+      <tr><td>جدار خلوي</td><td class="yes">✔</td><td class="no">✘</td><td class="yes">✔</td></tr>
+      <tr><td>غشاء خلوي</td><td class="yes">✔</td><td class="yes">✔</td><td class="yes">✔</td></tr>
+      <tr><td>نواة حقيقية محاطة بغشاء</td><td class="yes">✔</td><td class="yes">✔</td><td class="no">✘</td></tr>
+      <tr><td>بلاستيدات خضراء</td><td class="yes">✔</td><td class="no">✘</td><td class="no">✘</td></tr>
+      <tr><td>شكل ثابت</td><td class="yes">✔</td><td class="no">✘</td><td class="yes">✔</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="project">
+  <div class="section-head">
+    <div class="k">مشروع تعاوني</div>
+    <h2>اصنع نموذج خلية من خامات البيئة</h2>
+    <p>تعاون مع زملائك في المجموعة لاختيار خلية من الخلايا السابقة، وصنع نموذج مجسّم لها.</p>
+  </div>
+
+  <div class="materials">
+    <div class="mat-card"><div class="ic">🧺</div>كرة فوم أو صلصال</div>
+    <div class="mat-card"><div class="ic">🎈</div>كيس نايلون شفاف</div>
+    <div class="mat-card"><div class="ic">🔴</div>خرز أو أزرار ملوّنة</div>
+    <div class="mat-card"><div class="ic">🧵</div>خيوط صوف ملوّنة</div>
+    <div class="mat-card"><div class="ic">📦</div>علبة كرتون فارغة</div>
+    <div class="mat-card"><div class="ic">🎨</div>ألوان وأوراق لاصقة</div>
+  </div>
+
+  <div class="steps" id="stepsList"></div>
+</section>
+
+<footer>
+  صُممت هذه الصفحة لدعم نشاط «أحاكي الخلية» ضمن منهاج العلوم والحياة – الصف الخامس – فلسطين.
+</footer>
+
+<script>
+/* ---------- بيانات المكوّنات ---------- */
+const organelles = [
+  {key:"wall", name:"الجدار الخلوي", color:"var(--wall)", text:"أنا الجدار الخلويّ، أعطي الخليّة النباتيّة الدّعامة والشّكل الثّابت، وأُحيط بالغشاء الخلويّ."},
+  {key:"membrane", name:"الغشاء الخلوي", color:"var(--membrane)", text:"أنا غشاء بلازميّ، أحمي مكوّنات الخليّة وأسمح بتبادل المواد من الخليّة وإليها."},
+  {key:"nucleus", name:"النواة", color:"var(--nucleus)", text:"أُحاط بغشاء نوويّ، وأحوي المادّة الوراثيّة، وأتحكّم بأنشطة الخليّة."},
+  {key:"chloro", name:"البلاستيدات الخضراء", color:"var(--chloro)", text:"أُكسِب الخلايا النباتيّة اللّون الأخضر، وأصنع الغذاء."},
+  {key:"cyto", name:"السيتوبلازم", color:"var(--cyto)", text:"أنا سائل هلاميّ أملأ فراغ الخليّة، ويوجد في داخلي النواة وجسيمات الخليّة التي تُسمّى عضيّات."},
+  {key:"gene", name:"المادة الوراثية", color:"var(--gene)", text:"أُحدّد صفات الكائن الحيّ، وأنقلها من الآباء إلى الأبناء، وأتواجد داخل النواة."},
+];
+
+const grid = document.getElementById('organelleGrid');
+organelles.forEach(o=>{
+  const el = document.createElement('div');
+  el.className='flip';
+  el.innerHTML = `
+    <button aria-label="${o.name}" style="width:100%;height:100%;display:block;">
+      <div class="flip-inner">
+        <div class="face front">
+          <div class="swatch" style="background:${o.color}"></div>
+          <h3>${o.name}</h3>
+          <span>اضغط لتسمع تعريفها</span>
+        </div>
+        <div class="face back">
+          <p><strong>${o.name}:</strong> ${o.text}</p>
+        </div>
+      </div>
+    </button>`;
+  grid.appendChild(el);
+});
+
+/* ---------- تدوير الخلية ثلاثية الأبعاد ---------- */
+const stageWrap = document.getElementById('stageWrap');
+const cell3d = document.getElementById('cell3d');
+let dragging=false, lastX=0, lastY=0, rotY=0, rotX=-14;
+function pointerDown(x,y){dragging=true; lastX=x; lastY=y; cell3d.classList.add('dragging');}
+function pointerMove(x,y){
+  if(!dragging) return;
+  const dx = x-lastX, dy = y-lastY;
+  rotY += dx*0.4; rotX -= dy*0.3;
+  rotX = Math.max(-70, Math.min(70, rotX));
+  cell3d.style.animation='none';
+  cell3d.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+  lastX=x; lastY=y;
+}
+function pointerUp(){dragging=false; cell3d.classList.remove('dragging');}
+stageWrap.addEventListener('mousedown', e=>pointerDown(e.clientX,e.clientY));
+window.addEventListener('mousemove', e=>pointerMove(e.clientX,e.clientY));
+window.addEventListener('mouseup', pointerUp);
+stageWrap.addEventListener('touchstart', e=>{const t=e.touches[0]; pointerDown(t.clientX,t.clientY);}, {passive:true});
+window.addEventListener('touchmove', e=>{const t=e.touches[0]; pointerMove(t.clientX,t.clientY);}, {passive:true});
+window.addEventListener('touchend', pointerUp);
+
+/* ---------- المختبر الافتراضي ---------- */
+const chipsRow = document.getElementById('chipsRow');
+const feedMsg = document.getElementById('feedMsg');
+const progressFill = document.getElementById('progressFill');
+const resultBox = document.getElementById('resultBox');
+let selectedKey = null;
+let placedCount = 0;
+const totalZones = organelles.length;
+
+const shuffled = [...organelles].sort(()=>Math.random()-0.5);
+shuffled.forEach(o=>{
+  const b = document.createElement('button');
+  b.className='chip';
+  b.textContent = o.name;
+  b.dataset.key = o.key;
+  b.addEventListener('click', ()=>{
+    if(b.classList.contains('done')) return;
+    document.querySelectorAll('.chip').forEach(c=>c.classList.remove('selected'));
+    if(selectedKey === o.key){ selectedKey=null; return; }
+    selectedKey = o.key;
+    b.classList.add('selected');
+    feedMsg.textContent = `اضغط الآن على مكان "${o.name}" داخل رسم الخلية.`;
+  });
+  chipsRow.appendChild(b);
+});
+
+document.querySelectorAll('.slot').forEach(slot=>{
+  slot.addEventListener('click', ()=>{
+    if(slot.classList.contains('filled')) return;
+    if(!selectedKey){ feedMsg.textContent='اختر مكوّنًا من القائمة أولًا.'; return; }
+    if(slot.dataset.zone === selectedKey){
+      const org = organelles.find(o=>o.key===selectedKey);
+      slot.classList.add('filled');
+      slot.style.background = org.color;
+      slot.style.borderColor = org.color;
+      slot.textContent = org.name;
+      const chip = [...document.querySelectorAll('.chip')].find(c=>c.dataset.key===selectedKey);
+      chip.classList.remove('selected'); chip.classList.add('done'); chip.disabled=true;
+      placedCount++;
+      progressFill.style.width = Math.round((placedCount/totalZones)*100)+'%';
+      feedMsg.textContent = 'صحيح! أُحسنت. اختر المكوّن التالي.';
+      selectedKey = null;
+      if(placedCount === totalZones){
+        resultBox.classList.add('ok');
+        resultBox.innerHTML = 'نتيجة التجربة: اكتملت الخليّة النباتيّة! لاحظ كيف يحيط الجدار الخلويّ بالغشاء، وكيف تتوسّط النواة السيتوبلازم، بينما تتوزّع البلاستيدات الخضراء في الأنحاء. <a href="#conclude" style="color:#c9f4d6;">انتقل الآن إلى الاستنتاجات ←</a>';
+      }
+    } else {
+      slot.classList.add('wrong');
+      feedMsg.textContent='هذا ليس المكان الصحيح، حاول مرة أخرى.';
+      setTimeout(()=>slot.classList.remove('wrong'), 350);
+    }
+  });
+});
+
+/* ---------- أسئلة الاستنتاج ---------- */
+const quizData = [
+  {q:"شكل الخلية النباتية ثابت، لماذا؟",
+   options:["لأن السيتوبلازم يشدّها من الداخل","لأن الجدار الخلوي يعطيها الدعامة ويحافظ على شكلها الثابت","لأن النواة كبيرة الحجم"],
+   correct:1,
+   explain:"الجدار الخلوي هو المسؤول عن إعطاء الخلية النباتية دعامتها وشكلها الثابت، بينما الغشاء الخلوي يحيط به من الداخل."},
+  {q:"لماذا تُعدّ النواة أهم جزء في الخلية؟",
+   options:["لأنها أكبر عضية في الخلية","لأنها تطفو في السيتوبلازم","لأنها تحوي المادة الوراثية وتتحكم بجميع أنشطة الخلية"],
+   correct:2,
+   explain:"النواة تحتوي على المادة الوراثية المسؤولة عن نقل الصفات، وهي التي توجّه وتتحكم بكل الأنشطة داخل الخلية."},
+  {q:"ما سبب تلوّن بعض أجزاء النباتات باللون الأخضر؟",
+   options:["بسبب وجود البلاستيدات الخضراء فيها","بسبب كثرة الماء في الأوراق","بسبب سماكة الجدار الخلوي"],
+   correct:0,
+   explain:"البلاستيدات الخضراء تحوي مادة اليخضور (الكلوروفيل) التي تعطي أجزاء النبات لونها الأخضر، وتساعد في صنع الغذاء."},
+];
+
+const quizArea = document.getElementById('quizArea');
+quizData.forEach((item, idx)=>{
+  const card = document.createElement('div');
+  card.className='quiz-card';
+  card.innerHTML = `
+    <h3>${idx+1}. ${item.q}</h3>
+    <div class="opts"></div>
+    <button class="check-btn">تحقق من إجابتي</button>
+    <div class="explain"></div>
+  `;
+  const optsWrap = card.querySelector('.opts');
+  item.options.forEach((opt,i)=>{
+    const label = document.createElement('label');
+    label.className='opt';
+    label.innerHTML = `<input type="radio" name="q${idx}" value="${i}"> <span>${opt}</span>`;
+    optsWrap.appendChild(label);
+  });
+  const btn = card.querySelector('.check-btn');
+  const explain = card.querySelector('.explain');
+  btn.addEventListener('click', ()=>{
+    const checked = card.querySelector(`input[name="q${idx}"]:checked`);
+    if(!checked){ explain.className='explain show wrong'; explain.textContent='اختر إجابة أولًا.'; return; }
+    const val = parseInt(checked.value);
+    if(val === item.correct){
+      explain.className='explain show right';
+      explain.textContent = 'إجابة صحيحة! ' + item.explain;
+    } else {
+      explain.className='explain show wrong';
+      explain.textContent = 'إجابة غير دقيقة. الصحيح: ' + item.explain;
+    }
+  });
+  quizArea.appendChild(card);
+});
+
+const thinkOptions = document.getElementById('thinkOptions');
+const thinkChoices = ["بسبب وجود بلاستيدات ملوّنة مختلفة إضافة لليخضور، تعطي كل نوع منها لونًا مختلفًا","بسبب اختلاف كمية الماء في كل نبات","بسبب اختلاف حجم النواة"];
+thinkChoices.forEach((t,i)=>{
+  const label=document.createElement('label');
+  label.className='opt';
+  label.innerHTML = `<input type="radio" name="think" value="${i}"> <span>${t}</span>`;
+  thinkOptions.appendChild(label);
+});
+document.getElementById('thinkCheck').addEventListener('click', ()=>{
+  const checked = document.querySelector('input[name="think"]:checked');
+  const explain = document.getElementById('thinkExplain');
+  if(!checked){ explain.className='explain show wrong'; explain.textContent='اختر إجابة أولًا.'; return; }
+  if(parseInt(checked.value) === 0){
+    explain.className='explain show right';
+    explain.textContent = 'صحيح! تحوي بعض النباتات بلاستيدات ملوّنة (غير خضراء) مثل البلاستيدات الحمراء أو الصفراء، وهي المسؤولة عن الألوان المختلفة إلى جانب اليخضور.';
+  } else {
+    explain.className='explain show wrong';
+    explain.textContent = 'غير دقيق. السبب هو وجود بلاستيدات ملوّنة مختلفة عن اليخضور تعطي النباتات ألوانها المتنوعة.';
+  }
+});
+
+/* ---------- قارن ---------- */
+const miniCell = document.getElementById('miniCell');
+document.querySelectorAll('.tabbar button').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.tabbar button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    miniCell.className = 'mini-cell ' + btn.dataset.cell;
+  });
+});
+
+/* ---------- خطوات المشروع ---------- */
+const stepsData = [
+  "اجتمعوا في مجموعتكم واختاروا نوع الخلية (نباتية، حيوانية، أو بكتيرية).",
+  "اجمعوا الخامات المتوفرة لديكم من البيئة المحيطة.",
+  "شكّلوا حدود الخلية (الغشاء أو الجدار) باستخدام الفوم أو الكيس الشفاف.",
+  "ضعوا النواة في المنتصف باستخدام كرة أو خرزة كبيرة ملوّنة.",
+  "وزّعوا العضيات الأخرى (كالبلاستيدات الخضراء إن وُجدت) داخل النموذج.",
+  "اكتبوا بطاقات صغيرة بأسماء المكوّنات وثبّتوها على النموذج.",
+  "اعرضوا نموذجكم أمام الصف واشرحوا وظيفة كل مكوّن."
+];
+const stepsList = document.getElementById('stepsList');
+stepsData.forEach((s,i)=>{
+  const item = document.createElement('label');
+  item.className='step-item';
+  item.innerHTML = `<input type="checkbox" data-i="${i}"><span>${i+1}. ${s}</span>`;
+  item.querySelector('input').addEventListener('change', function(){
+    item.classList.toggle('checked', this.checked);
+  });
+  stepsList.appendChild(item);
+});
+</script>
+</body>
+</html>

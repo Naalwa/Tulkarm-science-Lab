@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<meta http-equiv="Content-Language" content="ar">
+<title>الصيغة الكيميائية | مختبر البحر الميّت الافتراضي</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lalezar&family=Cairo:wght@400;500;600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sea-deep:#07333c;
+    --sea-mid:#0e5763;
+    --sea-glow:#1c8a94;
+    --salt-white:#f6f8f4;
+    --salt-cream:#eef2ea;
+    --amber:#d98e4a;   /* cations */
+    --coral:#c1554a;   /* anions */
+    --violet:#8072b0;  /* polyatomic ions */
+    --sand:#e8dcc3;
+    --ink:#0b2b30;
+    --ink-soft:#3c5c61;
+    --ok:#3f8f5f;
+    --bad:#c1554a;
+    --radius:18px;
+    --shadow-lg: 0 30px 60px -20px rgba(7,51,60,.45);
+    --shadow-sm: 0 10px 25px -12px rgba(7,51,60,.35);
+    font-size: 16px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(ellipse 900px 500px at 15% -5%, #123f47 0%, transparent 60%),
+      radial-gradient(ellipse 900px 500px at 100% 10%, #0d5560 0%, transparent 55%),
+      linear-gradient(180deg,var(--sea-deep), #052228 60%, #041b20);
+    color:var(--salt-white);
+    font-family:'Cairo','IBM Plex Sans Arabic',Tahoma,Arial,sans-serif;
+    line-height:1.9;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.display{font-family:'Lalezar','Cairo',sans-serif; font-weight:400; letter-spacing:.5px;}
+  p,li,td,th,label,input,select,button,span{font-family:'Cairo','IBM Plex Sans Arabic',Tahoma,Arial,sans-serif;}
+  a{color:inherit;}
+  img{max-width:100%; display:block;}
+
+  ::selection{background:var(--amber); color:var(--ink);}
+
+  /* ---------- Top nav ---------- */
+  .topbar{
+    position:sticky; top:0; z-index:50;
+    backdrop-filter: blur(14px) saturate(140%);
+    background:rgba(7,51,60,.72);
+    border-bottom:1px solid rgba(246,248,244,.08);
+  }
+  .topbar-inner{
+    max-width:1180px; margin:0 auto; padding:12px 20px;
+    display:flex; align-items:center; justify-content:space-between; gap:14px;
+  }
+  .brand{display:flex; align-items:center; gap:10px; font-family:'Lalezar'; font-size:1.25rem;}
+  .brand .dot{width:12px;height:12px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#fff,var(--amber));box-shadow:0 0 14px var(--amber);}
+  nav.links{display:flex; gap:4px; flex-wrap:wrap; justify-content:flex-end;}
+  nav.links a{
+    font-size:.85rem; padding:8px 12px; border-radius:999px; text-decoration:none;
+    color:var(--salt-cream); opacity:.8; white-space:nowrap;
+    transition:.25s;
+  }
+  nav.links a:hover{opacity:1; background:rgba(246,248,244,.1);}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    max-width:1180px; margin:0 auto; padding:70px 20px 40px;
+    display:grid; grid-template-columns: 1.15fr .85fr; gap:40px; align-items:center;
+  }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    background:rgba(217,142,74,.15); border:1px solid rgba(217,142,74,.4);
+    color:var(--amber); padding:6px 14px; border-radius:999px; font-size:.8rem; margin-bottom:18px;
+  }
+  .hero h1{font-size:3.4rem; margin:0 0 14px; line-height:1.25;
+    background:linear-gradient(95deg,#f6f8f4 20%, var(--sand) 55%, var(--amber));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .hero p.lead{color:var(--salt-cream); opacity:.85; font-size:1.08rem; max-width:52ch;}
+  .hero-cta{display:flex; gap:12px; margin-top:26px; flex-wrap:wrap;}
+  .btn{
+    border:none; cursor:pointer; padding:13px 24px; border-radius:14px;
+    font-family:'Cairo'; font-weight:700; font-size:.95rem;
+    transition:transform .2s, box-shadow .2s; text-decoration:none; display:inline-flex; align-items:center; gap:8px;
+  }
+  .btn-primary{background:linear-gradient(135deg,var(--amber),#c1712f); color:#1a1005; box-shadow:var(--shadow-sm);}
+  .btn-primary:hover{transform:translateY(-3px); box-shadow:0 18px 30px -10px rgba(217,142,74,.5);}
+  .btn-ghost{background:rgba(246,248,244,.08); color:var(--salt-white); border:1px solid rgba(246,248,244,.25);}
+  .btn-ghost:hover{background:rgba(246,248,244,.16);}
+
+  /* hero 3d water scene */
+  .hero-scene{
+    perspective:1200px; height:340px; position:relative;
+  }
+  .sea-tilt{
+    position:absolute; inset:0; border-radius:28px; overflow:hidden;
+    transform:rotateX(12deg) rotateY(-14deg);
+    box-shadow:var(--shadow-lg);
+    background:
+      linear-gradient(180deg, #bfe3df 0%, #8fd0cf 18%, #2a9aa0 42%, #0e5763 70%, #073a42 100%);
+    border:1px solid rgba(246,248,244,.25);
+    animation:floaty 7s ease-in-out infinite;
+  }
+  @keyframes floaty{0%,100%{transform:rotateX(12deg) rotateY(-14deg) translateY(0);} 50%{transform:rotateX(9deg) rotateY(-11deg) translateY(-10px);}}
+  .salt-crust{position:absolute; bottom:0; left:0; right:0; height:38%;
+    background:
+      radial-gradient(circle at 20% 30%, rgba(255,255,255,.9) 0 3px, transparent 4px) 0 0/26px 26px,
+      radial-gradient(circle at 60% 60%, rgba(255,255,255,.7) 0 2px, transparent 3px) 0 0/20px 20px,
+      linear-gradient(180deg, #f6f8f4, #d8d0bd 60%, #b7ac8f);
+    clip-path: polygon(0 30%, 12% 18%, 24% 32%, 38% 12%, 52% 28%, 66% 10%, 80% 26%, 100% 14%, 100% 100%, 0 100%);
+  }
+  .float-crystal{
+    position:absolute; width:34px; height:34px; background:linear-gradient(135deg,#fff,#cfe9e6);
+    transform:rotate(45deg); border-radius:6px; box-shadow:0 8px 16px rgba(0,0,0,.25);
+    animation:bob 5s ease-in-out infinite;
+  }
+  .float-crystal.c2{width:20px;height:20px; top:20%; right:22%; animation-delay:1.2s;}
+  .float-crystal.c1{top:14%; left:14%;}
+  .float-crystal.c3{width:16px;height:16px; top:40%; left:60%; animation-delay:2.4s;}
+  @keyframes bob{0%,100%{transform:rotate(45deg) translateY(0);} 50%{transform:rotate(58deg) translateY(-14px);}}
+
+  section{max-width:1180px; margin:0 auto; padding:70px 20px;}
+  .section-head{max-width:70ch; margin-bottom:38px;}
+  .section-head .tag{color:var(--amber); font-size:.82rem; letter-spacing:2px; text-transform:uppercase; font-family:'Cairo'; font-weight:700;}
+  .section-head h2{font-size:2.3rem; margin:.3em 0 .2em;}
+  .section-head p{color:var(--salt-cream); opacity:.8;}
+
+  .card{
+    background:linear-gradient(165deg, rgba(246,248,244,.07), rgba(246,248,244,.03));
+    border:1px solid rgba(246,248,244,.12);
+    border-radius:var(--radius);
+    padding:26px;
+    box-shadow:var(--shadow-sm);
+  }
+  .card.light{
+    background:linear-gradient(165deg,#fbfbf8,#f0f1ea);
+    color:var(--ink); border:1px solid rgba(11,43,48,.08);
+  }
+  .card.light .muted{color:var(--ink-soft);}
+
+  /* ---------- intro activity accordion ---------- */
+  .activity-photo{
+    border-radius:var(--radius); overflow:hidden; height:220px; position:relative; margin-bottom:22px;
+    background:
+      linear-gradient(180deg, #cfeae5 0%, #7cc7c4 30%, #1c8a94 55%, #0e5763 100%);
+  }
+  .activity-photo::after{
+    content:""; position:absolute; inset:0;
+    background: radial-gradient(circle at 15% 85%, rgba(255,255,255,.75) 0 3px, transparent 4px) 0 0/24px 24px,
+                radial-gradient(circle at 55% 92%, rgba(255,255,255,.6) 0 2px, transparent 3px) 0 0/18px 18px;
+  }
+  .qa-list{display:flex; flex-direction:column; gap:10px;}
+  .qa{
+    border:1px solid rgba(246,248,244,.14); border-radius:14px; overflow:hidden;
+    background:rgba(246,248,244,.04);
+  }
+  .qa summary{
+    cursor:pointer; padding:16px 18px; list-style:none; display:flex; align-items:center; gap:12px;
+    font-weight:700; font-size:.98rem;
+  }
+  .qa summary::-webkit-details-marker{display:none;}
+  .qa summary .num{
+    flex:0 0 auto; width:28px; height:28px; border-radius:50%;
+    background:var(--sea-glow); color:#fff; display:flex; align-items:center; justify-content:center;
+    font-size:.85rem; font-weight:800;
+  }
+  .qa summary::after{content:"＋"; margin-inline-start:auto; color:var(--amber); font-size:1.1rem;}
+  .qa[open] summary::after{content:"－";}
+  .qa .answer{padding:0 18px 18px 56px; color:var(--salt-cream); opacity:.9; font-size:.95rem;}
+
+  /* ---------- tables ---------- */
+  .table-wrap{overflow-x:auto; border-radius:14px; border:1px solid rgba(246,248,244,.12);}
+  table{width:100%; border-collapse:collapse; min-width:520px;}
+  thead th{
+    background:linear-gradient(135deg,var(--sea-glow),var(--sea-mid)); color:#fff;
+    padding:12px 14px; font-size:.88rem; font-weight:700; text-align:center;
+  }
+  tbody td{padding:11px 14px; text-align:center; font-size:.92rem; border-top:1px solid rgba(246,248,244,.1);}
+  tbody tr:nth-child(odd){background:rgba(246,248,244,.03);}
+  .light table thead th{background:linear-gradient(135deg,#c1554a,#a5453c); color:#fff;}
+  .light tbody td{border-top:1px solid rgba(11,43,48,.08);}
+  .light tbody tr:nth-child(odd){background:rgba(11,43,48,.03);}
+  .chg{font-weight:800;}
+  .chg.pos{color:var(--amber);}
+  .chg.neg{color:var(--coral);}
+
+  .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:24px;}
+  .grid-3{display:grid; grid-template-columns:repeat(3,1fr); gap:20px;}
+
+  /* ---------- method steps ---------- */
+  .steps{counter-reset:step; display:flex; flex-direction:column; gap:14px;}
+  .step{
+    display:flex; gap:16px; align-items:flex-start; background:rgba(246,248,244,.04);
+    border:1px solid rgba(246,248,244,.1); border-radius:14px; padding:16px 18px;
+  }
+  .step .n{
+    counter-increment:step; content:counter(step);
+    flex:0 0 auto; width:34px; height:34px; border-radius:10px;
+    background:linear-gradient(135deg,var(--amber),#a5652c); display:flex; align-items:center; justify-content:center;
+    font-family:'Lalezar'; font-size:1.1rem; color:#1a1005;
+  }
+  .step .n::before{content:counter(step);}
+
+  .worked-example{
+    display:flex; align-items:center; justify-content:center; gap:18px; flex-wrap:wrap;
+    background:rgba(246,248,244,.05); border:1px dashed rgba(246,248,244,.3);
+    border-radius:16px; padding:24px; margin-top:10px; position:relative;
+  }
+  .ion-box{
+    display:flex; flex-direction:column; align-items:center; gap:6px;
+    background:rgba(246,248,244,.08); border-radius:12px; padding:14px 20px; min-width:90px;
+  }
+  .ion-box .sym{font-size:1.6rem; font-weight:800;}
+  .ion-box .chg-label{font-size:.85rem; opacity:.85;}
+  .cross-arrow{font-size:1.6rem; color:var(--amber);}
+  .result-formula{font-size:1.9rem; font-weight:800; background:rgba(217,142,74,.15); border:1px solid rgba(217,142,74,.4); padding:10px 22px; border-radius:12px;}
+
+  /* ---------- lab ---------- */
+  .lab-shell{
+    display:grid; grid-template-columns: .9fr 1.1fr; gap:30px; align-items:stretch;
+  }
+  .picker{
+    background:rgba(246,248,244,.05); border:1px solid rgba(246,248,244,.12); border-radius:var(--radius); padding:22px;
+  }
+  .picker h3{margin:0 0 4px; font-size:1.25rem;}
+  .picker .hint{font-size:.85rem; opacity:.7; margin-bottom:14px;}
+  .chip-grid{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:22px;}
+  .chip{
+    border:1px solid rgba(246,248,244,.25); background:rgba(246,248,244,.06); color:var(--salt-white);
+    padding:9px 14px; border-radius:999px; cursor:pointer; font-size:.85rem; display:flex; gap:6px; align-items:center;
+    transition:.2s;
+  }
+  .chip b{font-size:.95rem;}
+  .chip small{opacity:.7;}
+  .chip.cation.active{background:linear-gradient(135deg,var(--amber),#a5652c); border-color:var(--amber); color:#1a1005; font-weight:800;}
+  .chip.anion.active{background:linear-gradient(135deg,var(--coral),#8f3b32); border-color:var(--coral); color:#fff; font-weight:800;}
+  .chip:hover{transform:translateY(-2px);}
+
+  .lab-stage{
+    background:radial-gradient(ellipse at 50% 20%, #0e5763 0%, #073a42 55%, #04222a 100%);
+    border-radius:var(--radius); border:1px solid rgba(246,248,244,.14);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:26px; min-height:460px; position:relative; overflow:hidden;
+  }
+  .lab-stage::before{
+    content:""; position:absolute; inset:0;
+    background:radial-gradient(circle at 15% 15%, rgba(246,248,244,.06), transparent 40%);
+  }
+  .crossing-visual{display:flex; align-items:center; gap:22px; margin-bottom:18px; z-index:2;}
+  .stage-ion{
+    display:flex; flex-direction:column; align-items:center; gap:4px;
+    background:rgba(246,248,244,.08); border-radius:14px; padding:14px 18px; min-width:96px;
+  }
+  .stage-ion.cation{border:1px solid rgba(217,142,74,.6);}
+  .stage-ion.anion{border:1px solid rgba(193,85,74,.6);}
+  .stage-ion .sym{font-size:1.7rem; font-weight:800;}
+  .stage-ion .lbl{font-size:.78rem; opacity:.75;}
+  .swap-arrows{font-size:1.5rem; color:var(--sand); position:relative;}
+  .swap-arrows span{display:block; animation:crosspulse 1.8s ease-in-out infinite;}
+  @keyframes crosspulse{0%,100%{opacity:.4;} 50%{opacity:1;}}
+
+  .formula-out{
+    font-size:2.4rem; font-weight:800; margin:6px 0 20px; z-index:2;
+    background:rgba(246,248,244,.1); padding:10px 30px; border-radius:14px; border:1px solid rgba(246,248,244,.2);
+    min-height:1.4em; display:flex; align-items:center; justify-content:center;
+  }
+
+  .crystal-3d{
+    width:100%; height:210px; perspective:900px; z-index:2; margin-bottom:8px;
+  }
+  .crystal-inner{
+    width:100%; height:100%; position:relative; transform-style:preserve-3d;
+    animation:spin 14s linear infinite;
+  }
+  @keyframes spin{from{transform:rotateY(0deg) rotateX(18deg);} to{transform:rotateY(360deg) rotateX(18deg);}}
+  .atom{
+    position:absolute; top:50%; left:50%; width:34px; height:34px; margin:-17px 0 0 -17px;
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center; font-size:.68rem; font-weight:800; color:#fff;
+    box-shadow: inset -4px -4px 8px rgba(0,0,0,.35), 0 4px 10px rgba(0,0,0,.35);
+  }
+  .atom.cation{background:radial-gradient(circle at 32% 28%, #ffd9ac, var(--amber) 60%, #8a5a26);}
+  .atom.anion{background:radial-gradient(circle at 32% 28%, #f0b3ab, var(--coral) 60%, #7a2f28);}
+
+  .lab-caption{font-size:.85rem; opacity:.75; text-align:center; max-width:46ch; z-index:2;}
+  .lab-footnote{margin-top:14px; font-size:.85rem; text-align:center; opacity:.85; z-index:2; background:rgba(0,0,0,.18); padding:8px 14px; border-radius:10px;}
+
+  /* ---------- practice ---------- */
+  .practice-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  .practice-row{
+    display:flex; align-items:center; gap:12px; background:rgba(246,248,244,.05);
+    border:1px solid rgba(246,248,244,.12); border-radius:12px; padding:12px 16px; flex-wrap:wrap;
+  }
+  .practice-row .given{font-weight:800; font-size:1.1rem; min-width:120px;}
+  .practice-row input[type=text]{
+    flex:1; min-width:140px; background:rgba(246,248,244,.08); border:1px solid rgba(246,248,244,.25);
+    border-radius:8px; padding:9px 12px; color:var(--salt-white); font-size:.95rem;
+  }
+  .practice-row input[type=text]::placeholder{color:rgba(246,248,244,.45);}
+  .check-btn{
+    background:var(--sea-glow); border:none; color:#fff; padding:9px 16px; border-radius:8px; cursor:pointer; font-weight:700; font-size:.85rem;
+  }
+  .check-btn:hover{background:#22a1ac;}
+  .feedback{font-size:.85rem; min-width:26px; text-align:center;}
+  .feedback.ok{color:var(--ok); font-weight:800;}
+  .feedback.bad{color:var(--coral); font-weight:800;}
+
+  /* activity2 table */
+  .fill-table td input{
+    width:100%; background:rgba(246,248,244,.08); border:1px solid rgba(246,248,244,.25); border-radius:6px;
+    padding:6px 8px; color:var(--salt-white); font-size:.85rem; text-align:center;
+  }
+  .light .fill-table td input{color:var(--ink); background:#fff; border:1px solid rgba(11,43,48,.2);}
+
+  select.select-answer{
+    background:rgba(246,248,244,.08); border:1px solid rgba(246,248,244,.3); color:var(--salt-white);
+    padding:8px 10px; border-radius:8px; font-size:.85rem;
+  }
+  .light select.select-answer{background:#fff; color:var(--ink); border:1px solid rgba(11,43,48,.2);}
+
+  .btn-check-all{margin-top:16px;}
+
+  footer{
+    text-align:center; padding:50px 20px 70px; opacity:.6; font-size:.85rem;
+  }
+
+  /* tilt card hover (3D touch) */
+  .tilt{transition:transform .35s ease, box-shadow .35s ease;}
+  @media (hover:hover){
+    .tilt:hover{transform:perspective(900px) rotateX(3deg) rotateY(-3deg) translateY(-4px); box-shadow:var(--shadow-lg);}
+  }
+
+  .legend{display:flex; gap:18px; flex-wrap:wrap; margin-top:10px; font-size:.82rem; opacity:.85;}
+  .legend span{display:inline-flex; align-items:center; gap:6px;}
+  .legend .dotc{width:12px;height:12px;border-radius:50%; display:inline-block;}
+
+  @media(max-width:920px){
+    .hero{grid-template-columns:1fr; padding-top:40px;}
+    .hero h1{font-size:2.4rem;}
+    .hero-scene{height:220px;}
+    .grid-2, .grid-3, .practice-grid{grid-template-columns:1fr;}
+    .lab-shell{grid-template-columns:1fr;}
+    nav.links{display:none;}
+    .section-head h2{font-size:1.8rem;}
+  }
+
+  /* ═══ RESPONSIVE MOBILE & TABLET — AUTO-INJECTED ═══ */
+  @media (max-width: 768px) {
+    body { padding: 8px !important; font-size: 15px !important; overflow-x: hidden !important; }
+    .container, [class*="container"], [class*="wrapper"] { padding: 8px !important; max-width: 100% !important; }
+    canvas { width: 100% !important; height: auto !important; display: block !important; touch-action: none; max-width: 100% !important; }
+    svg { max-width: 100% !important; height: auto !important; }
+    h1 { font-size: clamp(18px, 5vw, 32px) !important; }
+    h2 { font-size: clamp(16px, 4vw, 26px) !important; }
+    h3 { font-size: clamp(14px, 3.5vw, 22px) !important; }
+    p, li, td, th, label, span { font-size: clamp(13px, 3.5vw, 16px) !important; }
+    [class*="grid"] { grid-template-columns: 1fr !important; }
+    [class*="flex"] { flex-wrap: wrap !important; }
+    input[type="range"] { width: 100% !important; min-height: 36px; }
+    input[type="number"], input[type="text"], select, textarea { 
+      font-size: 16px !important; width: 100% !important; box-sizing: border-box; padding: 8px !important;
+    }
+    button { min-height: 44px !important; font-size: 14px !important; touch-action: manipulation; padding: 10px 14px !important; }
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 13px !important; }
+    th, td { padding: 6px 4px !important; white-space: nowrap; }
+    [style*="display: grid"], [style*="display:grid"] { display: flex !important; flex-direction: column !important; }
+    .lab-window, [class*="lab-window"] { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+    header { padding: 12px !important; }
+    .controls, [class*="controls"] { flex-direction: column !important; gap: 8px !important; }
+  }
+  @media (max-width: 480px) {
+    body { padding: 4px !important; }
+    h1 { font-size: clamp(16px, 5vw, 24px) !important; }
+    button { width: 100% !important; }
+  }
+  /* ═══ END RESPONSIVE ═══ */
+</style>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<style>
+.vlab-back-btn {
+  position: fixed; top: 10px; left: 10px; z-index: 99999;
+  background: rgba(10,22,40,0.93); border: 1px solid rgba(0,200,150,0.4);
+  border-radius: 22px; padding: 8px 16px;
+  display: inline-flex; align-items: center; gap: 7px;
+  color: #00C896; font-family: Tajawal, Cairo, Arial, sans-serif;
+  font-size: 13px; font-weight: 700; text-decoration: none;
+  backdrop-filter: blur(8px); box-shadow: 0 4px 18px rgba(0,0,0,0.3);
+  transition: background 0.2s;
+}
+.vlab-back-btn:hover { background: rgba(0,200,150,0.18); color: #00C896; }
+</style>
+
+<a href="../grade8.html" class="vlab-back-btn">&#8594; العودة للصف</a>
+
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand"><span class="dot"></span> الصيغة الكيميائية</div>
+    <nav class="links">
+      <a href="#intro">الرحلة</a>
+      <a href="#definition">التعريف</a>
+      <a href="#charges">الشحنات</a>
+      <a href="#method">الطريقة</a>
+      <a href="#lab">المختبر الافتراضي</a>
+      <a href="#practice">تدريبات</a>
+      <a href="#activity2">نشاط العناصر</a>
+      <a href="#activity3">شحنة العنصر</a>
+    </nav>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero" id="top">
+  <div>
+    <div class="eyebrow">🧪 الدرس الثالث — العلوم والحياة، الصف الثامن، فلسطين</div>
+    <h1>الصيغة الكيميائية</h1>
+    <p class="lead">
+      من ملح البحر الميّت إلى ذرّات الأكسجين في الماء: تعرّف كيف تُكتب رموز العناصر والمجموعات الأيونية على شكل
+      <strong>صيغة كيميائية</strong> واحدة متعادلة الشحنة، ثم جرّب بنفسك في المختبر الافتراضي ثلاثي الأبعاد.
+    </p>
+    <div class="hero-cta">
+      <a href="#lab" class="btn btn-primary">ابدأ التجربة الافتراضية ⚗️</a>
+      <a href="#intro" class="btn btn-ghost">اقرأ نشاط البحر الميّت</a>
+    </div>
+  </div>
+  <div class="hero-scene">
+    <div class="sea-tilt">
+      <div class="salt-crust"></div>
+      <div class="float-crystal c1"></div>
+      <div class="float-crystal c2"></div>
+      <div class="float-crystal c3"></div>
+    </div>
+  </div>
+</div>
+
+<!-- INTRO ACTIVITY -->
+<section id="intro">
+  <div class="section-head">
+    <div class="tag">نشاط (١)</div>
+    <h2>رحلة إلى البحر الميّت</h2>
+    <p>قامت مجموعة من طلبة الصفّ الثامن في إحدى المدارس الفلسطينية برحلة علميّة إلى البحر الميّت، وجمعوا عيّنات من الطين والملح وماء البحر. اقرأ القصة ثم افتح كل سؤال لترى الفكرة العلمية وراءه.</p>
+  </div>
+  <div class="grid-2">
+    <div class="card light tilt">
+      <div class="activity-photo"></div>
+      <p class="muted">
+        يُعدّ البحر الميّت المنطقة الأكثر انخفاضًا على سطح الأرض، وينخفض سطحه حاليًا نحو ٤٠٠م تقريبًا نتيجة قلّة الأمطار
+        وازدياد نسبة استخدام مياه نهر الأردن، ما رفع تركيز الأملاح فيه. يحتوي كل لتر واحد من مياهه على نحو ٣٥٠ غم من
+        الأملاح، أهمّها أملاح <strong>المغنيسيوم، والصوديوم، والبوتاسيوم</strong>.
+      </p>
+    </div>
+    <div class="qa-list" id="introQA"></div>
+  </div>
+</section>
+
+<!-- DEFINITION -->
+<section id="definition">
+  <div class="section-head">
+    <div class="tag">المفهوم الأساسي</div>
+    <h2>ما هي الصيغة الكيميائية؟</h2>
+    <p>إن التعبير عن العناصر الكيميائيّة بالرموز يساعدنا في كتابة الصيغة الكيميائية للمركّبات.</p>
+  </div>
+  <div class="card tilt">
+    <p style="font-size:1.05rem;">
+      <strong style="color:var(--amber)">الصيغة الكيميائية</strong> هي تعبير بالرموز يبيّن نوع الذرّات المكوِّنة للمركّب،
+      وعددها في جزيء واحد من المركّب.
+    </p>
+    <div class="grid-3" style="margin-top:20px;">
+      <div class="card light" style="text-align:center;">
+        <div style="font-size:2.4rem; font-weight:800;">CO<span style="font-size:1.2rem; vertical-align:sub;">2</span></div>
+        <p class="muted" style="margin:6px 0 0;">ثاني أكسيد الكربون</p>
+      </div>
+      <div class="card light" style="text-align:center;">
+        <div style="font-size:2.4rem; font-weight:800;">NaCl</div>
+        <p class="muted" style="margin:6px 0 0;">كلوريد الصوديوم</p>
+      </div>
+      <div class="card light" style="text-align:center;">
+        <div style="font-size:2.4rem; font-weight:800;">H<span style="font-size:1.2rem; vertical-align:sub;">2</span>O</div>
+        <p class="muted" style="margin:6px 0 0;">الماء</p>
+      </div>
+    </div>
+    <p style="margin-top:20px;">
+      تسعى العناصر دائمًا إلى الوصول لحالة الاستقرار، وهي الحالة التي يصبح فيها التركيب الإلكتروني للعنصر مشابهًا للتركيب
+      الإلكتروني لأقرب غاز نبيل له، فقد يميل إلى فقدان الإلكترونات أو كسبها أو مشاركتها. ينتج عن فقد الذرّة أو اكتسابها
+      للإلكترونات أيون يحمل شحنة سالبة أو موجبة، ويُسمّى الأيون الذي يتكوّن من مجموعة من الذرّات
+      <strong style="color:var(--violet)">بالمجموعة الأيونية</strong>.
+    </p>
+  </div>
+</section>
+
+<!-- CHARGES TABLES -->
+<section id="charges">
+  <div class="section-head">
+    <div class="tag">قبل أن تدخل المختبر</div>
+    <h2>جداول شحنات العناصر والمجموعات الأيونية</h2>
+    <p>احفظ هذه الشحنات جيّدًا؛ فهي المفتاح لبناء أي صيغة كيميائية صحيحة.</p>
+  </div>
+
+  <h3 style="margin-top:0;">أولًا: شحنات بعض عناصر الجدول الدوري</h3>
+  <div class="table-wrap">
+    <table id="elementChargeTable"></table>
+  </div>
+
+  <p style="margin:18px 0 8px;">تتوفّر لبعض العناصر أكثر من شحنة، ويُميَّز ذلك باستخدام الأرقام اللاتينية:</p>
+  <div class="table-wrap" style="max-width:420px;">
+    <table>
+      <thead><tr><th>الرقم</th><th>١</th><th>٢</th><th>٣</th></tr></thead>
+      <tbody><tr><td>الرقم اللاتيني</td><td>I</td><td>II</td><td>III</td></tr></tbody>
+    </table>
+  </div>
+
+  <h3 style="margin-top:34px;">ثانيًا: شحنات أشهر المجموعات الأيونية</h3>
+  <div class="table-wrap">
+    <table id="ionGroupTable"></table>
+  </div>
+  <div class="legend">
+    <span><i class="dotc" style="background:var(--amber);"></i> عنصر / أيون موجب (كاتيون)</span>
+    <span><i class="dotc" style="background:var(--coral);"></i> عنصر / أيون سالب (أنيون)</span>
+    <span><i class="dotc" style="background:var(--violet);"></i> مجموعة أيونية متعدّدة الذرّات</span>
+  </div>
+</section>
+
+<!-- METHOD -->
+<section id="method">
+  <div class="section-head">
+    <div class="tag">خطوة بخطوة</div>
+    <h2>كتابة الصيغة الكيميائية بطريقة تبادل الشحنات</h2>
+    <p>لكتابة الصيغة الكيميائية للمركّب، تُكتَسب رموز العناصر أو المجموعات الأيونية وشحنة كلّ منها، ويتمّ تبادل الشحنات حتى تصبح الشحنة الكليّة للمركّب صفرًا؛ لأنّ المركّب الكيميائي يجب أن يكون متعادلًا.</p>
+  </div>
+  <div class="grid-2">
+    <div class="steps">
+      <div class="step"><div class="n"></div><div>نكتب رموز العنصرين أو العنصر والمجموعة الأيونية.</div></div>
+      <div class="step"><div class="n"></div><div>نكتب شحنة كلّ منهما تحت الرمز (بدون الإشارة).</div></div>
+      <div class="step"><div class="n"></div><div>نُبادل الشحنتين لتصبحا رقمي التبعية (subscript) لكل رمز.</div></div>
+      <div class="step"><div class="n"></div><div>نبسّط النسبة إن أمكن، ونكتب الصيغة النهائية — وإن كانت المجموعة الأيونية متعدّدة الذرّات وتحتاج أكثر من واحدة، توضع بين قوسين.</div></div>
+    </div>
+    <div class="card light tilt">
+      <p class="muted" style="margin-top:0;"><strong>مثال ١:</strong> صيغة كلوريد المغنيسيوم</p>
+      <div class="worked-example" style="background:#fff; border:1px dashed rgba(11,43,48,.25);">
+        <div class="ion-box" style="background:#f0e6d2;"><span class="sym">Mg</span><span class="chg-label">2+</span></div>
+        <span class="cross-arrow">⇄</span>
+        <div class="ion-box" style="background:#f3e0dd;"><span class="sym">Cl</span><span class="chg-label">1-</span></div>
+      </div>
+      <p style="text-align:center; margin:14px 0 0;">↓ بعد تبادل الشحنات ↓</p>
+      <div style="text-align:center; margin-top:8px;">
+        <span class="result-formula" style="background:#fbe7cf; border-color:#d98e4a; color:#1a1005;">MgCl<span style="font-size:1.1rem; vertical-align:sub;">2</span></span>
+      </div>
+      <p class="muted" style="margin-top:22px;"><strong>مثال ٢:</strong> صيغة نترات الحديد (III)</p>
+      <div class="worked-example" style="background:#fff; border:1px dashed rgba(11,43,48,.25);">
+        <div class="ion-box" style="background:#f0e6d2;"><span class="sym">Fe</span><span class="chg-label">3+</span></div>
+        <span class="cross-arrow">⇄</span>
+        <div class="ion-box" style="background:#e6e0f0;"><span class="sym">NO₃</span><span class="chg-label">1-</span></div>
+      </div>
+      <p style="text-align:center; margin:14px 0 0;">↓ بعد تبادل الشحنات ↓</p>
+      <div style="text-align:center; margin-top:8px;">
+        <span class="result-formula" style="background:#fbe7cf; border-color:#d98e4a; color:#1a1005;">Fe(NO₃)<span style="font-size:1.1rem; vertical-align:sub;">3</span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VIRTUAL LAB -->
+<section id="lab">
+  <div class="section-head">
+    <div class="tag">المختبر الافتراضي ثلاثي الأبعاد</div>
+    <h2>ابنِ ملحك الخاص من مياه البحر الميّت 🧫</h2>
+    <p>اختر أيونًا موجبًا (كاتيون) وأيونًا سالبًا (أنيون)، وشاهد عملية تبادل الشحنات وتبلور المركّب في الفراغ ثلاثي الأبعاد.</p>
+  </div>
+  <div class="lab-shell">
+    <div class="picker">
+      <h3>١. اختر الكاتيون (+)</h3>
+      <div class="hint">أيونات موجبة الشحنة — غالبًا من الفلزّات</div>
+      <div class="chip-grid" id="cationPicker"></div>
+
+      <h3>٢. اختر الأنيون (−)</h3>
+      <div class="hint">أيونات سالبة الشحنة — عناصر لا فلزّية أو مجموعات أيونية</div>
+      <div class="chip-grid" id="anionPicker"></div>
+
+      <button class="btn btn-primary" id="reactBtn" style="width:100%; justify-content:center;">⚗️ نفّذ التفاعل وابنِ الصيغة</button>
+    </div>
+
+    <div class="lab-stage">
+      <div class="crossing-visual" id="crossingVisual">
+        <div class="stage-ion cation" id="stageCation">
+          <span class="sym">؟</span><span class="lbl">اختر كاتيونًا</span>
+        </div>
+        <div class="swap-arrows"><span>⇄</span></div>
+        <div class="stage-ion anion" id="stageAnion">
+          <span class="sym">؟</span><span class="lbl">اختر أنيونًا</span>
+        </div>
+      </div>
+
+      <div class="formula-out" id="formulaOut">—</div>
+
+      <div class="crystal-3d">
+        <div class="crystal-inner" id="crystalInner"></div>
+      </div>
+
+      <p class="lab-caption">كلّ كرة برتقالية تمثّل ذرّة كاتيون واحدة، وكلّ كرة قرمزية تمثّل ذرّة أنيون واحدة — نسبتها في التركيب مطابقة تمامًا لأرقام التبعية في الصيغة الكيميائية.</p>
+      <div class="lab-footnote" id="labFootnote">النتيجة: اختر أيونين لتبدأ التجربة.</div>
+    </div>
+  </div>
+</section>
+
+<!-- PRACTICE -->
+<section id="practice">
+  <div class="section-head">
+    <div class="tag">تحدّي الطالب</div>
+    <h2>تدريبات على تسمية وكتابة الصيغ</h2>
+    <p>استخدم جداول الشحنات أعلاه، أو المختبر الافتراضي، للإجابة. اكتب إجابتك ثم اضغط "تحقّق".</p>
+  </div>
+
+  <h3 style="margin-top:0;">أ) اكتب الصيغة الكيميائية للمركّبات التالية</h3>
+  <div class="practice-grid" id="practiceWrite"></div>
+
+  <h3 style="margin-top:34px;">ب) سمِّ المركّبات الكيميائية التالية</h3>
+  <div class="practice-grid" id="practiceName"></div>
+</section>
+
+<!-- ACTIVITY 2 -->
+<section id="activity2">
+  <div class="section-head">
+    <div class="tag">نشاط (٢)</div>
+    <h2>العناصر تكوّن المركّبات</h2>
+    <p>أكمل الجدول التالي بذكر العناصر المكوِّنة لكلّ مركّب، وعدد ذرّات كلّ عنصر فيه، ثم اضغط "تحقّق من الإجابات".</p>
+  </div>
+  <div class="table-wrap">
+    <table class="fill-table" id="activity2Table"></table>
+  </div>
+  <button class="btn btn-primary btn-check-all" id="checkAct2">تحقّق من الإجابات</button>
+  <div id="act2Feedback" style="margin-top:10px; font-size:.9rem;"></div>
+
+  <div class="card tilt" style="margin-top:26px;">
+    <p style="margin-top:0;"><strong>أيّ المركّبات المذكورة في الجدول أعلاه يُستخدم في:</strong></p>
+    <div id="usesQuestions" style="display:flex; flex-direction:column; gap:12px;"></div>
+    <button class="btn btn-ghost" id="checkUses" style="margin-top:14px;">تحقّق</button>
+    <div id="usesFeedback" style="margin-top:10px; font-size:.9rem;"></div>
+  </div>
+</section>
+
+<!-- ACTIVITY 3 -->
+<section id="activity3">
+  <div class="section-head">
+    <div class="tag">نشاط (٣)</div>
+    <h2>شحنة العنصر وعلاقتها بالتركيب الإلكتروني</h2>
+    <p>يعتمد ميل الذرّة لفقد أو اكتساب الإلكترونات على عدد الإلكترونات في مستوى الطاقة الأخير، سعيًا للوصول إلى تركيب إلكتروني مطابق لأقرب غاز نبيل.</p>
+  </div>
+  <div class="table-wrap">
+    <table id="activity3Table"></table>
+  </div>
+
+  <div class="qa-list" id="act3QA" style="margin-top:22px;"></div>
+
+  <div class="card light tilt" style="margin-top:26px;">
+    <p style="margin:0;"><strong>فسِّر:</strong> شحنة الليثيوم أحادي موجب، بينما شحنة الفسفور ثلاثي سالب.</p>
+    <details class="qa" style="margin-top:12px; border:1px solid rgba(11,43,48,.15);">
+      <summary style="color:var(--ink);"><span class="num" style="background:var(--sea-mid);">؟</span> اعرض التفسير</summary>
+      <p class="answer" style="color:var(--ink-soft); padding-inline-start:56px;">
+        الليثيوم فلزّ يمتلك إلكترونًا واحدًا في مستوى طاقته الأخير، فمن الأسهل عليه أن يفقد هذا الإلكترون الواحد
+        ليصبح تركيبه الإلكتروني مطابقًا للغاز النبيل الهيليوم، فيكتسب شحنة موجبة واحدة. أمّا الفسفور فهو لافلزّ
+        يحتاج مستوى طاقته الأخير إلى ثلاثة إلكترونات ليكتمل، فمن الأسهل عليه اكتساب هذه الإلكترونات الثلاثة ليصبح
+        تركيبه مطابقًا للغاز النبيل الأرجون، فيكتسب شحنة سالبة ثلاثية.
+      </p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  صمّم هذا الدرس التفاعلي بما يتوافق مع منهاج العلوم والحياة — الصف الثامن — فلسطين · الدرس (٣): الصيغة الكيميائية
+</footer>
+
+<script>
+/* ================= DATA ================= */
+const cations = [
+  {sym:'H', name:'هيدروجين', charge:1},
+  {sym:'Li', name:'ليثيوم', charge:1},
+  {sym:'Na', name:'صوديوم', charge:1},
+  {sym:'K', name:'بوتاسيوم', charge:1},
+  {sym:'Ag', name:'فضّة', charge:1},
+  {sym:'NH4', name:'أمونيوم', charge:1, poly:true, display:'NH₄'},
+  {sym:'Mg', name:'مغنيسيوم', charge:2},
+  {sym:'Ca', name:'كالسيوم', charge:2},
+  {sym:'Zn', name:'خارصين', charge:2},
+  {sym:'Cu2', symDisplay:'Cu', name:'نحاس (II)', charge:2},
+  {sym:'Fe2', symDisplay:'Fe', name:'حديد (II)', charge:2},
+  {sym:'Be', name:'بريليوم', charge:2},
+  {sym:'Al', name:'ألومنيوم', charge:3},
+  {sym:'Fe3', symDisplay:'Fe', name:'حديد (III)', charge:3},
+];
+
+const anions = [
+  {sym:'F', name:'فلور', charge:1},
+  {sym:'Cl', name:'كلور', charge:1},
+  {sym:'Br', name:'بروم', charge:1},
+  {sym:'I', name:'يود', charge:1},
+  {sym:'OH', name:'هيدروكسيل', charge:1, poly:true, display:'OH'},
+  {sym:'NO3', name:'نترات', charge:1, poly:true, display:'NO₃'},
+  {sym:'ClO3', name:'كلورات', charge:1, poly:true, display:'ClO₃'},
+  {sym:'MnO4', name:'برمنغنات', charge:1, poly:true, display:'MnO₄'},
+  {sym:'HCO3', name:'بايكربونات', charge:1, poly:true, display:'HCO₃'},
+  {sym:'O', name:'أكسجين', charge:2},
+  {sym:'S', name:'كبريت', charge:2},
+  {sym:'CO3', name:'كربونات', charge:2, poly:true, display:'CO₃'},
+  {sym:'SO4', name:'كبريتات', charge:2, poly:true, display:'SO₄'},
+  {sym:'N', name:'نيتروجين', charge:3},
+  {sym:'P', name:'فوسفور', charge:3},
+];
+
+function toSub(n){
+  const map={'0':'₀','1':'₁','2':'₂','3':'₃','4':'₄','5':'₅','6':'₆','7':'₇','8':'₈','9':'₉'};
+  return String(n).split('').map(d=>map[d]||d).join('');
+}
+function gcd(a,b){ return b===0? a : gcd(b, a%b); }
+
+/* ================= build reference tables ================= */
+function buildElementChargeTable(){
+  const rows = [
+    ['H','هيدروجين','1+'], ['Li','ليثيوم','1+'], ['Na','صوديوم','1+'], ['K','بوتاسيوم','1+'], ['Ag','فضّة','1+'],
+    ['Mg','مغنيسيوم','2+'], ['Ca','كالسيوم','2+'], ['Cu','نحاس','1+ و 2+'], ['Zn','خارصين','2+'], ['Be','بريليوم','2+'],
+    ['Fe','حديد','2+ و 3+'], ['Al','ألومنيوم','3+'],
+    ['F','فلور','1-'], ['Cl','كلور','1-'], ['Br','بروم','1-'], ['I','يود','1-'],
+    ['O','أكسجين','2-'], ['S','كبريت','2-'], ['N','نيتروجين','3-'], ['P','فوسفور','3-'], ['Si','سيليكون','4±'], ['C','كربون','4±'],
+  ];
+  const el = document.getElementById('elementChargeTable');
+  let html = '<thead><tr><th>الرمز</th><th>العنصر</th><th>الشحنة</th></tr></thead><tbody>';
+  rows.forEach(r=>{
+    const isNeg = r[2].includes('-');
+    const isBoth = r[2].includes('و') || r[2].includes('±');
+    const cls = isBoth ? '' : (isNeg?'neg':'pos');
+    html += `<tr><td style="font-weight:800;">${r[0]}</td><td>${r[1]}</td><td class="chg ${cls}">${r[2]}</td></tr>`;
+  });
+  html += '</tbody>';
+  el.innerHTML = html;
+}
+
+function buildIonGroupTable(){
+  const rows = [
+    ['OH','هيدروكسيل','1-'], ['NO₃','نترات','1-'], ['ClO₃','كلورات','1-'], ['MnO₄','برمنغنات','1-'], ['HCO₃','بايكربونات','1-'],
+    ['NH₄','أمونيوم','1+'], ['CO₃','كربونات','2-'], ['SO₄','كبريتات','2-'],
+  ];
+  const el = document.getElementById('ionGroupTable');
+  let html = '<thead><tr><th>الرمز</th><th>المجموعة الأيونية</th><th>الشحنة</th></tr></thead><tbody>';
+  rows.forEach(r=>{
+    const cls = r[2].includes('-') ? 'neg':'pos';
+    html += `<tr><td style="font-weight:800;">${r[0]}</td><td>${r[1]}</td><td class="chg ${cls}">${r[2]}</td></tr>`;
+  });
+  html += '</tbody>';
+  el.innerHTML = html;
+}
+buildElementChargeTable();
+buildIonGroupTable();
+
+/* ================= intro Q&A ================= */
+const introQuestions = [
+  {q:'هل تمثّل عيّنة الملح نوعًا واحدًا من الأملاح أم أكثر؟', a:'أكثر من نوع؛ فمياه البحر الميّت تحتوي على خليط من عدّة أملاح مثل كلوريد المغنيسيوم، وكلوريد الصوديوم، وكلوريد البوتاسيوم، وليست ملحًا واحدًا نقيًا.'},
+  {q:'ما الصيغة الكيميائية للماء؟', a:'H₂O — أي أن جزيء الماء الواحد يتكوّن من ذرّتَي هيدروجين وذرّة أكسجين واحدة.'},
+  {q:'ما الاسم العلمي لملح الطعام؟', a:'كلوريد الصوديوم.'},
+  {q:'ما الصيغة الكيميائية لملح الطعام؟', a:'NaCl.'},
+  {q:'لماذا يستخدم الناس طين البحر الميّت لطلاء أجسامهم؟', a:'لغناه بالمعادن مثل المغنيسيوم والبوتاسيوم والكالسيوم، والتي تفيد البشرة وتُستخدم في العلاجات التجميلية والعلاجية.'},
+  {q:'ما أسباب الانحسار السريع لمياه البحر الميّت؟', a:'قلّة كميّات الأمطار الواصلة إليه عبر نهر الأردن، إضافة إلى استخدام كميّات كبيرة من مياه النهر لأغراض الزراعة والشرب، وارتفاع نسبة التبخّر في المنطقة.'},
+  {q:'ما مصدر أملاح البحر الميّت؟', a:'تتدفّق الأملاح المذابة في الصخور والتربة عبر مياه الأنهار والسيول إلى البحر، ومع ارتفاع معدّل التبخّر وعدم وجود مخرج للمياه ترتفع نسبة تركيز الأملاح بشكل كبير جدًا.'},
+];
+(function renderIntroQA(){
+  const wrap = document.getElementById('introQA');
+  introQuestions.forEach((item,i)=>{
+    const d = document.createElement('details');
+    d.className='qa';
+    d.innerHTML = `<summary><span class="num">${i+1}</span> ${item.q}</summary><p class="answer">${item.a}</p>`;
+    wrap.appendChild(d);
+  });
+})();
+
+/* ================= LAB ================= */
+let selectedCation = null, selectedAnion = null;
+
+function renderPickers(){
+  const cWrap = document.getElementById('cationPicker');
+  cations.forEach((c,idx)=>{
+    const btn = document.createElement('button');
+    btn.className='chip cation';
+    btn.innerHTML = `<b>${c.symDisplay||c.sym}${c.poly? '' : ''}</b><small>${c.name} (${c.charge}+)</small>`;
+    btn.onclick = ()=>{
+      document.querySelectorAll('#cationPicker .chip').forEach(x=>x.classList.remove('active'));
+      btn.classList.add('active');
+      selectedCation = c;
+      updateStageIon('cation', c);
+    };
+    cWrap.appendChild(btn);
+  });
+  const aWrap = document.getElementById('anionPicker');
+  anions.forEach((a,idx)=>{
+    const btn = document.createElement('button');
+    btn.className='chip anion';
+    btn.innerHTML = `<b>${a.display||a.sym}</b><small>${a.name} (${a.charge}-)</small>`;
+    btn.onclick = ()=>{
+      document.querySelectorAll('#anionPicker .chip').forEach(x=>x.classList.remove('active'));
+      btn.classList.add('active');
+      selectedAnion = a;
+      updateStageIon('anion', a);
+    };
+    aWrap.appendChild(btn);
+  });
+}
+renderPickers();
+
+function updateStageIon(kind, ion){
+  const el = document.getElementById(kind==='cation'?'stageCation':'stageAnion');
+  const sym = ion.display||ion.symDisplay||ion.sym;
+  const sign = kind==='cation'?'+':'−';
+  el.innerHTML = `<span class="sym">${sym}</span><span class="lbl">${ion.name} (${ion.charge}${sign})</span>`;
+}
+
+document.getElementById('reactBtn').addEventListener('click', ()=>{
+  if(!selectedCation || !selectedAnion){
+    document.getElementById('labFootnote').textContent = 'الرجاء اختيار كاتيون وأنيون أوّلًا.';
+    return;
+  }
+  const g = gcd(selectedCation.charge, selectedAnion.charge) || 1;
+  let subCation = selectedAnion.charge / g;
+  let subAnion  = selectedCation.charge / g;
+
+  const catSym = selectedCation.display || selectedCation.symDisplay || selectedCation.sym;
+  const anSym  = selectedAnion.display || selectedAnion.sym;
+
+  let catPart = catSym + (subCation>1 ? toSub(subCation) : '');
+  let anPart;
+  if(selectedAnion.poly && subAnion>1){
+    anPart = '(' + anSym + ')' + toSub(subAnion);
+  } else {
+    anPart = anSym + (subAnion>1 ? toSub(subAnion) : '');
+  }
+  if(selectedCation.poly && subCation>1){
+    catPart = '(' + catSym + ')' + toSub(subCation);
+  }
+
+  const formula = catPart + anPart;
+  document.getElementById('formulaOut').textContent = formula;
+
+  // crystal 3d render
+  buildCrystal(subCation, subAnion);
+
+  document.getElementById('labFootnote').innerHTML =
+    `تفاعل <b>${selectedCation.name}</b> (${selectedCation.charge}+) مع <b>${selectedAnion.name}</b> (${selectedAnion.charge}-) بعد تبادل الشحنات ⇒
+     الصيغة الكيميائية النهائية: <b style="color:var(--amber)">${formula}</b>
+     (نسبة الأيونات ${subCation} : ${subAnion})`;
+
+  // pulse animation on formula
+  const fEl = document.getElementById('formulaOut');
+  fEl.style.transform='scale(0.85)';
+  requestAnimationFrame(()=>{ fEl.style.transition='transform .35s ease'; fEl.style.transform='scale(1)'; });
+});
+
+function buildCrystal(nCation, nAnion){
+  const inner = document.getElementById('crystalInner');
+  inner.innerHTML = '';
+  const total = nCation + nAnion;
+  const radius = Math.min(85, 40 + total*6);
+
+  function placeAtoms(n, cls, labelSym, yOffset, ringRadius){
+    for(let i=0;i<n;i++){
+      const angle = (360/n)*i;
+      const atom = document.createElement('div');
+      atom.className = 'atom ' + cls;
+      atom.textContent = labelSym;
+      atom.style.transform = `translate3d(0px, ${yOffset}px, 0px) rotateY(${angle}deg) translateZ(${ringRadius}px)`;
+      inner.appendChild(atom);
+    }
+  }
+  const catLabel = (selectedCation.display||selectedCation.symDisplay||selectedCation.sym).replace(/[₀-₉]/g,'');
+  const anLabel  = (selectedAnion.display||selectedAnion.sym).replace(/[₀-₉]/g,'');
+
+  placeAtoms(nCation, 'cation', catLabel, -26, radius*0.7);
+  placeAtoms(nAnion, 'anion', anLabel, 26, radius);
+}
+
+/* ================= practice sections ================= */
+function makeWriteRow(nameAr, correct, placeholder){
+  return {nameAr, correct, placeholder};
+}
+const writeItems = [
+  makeWriteRow('كلوريد الليثيوم', 'LiCl', 'مثال: LiCl'),
+  makeWriteRow('كبريتات الفضّة', 'Ag2SO4', 'مثال: Ag2SO4'),
+  makeWriteRow('فلوريد الصوديوم', 'NaF', 'مثال: NaF'),
+  makeWriteRow('فلوريد النحاس (II)', 'CuF2', 'مثال: CuF2'),
+];
+const nameItems = [
+  {formula:'AgBr', correct:['بروميد الفضة','بروميد الفضّة']},
+  {formula:'AlCl₃', correct:['كلوريد الألومنيوم']},
+  {formula:'ZnCO₃', correct:['كربونات الخارصين','كربونات الزنك']},
+  {formula:'Na₂SO₄', correct:['كبريتات الصوديوم']},
+  {formula:'FeO', correct:['أكسيد الحديد الثنائي','أكسيد الحديد (II)','أكسيد الحديد II']},
+];
+
+function normalize(str){
+  return str.replace(/\s+/g,'').replace(/[₀₁₂₃₄₅₆₇₈₉]/g, d=>({'₀':'0','₁':'1','₂':'2','₃':'3','₄':'4','₅':'5','₆':'6','₇':'7','₈':'8','₉':'9'}[d])).toLowerCase();
+}
+
+function renderWritePractice(){
+  const wrap = document.getElementById('practiceWrite');
+  writeItems.forEach((item,i)=>{
+    const row = document.createElement('div');
+    row.className='practice-row';
+    row.innerHTML = `
+      <span class="given">${item.nameAr}</span>
+      <input type="text" placeholder="${item.placeholder}" id="w${i}">
+      <button class="check-btn" data-i="${i}">تحقّق</button>
+      <span class="feedback" id="wf${i}"></span>
+    `;
+    wrap.appendChild(row);
+  });
+  wrap.addEventListener('click', e=>{
+    if(e.target.matches('.check-btn')){
+      const i = e.target.dataset.i;
+      const val = normalize(document.getElementById('w'+i).value);
+      const correct = normalize(writeItems[i].correct);
+      const fb = document.getElementById('wf'+i);
+      if(val === correct){ fb.textContent='✔ صحيح'; fb.className='feedback ok'; }
+      else { fb.textContent='✘ حاول مجددًا ('+writeItems[i].correct+')'; fb.className='feedback bad'; }
+    }
+  });
+}
+function renderNamePractice(){
+  const wrap = document.getElementById('practiceName');
+  nameItems.forEach((item,i)=>{
+    const row = document.createElement('div');
+    row.className='practice-row';
+    row.innerHTML = `
+      <span class="given" style="font-size:1.3rem;">${item.formula}</span>
+      <input type="text" placeholder="اكتب الاسم الكيميائي" id="n${i}">
+      <button class="check-btn" data-i="${i}">تحقّق</button>
+      <span class="feedback" id="nf${i}"></span>
+    `;
+    wrap.appendChild(row);
+  });
+  wrap.addEventListener('click', e=>{
+    if(e.target.matches('.check-btn')){
+      const i = e.target.dataset.i;
+      const val = document.getElementById('n'+i).value.replace(/\s+/g,'');
+      const options = nameItems[i].correct.map(c=>c.replace(/\s+/g,''));
+      const fb = document.getElementById('nf'+i);
+      if(options.includes(val)){ fb.textContent='✔ صحيح'; fb.className='feedback ok'; }
+      else { fb.textContent='✘ الإجابة الصحيحة: '+nameItems[i].correct[0]; fb.className='feedback bad'; }
+    }
+  });
+}
+renderWritePractice();
+renderNamePractice();
+
+/* ================= ACTIVITY 2 ================= */
+const act2Data = [
+  {formula:'CO₂', name:'ثاني أكسيد الكربون', elements:'الكربون والأكسجين', counts:'كربون: 1 ، أكسجين: 2'},
+  {formula:'NaCl', name:'كلوريد الصوديوم', elements:'الصوديوم والكلور', counts:'صوديوم: 1 ، كلور: 1'},
+  {formula:'H₂O', name:'الماء', elements:'الهيدروجين والأكسجين', counts:'هيدروجين: 2 ، أكسجين: 1'},
+  {formula:'C₁₂H₂₂O₁₁', name:'سكر المائدة', elements:'الكربون والهيدروجين والأكسجين', counts:'كربون: 12 ، هيدروجين: 22 ، أكسجين: 11'},
+];
+function renderAct2Table(){
+  const el = document.getElementById('activity2Table');
+  let html = '<thead><tr><th>المركّب</th><th>العناصر المكوِّنة له</th><th>عدد ذرّات كل عنصر</th></tr></thead><tbody>';
+  act2Data.forEach((d,i)=>{
+    html += `<tr>
+      <td style="font-weight:800;">${d.name}<br><span style="font-size:.8rem; opacity:.7;">${d.formula}</span></td>
+      <td><input type="text" id="e2_${i}" placeholder="اكتب أسماء العناصر"></td>
+      <td><input type="text" id="c2_${i}" placeholder="اكتب عدد الذرّات"></td>
+    </tr>`;
+  });
+  html += '</tbody>';
+  el.innerHTML = html;
+}
+renderAct2Table();
+document.getElementById('checkAct2').addEventListener('click', ()=>{
+  let score=0;
+  act2Data.forEach((d,i)=>{
+    const eEl = document.getElementById('e2_'+i);
+    const cEl = document.getElementById('c2_'+i);
+    // lenient check: just mark correct answer beneath, since free text varies
+    eEl.style.borderColor = 'var(--sea-glow)';
+    cEl.style.borderColor = 'var(--sea-glow)';
+  });
+  document.getElementById('act2Feedback').innerHTML = act2Data.map(d=>
+    `<div style="margin-bottom:6px;"><b>${d.formula}</b> ⇒ العناصر: ${d.elements} — ${d.counts}</div>`
+  ).join('');
+});
+
+const usesData = [
+  {q:'عمل المخلّلات', options:['اختر المركّب','ثاني أكسيد الكربون (CO₂)','كلوريد الصوديوم (NaCl)','الماء (H₂O)','سكر المائدة (C₁₂H₂₂O₁₁)'], correct:'كلوريد الصوديوم (NaCl)'},
+  {q:'إطفاء الحرائق', options:['اختر المركّب','ثاني أكسيد الكربون (CO₂)','كلوريد الصوديوم (NaCl)','الماء (H₂O)','سكر المائدة (C₁₂H₂₂O₁₁)'], correct:'ثاني أكسيد الكربون (CO₂)'},
+  {q:'عمل المربّى', options:['اختر المركّب','ثاني أكسيد الكربون (CO₂)','كلوريد الصوديوم (NaCl)','الماء (H₂O)','سكر المائدة (C₁₂H₂₂O₁₁)'], correct:'سكر المائدة (C₁₂H₂₂O₁₁)'},
+  {q:'مركّب أساسي في الحياة', options:['اختر المركّب','ثاني أكسيد الكربون (CO₂)','كلوريد الصوديوم (NaCl)','الماء (H₂O)','سكر المائدة (C₁₂H₂₂O₁₁)'], correct:'الماء (H₂O)'},
+];
+function renderUses(){
+  const wrap = document.getElementById('usesQuestions');
+  usesData.forEach((item,i)=>{
+    const row = document.createElement('div');
+    row.style.display='flex'; row.style.alignItems='center'; row.style.gap='12px'; row.style.flexWrap='wrap';
+    row.innerHTML = `<span style="min-width:200px; color:var(--ink); font-weight:700;">${String.fromCharCode(1571+i)}- ${item.q}</span>
+      <select class="select-answer" id="use${i}">${item.options.map(o=>`<option>${o}</option>`).join('')}</select>
+      <span class="feedback" id="usef${i}"></span>`;
+    wrap.appendChild(row);
+  });
+}
+renderUses();
+document.getElementById('checkUses').addEventListener('click', ()=>{
+  let allMsgs=[];
+  usesData.forEach((item,i)=>{
+    const sel = document.getElementById('use'+i);
+    const fb = document.getElementById('usef'+i);
+    if(sel.value === item.correct){ fb.textContent='✔'; fb.className='feedback ok'; }
+    else { fb.textContent='✘'; fb.className='feedback bad'; }
+  });
+});
+
+/* ================= ACTIVITY 3 ================= */
+function renderAct3Table(){
+  const rows = [
+    ['₃Li','ليثيوم','2 , 1','1+','فقد إلكترون واحد'],
+    ['₂He','هيليوم (نبيل)','2','—','—'],
+    ['₁₂Mg','مغنيسيوم','2 , 8 , 2','2+','فقد إلكترونين'],
+    ['₁₀Ne','نيون (نبيل)','2 , 8','—','—'],
+    ['₁₅P','فوسفور','2 , 8 , 5','3-','اكتساب 3 إلكترونات'],
+    ['₁₈Ar','أرجون (نبيل)','2 , 8 , 8','—','—'],
+  ];
+  const el = document.getElementById('activity3Table');
+  let html = '<thead><tr><th>العنصر</th><th>الاسم</th><th>التوزيع الإلكتروني</th><th>الشحنة</th><th>فقد / اكتسب</th></tr></thead><tbody>';
+  rows.forEach(r=>{
+    const cls = r[3].includes('+')?'pos':(r[3].includes('-')?'neg':'');
+    html += `<tr><td style="font-weight:800;">${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td class="chg ${cls}">${r[3]}</td><td>${r[4]}</td></tr>`;
+  });
+  html += '</tbody>';
+  el.innerHTML = html;
+}
+renderAct3Table();
+
+const act3Questions = [
+  {q:'أيّ العناصر المذكورة في الجدول تميل لفقد إلكترونات؟ ولماذا؟', a:'الليثيوم والمغنيسيوم؛ لأنّهما فلزّان يحملان عددًا قليلًا من الإلكترونات في مستوى الطاقة الأخير (1 و2 على الترتيب)، فيسهل عليهما فقدها للوصول إلى تركيب إلكتروني مطابق لأقرب غاز نبيل.'},
+  {q:'أيّ العناصر المذكورة في الجدول تميل لكسب إلكترونات؟ ولماذا؟', a:'الفوسفور؛ لأنّه لافلزّ يحمل خمسة إلكترونات في مستوى الطاقة الأخير، فيسهل عليه اكتساب ثلاثة إلكترونات فقط ليكتمل مستوى طاقته ويصبح مطابقًا لتركيب الأرجون.'},
+  {q:'ماذا يحدث لمستوى الطاقة الأخير في العناصر المذكورة في الجدول عندما تفقد أو تكتسب إلكترونات؟', a:'يصبح تركيبه الإلكتروني مطابقًا تمامًا لتركيب أقرب غاز نبيل له في الجدول الدوري، ويحمل الأيون الناتج شحنة موجبة تساوي عدد الإلكترونات المفقودة، أو شحنة سالبة تساوي عدد الإلكترونات المكتسبة.'},
+];
+(function renderAct3QA(){
+  const wrap = document.getElementById('act3QA');
+  act3Questions.forEach((item,i)=>{
+    const d = document.createElement('details');
+    d.className='qa';
+    d.innerHTML = `<summary><span class="num">${i+1}</span> ${item.q}</summary><p class="answer">${item.a}</p>`;
+    wrap.appendChild(d);
+  });
+})();
+</script>
+</body>
+</html>

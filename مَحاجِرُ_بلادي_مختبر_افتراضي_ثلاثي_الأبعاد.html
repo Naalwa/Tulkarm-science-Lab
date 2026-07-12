@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="description" content="درس تفاعلي: محاجر بلادي - منهاج العلوم والحياة، الصف الخامس، فلسطين">
+<title>مَحاجِرُ بلادي | مختبر افتراضي ثلاثي الأبعاد</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#EDE3C8;
+    --cream-2:#F5EFDC;
+    --paper:#FBF7EA;
+    --stone:#A8998A;
+    --stone-dark:#7C6F5F;
+    --olive:#48521F;
+    --olive-light:#7C8B4A;
+    --clay:#8B5A2B;
+    --rust:#A6462A;
+    --rust-dark:#7C331C;
+    --sky:#3F6690;
+    --ink:#241F16;
+    --ink-soft:#5b5142;
+    --line:#c9bfa6;
+    --shadow: 0 10px 30px rgba(36,31,22,.15);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Tajawal',sans-serif;
+    line-height:1.8;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.display{
+    font-family:'Amiri',serif;
+    font-weight:700;
+    color:var(--ink);
+  }
+  a{color:inherit;}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 22px;}
+  .eyebrow{
+    font-size:.8rem;
+    letter-spacing:.05em;
+    color:var(--rust-dark);
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom:10px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:22px;height:2px;background:var(--rust);
+    display:inline-block;
+  }
+
+  /* ===== NAV ===== */
+  nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(237,227,200,.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  nav .wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:12px 22px;
+  }
+  .brand{display:flex;align-items:center;gap:10px;font-family:'Amiri',serif;font-weight:700;font-size:1.15rem;}
+  .brand .mark{
+    width:34px;height:34px;border-radius:6px;
+    background:linear-gradient(155deg,var(--stone) 0%, var(--stone-dark) 55%, var(--clay) 100%);
+    box-shadow: inset 0 0 0 2px rgba(255,255,255,.25), var(--shadow);
+    transform:rotate(4deg);
+  }
+  .navlinks{display:flex;gap:4px;font-size:.92rem;flex-wrap:wrap;}
+  .navlinks a{
+    padding:8px 14px;border-radius:20px;text-decoration:none;font-weight:500;
+    color:var(--ink-soft);
+    transition:.2s;
+  }
+  .navlinks a:hover{background:var(--olive);color:#fff;}
+
+  /* ===== HERO ===== */
+  .hero{
+    position:relative;
+    padding:70px 0 0;
+    overflow:hidden;
+    background:linear-gradient(180deg, var(--cream-2), var(--cream) 70%);
+  }
+  .hero .wrap{position:relative;z-index:3;text-align:center;}
+  .hero h1{
+    font-size:clamp(2.4rem, 6vw, 4.2rem);
+    margin:0 0 8px;
+    letter-spacing:.01em;
+  }
+  .hero p.lead{
+    max-width:640px;margin:0 auto 26px;
+    color:var(--ink-soft);
+    font-size:1.15rem;
+  }
+  .hero-cta{
+    display:inline-flex; gap:12px; flex-wrap:wrap; justify-content:center;
+    margin-bottom:50px;
+  }
+  .btn{
+    border:none; cursor:pointer;
+    font-family:'Tajawal',sans-serif; font-weight:700; font-size:1rem;
+    padding:13px 26px; border-radius:10px;
+    text-decoration:none; display:inline-flex; align-items:center; gap:8px;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn:active{transform:translateY(1px) scale(.98);}
+  .btn-primary{background:var(--olive); color:#fff; box-shadow:0 6px 18px rgba(72,82,31,.35);}
+  .btn-primary:hover{box-shadow:0 8px 22px rgba(72,82,31,.5); transform:translateY(-2px);}
+  .btn-ghost{background:var(--paper); color:var(--ink); box-shadow:inset 0 0 0 2px var(--line);}
+  .btn-ghost:hover{box-shadow:inset 0 0 0 2px var(--clay);}
+  .btn-rust{background:var(--rust); color:#fff; box-shadow:0 6px 18px rgba(166,70,42,.35);}
+  .btn-rust:hover{transform:translateY(-2px);}
+  .btn-sky{background:var(--sky); color:#fff;}
+  .btn:disabled{opacity:.45; cursor:not-allowed; transform:none !important;}
+
+  .terraces{
+    position:relative; width:100%; height:150px;
+    margin-top:10px;
+  }
+  .terraces svg{display:block;width:100%;height:100%;}
+
+  /* ===== SECTION generic ===== */
+  section{padding:64px 0;}
+  .section-head{text-align:center; max-width:680px; margin:0 auto 40px;}
+  .section-head h2{font-size:clamp(1.8rem,4vw,2.6rem); margin:0 0 12px;}
+  .section-head p{color:var(--ink-soft); margin:0;}
+
+  /* ===== LESSON CONTENT ===== */
+  #lesson{background:var(--cream);}
+  .def-block{
+    display:grid; grid-template-columns: 1.1fr .9fr; gap:34px; align-items:center;
+    background:var(--paper); border-radius:18px; padding:32px; box-shadow:var(--shadow);
+    margin-bottom:44px;
+  }
+  .def-block h3{margin-top:0;font-size:1.5rem;}
+  .def-block p{color:var(--ink-soft);}
+  .quarry-icon{
+    perspective:900px;
+  }
+  .quarry-icon .cube{
+    width:180px;height:180px;margin:0 auto;
+    position:relative; transform-style:preserve-3d;
+    animation:spin 14s linear infinite;
+  }
+  @keyframes spin{from{transform:rotateY(0) rotateX(-14deg);}to{transform:rotateY(360deg) rotateX(-14deg);}}
+  .quarry-icon .face{
+    position:absolute; width:180px; height:180px;
+    background:linear-gradient(155deg,#c9b98f,#8b7a5e);
+    border:1px solid rgba(0,0,0,.15);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Amiri',serif;font-size:2rem;color:rgba(255,255,255,.5);
+  }
+  .face.front{transform:translateZ(90px);}
+  .face.back{transform:translateZ(-90px) rotateY(180deg);}
+  .face.right{transform:rotateY(90deg) translateZ(90px); background:linear-gradient(155deg,#b3a077,#786845);}
+  .face.left{transform:rotateY(-90deg) translateZ(90px); background:linear-gradient(155deg,#b3a077,#786845);}
+  .face.top{transform:rotateX(90deg) translateZ(90px); background:linear-gradient(155deg,#e2d3a9,#b3a077);}
+  .face.bottom{transform:rotateX(-90deg) translateZ(90px); background:linear-gradient(155deg,#655633,#493c22);}
+
+  .rock-grid{
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px; perspective:1200px;
+  }
+  .rock-card{
+    height:190px; position:relative; cursor:pointer;
+    transform-style:preserve-3d; transition:transform .6s cubic-bezier(.2,.8,.2,1);
+  }
+  .rock-card.flipped{transform:rotateY(180deg);}
+  .rock-face{
+    position:absolute; inset:0; border-radius:14px; backface-visibility:hidden;
+    padding:18px; display:flex; flex-direction:column; justify-content:flex-end;
+    box-shadow:var(--shadow);
+  }
+  .rock-face.front{
+    color:#fff;
+    background-size:cover;background-position:center;
+  }
+  .rock-face.front::after{
+    content:""; position:absolute; inset:0; border-radius:14px;
+    background:linear-gradient(0deg, rgba(0,0,0,.55), rgba(0,0,0,.05));
+  }
+  .rock-face.front span{position:relative;z-index:2;font-family:'Amiri',serif;font-size:1.25rem;font-weight:700;}
+  .rock-face.front small{position:relative;z-index:2;opacity:.85;font-size:.78rem;}
+  .rock-face.back{
+    transform:rotateY(180deg);
+    background:var(--olive); color:#fff;
+    justify-content:center; text-align:center; font-size:.92rem;
+  }
+  .r-limestone .front{background-image:linear-gradient(155deg,#d8cba3,#a5987a);}
+  .r-marble .front{background-image:linear-gradient(155deg,#e9e6de,#b7b2a6);}
+  .r-gravel .front{background-image:linear-gradient(155deg,#8f8378,#4f453b);}
+  .r-sand .front{background-image:linear-gradient(155deg,#e3c58a,#b9925a);}
+
+  .impact-cols{
+    display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:44px;
+  }
+  @media (max-width:720px){.impact-cols{grid-template-columns:1fr;} .def-block{grid-template-columns:1fr;}}
+  .impact-card{
+    border-radius:16px; padding:26px; box-shadow:var(--shadow);
+  }
+  .impact-card.pos{background:linear-gradient(165deg,#eef1e2,#dfe6c9); border-inline-start:6px solid var(--olive);}
+  .impact-card.neg{background:linear-gradient(165deg,#f3e6df,#ecd6c7); border-inline-start:6px solid var(--rust);}
+  .impact-card h4{margin:0 0 12px;font-family:'Amiri',serif;font-size:1.25rem;}
+  .impact-card ul{margin:0;padding-inline-start:20px;color:var(--ink-soft);}
+  .impact-card li{margin-bottom:8px;}
+
+  /* ===== LAB ===== */
+  #lab{
+    background:linear-gradient(180deg,#e7dcc0, #d9cba5);
+    position:relative;
+  }
+  .lab-shell{
+    background:var(--ink); border-radius:22px; overflow:hidden;
+    box-shadow:0 24px 60px rgba(0,0,0,.35);
+    position:relative;
+  }
+  .lab-grid{
+    display:grid; grid-template-columns: 2fr 1fr;
+  }
+  @media (max-width:860px){.lab-grid{grid-template-columns:1fr;}}
+  #lab-canvas-wrap{
+    position:relative; min-height:440px; background:radial-gradient(ellipse at 50% 20%, #3a4a63, #12161f 75%);
+  }
+  #lab-canvas-wrap canvas{display:block; width:100%; height:100%; touch-action:none; cursor:grab;}
+  #lab-canvas-wrap canvas:active{cursor:grabbing;}
+  .lab-hint{
+    position:absolute; top:14px; inset-inline:14px; z-index:5;
+    color:#f2ead6; font-size:.82rem; background:rgba(0,0,0,.35);
+    padding:8px 14px; border-radius:20px; text-align:center;
+    pointer-events:none;
+  }
+  .lab-badge{
+    position:absolute; bottom:14px; inset-inline-end:14px; z-index:5;
+    background:rgba(0,0,0,.45); color:#f2ead6; padding:6px 12px; border-radius:10px;
+    font-size:.78rem;
+  }
+  .lab-panel{
+    background:#1c1a14; color:#f2ead6; padding:26px 22px;
+    display:flex; flex-direction:column; gap:18px;
+  }
+  .lab-panel h3{color:#f2ead6; margin:0; font-size:1.2rem;}
+  .lab-panel p.small{color:#c9bfa6; font-size:.85rem; margin:0;}
+  .meter-group{display:flex; flex-direction:column; gap:12px;}
+  .meter{display:flex; flex-direction:column; gap:4px;}
+  .meter-label{
+    display:flex; justify-content:space-between; font-size:.85rem; font-weight:700;
+  }
+  .meter-label .val{font-variant-numeric:tabular-nums; color:#fff;}
+  .meter-track{
+    height:9px; border-radius:6px; background:rgba(255,255,255,.1); overflow:hidden;
+  }
+  .meter-fill{height:100%; border-radius:6px; width:0%; transition:width .4s ease;}
+  .fill-pos{background:linear-gradient(90deg,#7C8B4A,#48521F);}
+  .fill-neg{background:linear-gradient(90deg,#c96a45,#7C331C);}
+  .lab-actions{display:flex; gap:10px; flex-wrap:wrap;}
+  .lab-actions .btn{flex:1; justify-content:center; padding:11px 12px; font-size:.9rem;}
+  #lab-insight{
+    background:rgba(255,255,255,.06); border-radius:12px; padding:14px 16px;
+    font-size:.88rem; color:#e9e0c8; min-height:64px; display:flex; align-items:center;
+    border-inline-start:4px solid var(--rust);
+  }
+
+  /* ===== WORKSHEET ===== */
+  #worksheet{background:var(--paper);}
+  .worksheet-card{
+    background:#fffdf6; border:1px solid var(--line); border-radius:18px;
+    box-shadow:var(--shadow); padding:34px; max-width:900px; margin:0 auto;
+  }
+  .worksheet-title{
+    background:#f3d9d9; color:#7c2b2b; display:inline-block;
+    padding:10px 22px; border-radius:24px; font-family:'Amiri',serif; font-weight:700;
+    font-size:1.15rem; margin-bottom:22px;
+  }
+  .worksheet-q{margin-bottom:30px;}
+  .worksheet-q label{display:block; font-weight:700; margin-bottom:10px; font-size:1.02rem;}
+  .lined-area{position:relative;}
+  .lined-area textarea{
+    width:100%; border:none; resize:vertical; min-height:120px;
+    background-image:repeating-linear-gradient(var(--paper) 0 34px, var(--line) 34px 35px);
+    background-attachment:local;
+    line-height:35px; font-family:'Tajawal',sans-serif; font-size:1rem; color:var(--ink);
+    padding:0 4px; outline:none;
+  }
+  .worksheet-foot{display:flex; gap:12px; flex-wrap:wrap; margin-top:8px;}
+  #ws-status{font-size:.85rem; color:var(--ink-soft); align-self:center;}
+
+  footer{
+    background:var(--ink); color:#cfc6ac; text-align:center; padding:34px 20px; font-size:.85rem;
+  }
+  footer strong{color:#fff;}
+
+  ::selection{background:var(--rust); color:#fff;}
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+
+  /* ══ RESPONSIVE MOBILE & TABLET ══ */
+  @media (max-width: 768px) {
+    body { padding: 8px !important; font-size: 15px !important; overflow-x: hidden !important; }
+    .container, [class*="container"], [class*="wrapper"] { padding: 8px !important; max-width: 100% !important; }
+    canvas { width: 100% !important; height: auto !important; display: block !important; touch-action: none; max-width: 100% !important; }
+    svg { max-width: 100% !important; height: auto !important; }
+    h1 { font-size: clamp(18px,5vw,32px) !important; }
+    h2 { font-size: clamp(15px,4vw,26px) !important; }
+    h3 { font-size: clamp(13px,3.5vw,20px) !important; }
+    [class*="grid"] { grid-template-columns: 1fr !important; }
+    [class*="flex"] { flex-wrap: wrap !important; }
+    input[type="range"] { width: 100% !important; min-height: 36px; }
+    input[type="number"], input[type="text"], select, textarea {
+      font-size: 16px !important; width: 100% !important; box-sizing: border-box; padding: 8px !important; }
+    button { min-height: 44px !important; font-size: 14px !important; touch-action: manipulation; padding: 10px 14px !important; }
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 13px !important; }
+    th, td { padding: 6px 4px !important; }
+    header { padding: 10px 12px !important; }
+    .controls, [class*="controls"] { flex-direction: column !important; gap: 8px !important; }
+    .lab-window, [class*="lab-window"] { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+  }
+  @media (max-width: 480px) {
+    body { padding: 4px !important; }
+    button { width: 100% !important; }
+  }
+  /* ══ END RESPONSIVE ══ */
+</style>
+</head>
+<body>
+<style>
+.vlab-back{position:fixed;top:10px;left:10px;z-index:99999;
+background:rgba(10,22,40,0.93);border:1px solid rgba(0,200,150,0.4);
+border-radius:22px;padding:8px 16px;display:inline-flex;align-items:center;gap:7px;
+color:#00C896;font-family:Tajawal,Cairo,Arial,sans-serif;font-size:13px;font-weight:700;
+text-decoration:none;backdrop-filter:blur(8px);box-shadow:0 4px 18px rgba(0,0,0,0.3);
+transition:background 0.2s;}
+.vlab-back:hover{background:rgba(0,200,150,0.18);}
+</style>
+<a href="../grade5.html" class="vlab-back">&#8594; العودة للصف</a>
+
+
+<nav>
+  <div class="wrap">
+    <div class="brand"><span class="mark"></span> مَحاجِرُ بلادي</div>
+    <div class="navlinks">
+      <a href="#lesson">شرح الدرس</a>
+      <a href="#lab">المختبر الافتراضي</a>
+      <a href="#worksheet">ورقة العمل</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow" style="justify-content:center">منهاج العلوم والحياة · الصف الخامس · فلسطين</div>
+    <h1>مَحاجِرُ بلادي</h1>
+    <p class="lead">رحلة تفاعلية ثلاثية الأبعاد لفهم كيف تُستخرج الصخور من أرضنا الفلسطينية، وما الذي نكسبه ونخسره في هذه الرحلة.</p>
+    <div class="hero-cta">
+      <a href="#lesson" class="btn btn-primary">ابدأ الدرس</a>
+      <a href="#lab" class="btn btn-ghost">جرّب المختبر الافتراضي ⛏</a>
+    </div>
+  </div>
+  <div class="terraces">
+    <svg viewBox="0 0 1200 200" preserveAspectRatio="none">
+      <polygon points="0,200 0,140 1200,110 1200,200" fill="#7C8B4A" opacity="0.55"/>
+      <polygon points="0,200 0,165 1200,150 1200,200" fill="#48521F" opacity="0.75"/>
+      <polygon points="0,200 0,185 1200,180 1200,200" fill="#3a4319"/>
+    </svg>
+  </div>
+</header>
+
+<section id="lesson">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow" style="justify-content:center">الدرس</div>
+      <h2>ما هي المحاجر؟ ولماذا هي مهمة في بلادنا؟</h2>
+      <p>فلسطين أرضٌ غنية بالصخور الجيرية، ويشتهر حجرها منذ آلاف السنين بجودته وجماله.</p>
+    </div>
+
+    <div class="def-block">
+      <div>
+        <h3>تعريف المحجر</h3>
+        <p><strong>المحجر</strong> هو موقع طبيعي تُستخرج منه الصخور والأحجار من باطن الأرض، عن طريق الحفر أو التفجير أو القطع باستخدام آلات خاصة. تنتشر المحاجر في مناطق فلسطينية عديدة كالخليل وبيت لحم ورام الله، حيث تُستخرج أنواع مختلفة من الحجر الجيري المعروف باسم "الحجر الفلسطيني" أو "الحجر المقدسي"، وهو من أجود أنواع الأحجار المستخدمة في البناء حول العالم.</p>
+      </div>
+      <div class="quarry-icon">
+        <div class="cube">
+          <div class="face front">⛏</div>
+          <div class="face back">⛏</div>
+          <div class="face right"></div>
+          <div class="face left"></div>
+          <div class="face top"></div>
+          <div class="face bottom"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-head" style="margin-bottom:24px;">
+      <h3 style="font-size:1.5rem;margin:0 0 6px;">أنواع الصخور التي نستخرجها</h3>
+      <p style="font-size:.95rem;">اضغط على كل بطاقة لتدويرها ومعرفة المزيد (بطاقات ثلاثية الأبعاد)</p>
+    </div>
+    <div class="rock-grid">
+      <div class="rock-card r-limestone" tabindex="0">
+        <div class="rock-face front"><span>الحجر الجيري</span><small>الحجر الفلسطيني</small></div>
+        <div class="rock-face back">أكثر الصخور استخراجاً في فلسطين، يُستخدم في بناء البيوت والمباني والأرصفة، ويُصدَّر إلى دول عديدة.</div>
+      </div>
+      <div class="rock-card r-marble" tabindex="0">
+        <div class="rock-face front"><span>الرخام</span><small>للزينة والديكور</small></div>
+        <div class="rock-face back">صخر جميل يُستخدم في الأرضيات والديكورات الداخلية والواجهات الفاخرة.</div>
+      </div>
+      <div class="rock-card r-gravel" tabindex="0">
+        <div class="rock-face front"><span>البحص والحصمة</span><small>لرصف الطرق</small></div>
+        <div class="rock-face back">قطع صخرية صغيرة تُستخدم في رصف الطرق وصناعة الخرسانة (الباطون).</div>
+      </div>
+      <div class="rock-card r-sand" tabindex="0">
+        <div class="rock-face front"><span>الرمل</span><small>للبناء والزجاج</small></div>
+        <div class="rock-face back">ناتج طبيعي عن تكسير الصخور، يدخل في صناعة الإسمنت والزجاج.</div>
+      </div>
+    </div>
+
+    <div class="impact-cols">
+      <div class="impact-card pos">
+        <h4>🌿 آثار إيجابية محتملة</h4>
+        <ul>
+          <li>توفير مواد بناء أساسية لبيوتنا ومدننا.</li>
+          <li>خلق فرص عمل لآلاف العائلات الفلسطينية.</li>
+          <li>دخل اقتصادي مهم من خلال بيع وتصدير الحجر.</li>
+          <li>تطوير الطرق والبنية التحتية.</li>
+        </ul>
+      </div>
+      <div class="impact-card neg">
+        <h4>🌪 آثار سلبية محتملة</h4>
+        <ul>
+          <li>تشويه المناظر الطبيعية والمساحات الخضراء.</li>
+          <li>تلوث الهواء بالغبار وتأثيره على صحة السكان.</li>
+          <li>تآكل التربة وفقدان الغطاء النباتي.</li>
+          <li>تأثر مصادر المياه الجوفية القريبة من المحاجر.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="lab">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow" style="justify-content:center">التجربة</div>
+      <h2>المختبر الافتراضي: نفّذ عملية الاستخراج بنفسك</h2>
+      <p>بدلاً من مشاهدة فيلم، ادخل إلى محجر ثلاثي الأبعاد حقيقي، واستخرج الصخور بنفسك، وراقب كيف تتغير الأرقام أمامك.</p>
+    </div>
+
+    <div class="lab-shell">
+      <div class="lab-grid">
+        <div id="lab-canvas-wrap">
+          <div class="lab-hint">👆 اضغط على كتلة صخرية لاستخراجها · اسحب لتدوير المشهد · قرّب وبعّد بعجلة الفأرة أو بإصبعين</div>
+          <div class="lab-badge" id="extract-count">تم استخراج ٠ كتلة</div>
+        </div>
+        <div class="lab-panel">
+          <div>
+            <h3>لوحة القياس الحية</h3>
+            <p class="small">راقب كيف يتغيّر كل مؤشر مع كل عملية استخراج</p>
+          </div>
+
+          <div class="meter-group">
+            <div class="meter">
+              <div class="meter-label"><span>💰 الدخل الاقتصادي</span><span class="val" id="v-income">٠٪</span></div>
+              <div class="meter-track"><div class="meter-fill fill-pos" id="m-income"></div></div>
+            </div>
+            <div class="meter">
+              <div class="meter-label"><span>👷 فرص العمل</span><span class="val" id="v-jobs">٠٪</span></div>
+              <div class="meter-track"><div class="meter-fill fill-pos" id="m-jobs"></div></div>
+            </div>
+            <div class="meter">
+              <div class="meter-label"><span>🏗 مواد بناء متوفرة</span><span class="val" id="v-materials">٠٪</span></div>
+              <div class="meter-track"><div class="meter-fill fill-pos" id="m-materials"></div></div>
+            </div>
+            <div class="meter">
+              <div class="meter-label"><span>🌫 التلوث والغبار</span><span class="val" id="v-dust">٠٪</span></div>
+              <div class="meter-track"><div class="meter-fill fill-neg" id="m-dust"></div></div>
+            </div>
+            <div class="meter">
+              <div class="meter-label"><span>🏔 تضرر الأرض والتربة</span><span class="val" id="v-land">٠٪</span></div>
+              <div class="meter-track"><div class="meter-fill fill-neg" id="m-land"></div></div>
+            </div>
+            <div class="meter">
+              <div class="meter-label"><span>💧 تأثر المياه الجوفية</span><span class="val" id="v-water">٠٪</span></div>
+              <div class="meter-track"><div class="meter-fill fill-neg" id="m-water"></div></div>
+            </div>
+          </div>
+
+          <div id="lab-insight">اضغط على أول كتلة صخرية في المشهد لتبدأ التجربة، وستظهر هنا ملاحظات علمية فورية.</div>
+
+          <div class="lab-actions">
+            <button class="btn btn-sky" id="btn-reset" type="button">↺ إعادة ضبط المحجر</button>
+            <button class="btn btn-rust" id="btn-conclude" type="button">📋 انتقل لاستنتاجاتي</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="worksheet">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow" style="justify-content:center">التوثيق والاستنتاج</div>
+      <h2>سجّل استنتاجاتك</h2>
+      <p>بعد تجربتك في المختبر الافتراضي، أجب عن أسئلة النشاط كما وردت في كتابك المدرسي.</p>
+    </div>
+
+    <div class="worksheet-card">
+      <div class="worksheet-title">نشاط (١٠): مَحاجِرُ بلادي</div>
+      <p style="color:var(--ink-soft); margin-top:-8px;">جرّبتُ مختبراً افتراضياً حول "استخراج الصخور من المحاجر الفلسطينية"، أناقش زملائي وأجيب:</p>
+
+      <div class="worksheet-q">
+        <label>١. أكتُبُ الآثار الإيجابيّة لاستخراج الصخور من الأراضي الفلسطينيّة على حياتنا.</label>
+        <div class="lined-area"><textarea id="ans-pos" placeholder="اكتب إجابتك هنا..."></textarea></div>
+      </div>
+
+      <div class="worksheet-q">
+        <label>٢. أكتُبُ الآثار السلبيّة الناتجة عن استخراج كمّيّات كبيرة من الصخور من الأراضي الفلسطينيّة على حياتنا.</label>
+        <div class="lined-area"><textarea id="ans-neg" placeholder="اكتب إجابتك هنا..." style="min-height:150px;"></textarea></div>
+      </div>
+
+      <div class="worksheet-foot">
+        <button class="btn btn-primary" id="btn-fill-hint" type="button">💡 اقترح نقاطاً بناءً على تجربتي</button>
+        <button class="btn btn-ghost" id="btn-print" type="button">🖨 طباعة / حفظ إجاباتي</button>
+        <span id="ws-status"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  صُمم هذا الدرس التفاعلي لخدمة منهاج <strong>العلوم والحياة</strong> — الصف الخامس — فلسطين 🇵🇸<br>
+  تعمل الصفحة على الحاسوب والهاتف، وتدعم اللغة العربية بترميز UTF-8 بالكامل.
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/128/three.min.js"></script>
+<script>
+/* ---------- Arabic-Indic number helper ---------- */
+function arNum(n){ return Number(n).toLocaleString('ar-EG'); }
+function arPercent(n){ return arNum(Math.round(n)) + '٪'; }
+
+/* ---------- Rock card 3D flip ---------- */
+document.querySelectorAll('.rock-card').forEach(card=>{
+  card.addEventListener('click', ()=> card.classList.toggle('flipped'));
+  card.addEventListener('keypress', e=>{ if(e.key==='Enter') card.classList.toggle('flipped'); });
+});
+
+/* =========================================================
+   3D VIRTUAL QUARRY LAB
+========================================================= */
+(function(){
+  const wrap = document.getElementById('lab-canvas-wrap');
+  const scene = new THREE.Scene();
+  scene.fog = new THREE.Fog(0x12161f, 14, 34);
+
+  const camera = new THREE.PerspectiveCamera(45, wrap.clientWidth/wrap.clientHeight, 0.1, 100);
+  const renderer = new THREE.WebGLRenderer({ antialias:true, alpha:true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  renderer.setSize(wrap.clientWidth, wrap.clientHeight);
+  wrap.appendChild(renderer.domElement);
+
+  // Lighting
+  scene.add(new THREE.AmbientLight(0x8899aa, 0.9));
+  const sun = new THREE.DirectionalLight(0xfff2d6, 1.1);
+  sun.position.set(6,10,4);
+  scene.add(sun);
+  const rim = new THREE.DirectionalLight(0x5577aa, 0.5);
+  rim.position.set(-6,4,-6);
+  scene.add(rim);
+
+  // Ground / hill (olive terraces)
+  const groundGeo = new THREE.CylinderGeometry(9,10,1.2,6);
+  const groundMat = new THREE.MeshStandardMaterial({ color:0x5a662b, roughness:1 });
+  const ground = new THREE.Mesh(groundGeo, groundMat);
+  ground.position.y = -1.1;
+  scene.add(ground);
+
+  const terraceGeo = new THREE.CylinderGeometry(7.4,8.2,0.5,6);
+  const terraceMat = new THREE.MeshStandardMaterial({ color:0x717d3f, roughness:1 });
+  const terrace = new THREE.Mesh(terraceGeo, terraceMat);
+  terrace.position.y = -0.35;
+  scene.add(terrace);
+
+  // Quarry face group: grid of rock blocks
+  const rockGroup = new THREE.Group();
+  scene.add(rockGroup);
+
+  const COLS = 6, ROWS = 4;
+  const blockSize = 0.85, gap = 0.06;
+  const blocks = [];
+  const rockColors = [0xcabb92, 0xb7a679, 0xa59470, 0x8f7d5e];
+
+  function buildQuarry(){
+    rockGroup.clear();
+    blocks.length = 0;
+    const totalW = COLS*(blockSize+gap);
+    const totalH = ROWS*(blockSize+gap);
+    for(let r=0;r<ROWS;r++){
+      for(let c=0;c<COLS;c++){
+        const geo = new THREE.BoxGeometry(blockSize, blockSize, blockSize);
+        const color = rockColors[(r+c) % rockColors.length];
+        const mat = new THREE.MeshStandardMaterial({ color, roughness:0.95, metalness:0.02 });
+        const mesh = new THREE.Mesh(geo, mat);
+        mesh.position.set(
+          -totalW/2 + c*(blockSize+gap) + blockSize/2,
+          -totalH/2 + r*(blockSize+gap) + blockSize/2 + 1.1,
+          0
+        );
+        mesh.userData.alive = true;
+        mesh.userData.baseZ = 0;
+        rockGroup.add(mesh);
+        blocks.push(mesh);
+      }
+    }
+    rockGroup.position.set(0, 0.2, 3.0);
+  }
+  buildQuarry();
+
+  // Dust particles pool
+  const dustGeo = new THREE.SphereGeometry(0.05, 6, 6);
+  const dustMat = new THREE.MeshBasicMaterial({ color:0xcabf9e, transparent:true, opacity:0.8 });
+  const activeDust = [];
+  function spawnDust(pos){
+    for(let i=0;i<8;i++){
+      const p = new THREE.Mesh(dustGeo, dustMat.clone());
+      p.position.copy(pos);
+      p.userData.vel = new THREE.Vector3((Math.random()-0.5)*1.4, Math.random()*1.6+0.4, (Math.random()-0.5)*1.4);
+      p.userData.life = 1.0;
+      scene.add(p);
+      activeDust.push(p);
+    }
+  }
+
+  // Camera orbit (custom, no addon dependency)
+  let radius = 12, theta = 0.55, phi = 1.15;
+  let targetTheta = theta, targetPhi = phi, targetRadius = radius;
+  const target = new THREE.Vector3(0, 0.6, 1.2);
+
+  function updateCamera(){
+    theta += (targetTheta - theta) * 0.12;
+    phi += (targetPhi - phi) * 0.12;
+    radius += (targetRadius - radius) * 0.12;
+    phi = Math.max(0.5, Math.min(1.45, phi));
+    radius = Math.max(6, Math.min(20, radius));
+    camera.position.x = target.x + radius * Math.sin(phi) * Math.sin(theta);
+    camera.position.z = target.z + radius * Math.sin(phi) * Math.cos(theta);
+    camera.position.y = target.y + radius * Math.cos(phi);
+    camera.lookAt(target);
+  }
+
+  // Drag controls
+  let dragging = false, lastX=0, lastY=0;
+  function pointerDown(x,y){ dragging = true; lastX=x; lastY=y; }
+  function pointerMove(x,y){
+    if(!dragging) return;
+    const dx = x-lastX, dy = y-lastY;
+    targetTheta -= dx * 0.006;
+    targetPhi -= dy * 0.006;
+    lastX=x; lastY=y;
+  }
+  function pointerUp(){ dragging=false; }
+
+  renderer.domElement.addEventListener('mousedown', e=>pointerDown(e.clientX,e.clientY));
+  window.addEventListener('mousemove', e=>pointerMove(e.clientX,e.clientY));
+  window.addEventListener('mouseup', pointerUp);
+
+  renderer.domElement.addEventListener('touchstart', e=>{
+    if(e.touches.length===1) pointerDown(e.touches[0].clientX, e.touches[0].clientY);
+  }, {passive:true});
+  renderer.domElement.addEventListener('touchmove', e=>{
+    if(e.touches.length===1) pointerMove(e.touches[0].clientX, e.touches[0].clientY);
+    else if(e.touches.length===2){
+      const d = Math.hypot(
+        e.touches[0].clientX-e.touches[1].clientX,
+        e.touches[0].clientY-e.touches[1].clientY
+      );
+      if(window._lastPinch) targetRadius += (window._lastPinch - d) * 0.02;
+      window._lastPinch = d;
+    }
+  }, {passive:true});
+  renderer.domElement.addEventListener('touchend', ()=>{ dragging=false; window._lastPinch=null; });
+
+  renderer.domElement.addEventListener('wheel', e=>{
+    e.preventDefault();
+    targetRadius += e.deltaY * 0.01;
+  }, {passive:false});
+
+  // Click-to-extract via raycasting (only counts as extraction if it wasn't a drag)
+  const raycaster = new THREE.Raycaster();
+  const mouse = new THREE.Vector2();
+  let downX=0, downY=0;
+
+  function getPointer(e){
+    const rect = renderer.domElement.getBoundingClientRect();
+    const cx = (e.changedTouches ? e.changedTouches[0].clientX : e.clientX);
+    const cy = (e.changedTouches ? e.changedTouches[0].clientY : e.clientY);
+    mouse.x = ((cx-rect.left)/rect.width)*2-1;
+    mouse.y = -((cy-rect.top)/rect.height)*2+1;
+    return {cx, cy};
+  }
+
+  function tryExtract(e){
+    const {cx,cy} = getPointer(e);
+    const moved = Math.hypot(cx-downX, cy-downY);
+    if(moved > 8) return; // was a drag, not a tap
+    raycaster.setFromCamera(mouse, camera);
+    const alive = blocks.filter(b=>b.userData.alive);
+    const hits = raycaster.intersectObjects(alive);
+    if(hits.length){
+      extractBlock(hits[0].object);
+    }
+  }
+
+  renderer.domElement.addEventListener('mousedown', e=>{ const p=getPointer(e); downX=p.cx; downY=p.cy; });
+  renderer.domElement.addEventListener('mouseup', tryExtract);
+  renderer.domElement.addEventListener('touchstart', e=>{ const p=getPointer(e); downX=p.cx; downY=p.cy; }, {passive:true});
+  renderer.domElement.addEventListener('touchend', tryExtract);
+
+  /* ---------- Extraction state & metrics ---------- */
+  const TOTAL_BLOCKS = COLS*ROWS;
+  let extracted = 0;
+
+  const els = {
+    count: document.getElementById('extract-count'),
+    income: document.getElementById('m-income'), vIncome: document.getElementById('v-income'),
+    jobs: document.getElementById('m-jobs'), vJobs: document.getElementById('v-jobs'),
+    materials: document.getElementById('m-materials'), vMaterials: document.getElementById('v-materials'),
+    dust: document.getElementById('m-dust'), vDust: document.getElementById('v-dust'),
+    land: document.getElementById('m-land'), vLand: document.getElementById('v-land'),
+    water: document.getElementById('m-water'), vWater: document.getElementById('v-water'),
+    insight: document.getElementById('lab-insight'),
+  };
+
+  const insights = [
+    "أول عملية استخراج! لاحظ كيف يرتفع الدخل الاقتصادي وفرص العمل فوراً — هذه هي الفائدة المباشرة للمحاجر.",
+    "مع استمرار الاستخراج، بدأ الغبار والتلوث بالارتفاع أيضاً — كل كتلة صخرية لها ثمن بيئي.",
+    "لاحظ أن مؤشرات الضرر البيئي (الغبار، تضرر الأرض) ترتفع بشكل أسرع كلما استخرجنا كميات أكبر من الصخور!",
+    "توفرت مواد بناء كافية الآن، لكن المياه الجوفية بدأت تتأثر بسبب اتساع حفرة المحجر.",
+    "استخرجنا كميات كبيرة من الصخور: الفائدة الاقتصادية عالية، لكن الأضرار البيئية أصبحت واضحة وتحتاج إلى معالجة."
+  ];
+
+  function updateMeters(){
+    const ratio = extracted / TOTAL_BLOCKS; // 0..1
+
+    const income = Math.min(100, ratio*130);
+    const jobs = Math.min(100, ratio*110);
+    const materials = Math.min(100, ratio*140);
+
+    // negative metrics accelerate (quadratic) to teach "large quantities -> bigger harm"
+    const dust = Math.min(100, Math.pow(ratio,1.3)*140);
+    const land = Math.min(100, Math.pow(ratio,1.5)*160);
+    const water = Math.min(100, Math.pow(ratio,1.8)*150);
+
+    els.income.style.width = income+'%'; els.vIncome.textContent = arPercent(income);
+    els.jobs.style.width = jobs+'%'; els.vJobs.textContent = arPercent(jobs);
+    els.materials.style.width = materials+'%'; els.vMaterials.textContent = arPercent(materials);
+    els.dust.style.width = dust+'%'; els.vDust.textContent = arPercent(dust);
+    els.land.style.width = land+'%'; els.vLand.textContent = arPercent(land);
+    els.water.style.width = water+'%'; els.vWater.textContent = arPercent(water);
+
+    els.count.textContent = 'تم استخراج ' + arNum(extracted) + ' كتلة';
+
+    if(extracted===0){
+      els.insight.textContent = "اضغط على أول كتلة صخرية في المشهد لتبدأ التجربة، وستظهر هنا ملاحظات علمية فورية.";
+    } else {
+      const idx = Math.min(insights.length-1, Math.floor(ratio*insights.length));
+      els.insight.textContent = insights[idx];
+    }
+  }
+
+  function extractBlock(mesh){
+    if(!mesh.userData.alive) return;
+    mesh.userData.alive = false;
+    extracted++;
+    const worldPos = new THREE.Vector3();
+    mesh.getWorldPosition(worldPos);
+    spawnDust(worldPos);
+    mesh.userData.flying = true;
+    mesh.userData.vel = new THREE.Vector3(0, -0.02, 0.02);
+    updateMeters();
+  }
+
+  function resetQuarry(){
+    extracted = 0;
+    buildQuarry();
+    updateMeters();
+  }
+  document.getElementById('btn-reset').addEventListener('click', resetQuarry);
+  document.getElementById('btn-conclude').addEventListener('click', ()=>{
+    document.getElementById('worksheet').scrollIntoView({behavior:'smooth'});
+  });
+
+  updateMeters();
+
+  /* ---------- resize ---------- */
+  function onResize(){
+    camera.aspect = wrap.clientWidth/wrap.clientHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(wrap.clientWidth, wrap.clientHeight);
+  }
+  window.addEventListener('resize', onResize);
+
+  /* ---------- animation loop ---------- */
+  function animate(){
+    requestAnimationFrame(animate);
+    updateCamera();
+
+    blocks.forEach(b=>{
+      if(b.userData.flying){
+        b.position.y -= 0.06;
+        b.scale.multiplyScalar(0.94);
+        b.rotation.x += 0.05; b.rotation.y += 0.06;
+        if(b.scale.x < 0.02){ rockGroup.remove(b); }
+      }
+    });
+
+    for(let i=activeDust.length-1;i>=0;i--){
+      const p = activeDust[i];
+      p.position.addScaledVector(p.userData.vel, 0.02);
+      p.userData.vel.y -= 0.02;
+      p.userData.life -= 0.02;
+      p.material.opacity = Math.max(0,p.userData.life);
+      p.scale.setScalar(1 + (1-p.userData.life)*1.5);
+      if(p.userData.life<=0){ scene.remove(p); activeDust.splice(i,1); }
+    }
+
+    renderer.render(scene, camera);
+  }
+  animate();
+})();
+
+/* =========================================================
+   WORKSHEET HELPERS
+========================================================= */
+document.getElementById('btn-fill-hint').addEventListener('click', ()=>{
+  const posBox = document.getElementById('ans-pos');
+  const negBox = document.getElementById('ans-neg');
+  if(!posBox.value.trim()){
+    posBox.value = "توفير مواد بناء لمدننا وقرانا، خلق فرص عمل لكثير من العائلات، تحقيق دخل اقتصادي من بيع وتصدير الحجر، والمساهمة في تطوير الطرق والمباني.";
+  }
+  if(!negBox.value.trim()){
+    negBox.value = "تشويه المناظر الطبيعية وتقليل المساحات الخضراء، تلوث الهواء بالغبار وتأثيره على صحة السكان القريبين من المحجر، تآكل التربة وفقدان الغطاء النباتي، وتأثر مصادر المياه الجوفية بسبب اتساع حفر المحاجر.";
+  }
+  document.getElementById('ws-status').textContent = "✓ تمت إضافة أفكار مقترحة — عدّلها بأسلوبك الخاص";
+});
+
+document.getElementById('btn-print').addEventListener('click', ()=>{
+  window.print();
+});
+</script>
+</body>
+</html>

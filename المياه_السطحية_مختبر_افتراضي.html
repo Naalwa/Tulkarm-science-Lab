@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>المياه السطحية | مختبر افتراضي - الصف الخامس</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700;800;900&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg: #F7F1E4;
+  --bg-2: #EFE6D2;
+  --ink: #23303A;
+  --ink-soft: #5C6B73;
+  --sea-deep: #0B3C5D;
+  --sea: #146C8C;
+  --fresh: #1FA6B3;
+  --fresh-light: #7FD8DE;
+  --land: #B9803D;
+  --land-light: #E3C08C;
+  --sun: #E3A125;
+  --soil: #5C4632;
+  --white: #FFFDF8;
+  --card-shadow: 0 10px 30px rgba(11,60,93,0.12);
+  --radius: 18px;
+  --font-display: 'Cairo', sans-serif;
+  --font-body: 'Tajawal', sans-serif;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--font-body);
+  line-height:1.9;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{font-family:var(--font-display); margin:0; color:var(--sea-deep);}
+p{margin:0 0 12px;}
+img{max-width:100%;display:block;}
+.wrap{max-width:1080px;margin:0 auto;padding:0 22px;}
+a{color:inherit;}
+button{font-family:var(--font-body);cursor:pointer;border:none;}
+::selection{background:var(--sun);color:var(--white);}
+
+/* ===== NAV ===== */
+.nav{
+  position:sticky; top:0; z-index:50;
+  background:rgba(247,241,228,0.9);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid rgba(11,60,93,0.08);
+}
+.nav-inner{max-width:1080px;margin:0 auto;padding:12px 22px;display:flex;align-items:center;gap:14px;overflow-x:auto;}
+.nav-brand{font-family:var(--font-display);font-weight:800;color:var(--sea-deep);white-space:nowrap;font-size:15px;display:flex;align-items:center;gap:8px;}
+.nav-brand .dot{width:10px;height:10px;border-radius:50%;background:var(--fresh);box-shadow:0 0 0 4px rgba(31,166,179,0.2);}
+.nav-links{display:flex;gap:4px;margin-inline-start:auto;white-space:nowrap;}
+.nav-links a{
+  font-size:13.5px; padding:8px 12px; border-radius:999px; color:var(--ink-soft);
+  text-decoration:none; font-weight:500; transition:.2s;
+}
+.nav-links a:hover{background:var(--bg-2);color:var(--sea-deep);}
+
+/* ===== HERO ===== */
+.hero{
+  position:relative; overflow:hidden;
+  padding:70px 0 0;
+  background:linear-gradient(180deg,#EAF6F7 0%, #F7F1E4 70%);
+}
+.hero-inner{max-width:1080px;margin:0 auto;padding:0 22px;position:relative;z-index:3;}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:13px;font-weight:700;color:var(--sea);
+  background:rgba(31,166,179,0.12);
+  padding:6px 14px;border-radius:999px;margin-bottom:18px;
+}
+.hero h1{font-size:clamp(30px,5vw,52px);font-weight:900;line-height:1.25;max-width:760px;}
+.hero h1 span{color:var(--fresh);}
+.hero p.lead{font-size:17px;color:var(--ink-soft);max-width:560px;margin-top:16px;}
+.hero-cta{display:flex;gap:12px;margin-top:26px;flex-wrap:wrap;}
+.btn{
+  padding:13px 24px;border-radius:12px;font-weight:700;font-size:14.5px;
+  display:inline-flex;align-items:center;gap:8px;transition:.2s transform, .2s box-shadow;
+}
+.btn-primary{background:var(--sea-deep);color:var(--white);box-shadow:0 8px 20px rgba(11,60,93,0.25);}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(11,60,93,0.32);}
+.btn-ghost{background:var(--white);color:var(--sea-deep);border:1.5px solid rgba(11,60,93,0.15);}
+.btn-ghost:hover{border-color:var(--sea-deep);}
+
+/* Hero 3D scene: layered isometric-ish landscape */
+.hero-scene{
+  margin-top:46px;
+  perspective:1400px;
+  padding-bottom:0;
+}
+.scene3d{
+  transform:rotateX(48deg) rotateZ(0deg);
+  transform-style:preserve-3d;
+  width:100%;
+  height:230px;
+  position:relative;
+  transition:transform .6s ease;
+}
+.scene-layer{position:absolute;bottom:0;height:60px;border-radius:6px;}
+.scene-sea{
+  left:62%; width:38%; height:70px;
+  background:linear-gradient(180deg,var(--sea) 0%, var(--sea-deep) 100%);
+  box-shadow:0 26px 0 -6px rgba(11,60,93,0.35);
+}
+.scene-lake{
+  left:44%; width:16%; height:46px;
+  background:linear-gradient(180deg,var(--fresh-light), var(--fresh));
+  box-shadow:0 20px 0 -6px rgba(31,166,179,0.35);
+  border-radius:50% 50% 8px 8px/60% 60% 8px 8px;
+}
+.scene-land{
+  left:0; width:46%; height:56px;
+  background:linear-gradient(180deg,var(--land-light), var(--land));
+  box-shadow:0 24px 0 -6px rgba(185,128,61,0.35);
+}
+.scene-river{
+  left:32%; width:14%; height:38px;
+  background:linear-gradient(90deg,var(--fresh-light),var(--fresh));
+  transform:skewX(-18deg);
+}
+.hero-scene-caption{
+  text-align:center;color:var(--ink-soft);font-size:12.5px;margin-top:8px;letter-spacing:.3px;
+}
+@media(max-width:640px){.scene3d{height:170px;} .hero-scene{margin-top:30px;}}
+
+/* ===== SECTION GENERIC ===== */
+section{padding:78px 0;}
+.section-tag{
+  font-size:12.5px;font-weight:800;color:var(--fresh);letter-spacing:.4px;
+  display:flex;align-items:center;gap:8px;margin-bottom:10px;
+}
+.section-tag::before{content:"";width:22px;height:2px;background:var(--fresh);display:inline-block;}
+.section-title{font-size:clamp(24px,3.4vw,34px);font-weight:900;margin-bottom:14px;}
+.section-lead{color:var(--ink-soft);max-width:680px;font-size:15.5px;margin-bottom:36px;}
+
+/* ===== DEFINITION CARDS ===== */
+.def-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:26px;align-items:stretch;}
+.def-card{
+  background:var(--white); border-radius:var(--radius); padding:28px;
+  box-shadow:var(--card-shadow); border:1px solid rgba(11,60,93,0.06);
+}
+.def-card h3{font-size:19px;margin-bottom:10px;}
+.def-card.highlight{
+  background:linear-gradient(150deg,var(--sea-deep), #0f5578);
+  color:var(--white);
+}
+.def-card.highlight h3{color:var(--white);}
+.def-card.highlight p{color:rgba(255,255,255,0.88);}
+.mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px;}
+.mini-card{background:var(--bg-2);border-radius:14px;padding:16px;font-size:14px;}
+.mini-card b{display:block;color:var(--sea-deep);font-family:var(--font-display);font-size:14.5px;margin-bottom:4px;}
+@media(max-width:760px){.def-grid{grid-template-columns:1fr;}}
+
+/* ===== PIE CHART SECTION ===== */
+.pie-wrap{display:grid;grid-template-columns:340px 1fr;gap:40px;align-items:center;}
+.pie-holder{display:flex;flex-direction:column;align-items:center;gap:16px;}
+.pie-svg{width:280px;height:280px;filter:drop-shadow(0 12px 20px rgba(11,60,93,0.18));}
+.pie-svg path{cursor:pointer;transition:transform .25s ease, opacity .2s;transform-origin:150px 150px;}
+.pie-svg path:hover, .pie-svg path.active{transform:scale(1.045);}
+.pie-legend{display:flex;flex-direction:column;gap:10px;width:100%;}
+.legend-item{
+  display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;
+  background:var(--white);border:1.5px solid transparent;cursor:pointer;transition:.2s;font-size:14px;font-weight:700;
+}
+.legend-item:hover, .legend-item.active{border-color:var(--fresh);background:#EAF7F8;}
+.legend-swatch{width:14px;height:14px;border-radius:4px;flex-shrink:0;}
+.legend-item .pct{margin-inline-start:auto;color:var(--ink-soft);font-weight:500;font-size:13px;}
+.pie-info{
+  background:var(--white);border-radius:var(--radius);padding:26px;box-shadow:var(--card-shadow);
+  min-height:210px;border-inline-start:5px solid var(--fresh);
+}
+.pie-info h4{font-size:18px;margin-bottom:8px;}
+.pie-info p{color:var(--ink-soft);font-size:14.5px;}
+@media(max-width:820px){.pie-wrap{grid-template-columns:1fr;}}
+
+/* ===== LAB SECTION ===== */
+.lab-section{background:linear-gradient(180deg,#0B3C5D 0%, #123f5f 100%);color:var(--white);border-radius:28px;margin:0 22px;padding:56px 0;}
+.lab-section .wrap{max-width:1080px;}
+.lab-section .section-tag{color:var(--sun);}
+.lab-section .section-tag::before{background:var(--sun);}
+.lab-section .section-title{color:var(--white);}
+.lab-section .section-lead{color:rgba(255,255,255,0.75);}
+
+.lab-panel{
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:22px;padding:26px;backdrop-filter:blur(6px);
+}
+.lab-controls{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:22px;align-items:center;}
+.lab-btn{
+  background:var(--sun);color:#3A2600;padding:12px 20px;border-radius:12px;font-weight:800;font-size:14px;
+  display:inline-flex;align-items:center;gap:8px;transition:.2s;
+}
+.lab-btn:hover{transform:translateY(-2px);box-shadow:0 10px 18px rgba(227,161,37,0.35);}
+.lab-btn.secondary{background:rgba(255,255,255,0.12);color:var(--white);}
+.lab-btn.secondary:hover{background:rgba(255,255,255,0.2);}
+.lab-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+
+.terrain-stage{
+  perspective:1300px;
+  padding:20px 0 6px;
+}
+.terrain-3d{
+  position:relative;
+  width:100%;
+  height:260px;
+  transform:rotateX(46deg) rotateZ(0deg);
+  transform-style:preserve-3d;
+  transition:transform .8s cubic-bezier(.2,.8,.2,1);
+  border-radius:14px;
+  overflow:visible;
+}
+.terrain-3d.leveled{transform:rotateX(20deg);}
+.zone{
+  position:absolute; top:0; bottom:0;
+  display:flex; align-items:flex-start; justify-content:center;
+  font-family:var(--font-display); font-weight:800; font-size:12.5px; color:rgba(0,0,0,0.55);
+  padding-top:10px;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,0.15);
+}
+.zone-rock{left:0%; width:18%; background:linear-gradient(160deg,#9aa3a8,#6c7478); color:#222;}
+.zone-soil{left:18%; width:22%; background:linear-gradient(160deg,#8a6b47,#6b4f31); color:#fff;}
+.zone-sand{left:40%; width:18%; background:linear-gradient(160deg,#e3c691,#c9a862); color:#3a2a08;}
+.zone-lake{left:58%; width:14%; background:linear-gradient(160deg,var(--fresh-light),var(--fresh)); color:#02323a;}
+.zone-sea{left:72%; width:28%; background:linear-gradient(160deg,#1c8bb0,#0B3C5D); color:#eaf6f7;}
+.zone-label{background:rgba(255,255,255,0.55);padding:2px 8px;border-radius:8px;}
+
+.raindrop{
+  position:absolute; top:-30px; width:8px; height:12px; border-radius:50% 50% 50% 0%;
+  background:linear-gradient(180deg,#bfe9f0,#3fb6c9);
+  transform:rotate(45deg) translateZ(30px);
+  animation:fall 900ms cubic-bezier(.55,0,.85,.35) forwards;
+  z-index:5;
+}
+@keyframes fall{
+  from{ top:-30px; opacity:1; }
+  to{ top:96%; opacity:.95; }
+}
+.splash{
+  position:absolute; width:16px; height:6px; border-radius:50%;
+  background:rgba(255,255,255,0.85); top:96%;
+  animation:splash 420ms ease-out forwards;
+}
+@keyframes splash{
+  0%{transform:scale(0.3);opacity:1;}
+  100%{transform:scale(2.4);opacity:0;}
+}
+
+.lab-legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:16px;font-size:12.5px;color:rgba(255,255,255,0.75);}
+.lab-legend span{display:inline-flex;align-items:center;gap:6px;}
+.lab-legend i{width:10px;height:10px;border-radius:3px;display:inline-block;}
+
+.results-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:26px;}
+.result-card{
+  background:rgba(255,255,255,0.08);border-radius:14px;padding:16px;text-align:center;
+  border:1px solid rgba(255,255,255,0.1);
+}
+.result-card .num{font-family:var(--font-display);font-weight:900;font-size:26px;color:var(--sun);}
+.result-card .label{font-size:12.5px;color:rgba(255,255,255,0.75);margin-top:4px;}
+.result-bar{height:10px;border-radius:999px;background:rgba(255,255,255,0.12);margin-top:10px;overflow:hidden;}
+.result-bar > div{height:100%;border-radius:999px;transition:width .6s ease;}
+@media(max-width:760px){.results-grid{grid-template-columns:1fr 1fr;}}
+
+.lab-conclusion{
+  margin-top:22px;background:rgba(255,255,255,0.08);border-radius:14px;padding:18px 20px;
+  font-size:14px;color:rgba(255,255,255,0.9);min-height:28px;border-inline-start:4px solid var(--sun);
+}
+
+/* ===== SALINITY LAB ===== */
+.sal-grid{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:center;margin-top:10px;}
+.sal-sources{display:flex;flex-wrap:wrap;gap:12px;}
+.source-btn{
+  background:var(--white);border:1.5px solid rgba(11,60,93,0.12);border-radius:14px;padding:14px 16px;
+  display:flex;flex-direction:column;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--ink);
+  min-width:96px;transition:.2s;
+}
+.source-btn:hover,.source-btn.active{border-color:var(--fresh);background:#EAF7F8;transform:translateY(-2px);}
+.source-btn .emoji{font-size:26px;}
+.meter-card{
+  background:var(--white);border-radius:var(--radius);padding:26px;box-shadow:var(--card-shadow);
+}
+.meter-screen{
+  background:#0B3C5D;border-radius:14px;padding:22px;color:var(--white);text-align:center;
+}
+.meter-value{font-family:var(--font-display);font-weight:900;font-size:38px;color:var(--fresh-light);}
+.meter-unit{font-size:12.5px;color:rgba(255,255,255,0.6);}
+.meter-gauge{height:14px;border-radius:999px;background:rgba(255,255,255,0.15);margin-top:16px;overflow:hidden;}
+.meter-gauge>div{height:100%;background:linear-gradient(90deg,var(--fresh),var(--sun),var(--sea-deep));width:0%;transition:width .8s ease;}
+.meter-desc{margin-top:16px;font-size:14px;color:var(--ink-soft);min-height:44px;}
+@media(max-width:820px){.sal-grid{grid-template-columns:1fr;}}
+
+/* ===== WORKSHEET ===== */
+.q-list{display:flex;flex-direction:column;gap:18px;}
+.q-card{background:var(--white);border-radius:16px;padding:22px 24px;box-shadow:var(--card-shadow);}
+.q-head{display:flex;gap:12px;align-items:flex-start;margin-bottom:12px;}
+.q-num{
+  background:var(--fresh);color:var(--white);width:30px;height:30px;border-radius:9px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:800;font-size:14px;
+}
+.q-text{font-weight:700;font-size:15.5px;padding-top:3px;}
+textarea{
+  width:100%;min-height:70px;border-radius:12px;border:1.5px solid rgba(11,60,93,0.15);
+  padding:12px 14px;font-family:var(--font-body);font-size:14.5px;resize:vertical;background:#FCFAF3;
+}
+textarea:focus{outline:none;border-color:var(--fresh);}
+.q-actions{display:flex;justify-content:flex-end;margin-top:10px;}
+.check-btn{
+  background:var(--bg-2);color:var(--sea-deep);padding:8px 16px;border-radius:10px;font-size:13px;font-weight:700;
+}
+.check-btn:hover{background:var(--fresh);color:var(--white);}
+.model-answer{
+  display:none;margin-top:12px;background:#EAF7F8;border-radius:12px;padding:14px 16px;font-size:14px;color:var(--sea-deep);
+  border-inline-start:4px solid var(--fresh);
+}
+.model-answer.show{display:block;}
+
+/* ===== INFO / THINK BOX ===== */
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px;}
+.info-box{
+  background:linear-gradient(160deg,#EAF7F8,#F7F1E4);
+  border-radius:var(--radius);padding:26px;box-shadow:var(--card-shadow);border:1px solid rgba(31,166,179,0.2);
+}
+.info-box h3{display:flex;align-items:center;gap:10px;font-size:18px;margin-bottom:10px;}
+.think-box{
+  background:linear-gradient(160deg,#0B3C5D,#146C8C);color:var(--white);
+  border-radius:var(--radius);padding:26px;box-shadow:var(--card-shadow);
+}
+.think-box h3{color:var(--white);display:flex;gap:10px;align-items:center;font-size:18px;margin-bottom:10px;}
+.think-box textarea{background:rgba(255,255,255,0.9);}
+@media(max-width:820px){.info-grid{grid-template-columns:1fr;}}
+
+footer{padding:40px 0 60px;text-align:center;color:var(--ink-soft);font-size:13px;}
+footer b{color:var(--sea-deep);}
+
+.visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);}
+:focus-visible{outline:3px solid var(--sun);outline-offset:2px;}
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
+}
+
+  /* ══ RESPONSIVE MOBILE & TABLET ══ */
+  @media (max-width: 768px) {
+    body { padding: 8px !important; font-size: 15px !important; overflow-x: hidden !important; }
+    .container, [class*="container"], [class*="wrapper"] { padding: 8px !important; max-width: 100% !important; }
+    canvas { width: 100% !important; height: auto !important; display: block !important; touch-action: none; max-width: 100% !important; }
+    svg { max-width: 100% !important; height: auto !important; }
+    h1 { font-size: clamp(18px,5vw,32px) !important; }
+    h2 { font-size: clamp(15px,4vw,26px) !important; }
+    h3 { font-size: clamp(13px,3.5vw,20px) !important; }
+    [class*="grid"] { grid-template-columns: 1fr !important; }
+    [class*="flex"] { flex-wrap: wrap !important; }
+    input[type="range"] { width: 100% !important; min-height: 36px; }
+    input[type="number"], input[type="text"], select, textarea {
+      font-size: 16px !important; width: 100% !important; box-sizing: border-box; padding: 8px !important; }
+    button { min-height: 44px !important; font-size: 14px !important; touch-action: manipulation; padding: 10px 14px !important; }
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 13px !important; }
+    th, td { padding: 6px 4px !important; }
+    header { padding: 10px 12px !important; }
+    .controls, [class*="controls"] { flex-direction: column !important; gap: 8px !important; }
+    .lab-window, [class*="lab-window"] { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+  }
+  @media (max-width: 480px) {
+    body { padding: 4px !important; }
+    button { width: 100% !important; }
+  }
+  /* ══ END RESPONSIVE ══ */
+</style>
+</head>
+<body>
+<style>
+.vlab-back{position:fixed;top:10px;left:10px;z-index:99999;
+background:rgba(10,22,40,0.93);border:1px solid rgba(0,200,150,0.4);
+border-radius:22px;padding:8px 16px;display:inline-flex;align-items:center;gap:7px;
+color:#00C896;font-family:Tajawal,Cairo,Arial,sans-serif;font-size:13px;font-weight:700;
+text-decoration:none;backdrop-filter:blur(8px);box-shadow:0 4px 18px rgba(0,0,0,0.3);
+transition:background 0.2s;}
+.vlab-back:hover{background:rgba(0,200,150,0.18);}
+</style>
+<a href="../grade5.html" class="vlab-back">&#8594; العودة للصف</a>
+
+
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-brand"><span class="dot"></span> المياه في فلسطين — الدرس الثاني</div>
+    <div class="nav-links">
+      <a href="#definition">التعريف</a>
+      <a href="#chart">الرسم البياني</a>
+      <a href="#lab">المختبر</a>
+      <a href="#salinity">الملوحة</a>
+      <a href="#worksheet">النشاط</a>
+      <a href="#info">فكّر</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">🌍 العلوم والحياة · الصف الخامس · نشاط (١): المياه السطحية</div>
+    <h1>رحلة قطرة الماء فوق سطح <span>الأرض</span></h1>
+    <p class="lead">استكشف مصادر المياه السطحية، وشغّل المختبر الافتراضي لترى إلى أين تذهب قطرات المطر، وقِس ملوحة المياه بنفسك كما يفعل الجيولوجيون والكيميائيون.</p>
+    <div class="hero-cta">
+      <a href="#lab" class="btn btn-primary">🧪 ابدأ التجربة الآن</a>
+      <a href="#definition" class="btn btn-ghost">📖 اقرأ الدرس أولاً</a>
+    </div>
+  </div>
+  <div class="wrap hero-scene">
+    <div class="scene3d" id="heroScene">
+      <div class="scene-layer scene-land"></div>
+      <div class="scene-layer scene-river"></div>
+      <div class="scene-layer scene-lake"></div>
+      <div class="scene-layer scene-sea"></div>
+    </div>
+    <div class="hero-scene-caption">مقطع مبسّط لسطح الأرض: يابسة، نهر، بحيرة، وبحر — بمنظور ثلاثي الأبعاد</div>
+  </div>
+</header>
+
+<main>
+
+<!-- ===================== DEFINITION ===================== -->
+<section id="definition" class="wrap">
+  <div class="section-tag">الدرس</div>
+  <h2 class="section-title">ما هي المياه السطحية؟</h2>
+  <p class="section-lead">قبل أن ندخل المختبر، لنفهم المفهوم الأساسي الذي تدور حوله كل التجارب القادمة.</p>
+
+  <div class="def-grid">
+    <div class="def-card highlight">
+      <h3>💧 تعريف المياه السطحية</h3>
+      <p>هي المياه التي تتكوّن بشكل طبيعي على سطح الأرض، مثل البِرَك والأنهار والبحيرات والبحار والمحيطات، وتختلف عن المياه الجوفية التي تختبئ تحت سطح الأرض بين طبقات الصخور والتربة.</p>
+      <div class="mini-grid">
+        <div class="mini-card" style="background:rgba(255,255,255,0.12);color:#fff;"><b>مياه عذبة</b>تراكيز منخفضة من الأملاح — كالأنهار والبِرَك.</div>
+        <div class="mini-card" style="background:rgba(255,255,255,0.12);color:#fff;"><b>مياه مالحة</b>تراكيز عالية من الأملاح — كالبحار والمحيطات.</div>
+      </div>
+    </div>
+    <div class="def-card">
+      <h3>🗺️ أين تتجمّع على سطح الأرض؟</h3>
+      <p>تتجمّع المياه السطحية في أماكن طبيعية عديدة، وكل مكان له خصائصه الكيميائية والجيولوجية الخاصة:</p>
+      <div class="mini-grid">
+        <div class="mini-card"><b>🏞️ الأنهار</b>مياه عذبة متحرّكة</div>
+        <div class="mini-card"><b>🌊 البحيرات</b>مياه عذبة راكدة غالبًا</div>
+        <div class="mini-card"><b>🏖️ البحار</b>مياه مالحة</div>
+        <div class="mini-card"><b>💦 البِرَك</b>مياه عذبة مؤقتة</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PIE CHART ===================== -->
+<section id="chart" class="wrap">
+  <div class="section-tag">نشاط (١)</div>
+  <h2 class="section-title">توزيع المياه على سطح الأرض</h2>
+  <p class="section-lead">انقر على كل قطاع من الرسم البياني، أو على اسمه في القائمة، لتتعرّف على نسبته وتفاصيله.</p>
+
+  <div class="pie-wrap">
+    <div class="pie-holder">
+      <svg viewBox="0 0 300 300" class="pie-svg" id="pieSvg">
+        <!-- سلاسل: مياه مالحة 68%، يابسة 30%، مياه عذبة 2% -->
+        <path data-key="salt" d="M150,150 L150,10 A140,140 0 1,1 34.8,226.7 Z" fill="#146C8C"></path>
+        <path data-key="land" d="M150,150 L34.8,226.7 A140,140 0 0,1 106,17.9 Z" fill="#C98A4B"></path>
+        <path data-key="fresh" d="M150,150 L106,17.9 A140,140 0 0,1 150,10 Z" fill="#7FD8DE"></path>
+      </svg>
+      <div class="pie-legend">
+        <div class="legend-item active" data-key="salt"><span class="legend-swatch" style="background:#146C8C"></span> مياه مالحة <span class="pct">٪68</span></div>
+        <div class="legend-item" data-key="land"><span class="legend-swatch" style="background:#C98A4B"></span> يابسة <span class="pct">٪30</span></div>
+        <div class="legend-item" data-key="fresh"><span class="legend-swatch" style="background:#7FD8DE"></span> مياه عذبة <span class="pct">٪2</span></div>
+      </div>
+    </div>
+
+    <div class="pie-info" id="pieInfo">
+      <h4>🌊 مياه مالحة — ٪68 من سطح الأرض</h4>
+      <p>تغطي المحيطات والبحار الجزء الأكبر من سطح الأرض، وتحتوي مياهها على تراكيز عالية من الأملاح الذائبة، لذلك لا تصلح للشرب أو الري مباشرة.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== VIRTUAL LAB ===================== -->
+<section id="lab">
+  <div class="lab-section">
+    <div class="wrap">
+      <div class="section-tag">المختبر الافتراضي</div>
+      <h2 class="section-title">إلى أين تذهب مياه الهطول بعد سقوطها على سطح الأرض؟</h2>
+      <p class="section-lead">هذا مقطع ثلاثي الأبعاد لسطح الأرض يضمّ خمس بيئات مختلفة. أسقط قطرات المطر وراقب أين تستقر كل قطرة، ثم قارن نتائجك بإجابتك على السؤال (٧) في ورقة النشاط.</p>
+
+      <div class="lab-panel">
+        <div class="lab-controls">
+          <button class="lab-btn" id="dropOne">☔ إسقاط قطرة واحدة</button>
+          <button class="lab-btn" id="dropMany">⛈️ محاكاة زخّة مطر (٣٠ قطرة)</button>
+          <button class="lab-btn secondary" id="resetLab">↺ إعادة ضبط التجربة</button>
+        </div>
+
+        <div class="terrain-stage">
+          <div class="terrain-3d" id="terrain">
+            <div class="zone zone-rock"><span class="zone-label">⛰️ صخري</span></div>
+            <div class="zone zone-soil"><span class="zone-label">🌱 تربة</span></div>
+            <div class="zone zone-sand"><span class="zone-label">🏜️ رملي</span></div>
+            <div class="zone zone-lake"><span class="zone-label">🌊 بحيرة</span></div>
+            <div class="zone zone-sea"><span class="zone-label">🌐 بحر</span></div>
+          </div>
+        </div>
+
+        <div class="lab-legend">
+          <span><i style="background:#7FD8DE"></i> مياه سطحية عذبة (نهر/بحيرة)</span>
+          <span><i style="background:#146C8C"></i> مياه مالحة (بحر)</span>
+          <span><i style="background:#8a6b47"></i> مياه جوفية (تسرّبت للأسفل)</span>
+          <span><i style="background:#E3A125"></i> تبخّرت وعادت للسماء</span>
+        </div>
+
+        <div class="results-grid">
+          <div class="result-card">
+            <div class="num" id="cGround">0</div>
+            <div class="label">مياه جوفية</div>
+            <div class="result-bar"><div id="bGround" style="background:#8a6b47;width:0%"></div></div>
+          </div>
+          <div class="result-card">
+            <div class="num" id="cFresh">0</div>
+            <div class="label">مياه سطحية عذبة</div>
+            <div class="result-bar"><div id="bFresh" style="background:#7FD8DE;width:0%"></div></div>
+          </div>
+          <div class="result-card">
+            <div class="num" id="cSalt">0</div>
+            <div class="label">مياه مالحة</div>
+            <div class="result-bar"><div id="bSalt" style="background:#146C8C;width:0%"></div></div>
+          </div>
+          <div class="result-card">
+            <div class="num" id="cEvap">0</div>
+            <div class="label">تبخّرت</div>
+            <div class="result-bar"><div id="bEvap" style="background:#E3A125;width:0%"></div></div>
+          </div>
+        </div>
+
+        <div class="lab-conclusion" id="labConclusion">
+          نتيجة تجربتك ستظهر هنا بعد إسقاط بعض القطرات. لاحظ أي مكان استقبل أكبر عدد من القطرات، ولماذا.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SALINITY LAB ===================== -->
+<section id="salinity" class="wrap">
+  <div class="section-tag">تجربة كيميائية</div>
+  <h2 class="section-title">هل جميع المياه السطحية عذبة؟</h2>
+  <p class="section-lead">استخدم جهاز قياس الأملاح الافتراضي (TDS) لتقيس تركيز الأملاح الذائبة في مصادر مختلفة، كما يفعل الكيميائيون في المختبر الحقيقي.</p>
+
+  <div class="sal-grid">
+    <div class="sal-sources">
+      <button class="source-btn" data-src="river"><span class="emoji">🏞️</span> نهر</button>
+      <button class="source-btn" data-src="lake"><span class="emoji">🌊</span> بحيرة</button>
+      <button class="source-btn" data-src="ground"><span class="emoji">💧</span> مياه جوفية</button>
+      <button class="source-btn" data-src="sea"><span class="emoji">🌐</span> بحر</button>
+      <button class="source-btn" data-src="dead"><span class="emoji">🧂</span> البحر الميت</button>
+    </div>
+
+    <div class="meter-card">
+      <div class="meter-screen">
+        <div class="meter-unit">تركيز الأملاح الذائبة (TDS)</div>
+        <div class="meter-value"><span id="meterVal">—</span> <span style="font-size:16px;">ppm</span></div>
+        <div class="meter-gauge"><div id="meterFill"></div></div>
+      </div>
+      <div class="meter-desc" id="meterDesc">اختر مصدرًا من القائمة لبدء القياس.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== WORKSHEET ===================== -->
+<section id="worksheet" class="wrap">
+  <div class="section-tag">ورقة النشاط</div>
+  <h2 class="section-title">أجب عن أسئلة النشاط</h2>
+  <p class="section-lead">اكتب إجابتك في كل مربع، ثم اضغط "تحقق من إجابتك" لمقارنتها بإجابة نموذجية.</p>
+
+  <div class="q-list" id="qList">
+    <!-- Questions injected by JS -->
+  </div>
+</section>
+
+<!-- ===================== INFO + THINK ===================== -->
+<section id="info" class="wrap">
+  <div class="info-grid">
+    <div class="info-box">
+      <h3>💡 معلومة مفيدة</h3>
+      <p>المياه العذبة: المياه التي تتكوّن بشكل طبيعي على سطح الأرض، كما في البِرَك والأنهار والبحيرات والجداول، أو التي تتكوّن تحت الأرض كما في المياه الجوفية، وتتميّز بوجود تراكيز منخفضة من الأملاح الذائبة والمواد الصلبة المذابة.</p>
+    </div>
+    <div class="think-box">
+      <h3>🧠 أفكّر</h3>
+      <p>كيف يمكن الاستفادة من مياه الهطول والاحتفاظ بها؟</p>
+      <textarea placeholder="اكتب أفكارك هنا... (مثال: حفر آبار جمع مياه الأمطار، بناء السدود، الحصاد المائي...)"></textarea>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <p>📘 <b>وحدة المياه في فلسطين</b> — الدرس الثاني: المياه السطحية · منهاج العلوم والحياة، الصف الخامس</p>
+  <p>صُمم هذا المختبر الافتراضي ليعمل على الحاسوب والهاتف معًا. النص مُرمّز بترميز UTF-8 ويدعم اللغة العربية بالكامل (RTL).</p>
+</footer>
+
+<script>
+(function(){
+
+/* ---------- Pie chart interactivity ---------- */
+const pieData = {
+  salt: {
+    title: "🌊 مياه مالحة — ٪68 من سطح الأرض",
+    text: "تغطي المحيطات والبحار الجزء الأكبر من سطح الأرض، وتحتوي مياهها على تراكيز عالية من الأملاح الذائبة، لذلك لا تصلح للشرب أو الري مباشرة."
+  },
+  land: {
+    title: "🏔️ يابسة — ٪30 من سطح الأرض",
+    text: "هي الأجزاء الصلبة من سطح الأرض غير المغطاة بالمياه، وتشمل الجبال والسهول والصحاري، وعليها تعيش معظم الكائنات الحية البرّية."
+  },
+  fresh: {
+    title: "💧 مياه عذبة — ٪2 فقط من سطح الأرض",
+    text: "نسبة قليلة جدًا مقارنة بالمياه المالحة، وتشمل الأنهار والبحيرات والبِرَك، وهي المصدر الأساسي للشرب والزراعة، لذلك يجب المحافظة عليها وعدم تلويثها أو إهدارها."
+  }
+};
+const pieInfo = document.getElementById('pieInfo');
+function activatePie(key){
+  document.querySelectorAll('.pie-svg path').forEach(p=>p.classList.toggle('active', p.dataset.key===key));
+  document.querySelectorAll('.legend-item').forEach(l=>l.classList.toggle('active', l.dataset.key===key));
+  const d = pieData[key];
+  pieInfo.innerHTML = `<h4>${d.title}</h4><p>${d.text}</p>`;
+}
+document.querySelectorAll('.pie-svg path').forEach(p=>p.addEventListener('click',()=>activatePie(p.dataset.key)));
+document.querySelectorAll('.legend-item').forEach(l=>l.addEventListener('click',()=>activatePie(l.dataset.key)));
+
+/* ---------- Hero 3D subtle parallax ---------- */
+const heroScene = document.getElementById('heroScene');
+if (window.matchMedia('(pointer:fine)').matches){
+  document.querySelector('.hero').addEventListener('mousemove', e=>{
+    const r = window.innerWidth;
+    const rot = 48 + ((e.clientX/r)-0.5)*10;
+    heroScene.style.transform = `rotateX(${rot}deg)`;
+  });
+}
+
+/* ---------- Virtual rain lab ---------- */
+const terrain = document.getElementById('terrain');
+const zones = [
+  {key:'rock', min:0, max:18},
+  {key:'soil', min:18, max:40},
+  {key:'sand', min:40, max:58},
+  {key:'lake', min:58, max:72},
+  {key:'sea', min:72, max:100}
+];
+const outcomeRules = {
+  rock: [['fresh',0.70],['ground',0.10],['evap',0.20]],
+  soil: [['ground',0.40],['fresh',0.40],['evap',0.20]],
+  sand: [['ground',0.70],['fresh',0.10],['evap',0.20]],
+  lake: [['fresh',1.0]],
+  sea:  [['salt',1.0]]
+};
+let counts = {ground:0, fresh:0, salt:0, evap:0};
+
+function pickOutcome(zoneKey){
+  const rules = outcomeRules[zoneKey];
+  const r = Math.random();
+  let acc = 0;
+  for (const [outcome,p] of rules){
+    acc += p;
+    if (r <= acc) return outcome;
+  }
+  return rules[rules.length-1][0];
+}
+
+function zoneForX(xPct){
+  for (const z of zones){ if (xPct>=z.min && xPct<z.max) return z.key; }
+  return 'sea';
+}
+
+function updateResults(){
+  const total = counts.ground+counts.fresh+counts.salt+counts.evap;
+  document.getElementById('cGround').textContent = counts.ground;
+  document.getElementById('cFresh').textContent = counts.fresh;
+  document.getElementById('cSalt').textContent = counts.salt;
+  document.getElementById('cEvap').textContent = counts.evap;
+  const pct = n => total? Math.round(n/total*100) : 0;
+  document.getElementById('bGround').style.width = pct(counts.ground)+'%';
+  document.getElementById('bFresh').style.width = pct(counts.fresh)+'%';
+  document.getElementById('bSalt').style.width = pct(counts.salt)+'%';
+  document.getElementById('bEvap').style.width = pct(counts.evap)+'%';
+
+  const conclusion = document.getElementById('labConclusion');
+  if (total===0){
+    conclusion.textContent = 'نتيجة تجربتك ستظهر هنا بعد إسقاط بعض القطرات. لاحظ أي مكان استقبل أكبر عدد من القطرات، ولماذا.';
+    return;
+  }
+  const entries = Object.entries(counts).sort((a,b)=>b[1]-a[1]);
+  const names = {ground:'المياه الجوفية', fresh:'المياه السطحية العذبة', salt:'المياه المالحة', evap:'التبخّر'};
+  conclusion.innerHTML = `بعد ${total} قطرة: أكبر نسبة ذهبت إلى <b>${names[entries[0][0]]}</b> (${pct(entries[0][1])}٪). هذا يشبه ما لاحظناه في الرسم البياني: جزء من الهطول يجري على السطح، وجزء يتسرّب تحت الأرض ليكوّن المياه الجوفية، وجزء يتبخّر ويعود إلى دورة الماء من جديد.`;
+}
+
+function dropOnce(){
+  const xPct = Math.random()*100;
+  const zoneKey = zoneForX(xPct);
+  const outcome = pickOutcome(zoneKey);
+  counts[outcome]++;
+
+  const drop = document.createElement('div');
+  drop.className = 'raindrop';
+  drop.style.left = xPct+'%';
+  terrain.appendChild(drop);
+  drop.addEventListener('animationend', ()=>{
+    drop.remove();
+    const splash = document.createElement('div');
+    splash.className = 'splash';
+    splash.style.left = xPct+'%';
+    terrain.appendChild(splash);
+    splash.addEventListener('animationend', ()=>splash.remove());
+    updateResults();
+  });
+}
+
+document.getElementById('dropOne').addEventListener('click', dropOnce);
+document.getElementById('dropMany').addEventListener('click', (e)=>{
+  e.target.disabled = true;
+  let i=0;
+  const iv = setInterval(()=>{
+    dropOnce();
+    i++;
+    if (i>=30){ clearInterval(iv); e.target.disabled=false; }
+  }, 90);
+});
+document.getElementById('resetLab').addEventListener('click', ()=>{
+  counts = {ground:0, fresh:0, salt:0, evap:0};
+  terrain.querySelectorAll('.raindrop,.splash').forEach(el=>el.remove());
+  updateResults();
+});
+updateResults();
+
+/* reveal terrain tilt on scroll into view */
+const io = new IntersectionObserver(entries=>{
+  entries.forEach(en=>{
+    if (en.isIntersecting){ terrain.style.transform='rotateX(46deg)'; }
+  });
+},{threshold:0.2});
+io.observe(terrain);
+
+/* ---------- Salinity meter ---------- */
+const salinityData = {
+  river:  {val: 220,  max:40000, desc:"مياه النهر عذبة، تركيز الأملاح منخفض جدًا، لذلك تصلح للشرب بعد المعالجة وللري."},
+  lake:   {val: 450,  max:40000, desc:"مياه البحيرة عذبة غالبًا، بتركيز أملاح منخفض، لكنه أعلى قليلًا من النهر لقلة الحركة."},
+  ground: {val: 600,  max:40000, desc:"المياه الجوفية عذبة نسبيًا، وتُرشَّح طبيعيًا عبر طبقات التربة والصخور، ما يقلل تركيز الأملاح."},
+  sea:    {val: 35000,max:40000, desc:"مياه البحر شديدة الملوحة؛ تحتوي على تراكيز عالية جدًا من الأملاح الذائبة، لذلك لا تصلح للشرب أو الري."},
+  dead:   {val: 340000,max:400000, desc:"البحر الميت من أكثر المسطحات المائية ملوحة على وجه الأرض، بتركيز أملاح يفوق مياه البحار العادية بعشر مرات تقريبًا."}
+};
+const meterVal = document.getElementById('meterVal');
+const meterFill = document.getElementById('meterFill');
+const meterDesc = document.getElementById('meterDesc');
+document.querySelectorAll('.source-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.source-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const d = salinityData[btn.dataset.src];
+    meterVal.textContent = '0';
+    meterFill.style.width = '0%';
+    requestAnimationFrame(()=>{
+      setTimeout(()=>{
+        meterVal.textContent = d.val.toLocaleString('en-US');
+        meterFill.style.width = Math.min(100, (d.val/d.max)*100)+'%';
+        meterDesc.textContent = d.desc;
+      }, 60);
+    });
+  });
+});
+
+/* ---------- Worksheet questions ---------- */
+const questions = [
+  {q:"ممّ يتكوّن سطح الأرض؟ وأيّهما نسبته أكبر؟", a:"يتكوّن سطح الأرض من اليابسة والمياه (عذبة ومالحة). المياه المالحة هي الأكبر نسبةً، إذ تغطي نحو ٪68 من سطح الأرض."},
+  {q:"أُسمِّي أماكن تجمّع المياه على سطح الأرض.", a:"الأنهار، البحيرات، البِرَك، البحار، والمحيطات."},
+  {q:"هل جميع المياه على سطح الأرض عذبة؟ لماذا؟", a:"لا، فمعظم المياه على سطح الأرض مالحة (كالبحار والمحيطات) لاحتوائها على تراكيز عالية من الأملاح الذائبة، بينما المياه العذبة نسبتها قليلة جدًا (نحو ٪2)."},
+  {q:"أكتب مصادر المياه العذبة على سطح الأرض.", a:"الأنهار، البحيرات، البِرَك، والجداول المائية."},
+  {q:"أكتب ثلاثة مصادر للمياه العذبة في فلسطين.", a:"مثال: نهر الأردن، بِرَك سليمان، الينابيع الطبيعية (مثل عين الفارعة أو عين ديوك)، والآبار الجوفية."},
+  {q:"أكتب تعريفًا للمياه السطحية.", a:"المياه السطحية هي المياه التي تتكوّن بشكل طبيعي على سطح الأرض، مثل الأنهار والبحيرات والبحار، وتختلف عن المياه الجوفية الموجودة تحت سطح الأرض."},
+  {q:"أين تذهب مياه الهطول بعد سقوطها على سطح الأرض؟", a:"جزء منها يجري على السطح مكوّنًا الأنهار والبِرَك والبحيرات، وجزء يتسرّب إلى باطن الأرض مكوّنًا المياه الجوفية، وجزء يتبخّر ويعود إلى الغلاف الجوي ضمن دورة الماء."}
+];
+const qList = document.getElementById('qList');
+questions.forEach((item, idx)=>{
+  const card = document.createElement('div');
+  card.className = 'q-card';
+  card.innerHTML = `
+    <div class="q-head">
+      <div class="q-num">${idx+1}</div>
+      <div class="q-text">${item.q}</div>
+    </div>
+    <textarea placeholder="اكتب إجابتك هنا..."></textarea>
+    <div class="q-actions"><button class="check-btn">✔ تحقّق من إجابتك</button></div>
+    <div class="model-answer">${item.a}</div>
+  `;
+  const btn = card.querySelector('.check-btn');
+  const ans = card.querySelector('.model-answer');
+  btn.addEventListener('click', ()=>{
+    ans.classList.toggle('show');
+    btn.textContent = ans.classList.contains('show') ? '▲ إخفاء الإجابة النموذجية' : '✔ تحقّق من إجابتك';
+  });
+  qList.appendChild(card);
+});
+
+})();
+</script>
+</body>
+</html>

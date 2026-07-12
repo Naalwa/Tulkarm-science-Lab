@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<meta http-equiv="Content-Language" content="ar">
+<title>رحلة الدم | الدورة الدموية الصغرى والكبرى — الصف السادس</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lalezar&family=Tajawal:wght@300;400;500;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============ TOKENS ============ */
+:root{
+  --parchment:#FBF6EC;
+  --parchment-2:#F3ECDC;
+  --ink:#241C14;
+  --ink-soft:#5B4E3E;
+  --artery:#C23B34;
+  --artery-deep:#8E241F;
+  --vein:#2B4C7E;
+  --vein-deep:#183258;
+  --navy:#0B1626;
+  --navy-2:#122238;
+  --gold:#D4A03C;
+  --gold-soft:#F1D89A;
+  --lung-pink:#E88FA0;
+  --lung-pink-deep:#B85770;
+  --green-ok:#3E8E5C;
+  --red-no:#B4402E;
+  --radius:18px;
+  --shadow-soft:0 12px 30px -12px rgba(36,28,20,.35);
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--parchment);
+  color:var(--ink);
+  font-family:'Tajawal',system-ui,sans-serif;
+  line-height:1.8;
+  overflow-x:hidden;
+}
+h1,h2,h3,.display{font-family:'Lalezar',system-ui,sans-serif;font-weight:400;letter-spacing:.5px;}
+.mono,.label-tag,.step-badge,.score-num{font-family:'IBM Plex Sans Arabic',system-ui,sans-serif;}
+::selection{background:var(--gold-soft);}
+a{color:inherit;}
+.wrap{max-width:1080px;margin:0 auto;padding:0 22px;}
+img{max-width:100%;}
+button{font-family:inherit;cursor:pointer;}
+
+/* ============ NAV ============ */
+.nav{
+  position:sticky;top:0;z-index:50;
+  background:rgba(251,246,236,.88);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid rgba(36,28,20,.08);
+}
+.nav-inner{
+  max-width:1080px;margin:0 auto;padding:12px 22px;
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+}
+.brand{display:flex;align-items:center;gap:10px;font-family:'Lalezar';font-size:22px;color:var(--artery-deep);}
+.brand .dot{width:12px;height:12px;border-radius:50%;background:var(--artery);box-shadow:0 0 0 4px rgba(194,59,52,.18);animation:beat 1.1s infinite;}
+@keyframes beat{0%,100%{transform:scale(1);}30%{transform:scale(1.35);}50%{transform:scale(1);}}
+.nav-links{display:flex;gap:4px;flex-wrap:wrap;font-size:14px;}
+.nav-links a{
+  padding:8px 12px;border-radius:999px;text-decoration:none;color:var(--ink-soft);
+  transition:.2s;font-weight:500;
+}
+.nav-links a:hover{background:var(--parchment-2);color:var(--artery-deep);}
+.nav-links a.lab-link{background:var(--navy);color:var(--gold-soft);}
+.nav-links a.lab-link:hover{background:var(--navy-2);}
+
+/* ============ HERO ============ */
+.hero{
+  position:relative;padding:60px 22px 40px;text-align:center;
+  background:radial-gradient(120% 100% at 50% 0%, #FFFDF8 0%, var(--parchment) 55%, var(--parchment-2) 100%);
+  overflow:hidden;
+}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:'IBM Plex Sans Arabic';font-size:13px;font-weight:600;
+  color:var(--vein-deep);background:#E4ECF7;border:1px solid #C7D6EE;
+  padding:6px 14px;border-radius:999px;margin-bottom:18px;
+}
+.hero h1{font-size:clamp(34px,6vw,58px);margin:6px 0 10px;color:var(--ink);}
+.hero h1 span{color:var(--artery);}
+.hero p.sub{max-width:620px;margin:0 auto;color:var(--ink-soft);font-size:17px;}
+.figure8-stage{max-width:640px;margin:34px auto 6px;perspective:1200px;}
+.figure8-stage svg{width:100%;height:auto;filter:drop-shadow(0 18px 24px rgba(36,28,20,.18));}
+.hero-caption{font-size:13px;color:var(--ink-soft);margin-top:4px;}
+.hero-caption b{color:var(--artery-deep);}
+.hero-caption i{color:var(--vein-deep);font-style:normal;}
+.scroll-cue{margin-top:26px;font-size:13px;color:var(--ink-soft);display:flex;flex-direction:column;align-items:center;gap:6px;}
+.scroll-cue .chev{width:10px;height:10px;border-left:2px solid var(--artery-deep);border-bottom:2px solid var(--artery-deep);transform:rotate(-45deg);animation:down 1.6s infinite;}
+@keyframes down{0%,100%{transform:rotate(-45deg) translateY(0);opacity:.5;}50%{transform:rotate(-45deg) translateY(6px);opacity:1;}}
+
+/* ============ SECTION SHELL ============ */
+section.block{padding:64px 0;}
+.eyebrow{
+  font-family:'IBM Plex Sans Arabic';font-size:13px;font-weight:700;
+  color:var(--artery-deep);letter-spacing:1px;margin-bottom:8px;display:block;
+}
+.eyebrow.blue{color:var(--vein-deep);}
+h2.title{font-size:clamp(26px,4vw,40px);margin:0 0 18px;}
+.lead{font-size:17px;color:var(--ink-soft);max-width:720px;}
+
+/* cards row */
+.card-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:28px;}
+@media(max-width:760px){.card-row{grid-template-columns:1fr;}}
+.info-card{
+  background:#fff;border:1px solid rgba(36,28,20,.08);border-radius:var(--radius);
+  padding:22px;box-shadow:var(--shadow-soft);
+}
+.info-card .ic{font-size:28px;margin-bottom:10px;display:block;}
+.info-card h3{font-family:'Tajawal';font-weight:800;font-size:17px;margin:0 0 6px;}
+.info-card p{margin:0;color:var(--ink-soft);font-size:14.5px;}
+
+/* ============ CIRCUIT SECTIONS ============ */
+.circuit-section{
+  border-radius:28px;padding:40px 32px;margin-top:10px;
+}
+.circuit-section.small{background:linear-gradient(160deg,#FDEDE9,#FBF6EC 60%);}
+.circuit-section.large{background:linear-gradient(160deg,#E9EFF9,#FBF6EC 60%);}
+.circuit-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:34px;align-items:center;}
+@media(max-width:840px){.circuit-grid{grid-template-columns:1fr;}}
+.steps{list-style:none;margin:22px 0 0;padding:0;counter-reset:step;}
+.steps li{
+  position:relative;padding:10px 0 10px 0;padding-inline-start:48px;font-size:15.5px;
+  border-inline-start:2px solid rgba(36,28,20,.12);margin-inline-start:16px;
+}
+.steps li:last-child{border-inline-start:2px solid transparent;}
+.steps li::before{
+  counter-increment:step;content:counter(step);
+  position:absolute;inset-inline-start:-16px;top:6px;
+  width:32px;height:32px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'IBM Plex Sans Arabic';font-weight:700;font-size:14px;color:#fff;
+}
+.small .steps li::before{background:var(--artery);}
+.large .steps li::before{background:var(--vein);}
+.callout{
+  margin-top:20px;background:#fff;border-radius:14px;padding:16px 18px;
+  border-inline-start:4px solid var(--gold);font-size:14.5px;color:var(--ink-soft);
+  box-shadow:var(--shadow-soft);
+}
+.callout b{color:var(--ink);}
+.diagram-holder{background:#fff;border-radius:20px;padding:18px;box-shadow:var(--shadow-soft);}
+.diagram-holder svg{width:100%;height:auto;display:block;}
+
+/* ============ COMPARE TABLE ============ */
+.compare-wrap{overflow-x:auto;margin-top:26px;border-radius:16px;box-shadow:var(--shadow-soft);}
+table.compare{width:100%;border-collapse:collapse;background:#fff;min-width:640px;}
+table.compare th,table.compare td{padding:14px 16px;text-align:right;font-size:14.5px;border-bottom:1px solid #EFE7D6;}
+table.compare thead th{
+  font-family:'IBM Plex Sans Arabic';font-weight:700;background:var(--ink);color:var(--gold-soft);font-size:14px;
+}
+table.compare thead th:first-child{border-radius:0;}
+table.compare tbody tr:nth-child(odd){background:#FBF8F1;}
+table.compare td:first-child{font-weight:700;color:var(--ink);white-space:nowrap;}
+table.compare td.sm{color:var(--artery-deep);}
+table.compare td.lg{color:var(--vein-deep);}
+
+/* ============ HEART 3D ============ */
+.heart3d-wrap{perspective:900px;display:flex;justify-content:center;}
+.heart3d{
+  width:120px;height:108px;position:relative;transform-style:preserve-3d;
+  animation:heartbeat 1.15s infinite ease-in-out, spin3d 9s infinite linear;
+}
+@keyframes heartbeat{0%,100%{transform:scale(1) rotateY(var(--ry,0deg));}25%{transform:scale(1.12) rotateY(var(--ry,0deg));}40%{transform:scale(.96) rotateY(var(--ry,0deg));}}
+@keyframes spin3d{0%{--ry:-16deg;}50%{--ry:16deg;}100%{--ry:-16deg;}}
+.heart3d::before,.heart3d::after{
+  content:"";position:absolute;top:0;width:62px;height:96px;border-radius:50px 50px 0 0;
+  background:linear-gradient(160deg,var(--artery),var(--artery-deep));
+  box-shadow:inset -8px -10px 16px rgba(0,0,0,.28), inset 6px 8px 10px rgba(255,255,255,.25);
+}
+.heart3d::before{left:0;transform:rotate(-45deg);transform-origin:0 100%;}
+.heart3d::after{right:0;transform:rotate(45deg);transform-origin:100% 100%;}
+
+/* ============ LAB ============ */
+.lab-section{background:radial-gradient(120% 100% at 50% 0%,var(--navy-2),var(--navy) 65%);color:#EDE7DA;border-radius:32px;padding:44px 26px 54px;position:relative;overflow:hidden;}
+.lab-section .eyebrow{color:var(--gold);}
+.lab-section h2.title{color:#fff;}
+.lab-section .lead{color:#C7BFAE;}
+.lab-progress{display:flex;gap:8px;margin:28px 0 30px;max-width:520px;}
+.lab-progress .seg{flex:1;height:6px;border-radius:99px;background:rgba(255,255,255,.14);overflow:hidden;}
+.lab-progress .seg i{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--gold),var(--artery));transition:width .4s;}
+.lab-panel{
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);
+  border-radius:22px;padding:26px;backdrop-filter:blur(6px);
+}
+.step-badge{display:inline-block;font-size:12px;color:var(--gold);border:1px solid rgba(212,160,60,.5);padding:3px 10px;border-radius:999px;margin-bottom:12px;letter-spacing:1px;}
+.lab-panel h3{font-family:'Tajawal';font-weight:800;font-size:20px;margin:0 0 8px;color:#fff;}
+.lab-panel p.hint{color:#BEB6A4;font-size:14.5px;margin-top:0;}
+
+.choice-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px;}
+@media(max-width:640px){.choice-row{grid-template-columns:1fr;}}
+.choice-card{
+  border:2px solid rgba(255,255,255,.14);border-radius:16px;padding:20px;text-align:center;
+  background:rgba(255,255,255,.03);transition:.2s;
+}
+.choice-card:hover{border-color:var(--gold);}
+.choice-card.active{border-color:var(--gold);background:rgba(212,160,60,.12);}
+.choice-card .em{font-size:30px;display:block;margin-bottom:8px;}
+.choice-card h4{margin:0 0 6px;font-family:'Tajawal';font-weight:800;color:#fff;font-size:16px;}
+.choice-card p{margin:0;color:#BEB6A4;font-size:13.5px;}
+
+.sim-stage{background:#08111F;border-radius:18px;padding:14px;margin-top:18px;}
+.sim-stage svg{width:100%;height:auto;display:block;}
+.sim-controls{display:flex;gap:10px;align-items:center;margin-top:14px;flex-wrap:wrap;}
+.btn{
+  border:none;border-radius:999px;padding:11px 22px;font-weight:700;font-size:14.5px;
+  transition:.2s;display:inline-flex;align-items:center;gap:8px;
+}
+.btn-primary{background:linear-gradient(90deg,var(--gold),var(--artery));color:#1B120A;}
+.btn-primary:hover{filter:brightness(1.08);transform:translateY(-1px);}
+.btn-ghost{background:transparent;border:1px solid rgba(255,255,255,.25);color:#EDE7DA;}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold);}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none;}
+
+.fill-text{font-size:16.5px;line-height:2.3;color:#EDE7DA;margin-top:16px;}
+.blank{
+  display:inline-flex;min-width:120px;justify-content:center;
+  border-bottom:2px dashed var(--gold);padding:2px 10px;margin:0 4px;
+  color:var(--gold-soft);font-weight:700;cursor:pointer;border-radius:6px;
+}
+.blank.filled{border-bottom-style:solid;background:rgba(212,160,60,.14);}
+.blank.correct{border-color:var(--green-ok);background:rgba(62,142,92,.22);color:#9BE3B4;}
+.blank.wrong{border-color:var(--red-no);background:rgba(180,64,46,.22);color:#F3B4A6;}
+.chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px;}
+.chip{
+  border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.05);color:#EDE7DA;
+  padding:9px 16px;border-radius:999px;font-size:14px;transition:.15s;
+}
+.chip:hover{border-color:var(--gold);}
+.chip.selected{background:var(--gold);color:#1B120A;border-color:var(--gold);font-weight:700;}
+.chip:disabled{opacity:.25;cursor:not-allowed;}
+
+.quiz-q{margin-top:20px;padding-top:18px;border-top:1px dashed rgba(255,255,255,.12);}
+.quiz-q:first-of-type{border-top:none;padding-top:0;}
+.quiz-q p.qtext{font-weight:700;color:#fff;margin:0 0 10px;font-size:15.5px;}
+.opt-list{display:grid;gap:8px;}
+.opt{
+  text-align:right;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.03);
+  color:#EDE7DA;padding:10px 14px;border-radius:12px;font-size:14.5px;
+}
+.opt.picked{border-color:var(--gold);}
+.opt.correct{border-color:var(--green-ok);background:rgba(62,142,92,.2);}
+.opt.wrong{border-color:var(--red-no);background:rgba(180,64,46,.2);}
+
+textarea.concl{
+  width:100%;min-height:110px;margin-top:16px;background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:14px;color:#fff;
+  font-family:'Tajawal';font-size:15px;resize:vertical;
+}
+textarea.concl:focus{outline:none;border-color:var(--gold);}
+.model-box{
+  margin-top:14px;background:rgba(212,160,60,.08);border:1px solid rgba(212,160,60,.3);
+  border-radius:14px;padding:14px;font-size:14.5px;color:var(--gold-soft);display:none;
+}
+.model-box.show{display:block;}
+
+.lab-nav{display:flex;justify-content:space-between;margin-top:28px;}
+.score-card{text-align:center;padding:20px 0;}
+.score-num{font-size:54px;color:var(--gold);font-weight:700;}
+.badge{
+  display:inline-block;margin-top:6px;padding:8px 20px;border-radius:999px;
+  background:rgba(62,142,92,.18);border:1px solid var(--green-ok);color:#9BE3B4;font-weight:700;
+}
+
+/* footer */
+footer{padding:40px 22px 60px;text-align:center;color:var(--ink-soft);font-size:13.5px;}
+footer b{color:var(--artery-deep);}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;}
+}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+
+  /* ══ RESPONSIVE MOBILE & TABLET ══ */
+  @media (max-width: 768px) {
+    body { padding: 8px !important; font-size: 15px !important; overflow-x: hidden !important; }
+    .container, [class*="container"], [class*="wrapper"] { padding: 8px !important; max-width: 100% !important; }
+    canvas { width: 100% !important; height: auto !important; display: block !important; touch-action: none; max-width: 100% !important; }
+    svg { max-width: 100% !important; height: auto !important; }
+    h1 { font-size: clamp(18px,5vw,32px) !important; }
+    h2 { font-size: clamp(15px,4vw,26px) !important; }
+    h3 { font-size: clamp(13px,3.5vw,20px) !important; }
+    [class*="grid"] { grid-template-columns: 1fr !important; }
+    [class*="flex"] { flex-wrap: wrap !important; }
+    input[type="range"] { width: 100% !important; min-height: 36px; }
+    input[type="number"], input[type="text"], select, textarea {
+      font-size: 16px !important; width: 100% !important; box-sizing: border-box; padding: 8px !important; }
+    button { min-height: 44px !important; font-size: 14px !important; touch-action: manipulation; padding: 10px 14px !important; }
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 13px !important; }
+    th, td { padding: 6px 4px !important; }
+    header { padding: 10px 12px !important; }
+    .controls, [class*="controls"] { flex-direction: column !important; gap: 8px !important; }
+    .lab-window, [class*="lab-window"] { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+  }
+  @media (max-width: 480px) {
+    body { padding: 4px !important; }
+    button { width: 100% !important; }
+  }
+  /* ══ END RESPONSIVE ══ */
+</style>
+</head>
+<body>
+<style>
+.vlab-back{position:fixed;top:10px;left:10px;z-index:99999;
+background:rgba(10,22,40,0.93);border:1px solid rgba(0,200,150,0.4);
+border-radius:22px;padding:8px 16px;display:inline-flex;align-items:center;gap:7px;
+color:#00C896;font-family:Tajawal,Cairo,Arial,sans-serif;font-size:13px;font-weight:700;
+text-decoration:none;backdrop-filter:blur(8px);box-shadow:0 4px 18px rgba(0,0,0,0.3);
+transition:background 0.2s;}
+.vlab-back:hover{background:rgba(0,200,150,0.18);}
+</style>
+<a href="../grade6.html" class="vlab-back">&#8594; العودة للصف</a>
+
+
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="brand"><span class="dot"></span> رحلة الدم</div>
+    <div class="nav-links">
+      <a href="#intro">التعريف</a>
+      <a href="#small">الصغرى</a>
+      <a href="#large">الكبرى</a>
+      <a href="#compare">المقارنة</a>
+      <a href="#lab" class="lab-link">🧪 المختبر الافتراضي</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="wrap">
+    <span class="hero-eyebrow">منهاج العلوم والحياة — الصف السادس — فلسطين</span>
+    <h1>كيف يتنقّل <span>الدم</span> في جسمك؟</h1>
+    <p class="sub">درسٌ تفاعلي يشرح الدورة الدموية الصغرى (الرئوية) والدورة الدموية الكبرى (الجهازية)، مع مختبر افتراضي تجرّب فيه مسار الدم بنفسك وتصل إلى استنتاجاتك.</p>
+
+    <div class="figure8-stage">
+      <svg id="hero-svg" viewBox="0 0 640 520" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="lungGrad" cx="35%" cy="30%" r="75%">
+            <stop offset="0%" stop-color="#F6B9C6"/>
+            <stop offset="100%" stop-color="var(--lung-pink-deep)"/>
+          </radialGradient>
+          <linearGradient id="heartGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="var(--artery)"/>
+            <stop offset="100%" stop-color="var(--artery-deep)"/>
+          </linearGradient>
+          <linearGradient id="bodyGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#EAD9B4"/>
+            <stop offset="100%" stop-color="#D8C296"/>
+          </linearGradient>
+        </defs>
+
+        <!-- small loop (lungs) -->
+        <path id="p-toLung" d="M 320 250 C 260 150, 200 90, 250 60 C 300 30, 340 90, 320 250" fill="none" stroke="var(--vein)" stroke-width="7" stroke-linecap="round"/>
+        <path id="p-fromLung" d="M 320 250 C 380 150, 440 90, 390 60 C 340 30, 300 90, 320 250" fill="none" stroke="var(--artery)" stroke-width="7" stroke-linecap="round"/>
+        <!-- large loop (body) -->
+        <path id="p-toBody" d="M 320 270 C 200 330, 120 420, 220 470 C 320 510, 380 430, 320 270" fill="none" stroke="var(--artery)" stroke-width="7" stroke-linecap="round"/>
+        <path id="p-fromBody" d="M 320 270 C 440 330, 520 420, 420 470 C 320 510, 260 430, 320 270" fill="none" stroke="var(--vein)" stroke-width="7" stroke-linecap="round"/>
+
+        <!-- lungs -->
+        <ellipse cx="250" cy="80" rx="55" ry="70" fill="url(#lungGrad)" opacity=".92"/>
+        <ellipse cx="390" cy="80" rx="55" ry="70" fill="url(#lungGrad)" opacity=".92"/>
+        <text x="320" y="35" text-anchor="middle" fill="var(--vein-deep)" font-family="IBM Plex Sans Arabic" font-size="15" font-weight="700">الرئتان</text>
+
+        <!-- body block -->
+        <path d="M 220 380 q 100 -40 200 0 l 15 130 q -115 45 -230 0 z" fill="url(#bodyGrad)" opacity=".95"/>
+        <text x="320" y="500" text-anchor="middle" fill="#8A6C3A" font-family="IBM Plex Sans Arabic" font-size="15" font-weight="700">أعضاء الجسم</text>
+
+        <!-- heart -->
+        <g transform="translate(320,265)">
+          <path d="M0,-22 C -34,-52 -70,-18 0,34 C 70,-18 34,-52 0,-22 Z" fill="url(#heartGrad)" transform="scale(1.25)"/>
+          <animateTransform attributeName="transform" type="scale" values="1.25;1.4;1.25" dur="1.1s" repeatCount="indefinite" additive="sum"/>
+        </g>
+
+        <!-- moving cells -->
+        <g>
+          <circle r="6" fill="var(--vein)"><animateMotion dur="2.6s" repeatCount="indefinite" path="M 320 250 C 260 150, 200 90, 250 60 C 300 30, 340 90, 320 250"/></circle>
+          <circle r="6" fill="var(--artery)"><animateMotion dur="2.6s" begin="1.3s" repeatCount="indefinite" path="M 320 250 C 380 150, 440 90, 390 60 C 340 30, 300 90, 320 250"/></circle>
+          <circle r="6" fill="var(--artery)"><animateMotion dur="3.4s" repeatCount="indefinite" path="M 320 270 C 200 330, 120 420, 220 470 C 320 510, 380 430, 320 270"/></circle>
+          <circle r="6" fill="var(--vein)"><animateMotion dur="3.4s" begin="1.7s" repeatCount="indefinite" path="M 320 270 C 440 330, 520 420, 420 470 C 320 510, 260 430, 320 270"/></circle>
+        </g>
+      </svg>
+    </div>
+    <p class="hero-caption">اللوب العلوي <b>الدورة الصغرى</b> (قلب ↔ رئتان) — اللوب السفلي <i>الدورة الكبرى</i> (قلب ↔ أعضاء الجسم)</p>
+
+    <div class="scroll-cue"><span>ابدأ الرحلة</span><span class="chev"></span></div>
+  </div>
+</header>
+
+<!-- ============ INTRO ============ -->
+<section class="block" id="intro">
+  <div class="wrap">
+    <span class="eyebrow">قبل أن نبدأ</span>
+    <h2 class="title">ما هي الدورة الدموية؟</h2>
+    <p class="lead">الدورة الدموية هي الشبكة التي يتنقّل عبرها الدم داخل الجسم، ويقوم بها ثلاثة عناصر رئيسية تعمل معًا بلا توقف:</p>
+    <div class="card-row">
+      <div class="info-card">
+        <span class="ic">❤️</span>
+        <h3>القلب</h3>
+        <p>مضخة عضلية تدفع الدم بانقباضاتها المتكررة إلى كل أجزاء الجسم عبر شبكة الأوعية الدموية.</p>
+      </div>
+      <div class="info-card">
+        <span class="ic">🩸</span>
+        <h3>الدم</h3>
+        <p>سائل ينقل الأكسجين والغذاء إلى الخلايا، ويحمل معه ثاني أكسيد الكربون والفضلات ليتخلّص منها.</p>
+      </div>
+      <div class="info-card">
+        <span class="ic">🧬</span>
+        <h3>الأوعية الدموية</h3>
+        <p>شرايين تحمل الدم بعيدًا عن القلب، وأوردة تعيده إليه، وشعيرات دموية دقيقة تربط بينها.</p>
+      </div>
+    </div>
+    <p class="lead" style="margin-top:24px;">وللقلب في جسم الإنسان مسارّان متكاملان: <b>دورة صغرى</b> قصيرة تصل القلب بالرئتين، و<b>دورة كبرى</b> طويلة تصل القلب بكل أعضاء الجسم. لنكتشف كلًّا منهما.</p>
+  </div>
+</section>
+
+<!-- ============ SMALL CIRCUIT ============ -->
+<section class="block" id="small">
+  <div class="wrap">
+    <div class="circuit-section small">
+      <span class="eyebrow">01 — المسار القصير</span>
+      <h2 class="title">الدورة الدموية الصغرى (الرئويّة)</h2>
+      <div class="circuit-grid">
+        <div>
+          <p class="lead">مسار قصير يربط القلب بالرئتين فقط، مهمّته الأساسية تبادل الغازات: التخلّص من ثاني أكسيد الكربون واكتساب الأكسجين.</p>
+          <ol class="steps">
+            <li>يصل الدم الفقير بالأكسجين إلى <b>الأذين الأيمن</b>، فينقبض ويدفعه إلى البطين الأيمن.</li>
+            <li>ينقبض <b>البطين الأيمن</b> ويضخّ الدم عبر الشريان الرئوي باتجاه الرئتين.</li>
+            <li>في الشعيرات الدموية للرئتين، يتخلّص الدم من ثاني أكسيد الكربون ويكتسب الأكسجين.</li>
+            <li>يعود الدم — وقد أصبح غنيًا بالأكسجين — عبر الوريد الرئوي إلى <b>الأذين الأيسر</b>، تمهيدًا لضخّه إلى بقية الجسم.</li>
+          </ol>
+          <div class="callout"><b>لماذا "رئوية"؟</b> لأن كامل مسار هذه الدورة محصور بين القلب والرئتين، وهدفها تبادل الغازات وليس تغذية الخلايا.</div>
+        </div>
+        <div class="diagram-holder">
+          <svg viewBox="0 0 340 300" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="90" cy="90" rx="55" ry="72" fill="var(--lung-pink)" opacity=".9"/>
+            <ellipse cx="250" cy="90" rx="55" ry="72" fill="var(--lung-pink)" opacity=".9"/>
+            <text x="90" y="30" text-anchor="middle" font-family="IBM Plex Sans Arabic" font-size="13" fill="var(--vein-deep)" font-weight="700">الرئة اليمنى</text>
+            <text x="250" y="30" text-anchor="middle" font-family="IBM Plex Sans Arabic" font-size="13" fill="var(--vein-deep)" font-weight="700">الرئة اليسرى</text>
+            <path d="M170,150 C 130,150 110,120 90,90" fill="none" stroke="var(--vein)" stroke-width="6" stroke-linecap="round"/>
+            <path d="M170,190 C 210,190 230,140 250,90" fill="none" stroke="var(--artery)" stroke-width="6" stroke-linecap="round"/>
+            <circle r="5" fill="var(--vein)"><animateMotion dur="1.8s" repeatCount="indefinite" path="M170,150 C 130,150 110,120 90,90"/></circle>
+            <circle r="5" fill="var(--artery)"><animateMotion dur="1.8s" begin=".9s" repeatCount="indefinite" path="M170,190 C 210,190 230,140 250,90"/></circle>
+            <path d="M150,150 h40 v50 h-40 z" fill="var(--vein)"/>
+            <path d="M150,190 h40 v-30 h-40 z" fill="var(--artery)" opacity=".95"/>
+            <text x="170" y="260" text-anchor="middle" font-family="IBM Plex Sans Arabic" font-size="13" fill="var(--ink-soft)" font-weight="700">القلب</text>
+            <text x="140" y="150" text-anchor="end" font-family="IBM Plex Sans Arabic" font-size="11" fill="var(--vein-deep)">أذين أيمن ⟶ بطين أيمن</text>
+            <text x="200" y="200" text-anchor="start" font-family="IBM Plex Sans Arabic" font-size="11" fill="var(--artery-deep)">أذين أيسر ⟵</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LARGE CIRCUIT ============ -->
+<section class="block" id="large">
+  <div class="wrap">
+    <div class="circuit-section large">
+      <span class="eyebrow blue">02 — المسار الطويل</span>
+      <h2 class="title">الدورة الدموية الكبرى (الجهازيّة)</h2>
+      <div class="circuit-grid">
+        <div class="diagram-holder" style="order:2;">
+          <svg viewBox="0 0 340 300" xmlns="http://www.w3.org/2000/svg">
+            <path d="M 170 60 q 100 -20 130 60 q 20 60 -20 110 q -40 50 -110 40 q -70 -10 -90 -70 q -20 -60 20 -100 q 30 -30 70 -40 z" fill="var(--bodyfill,#EAD9B4)" opacity=".9"/>
+            <text x="170" y="20" text-anchor="middle" font-family="IBM Plex Sans Arabic" font-size="13" fill="#8A6C3A" font-weight="700">أنسجة الجسم وخلاياه</text>
+            <path d="M150,150 h40 v50 h-40 z" fill="var(--vein)"/>
+            <path d="M150,190 h40 v-30 h-40 z" fill="var(--artery)" opacity=".95"/>
+            <text x="170" y="270" text-anchor="middle" font-family="IBM Plex Sans Arabic" font-size="13" fill="var(--ink-soft)" font-weight="700">القلب</text>
+            <path d="M190,190 C 240,160 260,120 230,90" fill="none" stroke="var(--artery)" stroke-width="6" stroke-linecap="round"/>
+            <path d="M150,150 C 100,180 80,220 110,240" fill="none" stroke="var(--vein)" stroke-width="6" stroke-linecap="round"/>
+            <circle r="5" fill="var(--artery)"><animateMotion dur="2.2s" repeatCount="indefinite" path="M190,190 C 240,160 260,120 230,90"/></circle>
+            <circle r="5" fill="var(--vein)"><animateMotion dur="2.2s" begin="1.1s" repeatCount="indefinite" path="M150,150 C 100,180 80,220 110,240"/></circle>
+          </svg>
+        </div>
+        <div style="order:1;">
+          <p class="lead">مسار طويل يصل القلب بكل عضو وكل خلية في الجسم، مهمّته توصيل الأكسجين والغذاء وجمع الفضلات.</p>
+          <ol class="steps">
+            <li>يصل الدم الغني بالأكسجين إلى <b>الأذين الأيسر</b> ثم إلى البطين الأيسر.</li>
+            <li>ينقبض <b>البطين الأيسر</b> بقوّة ويضخّ الدم عبر الشريان الأبهر (الأورطي) إلى كل الجسم.</li>
+            <li>في الشعيرات الدموية للأعضاء والأنسجة، يُسلَّم الأكسجين والغذاء للخلايا، ويُجمع ثاني أكسيد الكربون والفضلات.</li>
+            <li>يعود الدم — وقد أصبح فقيرًا بالأكسجين — عبر الأوردة الأجوف إلى <b>الأذين الأيمن</b>، ليبدأ المسار من جديد.</li>
+          </ol>
+          <div class="callout"><b>لماذا "جهازية"؟</b> لأنها تخدم كل أجهزة الجسم وأعضائه، لا الرئتين وحدهما.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ COMPARE ============ -->
+<section class="block" id="compare">
+  <div class="wrap">
+    <span class="eyebrow">03 — لنقارن</span>
+    <h2 class="title">الدورة الصغرى مقابل الدورة الكبرى</h2>
+    <div class="compare-wrap">
+      <table class="compare">
+        <thead><tr><th>وجه المقارنة</th><th>الدورة الصغرى (الرئوية)</th><th>الدورة الكبرى (الجهازية)</th></tr></thead>
+        <tbody>
+          <tr><td>نقطة الانطلاق</td><td class="sm">البطين الأيمن</td><td class="lg">البطين الأيسر</td></tr>
+          <tr><td>نقطة العودة</td><td class="sm">الأذين الأيسر</td><td class="lg">الأذين الأيمن</td></tr>
+          <tr><td>الأعضاء المخدومة</td><td class="sm">الرئتان فقط</td><td class="lg">كل أعضاء الجسم وخلاياه</td></tr>
+          <tr><td>الوظيفة</td><td class="sm">تبادل الغازات (التخلّص من CO₂ واكتساب O₂)</td><td class="lg">توصيل الأكسجين والغذاء وجمع الفضلات</td></tr>
+          <tr><td>طول المسار وضغطه</td><td class="sm">قصير، وضغط الدم فيه منخفض نسبيًا</td><td class="lg">طويل، ويحتاج ضغطًا أعلى ليصل لكل الجسم</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LAB ============ -->
+<section class="block" id="lab">
+  <div class="wrap">
+    <div class="lab-section">
+      <span class="eyebrow">🧪 تجربة عملية</span>
+      <h2 class="title">المختبر الافتراضي: تتبّع مسار الدم</h2>
+      <p class="lead">اختر إحدى الدورتين، شغّل المحاكاة، أكمل المخطّط، أجب عن الأسئلة، ثم اكتب استنتاجك — وستحصل على نتيجتك في النهاية.</p>
+
+      <div class="lab-progress">
+        <div class="seg"><i id="seg1"></i></div>
+        <div class="seg"><i id="seg2"></i></div>
+        <div class="seg"><i id="seg3"></i></div>
+        <div class="seg"><i id="seg4"></i></div>
+        <div class="seg"><i id="seg5"></i></div>
+      </div>
+
+      <!-- STEP 1 -->
+      <div class="lab-panel step-panel" id="step1">
+        <span class="step-badge">الخطوة ١ / ٥</span>
+        <h3>اختر الدورة الدموية التي تريد استكشافها</h3>
+        <p class="hint">سيُبنى بقية المختبر تلقائيًا حسب اختيارك.</p>
+        <div class="choice-row">
+          <button class="choice-card" data-circuit="small" onclick="chooseCircuit('small')">
+            <span class="em">🫁</span>
+            <h4>الدورة الصغرى (الرئوية)</h4>
+            <p>قلب ↔ رئتان</p>
+          </button>
+          <button class="choice-card" data-circuit="large" onclick="chooseCircuit('large')">
+            <span class="em">🧍</span>
+            <h4>الدورة الكبرى (الجهازية)</h4>
+            <p>قلب ↔ أعضاء الجسم</p>
+          </button>
+        </div>
+        <div class="lab-nav">
+          <span></span>
+          <button class="btn btn-primary" id="toStep2" disabled onclick="goStep(2)">التالي ←</button>
+        </div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="lab-panel step-panel" id="step2" style="display:none;">
+        <span class="step-badge">الخطوة ٢ / ٥</span>
+        <h3 id="s2-title">شغّل المحاكاة وراقب اتجاه سريان الدم</h3>
+        <p class="hint" id="s2-hint">اضغط "ابدأ" وتابع الدائرة الأزرق (فقير بالأكسجين) والأحمر (غني بالأكسجين).</p>
+        <div class="sim-stage">
+          <svg id="sim-svg" viewBox="0 0 340 300" xmlns="http://www.w3.org/2000/svg"></svg>
+        </div>
+        <div class="sim-controls">
+          <button class="btn btn-primary" id="playBtn" onclick="toggleSim()">▶ ابدأ المحاكاة</button>
+          <button class="btn btn-ghost" onclick="resetSim()">↺ إعادة</button>
+        </div>
+        <div class="lab-nav">
+          <button class="btn btn-ghost" onclick="goStep(1)">→ السابق</button>
+          <button class="btn btn-primary" onclick="goStep(3)">التالي ←</button>
+        </div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="lab-panel step-panel" id="step3" style="display:none;">
+        <span class="step-badge">الخطوة ٣ / ٥</span>
+        <h3>أكمل الفراغين بالسحب والاختيار</h3>
+        <p class="hint">اضغط على الكلمة المناسبة من القائمة، ثم اضغط على الفراغ لوضعها فيه.</p>
+        <p class="fill-text" id="fillText"></p>
+        <div class="chips" id="chipsPool"></div>
+        <div class="lab-nav">
+          <button class="btn btn-ghost" onclick="goStep(2)">→ السابق</button>
+          <button class="btn btn-primary" onclick="checkBlanks()">تحقّق من إجابتي</button>
+        </div>
+      </div>
+
+      <!-- STEP 4 -->
+      <div class="lab-panel step-panel" id="step4" style="display:none;">
+        <span class="step-badge">الخطوة ٤ / ٥</span>
+        <h3>سؤالان قصيران</h3>
+        <div id="quizHolder"></div>
+        <div class="lab-nav">
+          <button class="btn btn-ghost" onclick="goStep(3)">→ السابق</button>
+          <button class="btn btn-primary" onclick="goStep(5)">التالي ←</button>
+        </div>
+      </div>
+
+      <!-- STEP 5 -->
+      <div class="lab-panel step-panel" id="step5" style="display:none;">
+        <span class="step-badge">الخطوة ٥ / ٥</span>
+        <h3>اكتب استنتاجك</h3>
+        <p class="hint" id="s5-hint">بم تلخّص وظيفة هذه الدورة الدموية بأسلوبك الخاص؟</p>
+        <textarea class="concl" id="conclInput" placeholder="اكتب استنتاجك هنا..."></textarea>
+        <div class="sim-controls">
+          <button class="btn btn-ghost" onclick="toggleModel()">💡 عرض إجابة نموذجية</button>
+        </div>
+        <div class="model-box" id="modelBox"></div>
+        <div class="lab-nav">
+          <button class="btn btn-ghost" onclick="goStep(4)">→ السابق</button>
+          <button class="btn btn-primary" onclick="finishLab()">إنهاء ✓</button>
+        </div>
+        <div class="score-card" id="scoreCard" style="display:none;"></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer>
+  محتوى تعليمي أصلي وفق منهاج <b>العلوم والحياة — الصف السادس</b> في فلسطين، مُعدّ كصفحة تفاعلية للمراجعة الذاتية. يعمل على الحاسوب والهاتف على حدّ سواء.
+</footer>
+
+<script>
+/* ================= DATA ================= */
+const CIRCUITS = {
+  small: {
+    label:'الدورة الصغرى (الرئوية)',
+    simHint:'راقب الدائرة الزرقاء تتجه من القلب إلى الرئتين، ثم تعود حمراء غنية بالأكسجين.',
+    fillTemplate:'يضخّ البطين الأيمن دمًا فقيرًا بالأكسجين عبر الشريان الرئوي إلى {1}، حيث يتخلّص من ثاني أكسيد الكربون ويكتسب الأكسجين، ثم يعود عبر الوريد الرئوي إلى {2}.',
+    blanks:{1:'الرئتين',2:'الأذين الأيسر'},
+    chips:['الرئتين','الأذين الأيسر','الكلى','الأذين الأيمن','المعدة','البطين الأيسر'],
+    quiz:[
+      {q:'لماذا تُسمّى هذه الدورة بالدورة الرئوية؟',
+       opts:['لأنها تبدأ وتنتهي داخل الرئتين فقط','لأنها المسار الذي يربط القلب بالرئتين لتبادل الغازات','لأنها أطول دورة في الجسم','لا علاقة لها بالتنفس'],correct:1},
+      {q:'أين يحدث تبادل الغازات في هذه الدورة؟',
+       opts:['في الأذينين','في الشعيرات الدموية للرئتين','في الشريان الأبهر','في الكبد'],correct:1}
+    ],
+    model:'الدورة الدموية الصغرى مسار قصير يصل القلب بالرئتين، ووظيفته تنقية الدم من ثاني أكسيد الكربون وتزويده بالأكسجين، قبل أن يعود إلى القلب لتوزيعه على الجسم.',
+    simPaths:{
+      toLung:'M170,150 C 130,150 110,120 90,90', fromLung:'M170,190 C 210,190 230,140 250,90',
+      extra:true
+    }
+  },
+  large: {
+    label:'الدورة الكبرى (الجهازية)',
+    simHint:'راقب الدائرة الحمراء تخرج من القلب لتغذّي الجسم، ثم تعود زرقاء بعد أن فقدت أكسجينها.',
+    fillTemplate:'يضخّ البطين الأيسر دمًا غنيًا بالأكسجين عبر الشريان الأبهر إلى {1}، حيث تُسلَّم المغذّيات والأكسجين للخلايا ويُجمع ثاني أكسيد الكربون، ثم يعود الدم عبر الأوردة الأجوف إلى {2}.',
+    blanks:{1:'أنسجة الجسم',2:'الأذين الأيمن'},
+    chips:['أنسجة الجسم','الأذين الأيمن','الرئتين','الأذين الأيسر','البطين الأيمن','المعدة'],
+    quiz:[
+      {q:'ما الوظيفة الرئيسية للدورة الدموية الكبرى؟',
+       opts:['نقل الأكسجين والغذاء لخلايا الجسم وجمع الفضلات','تبادل الغازات مع الهواء الجوي','تصنيع خلايا الدم الحمراء','تنظيم حرارة الرئتين فقط'],correct:0},
+      {q:'أي وعاء دموي يحمل الدم الغني بالأكسجين خارج القلب في هذه الدورة؟',
+       opts:['الوريد الرئوي','الشريان الأبهر (الأورطي)','الوريد الأجوف','الشريان الرئوي'],correct:1}
+    ],
+    model:'الدورة الدموية الكبرى مسار طويل يصل القلب بجميع أعضاء الجسم وخلاياه، ووظيفته توصيل الأكسجين والغذاء، وجمع ثاني أكسيد الكربون والفضلات لإعادتها إلى القلب ثم الرئتين.'
+  }
+};
+
+let state = { circuit:null, blanksFilled:{}, blanksChecked:false, quizPicked:{}, selectedChip:null, simPlaying:false, score:0, maxScore:4 };
+
+/* ================= STEP NAV ================= */
+function goStep(n){
+  for(let i=1;i<=5;i++) document.getElementById('step'+i).style.display = (i===n?'block':'none');
+  for(let i=1;i<=5;i++) document.getElementById('seg'+i).style.width = (i<=n?'100%':'0%');
+  if(n===2) buildSim();
+  if(n===3) buildFill();
+  if(n===4) buildQuiz();
+  document.getElementById('lab').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function chooseCircuit(key){
+  state.circuit = key;
+  document.querySelectorAll('.choice-card').forEach(c=>c.classList.toggle('active', c.dataset.circuit===key));
+  document.getElementById('toStep2').disabled = false;
+}
+
+/* ================= STEP 2: SIM ================= */
+function buildSim(){
+  const c = CIRCUITS[state.circuit];
+  document.getElementById('s2-title').textContent = 'محاكاة: ' + c.label;
+  document.getElementById('s2-hint').textContent = c.simHint;
+  const svg = document.getElementById('sim-svg');
+  if(state.circuit==='small'){
+    svg.innerHTML = `
+      <ellipse cx="90" cy="90" rx="55" ry="72" fill="#B85770" opacity=".55"/>
+      <ellipse cx="250" cy="90" rx="55" ry="72" fill="#B85770" opacity=".55"/>
+      <text x="170" y="24" text-anchor="middle" font-family="IBM Plex Sans Arabic" font-size="13" fill="#D4A03C" font-weight="700">الرئتان</text>
+      <path d="M170,150 C 130,150 110,120 90,90" fill="none" stroke="#2B4C7E" stroke-width="6" stroke-linecap="round"/>
+      <path d="M170,190 C 210,190 230,140 250,90" fill="none" stroke="#C23B34" stroke-width="6" stroke-linecap="round"/>
+      <path d="M150,150 h40 v50 h-40 z" fill="#2B4C7E"/>
+      <path d="M150,190 h40 v-30 h-40 z" fill="#C23B34"/>
+      <text x="170" y="255" text-anchor="middle" font-family="IBM Plex Sans Arabic" font-size="12" fill="#EDE7DA" font-weight="700">القلب</text>
+      <g id="cellGroup"></g>`;
+  } else {
+    svg.innerHTML = `
+      <path d="M 170 45 q 105 -15 135 65 q 20 60 -20 110 q -40 55 -115 45 q -75 -10 -95 -75 q -20 -60 20 -100 q 30 -30 75 -45 z" fill="#EAD9B4" opacity=".35"/>
+      <text x="170" y="20" text-anchor="middle" font-family="IBM Plex Sans Arabic" font-size="13" fill="#D4A03C" font-weight="700">أعضاء الجسم</text>
+      <path d="M190,190 C 240,160 260,120 230,90" fill="none" stroke="#C23B34" stroke-width="6" stroke-linecap="round"/>
+      <path d="M150,150 C 100,180 80,220 110,240" fill="none" stroke="#2B4C7E" stroke-width="6" stroke-linecap="round"/>
+      <path d="M150,150 h40 v50 h-40 z" fill="#2B4C7E"/>
+      <path d="M150,190 h40 v-30 h-40 z" fill="#C23B34"/>
+      <text x="170" y="270" text-anchor="middle" font-family="IBM Plex Sans Arabic" font-size="12" fill="#EDE7DA" font-weight="700">القلب</text>
+      <g id="cellGroup"></g>`;
+  }
+  state.simPlaying = false;
+  document.getElementById('playBtn').textContent = '▶ ابدأ المحاكاة';
+}
+function toggleSim(){
+  const grp = document.getElementById('cellGroup');
+  const btn = document.getElementById('playBtn');
+  if(!state.simPlaying){
+    state.simPlaying = true; btn.textContent = '⏸ إيقاف';
+    let paths = state.circuit==='small'
+      ? [{d:'M170,150 C 130,150 110,120 90,90',col:'#2B4C7E'},{d:'M170,190 C 210,190 230,140 250,90',col:'#C23B34',delay:'.9s'}]
+      : [{d:'M190,190 C 240,160 260,120 230,90',col:'#C23B34'},{d:'M150,150 C 100,180 80,220 110,240',col:'#2B4C7E',delay:'1.1s'}];
+    grp.innerHTML='';
+    paths.forEach(p=>{
+      const c = document.createElementNS('http://www.w3.org/2000/svg','circle');
+      c.setAttribute('r','6'); c.setAttribute('fill',p.col);
+      const anim = document.createElementNS('http://www.w3.org/2000/svg','animateMotion');
+      anim.setAttribute('dur','2s'); anim.setAttribute('repeatCount','indefinite'); anim.setAttribute('path',p.d);
+      if(p.delay) anim.setAttribute('begin', p.delay);
+      c.appendChild(anim); grp.appendChild(c);
+    });
+  } else {
+    state.simPlaying = false; btn.textContent = '▶ ابدأ المحاكاة';
+    grp.innerHTML='';
+  }
+}
+function resetSim(){ state.simPlaying=false; document.getElementById('cellGroup').innerHTML=''; document.getElementById('playBtn').textContent='▶ ابدأ المحاكاة'; }
+
+/* ================= STEP 3: FILL BLANKS ================= */
+function buildFill(){
+  const c = CIRCUITS[state.circuit];
+  state.blanksFilled = {}; state.blanksChecked = false; state.selectedChip = null;
+  let text = c.fillTemplate
+    .replace('{1}', '<span class="blank" data-idx="1" onclick="placeBlank(1)">اضغط هنا</span>')
+    .replace('{2}', '<span class="blank" data-idx="2" onclick="placeBlank(2)">اضغط هنا</span>');
+  document.getElementById('fillText').innerHTML = text;
+  const pool = document.getElementById('chipsPool');
+  pool.innerHTML = '';
+  c.chips.forEach((word,i)=>{
+    const b = document.createElement('button');
+    b.className='chip'; b.textContent=word; b.id='chip-'+i;
+    b.onclick = ()=>selectChip(i,word);
+    pool.appendChild(b);
+  });
+}
+function selectChip(i,word){
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('selected'));
+  document.getElementById('chip-'+i).classList.add('selected');
+  state.selectedChip = {i,word};
+}
+function placeBlank(idx){
+  const blank = document.querySelector('.blank[data-idx="'+idx+'"]');
+  if(blank.classList.contains('filled')){
+    // unplace
+    const chipId = blank.dataset.chipId;
+    if(chipId!==undefined) document.getElementById(chipId).disabled = false;
+    blank.textContent='اضغط هنا'; blank.classList.remove('filled','correct','wrong');
+    delete state.blanksFilled[idx];
+    return;
+  }
+  if(!state.selectedChip) return;
+  blank.textContent = state.selectedChip.word;
+  blank.classList.add('filled');
+  blank.dataset.chipId = 'chip-'+state.selectedChip.i;
+  document.getElementById('chip-'+state.selectedChip.i).disabled = true;
+  state.blanksFilled[idx] = state.selectedChip.word;
+  state.selectedChip = null;
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('selected'));
+}
+function checkBlanks(){
+  const c = CIRCUITS[state.circuit];
+  let correctCount = 0;
+  [1,2].forEach(idx=>{
+    const blank = document.querySelector('.blank[data-idx="'+idx+'"]');
+    const ok = state.blanksFilled[idx] === c.blanks[idx];
+    blank.classList.remove('correct','wrong');
+    blank.classList.add(ok?'correct':'wrong');
+    if(ok) correctCount++;
+  });
+  state.score = (state.score - (state.blanksScore||0)) + correctCount;
+  state.blanksScore = correctCount;
+  state.blanksChecked = true;
+}
+
+/* ================= STEP 4: QUIZ ================= */
+function buildQuiz(){
+  const c = CIRCUITS[state.circuit];
+  const holder = document.getElementById('quizHolder');
+  holder.innerHTML='';
+  state.quizPicked = {};
+  c.quiz.forEach((q,qi)=>{
+    const div = document.createElement('div'); div.className='quiz-q';
+    div.innerHTML = `<p class="qtext">${qi+1}. ${q.q}</p><div class="opt-list" id="opts-${qi}"></div>`;
+    holder.appendChild(div);
+    const optList = div.querySelector('.opt-list');
+    q.opts.forEach((opt,oi)=>{
+      const b = document.createElement('button');
+      b.className='opt'; b.textContent = opt;
+      b.onclick = ()=>pickOption(qi,oi);
+      optList.appendChild(b);
+    });
+  });
+}
+function pickOption(qi,oi){
+  const c = CIRCUITS[state.circuit];
+  const optList = document.getElementById('opts-'+qi);
+  const already = state.quizPicked[qi]!==undefined;
+  if(already) return;
+  state.quizPicked[qi]=oi;
+  [...optList.children].forEach((btn,i)=>{
+    btn.classList.add(i===oi?'picked':'');
+    if(i===c.quiz[qi].correct) btn.classList.add('correct');
+    else if(i===oi) btn.classList.add('wrong');
+  });
+  let correctCount = 0;
+  Object.keys(state.quizPicked).forEach(k=>{ if(state.quizPicked[k]===c.quiz[k].correct) correctCount++; });
+  state.quizScore = correctCount;
+}
+
+/* ================= STEP 5: CONCLUSION ================= */
+function toggleModel(){
+  const box = document.getElementById('modelBox');
+  box.textContent = CIRCUITS[state.circuit].model;
+  box.classList.toggle('show');
+}
+function finishLab(){
+  const blanksScore = state.blanksScore||0;
+  const quizScore = state.quizScore||0;
+  const total = blanksScore + quizScore;
+  const card = document.getElementById('scoreCard');
+  card.style.display='block';
+  let msg = total>=4 ? '🌟 ممتاز! فهمت المسار بدقّة.' : total>=2 ? '👍 جيد جدًا، راجع الفقرات القصيرة.' : '💪 حاول مرة أخرى، عُد إلى الخطوات السابقة.';
+  card.innerHTML = `<div class="score-num">${total} / 4</div><div class="badge">${msg}</div>`;
+}
+
+/* init default */
+document.getElementById('seg1').style.width='0%';
+</script>
+</body>
+</html>

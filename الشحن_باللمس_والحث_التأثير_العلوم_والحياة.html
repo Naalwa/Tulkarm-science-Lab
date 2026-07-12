@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>الشحن باللمس والحث (التأثير) | العلوم والحياة - الصف الخامس</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #12161f;
+    --bg-panel: #1b2130;
+    --bg-card: #232a3b;
+    --bg-card-2: #2a3245;
+    --amber: #e8a33d;
+    --amber-bright: #ffc65c;
+    --silk: #9a6bd1;
+    --silk-bright:#b98af0;
+    --wool: #d46a9f;
+    --wool-bright:#ec8fbd;
+    --glass: #6fb8b0;
+    --glass-bright:#8fd6cd;
+    --text: #f2eee3;
+    --text-dim: #a9afc0;
+    --line: rgba(242,238,227,0.10);
+    --good: #7cc576;
+    --shadow-deep: 0 30px 60px -20px rgba(0,0,0,0.6);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1200px 700px at 15% -10%, rgba(232,163,61,0.10), transparent 60%),
+      radial-gradient(1000px 600px at 100% 10%, rgba(154,107,209,0.10), transparent 55%),
+      var(--bg);
+    color:var(--text);
+    font-family:'Tajawal', sans-serif;
+    line-height:1.9;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,h4{font-family:'Cairo', sans-serif; margin:0 0 .4em; line-height:1.35;}
+  p{margin:0 0 1em;}
+  ::selection{background:var(--amber); color:#1b1200;}
+
+  .wrap{max-width:1100px; margin:0 auto; padding:0 22px;}
+  section{padding:70px 0;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    min-height:96vh;
+    display:flex; align-items:center; justify-content:center;
+    position:relative;
+    padding:40px 0;
+    perspective:1400px;
+  }
+  .hero-bg-grid{
+    position:absolute; inset:0; z-index:0; opacity:.35;
+    background-image:
+      linear-gradient(rgba(232,163,61,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(232,163,61,0.06) 1px, transparent 1px);
+    background-size:42px 42px;
+    mask-image: radial-gradient(circle at 50% 30%, black, transparent 75%);
+  }
+  .spark-field{position:absolute; inset:0; pointer-events:none; z-index:1;}
+  .spark{
+    position:absolute; width:3px; height:3px; border-radius:50%;
+    background:var(--amber-bright); box-shadow:0 0 8px 2px var(--amber-bright);
+    animation: float-spark linear infinite;
+    opacity:.7;
+  }
+  @keyframes float-spark{
+    0%{ transform:translateY(0) scale(1); opacity:0;}
+    10%{opacity:.8;}
+    90%{opacity:.5;}
+    100%{ transform:translateY(-140px) scale(0.3); opacity:0;}
+  }
+  .hero-inner{position:relative; z-index:2; text-align:center; max-width:820px; padding:0 20px;}
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:10px;
+    font-family:'Cairo',sans-serif; font-weight:700; font-size:14px;
+    letter-spacing:.5px; color:var(--amber-bright);
+    background:rgba(232,163,61,0.08); border:1px solid rgba(232,163,61,0.3);
+    padding:8px 18px; border-radius:100px; margin-bottom:26px;
+  }
+  .eyebrow .dot{width:8px;height:8px;border-radius:50%;background:var(--amber-bright); box-shadow:0 0 10px var(--amber-bright); animation:pulse 1.6s ease-in-out infinite;}
+  @keyframes pulse{0%,100%{transform:scale(1); opacity:1;} 50%{transform:scale(1.5); opacity:.5;}}
+  .hero h1{
+    font-size:clamp(34px,6vw,58px); font-weight:900;
+    background:linear-gradient(160deg, #fff 10%, var(--amber-bright) 60%, var(--wool-bright) 100%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    text-shadow: 0 20px 60px rgba(232,163,61,0.15);
+  }
+  .hero .sub{font-size:19px; color:var(--text-dim); max-width:640px; margin:0 auto 34px;}
+  .hero-meta{display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin-bottom:40px;}
+  .chip{
+    font-family:'Cairo',sans-serif; font-size:13px; font-weight:600; color:var(--text);
+    background:var(--bg-card); border:1px solid var(--line); padding:8px 16px; border-radius:10px;
+  }
+  .scroll-cta{
+    display:inline-flex; align-items:center; gap:10px; cursor:pointer; border:none;
+    font-family:'Cairo',sans-serif; font-weight:800; font-size:16px; color:#1b1200;
+    background:linear-gradient(135deg, var(--amber-bright), var(--amber));
+    padding:16px 34px; border-radius:14px;
+    box-shadow: 0 14px 30px -8px rgba(232,163,61,0.55), inset 0 -3px 0 rgba(0,0,0,0.15);
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .scroll-cta:hover{transform:translateY(-3px); box-shadow:0 20px 38px -8px rgba(232,163,61,0.65), inset 0 -3px 0 rgba(0,0,0,0.15);}
+  .scroll-cta:active{transform:translateY(0px) scale(.98);}
+
+  /* mini hero electroscope preview */
+  .hero-electro{ margin:44px auto 0; width:140px; }
+
+  /* ---------- SECTION HEADERS ---------- */
+  .sec-head{max-width:680px; margin:0 auto 46px; text-align:center;}
+  .sec-eyebrow{font-family:'Cairo',sans-serif; font-weight:800; font-size:13px; color:var(--wool-bright); letter-spacing:1px; margin-bottom:10px;}
+  .sec-head h2{font-size:clamp(26px,4vw,36px); font-weight:800;}
+  .sec-head p{color:var(--text-dim); font-size:16px;}
+
+  /* ---------- CARDS / MATERIALS ---------- */
+  .grid-4{display:grid; grid-template-columns:repeat(4,1fr); gap:18px;}
+  @media(max-width:820px){.grid-4{grid-template-columns:repeat(2,1fr);}}
+  .mat-card{
+    background:linear-gradient(160deg, var(--bg-card), var(--bg-card-2));
+    border:1px solid var(--line); border-radius:18px; padding:22px 16px; text-align:center;
+    transform-style:preserve-3d; transition:transform .35s ease, box-shadow .35s ease;
+    box-shadow: 0 10px 24px -14px rgba(0,0,0,.6);
+  }
+  .mat-card:hover{transform:translateY(-6px) rotateX(4deg) rotateY(-4deg); box-shadow:var(--shadow-deep);}
+  .mat-icon{width:64px; height:64px; margin:0 auto 14px; display:flex; align-items:center; justify-content:center;}
+  .mat-card h4{font-size:15px; font-weight:700;}
+  .mat-card span{font-size:12.5px; color:var(--text-dim);}
+
+  /* ---------- CONCEPT CARDS ---------- */
+  .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:22px;}
+  @media(max-width:760px){.grid-2{grid-template-columns:1fr;}}
+  .concept{
+    background:var(--bg-panel); border:1px solid var(--line); border-radius:20px; padding:28px 26px;
+    position:relative; overflow:hidden;
+  }
+  .concept::before{
+    content:""; position:absolute; inset:0; opacity:.5; pointer-events:none;
+    background:radial-gradient(360px 200px at 100% 0%, rgba(232,163,61,0.10), transparent 60%);
+  }
+  .concept h3{font-size:20px; color:var(--amber-bright); display:flex; align-items:center; gap:10px;}
+  .concept h3 .n{
+    font-family:'Cairo',sans-serif; font-size:13px; font-weight:800; color:#1b1200;
+    background:var(--amber-bright); width:28px; height:28px; border-radius:8px;
+    display:inline-flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .concept p{color:var(--text-dim); font-size:15.5px;}
+  .law-row{display:flex; align-items:center; gap:14px; margin:14px 0; padding:12px 14px; background:rgba(255,255,255,0.03); border-radius:12px; border:1px solid var(--line);}
+  .law-row .sign{font-family:'Cairo',sans-serif; font-weight:900; font-size:20px; width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .sign.plus{background:rgba(212,106,159,0.18); color:var(--wool-bright); border:1px solid var(--wool);}
+  .sign.minus{background:rgba(111,184,176,0.18); color:var(--glass-bright); border:1px solid var(--glass);}
+  .law-row .arrow{font-size:18px; color:var(--text-dim);}
+
+  /* ---------- LAB SECTION ---------- */
+  .lab-shell{
+    background:linear-gradient(180deg, var(--bg-panel), #171c28);
+    border:1px solid var(--line); border-radius:26px; padding:10px; box-shadow:var(--shadow-deep);
+  }
+  .tabs{display:flex; gap:8px; padding:14px; flex-wrap:wrap;}
+  .tab-btn{
+    flex:1; min-width:220px; font-family:'Cairo',sans-serif; font-weight:800; font-size:15px;
+    color:var(--text-dim); background:transparent; border:1px solid var(--line); border-radius:14px;
+    padding:16px; cursor:pointer; transition:all .2s ease; text-align:center;
+  }
+  .tab-btn.active{color:#1b1200; background:linear-gradient(135deg, var(--amber-bright), var(--amber)); border-color:transparent; box-shadow:0 10px 24px -8px rgba(232,163,61,0.5);}
+  .tab-btn small{display:block; font-family:'Tajawal',sans-serif; font-weight:400; font-size:12.5px; margin-top:4px; opacity:.85;}
+
+  .lab-panel{display:none; padding:8px 22px 28px;}
+  .lab-panel.active{display:block;}
+
+  .lab-columns{display:grid; grid-template-columns:1.05fr 1fr; gap:30px; align-items:start;}
+  @media(max-width:900px){.lab-columns{grid-template-columns:1fr;}}
+
+  .steps-box{background:var(--bg-card); border:1px solid var(--line); border-radius:16px; padding:20px;}
+  .steps-box h4{font-size:15px; color:var(--amber-bright); margin-bottom:12px;}
+  .steps-box ol{margin:0; padding-inline-start:22px; color:var(--text-dim); font-size:14.5px;}
+  .steps-box li{margin-bottom:10px;}
+  .steps-box li b{color:var(--text); font-weight:700;}
+
+  .controls{display:flex; flex-wrap:wrap; gap:10px; margin-top:18px;}
+  .btn{
+    font-family:'Cairo',sans-serif; font-weight:700; font-size:14px; cursor:pointer;
+    border-radius:12px; padding:12px 18px; border:1px solid var(--line); background:var(--bg-card-2); color:var(--text);
+    transition:transform .12s ease, background .2s ease, box-shadow .2s ease;
+    display:flex; align-items:center; gap:8px;
+  }
+  .btn:hover:not(:disabled){transform:translateY(-2px); background:#323b52;}
+  .btn:active:not(:disabled){transform:translateY(0);}
+  .btn:disabled{opacity:.35; cursor:not-allowed;}
+  .btn.primary{background:linear-gradient(135deg, var(--amber-bright), var(--amber)); color:#1b1200; border-color:transparent; box-shadow:0 8px 18px -6px rgba(232,163,61,0.5);}
+  .btn.wool{background:linear-gradient(135deg, var(--wool-bright), var(--wool)); color:#2a0c1c; border-color:transparent;}
+  .btn.silk{background:linear-gradient(135deg, var(--silk-bright), var(--silk)); color:#1c0f2c; border-color:transparent;}
+  .btn.ghost{background:transparent;}
+
+  .readout{
+    margin-top:18px; background:rgba(255,255,255,0.03); border:1px dashed var(--line); border-radius:14px; padding:16px;
+    font-size:14.5px; color:var(--text-dim); min-height:66px;
+  }
+  .readout b{color:var(--amber-bright);}
+  .readout .state-good{color:var(--good); font-weight:700;}
+
+  /* ---------- STAGE (3D scene) ---------- */
+  .stage-wrap{
+    background:radial-gradient(500px 300px at 50% 0%, rgba(232,163,61,0.08), transparent 70%), #0d1119;
+    border:1px solid var(--line); border-radius:20px; padding:26px 18px 10px;
+    perspective:1200px;
+  }
+  .bench{
+    position:relative; height:340px; display:flex; align-items:flex-end; justify-content:center; gap:60px;
+    transform-style:preserve-3d;
+  }
+  .bench-floor{
+    position:absolute; bottom:0; left:0; right:0; height:14px;
+    background:linear-gradient(90deg, transparent, rgba(232,163,61,0.25), transparent);
+    filter:blur(1px);
+  }
+
+  /* Cloth swatch */
+  .cloth{
+    width:92px; height:70px; border-radius:10px; position:relative; cursor:pointer;
+    box-shadow:0 14px 26px -10px rgba(0,0,0,.7), inset 0 0 0 1px rgba(255,255,255,0.08);
+    transition:transform .15s ease;
+    flex-shrink:0;
+  }
+  .cloth:hover{transform:translateY(-4px);}
+  .cloth:active{transform:translateY(0) scale(.96);}
+  .cloth.wool-cloth{background:
+      repeating-linear-gradient(45deg, rgba(255,255,255,0.06) 0 2px, transparent 2px 5px),
+      linear-gradient(150deg, var(--wool-bright), var(--wool) 70%);}
+  .cloth.silk-cloth{background:
+      repeating-linear-gradient(115deg, rgba(255,255,255,0.10) 0 3px, transparent 3px 9px),
+      linear-gradient(150deg, var(--silk-bright), var(--silk) 70%);}
+  .cloth-label{position:absolute; bottom:-26px; left:0; right:0; text-align:center; font-size:12px; color:var(--text-dim); font-family:'Cairo',sans-serif; font-weight:700;}
+
+  /* Rod */
+  .rod-track{width:230px; height:220px; position:relative; flex-shrink:0;}
+  .rod{
+    position:absolute; bottom:26px; right:50%; transform-origin:bottom center;
+    transform: translateX(50%) translateY(0) rotate(0deg);
+    transition: transform .6s cubic-bezier(.2,.9,.2,1);
+    width:16px; height:150px; border-radius:9px;
+    box-shadow:0 10px 20px -8px rgba(0,0,0,.7);
+  }
+  .rod.plastic{background:linear-gradient(90deg, #3a4258, #6b7591 45%, #3a4258);}
+  .rod.glass{background:linear-gradient(90deg, #3f7f79, var(--glass-bright) 45%, #3f7f79); box-shadow:0 10px 24px -8px rgba(111,184,176,.5);}
+  .rod-handle{position:absolute; bottom:-14px; left:50%; transform:translateX(-50%); width:28px; height:26px; background:#20242f; border-radius:6px 6px 10px 10px; box-shadow:inset 0 2px 4px rgba(255,255,255,0.08);}
+  .rod-glow{
+    position:absolute; inset:-6px -10px; border-radius:14px; opacity:0; transition:opacity .3s ease; filter:blur(6px);
+  }
+  .rod.charged-neg .rod-glow{opacity:.55; background:radial-gradient(circle, var(--glass-bright), transparent 70%);}
+  .rod.charged-pos .rod-glow{opacity:.55; background:radial-gradient(circle, var(--wool-bright), transparent 70%);}
+
+  .rod-pos-away{ --tx: 0px; }
+  .rod-pos-near{ --tx: -34px; }
+  .rod-pos-touch{ --tx: -58px; }
+
+  /* Electroscope */
+  .electro{width:170px; flex-shrink:0; position:relative;}
+  .electro-3d{transform-style:preserve-3d; transition:transform .4s ease;}
+  .electro:hover .electro-3d{transform:rotateY(-8deg) rotateX(3deg);}
+  .disc{
+    width:58px; height:16px; border-radius:50%; margin:0 auto;
+    background:linear-gradient(180deg, #cfd6e6, #8890a6);
+    box-shadow:0 6px 10px -4px rgba(0,0,0,.6), inset 0 2px 2px rgba(255,255,255,0.5);
+    position:relative; z-index:3;
+  }
+  .stem{width:6px; height:34px; background:linear-gradient(180deg,#cfd6e6,#8890a6); margin:0 auto; position:relative; z-index:3;}
+  .jar{
+    width:120px; height:150px; margin:0 auto; position:relative;
+    background:linear-gradient(160deg, rgba(180,210,230,0.14), rgba(180,210,230,0.03) 60%, rgba(180,210,230,0.12));
+    border:1px solid rgba(200,220,240,0.35);
+    border-radius:14px 14px 26px 26px;
+    box-shadow: inset 0 0 24px rgba(255,255,255,0.05), 0 20px 30px -14px rgba(0,0,0,.6);
+    backdrop-filter: blur(1px);
+    overflow:hidden;
+  }
+  .jar::before{ /* glass highlight */
+    content:""; position:absolute; top:6px; bottom:6px; left:10px; width:14px; border-radius:10px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.35), rgba(255,255,255,0.02));
+  }
+  .base-plate{width:6px; height:26px; background:#8890a6; margin:0 auto;}
+  .base{width:140px; height:16px; margin:0 auto; border-radius:6px; background:linear-gradient(180deg,#3a4258,#20242f); box-shadow:0 10px 20px -8px rgba(0,0,0,.6);}
+
+  .leaves{position:relative; width:8px; height:70px; margin:0 auto; top:2px;}
+  .leaf{
+    position:absolute; top:0; right:50%; width:5px; height:64px;
+    background:linear-gradient(180deg, #f6d987, var(--amber));
+    border-radius:2px; transform-origin: top center;
+    transition: transform .7s cubic-bezier(.25,1,.3,1);
+    box-shadow:0 0 6px rgba(246,217,135,0.4);
+  }
+  .leaf.right{transform: translateX(50%) rotate(var(--ang,0deg));}
+  .leaf.left{transform: translateX(-50%) rotate(calc(var(--ang,0deg) * -1));}
+
+  .zap{
+    position:absolute; width:26px; height:26px; opacity:0; pointer-events:none;
+    top:-6px; left:50%; transform:translateX(-50%);
+  }
+
+  /* small legend / status pills */
+  .status-row{display:flex; gap:10px; justify-content:center; margin-top:18px; flex-wrap:wrap;}
+  .pill{font-family:'Cairo',sans-serif; font-size:12.5px; font-weight:700; padding:7px 14px; border-radius:100px; background:var(--bg-card-2); border:1px solid var(--line); color:var(--text-dim);}
+  .pill.on{color:#1b1200; background:var(--amber-bright); border-color:transparent;}
+
+  /* ---------- CONCLUSION FILL-IN ---------- */
+  .conclusion-box{background:var(--bg-panel); border:1px solid var(--line); border-radius:20px; padding:28px;}
+  .fillcard{
+    background:var(--bg-card); border-radius:14px; padding:18px 20px; margin-bottom:16px; border:1px solid var(--line);
+  }
+  .fillcard p{margin:0; font-size:15.5px; color:var(--text);}
+  select.blank{
+    font-family:'Cairo',sans-serif; font-weight:700; color:var(--amber-bright); background:rgba(232,163,61,0.1);
+    border:1px solid rgba(232,163,61,0.4); border-radius:8px; padding:4px 10px; font-size:14.5px; margin:0 4px;
+  }
+  .fill-status{font-size:13px; margin-top:8px; font-family:'Cairo',sans-serif; font-weight:700;}
+  .fill-status.ok{color:var(--good);}
+  .fill-status.no{color:var(--wool-bright);}
+
+  /* ---------- QUIZ ---------- */
+  .quiz-item{background:var(--bg-panel); border:1px solid var(--line); border-radius:16px; padding:20px 22px; margin-bottom:16px;}
+  .quiz-item h4{font-size:15.5px; color:var(--text); font-weight:700; margin-bottom:12px;}
+  .quiz-item textarea{
+    width:100%; min-height:60px; resize:vertical; font-family:'Tajawal',sans-serif; font-size:14.5px;
+    background:var(--bg-card); border:1px solid var(--line); border-radius:10px; padding:12px; color:var(--text);
+  }
+  .quiz-item textarea:focus{outline:2px solid var(--amber); outline-offset:2px;}
+  .opt-row{display:flex; flex-wrap:wrap; gap:10px; margin-top:6px;}
+  .opt-btn{
+    font-family:'Cairo',sans-serif; font-weight:700; font-size:13.5px; padding:9px 16px; border-radius:10px;
+    background:var(--bg-card); border:1px solid var(--line); color:var(--text-dim); cursor:pointer;
+  }
+  .opt-btn.correct{background:rgba(124,197,118,0.18); color:var(--good); border-color:var(--good);}
+  .opt-btn.wrong{background:rgba(212,106,159,0.18); color:var(--wool-bright); border-color:var(--wool);}
+  .reveal-note{margin-top:10px; font-size:13.5px; color:var(--text-dim); display:none; border-top:1px dashed var(--line); padding-top:10px;}
+  .reveal-note.show{display:block;}
+
+  footer{padding:40px 0 60px; text-align:center; color:var(--text-dim); font-size:13px;}
+  footer b{color:var(--amber-bright);}
+
+  .progress-dot{position:fixed; top:0; right:0; height:4px; width:100%; background:transparent; z-index:50;}
+  .progress-dot i{display:block; height:100%; width:0%; background:linear-gradient(90deg, var(--wool), var(--amber-bright)); transition:width .1s;}
+
+  a{color:var(--amber-bright);}
+  :focus-visible{outline:2px solid var(--amber-bright); outline-offset:3px;}
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
+  }
+
+  /* ══ RESPONSIVE MOBILE & TABLET ══ */
+  @media (max-width: 768px) {
+    body { padding: 8px !important; font-size: 15px !important; overflow-x: hidden !important; }
+    .container, [class*="container"], [class*="wrapper"] { padding: 8px !important; max-width: 100% !important; }
+    canvas { width: 100% !important; height: auto !important; display: block !important; touch-action: none; max-width: 100% !important; }
+    svg { max-width: 100% !important; height: auto !important; }
+    h1 { font-size: clamp(18px,5vw,32px) !important; }
+    h2 { font-size: clamp(15px,4vw,26px) !important; }
+    h3 { font-size: clamp(13px,3.5vw,20px) !important; }
+    [class*="grid"] { grid-template-columns: 1fr !important; }
+    [class*="flex"] { flex-wrap: wrap !important; }
+    input[type="range"] { width: 100% !important; min-height: 36px; }
+    input[type="number"], input[type="text"], select, textarea {
+      font-size: 16px !important; width: 100% !important; box-sizing: border-box; padding: 8px !important; }
+    button { min-height: 44px !important; font-size: 14px !important; touch-action: manipulation; padding: 10px 14px !important; }
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 13px !important; }
+    th, td { padding: 6px 4px !important; }
+    header { padding: 10px 12px !important; }
+    .controls, [class*="controls"] { flex-direction: column !important; gap: 8px !important; }
+    .lab-window, [class*="lab-window"] { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+  }
+  @media (max-width: 480px) {
+    body { padding: 4px !important; }
+    button { width: 100% !important; }
+  }
+  /* ══ END RESPONSIVE ══ */
+</style>
+</head>
+<body>
+<style>
+.vlab-back{position:fixed;top:10px;left:10px;z-index:99999;
+background:rgba(10,22,40,0.93);border:1px solid rgba(0,200,150,0.4);
+border-radius:22px;padding:8px 16px;display:inline-flex;align-items:center;gap:7px;
+color:#00C896;font-family:Tajawal,Cairo,Arial,sans-serif;font-size:13px;font-weight:700;
+text-decoration:none;backdrop-filter:blur(8px);box-shadow:0 4px 18px rgba(0,0,0,0.3);
+transition:background 0.2s;}
+.vlab-back:hover{background:rgba(0,200,150,0.18);}
+</style>
+<a href="../grade5.html" class="vlab-back">&#8594; العودة للصف</a>
+
+
+<div class="progress-dot"><i id="progressBar"></i></div>
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <div class="hero-bg-grid"></div>
+  <div class="spark-field" id="sparkField"></div>
+  <div class="hero-inner">
+    <div class="eyebrow"><span class="dot"></span> منهاج العلوم والحياة · الصف الخامس · فلسطين</div>
+    <h1>الشحن الكهربائي: باللمس والحث (التأثير)</h1>
+    <p class="sub">درس تفاعلي ثلاثي الأبعاد يشرح كيف تكتسب الأجسام شحنة كهربائية، مع مختبر افتراضي حقيقي تُجري فيه تجربة الكشّاف الكهربائي بنفسك، خطوة بخطوة.</p>
+    <div class="hero-meta">
+      <span class="chip">⏱️ ٤٥ دقيقة</span>
+      <span class="chip">🧪 نشاط (٢): الشحن باللمس والحث</span>
+      <span class="chip">📱 يعمل على الهاتف والحاسوب</span>
+    </div>
+    <button class="scroll-cta" onclick="document.getElementById('lesson').scrollIntoView({behavior:'smooth'})">
+      ابدأ الدرس ↓
+    </button>
+
+    <!-- mini decorative 3D electroscope -->
+    <div class="hero-electro">
+      <div class="electro-3d" style="transform:rotateY(-14deg) rotateX(4deg);">
+        <div class="disc" style="width:40px;height:11px;"></div>
+        <div class="stem" style="height:20px;"></div>
+        <div class="jar" style="width:80px; height:96px;">
+          <div class="leaves" style="height:44px;">
+            <div class="leaf right" style="height:40px; --ang:26deg;"></div>
+            <div class="leaf left" style="height:40px; --ang:26deg;"></div>
+          </div>
+        </div>
+        <div class="base" style="width:96px;"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= LESSON: CONCEPTS ================= -->
+<section id="lesson">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-eyebrow">أوّلاً · الفكرة العلمية</div>
+      <h2>كيف تنتقل الشحنة الكهربائية بين الأجسام؟</h2>
+      <p>كل جسم يتكوّن من ذرّات تحمل شحنات موجبة (البروتونات) وسالبة (الإلكترونات) بأعداد متساوية، لذلك يكون الجسم <b>متعادلاً كهربائياً</b>. عندما تنتقل الإلكترونات من جسم إلى آخر، يصبح كل جسم مشحوناً.</p>
+    </div>
+
+    <div class="grid-2">
+      <div class="concept">
+        <h3><span class="n">١</span> الشحن بالدلك (بالفرك)</h3>
+        <p>عند دلك جسمين عازلين مختلفين ببعضهما (كقضيب بلاستيكي بقطعة صوف)، تنتقل الإلكترونات من أحدهما إلى الآخر، فيصبح أحد الجسمين <b>سالب الشحنة</b> (اكتسب إلكترونات) والآخر <b>موجب الشحنة</b> (فقد إلكترونات).</p>
+        <div class="law-row"><span class="sign minus">−</span><span>قضيب بلاستيك + صوف</span><span class="arrow">←</span><span>القضيب يشحن سالباً</span></div>
+        <div class="law-row"><span class="sign plus">+</span><span>قضيب زجاج + حرير</span><span class="arrow">←</span><span>القضيب يشحن موجباً</span></div>
+      </div>
+      <div class="concept">
+        <h3><span class="n">٢</span> الشحن باللمس (بالتلامس)</h3>
+        <p>عندما يلامس جسم مشحون جسماً آخر متعادلاً (مثل قرص الكشّاف الكهربائي)، تنتقل جزء من الشحنة إليه، فيصبح الجسمان مشحونين بنفس نوع الشحنة، وتبقى الشحنة <b>دائمة</b> بعد إبعاد الجسم المشحون.</p>
+      </div>
+      <div class="concept">
+        <h3><span class="n">٣</span> الشحن بالحث (بالتأثير)</h3>
+        <p>عندما يُقرَّب جسم مشحون من جسم متعادل دون ملامسته، تتنافر الشحنات المشابهة له وتتجاذب المخالفة، فتنفصل الشحنات داخل الجسم المتعادل ويظهر أثر الشحن. هذا التأثير <b>مؤقت</b>، ويزول بمجرد إبعاد الجسم المشحون.</p>
+      </div>
+      <div class="concept">
+        <h3><span class="n">٤</span> قانون التجاذب والتنافر</h3>
+        <p>الشحنات المتشابهة تتنافر، والشحنات المختلفة تتجاذب. هذا القانون يفسّر كل ما نلاحظه في تجربة الكشّاف الكهربائي.</p>
+        <div class="law-row"><span class="sign minus">−</span><span class="arrow">↔</span><span class="sign minus">−</span><span style="color:var(--wool-bright)">تنافر</span></div>
+        <div class="law-row"><span class="sign plus">+</span><span class="arrow">↔</span><span class="sign minus">−</span><span style="color:var(--good)">تجاذب</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= MATERIALS ================= -->
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-eyebrow">أدوات النشاط</div>
+      <h2>أحضِر ومعلّمي المواد والأدوات الآتية</h2>
+      <p>نفس أدوات النشاط (٢) في كتاب العلوم والحياة — ستستخدمها الآن داخل المختبر الافتراضي.</p>
+    </div>
+    <div class="grid-4">
+      <div class="mat-card">
+        <div class="mat-icon">
+          <svg width="60" height="60" viewBox="0 0 60 60"><rect x="8" y="24" width="44" height="12" rx="3" fill="#6b7591"/><rect x="8" y="24" width="44" height="12" rx="3" fill="url(#g1)"/><defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#8b93aa"/><stop offset="1" stop-color="#4d5670"/></linearGradient></defs></svg>
+        </div>
+        <h4>مسطرة (قضيب بلاستيكي)</h4><span>تُشحن سالباً بالصوف</span>
+      </div>
+      <div class="mat-card">
+        <div class="mat-icon">
+          <svg width="60" height="60" viewBox="0 0 60 60"><ellipse cx="30" cy="44" rx="16" ry="4" fill="#3a4258"/><rect x="26" y="14" width="8" height="26" rx="2" fill="#8890a6"/><ellipse cx="30" cy="14" rx="10" ry="3" fill="#cfd6e6"/><path d="M27 40 q-6 6 0 10" stroke="#f6d987" stroke-width="2" fill="none"/><path d="M33 40 q6 6 0 10" stroke="#f6d987" stroke-width="2" fill="none"/></svg>
+        </div>
+        <h4>كشّاف كهربائي</h4><span>يقيس وجود الشحنة</span>
+      </div>
+      <div class="mat-card">
+        <div class="mat-icon"><svg width="60" height="60" viewBox="0 0 60 60"><rect x="24" y="8" width="12" height="44" rx="6" fill="#6fb8b0"/></svg></div>
+        <h4>قضيب زجاجي</h4><span>يُشحن موجباً بالحرير</span>
+      </div>
+      <div class="mat-card">
+        <div class="mat-icon"><svg width="60" height="60" viewBox="0 0 60 60"><rect x="10" y="18" width="40" height="26" rx="5" fill="#9a6bd1"/></svg></div>
+        <h4>قطعة حرير</h4><span>لدلك القضيب الزجاجي</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= VIRTUAL LAB ================= -->
+<section id="lab">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-eyebrow">ثانياً · المختبر الافتراضي</div>
+      <h2>نفّذ التجربة بنفسك على الكشّاف الكهربائي</h2>
+      <p>اختر تجربة، ثم اتّبع الخطوات بالضغط على الأزرار وراقب أوراق الكشّاف الذهبية بعناية.</p>
+    </div>
+
+    <div class="lab-shell">
+      <div class="tabs">
+        <button class="tab-btn active" id="tabBtn1" onclick="switchTab(1)">التجربة الأولى: الشحن باللمس<small>مسطرة بلاستيكية + صوف</small></button>
+        <button class="tab-btn" id="tabBtn2" onclick="switchTab(2)">التجربة الثانية: الشحن بالحث<small>مسطرة بلاستيكية بلا ملامسة</small></button>
+      </div>
+
+      <!-- ===== TAB 1: CONTACT ===== -->
+      <div class="lab-panel active" id="panel1">
+        <div class="lab-columns">
+          <div class="steps-box">
+            <h4>خطوات التجربة</h4>
+            <ol>
+              <li><b>افرك</b> المسطرة البلاستيكية بقطعة الصوف عدّة مرات.</li>
+              <li><b>قرّب</b> المسطرة من قرص الكشّاف الكهربائي.</li>
+              <li><b>المس</b> قرص الكشّاف بالمسطرة المشحونة مباشرة.</li>
+              <li><b>أبعد</b> المسطرة، وراقب حال الأوراق.</li>
+            </ol>
+            <div class="controls">
+              <button class="btn wool" id="btnRub1" onclick="rub(1)">🧶 افرك بالصوف</button>
+              <button class="btn" id="btnNear1" onclick="moveNear(1)" disabled>➡️ قرّب من الكشّاف</button>
+              <button class="btn primary" id="btnTouch1" onclick="touch(1)" disabled>⚡ المس قرص الكشّاف</button>
+              <button class="btn ghost" id="btnAway1" onclick="moveAway(1)" disabled>⬅️ أبعد المسطرة</button>
+              <button class="btn ghost" onclick="resetExp(1)">↺ إعادة الضبط</button>
+            </div>
+            <div class="readout" id="readout1">ابدأ بفرك المسطرة بالصوف لتوليد شحنة سالبة عليها.</div>
+          </div>
+
+          <div class="stage-wrap">
+            <div class="bench">
+              <div class="bench-floor"></div>
+              <div class="electro" id="electro1">
+                <div class="electro-3d">
+                  <div class="disc"></div>
+                  <div class="stem"></div>
+                  <div class="jar">
+                    <div class="leaves"><div class="leaf right" id="leafR1" style="--ang:0deg"></div><div class="leaf left" id="leafL1" style="--ang:0deg"></div></div>
+                  </div>
+                  <div class="base-plate"></div>
+                </div>
+                <div class="base"></div>
+              </div>
+              <div class="rod-track">
+                <div class="rod plastic rod-pos-away" id="rod1" style="transform:translate(calc(50% + var(--tx,0px)),0) rotate(0deg);">
+                  <div class="rod-glow"></div>
+                  <div class="rod-handle"></div>
+                </div>
+              </div>
+              <div class="cloth wool-cloth" id="cloth1" onclick="rub(1)"><div class="cloth-label">صوف</div></div>
+            </div>
+            <div class="status-row">
+              <span class="pill" id="pillRod1">شحنة القضيب: صفر</span>
+              <span class="pill" id="pillElectro1">حالة الكشّاف: متعادل</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== TAB 2: INDUCTION ===== -->
+      <div class="lab-panel" id="panel2">
+        <div class="lab-columns">
+          <div class="steps-box">
+            <h4>خطوات التجربة</h4>
+            <ol>
+              <li><b>افرك</b> المسطرة البلاستيكية بقطعة الصوف.</li>
+              <li><b>قرّب</b> المسطرة من قرص الكشّاف <u>دون ملامسته</u> وراقب الأوراق.</li>
+              <li><b>أبعد</b> المسطرة وراقب ماذا يحدث للأوراق الآن.</li>
+            </ol>
+            <div class="controls">
+              <button class="btn wool" id="btnRub2" onclick="rub(2)">🧶 افرك بالصوف</button>
+              <button class="btn primary" id="btnNear2" onclick="moveNear(2)" disabled>➡️ قرّب دون ملامسة</button>
+              <button class="btn ghost" id="btnAway2" onclick="moveAway(2)" disabled>⬅️ أبعد المسطرة</button>
+              <button class="btn ghost" onclick="resetExp(2)">↺ إعادة الضبط</button>
+            </div>
+            <div class="readout" id="readout2">ابدأ بفرك المسطرة بالصوف لتوليد شحنة سالبة عليها.</div>
+          </div>
+
+          <div class="stage-wrap">
+            <div class="bench">
+              <div class="bench-floor"></div>
+              <div class="electro" id="electro2">
+                <div class="electro-3d">
+                  <div class="disc"></div>
+                  <div class="stem"></div>
+                  <div class="jar">
+                    <div class="leaves"><div class="leaf right" id="leafR2" style="--ang:0deg"></div><div class="leaf left" id="leafL2" style="--ang:0deg"></div></div>
+                  </div>
+                  <div class="base-plate"></div>
+                </div>
+                <div class="base"></div>
+              </div>
+              <div class="rod-track">
+                <div class="rod plastic rod-pos-away" id="rod2" style="transform:translate(calc(50% + var(--tx,0px)),0) rotate(0deg);">
+                  <div class="rod-glow"></div>
+                  <div class="rod-handle"></div>
+                </div>
+              </div>
+              <div class="cloth wool-cloth" id="cloth2" onclick="rub(2)"><div class="cloth-label">صوف</div></div>
+            </div>
+            <div class="status-row">
+              <span class="pill" id="pillRod2">شحنة القضيب: صفر</span>
+              <span class="pill" id="pillElectro2">حالة الكشّاف: متعادل</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONCLUSION FILL-IN ================= -->
+<section id="conclusion">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-eyebrow">أستنتج أنّ</div>
+      <h2>أكمل الاستنتاجات بعد تنفيذ التجربتين</h2>
+      <p>اختر الكلمة المناسبة لكل فراغ. ستتحقّق تلقائياً هل استنتاجك يطابق ما لاحظته في المختبر.</p>
+    </div>
+    <div class="conclusion-box">
+      <div class="fillcard">
+        <p>١. إذا لامس جسم مشحون بشحنة سالبة قرص الكشّاف الكهربائي المتعادل، فإنّه يكسبه شحنة
+          <select class="blank" id="q1a"><option value="">اختر</option><option value="سالبة">سالبة</option><option value="موجبة">موجبة</option></select>
+          ، ولا تزول شحنة الكشّاف بزوال تلامسه مع الجسم الشاحن، أي أنّ الشحنة
+          <select class="blank" id="q1b"><option value="">اختر</option><option value="دائمة">دائمة</option><option value="مؤقتة">مؤقتة</option></select>.
+        </p>
+        <div class="fill-status" id="status1"></div>
+      </div>
+      <div class="fillcard">
+        <p>٢. إذا اقترب جسم مشحون بشحنة سالبة من قرص الكشّاف المتعادل دون ملامسته، فإنّ الكشّاف
+          <select class="blank" id="q2a"><option value="">اختر</option><option value="تتباعد أوراقه">تتباعد أوراقه</option><option value="لا يتأثر">لا يتأثر</option></select>
+          ، ولكن هذا التأثير يزول عند إبعاد الجسم الشاحن، أي أنّ الشحنة
+          <select class="blank" id="q2b"><option value="">اختر</option><option value="مؤقتة">مؤقتة</option><option value="دائمة">دائمة</option></select>.
+        </p>
+        <div class="fill-status" id="status2"></div>
+      </div>
+      <button class="btn primary" onclick="checkConclusions()">✅ تحقّق من إجاباتي</button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= QUIZ ================= -->
+<section id="quiz">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-eyebrow">أسئلة النشاط</div>
+      <h2>أجب عن أسئلة الكتاب بنفسك</h2>
+      <p>يمكنك كتابة إجابتك ثم كشف الإجابة المقترحة للمقارنة.</p>
+    </div>
+
+    <div class="quiz-item">
+      <h4>١. ما نوع الشحنة المُتكوّنة على القضيب البلاستيكي بعد دلكه بالصوف؟</h4>
+      <textarea placeholder="اكتب إجابتك هنا..."></textarea>
+      <div class="reveal-note">شحنة سالبة، لأنّ المسطرة البلاستيكية تكتسب إلكترونات من الصوف عند الدلك.</div>
+      <button class="btn ghost" onclick="toggleReveal(this)">👁️ كشف الإجابة</button>
+    </div>
+
+    <div class="quiz-item">
+      <h4>٢. عند لمس قرص الكشّاف المتعادل بالقضيب المشحون، ماذا تلاحظ؟</h4>
+      <textarea placeholder="اكتب إجابتك هنا..."></textarea>
+      <div class="reveal-note">تتباعد ورقتا الكشّاف عن بعضهما، لأنّ الكشّاف اكتسب شحنة من القضيب فأصبحت الورقتان تحملان الشحنة نفسها فتتنافران.</div>
+      <button class="btn ghost" onclick="toggleReveal(this)">👁️ كشف الإجابة</button>
+    </div>
+
+    <div class="quiz-item">
+      <h4>٣. ما نوع الشحنة المُتكوّنة على ورقتي الكشّاف الكهربائي؟ ولماذا؟</h4>
+      <textarea placeholder="اكتب إجابتك هنا..."></textarea>
+      <div class="reveal-note">شحنة سالبة مثل شحنة القضيب، لأنّ الشحنة تنتقل بالتلامس من الجسم المشحون إلى الجسم المتعادل.</div>
+      <button class="btn ghost" onclick="toggleReveal(this)">👁️ كشف الإجابة</button>
+    </div>
+
+    <div class="quiz-item">
+      <h4>٤. عند إبعاد قضيب البلاستيك عن قرص الكشّاف، ماذا تلاحظ على الورقتين الفلزّيتين؟</h4>
+      <textarea placeholder="اكتب إجابتك هنا..."></textarea>
+      <div class="reveal-note">تبقى الورقتان متباعدتين كما هما، لأنّ الشحن هنا كان بالتلامس، والشحنة الناتجة عنه دائمة.</div>
+      <button class="btn ghost" onclick="toggleReveal(this)">👁️ كشف الإجابة</button>
+    </div>
+
+    <div class="quiz-item">
+      <h4>٥. ماذا نُسمّي هذه الطريقة في الشحن؟ ولماذا؟</h4>
+      <textarea placeholder="اكتب إجابتك هنا..."></textarea>
+      <div class="reveal-note">الشحن باللمس (بالتلامس)، لأنّ الجسم المتعادل اكتسب شحنته نتيجة ملامسته المباشرة لجسم مشحون.</div>
+      <button class="btn ghost" onclick="toggleReveal(this)">👁️ كشف الإجابة</button>
+    </div>
+
+    <div class="quiz-item">
+      <h4>٦. ألمس قرص الكشّاف الكهربائي بإصبعي وألاحظ ما يحدث.</h4>
+      <textarea placeholder="اكتب إجابتك هنا..."></textarea>
+      <div class="reveal-note">تعود ورقتا الكشّاف لوضعهما الأصلي المتلاصق، لأنّ لمس القرص بالإصبع يُفرّغ شحنة الكشّاف إلى الأرض (تأريض).</div>
+      <button class="btn ghost" onclick="toggleReveal(this)">👁️ كشف الإجابة</button>
+    </div>
+
+    <div class="quiz-item">
+      <h4>٧. ما شحنة الكشّاف الآن؟ ولماذا؟</h4>
+      <textarea placeholder="اكتب إجابتك هنا..."></textarea>
+      <div class="reveal-note">أصبح متعادلاً، لأنّ شحنته انتقلت إلى الأرض عبر يد الطالب عند لمسه.</div>
+      <button class="btn ghost" onclick="toggleReveal(this)">👁️ كشف الإجابة</button>
+    </div>
+
+    <div class="quiz-item">
+      <h4>٨. كرّر الخطوات السابقة باستخدام قضيب زجاجي مدلوك بقطعة الحرير، وضّح ذلك بالرسم.</h4>
+      <textarea placeholder="صف ما تتوقّع حدوثه..."></textarea>
+      <div class="reveal-note">تحدث نفس الظاهرة تماماً، لكنّ الكشّاف يكتسب شحنة موجبة هذه المرّة بدلاً من السالبة، لأنّ القضيب الزجاجي المدلوك بالحرير يشحن موجباً.</div>
+      <button class="btn ghost" onclick="toggleReveal(this)">👁️ كشف الإجابة</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  صُمِّم هذا الدرس التفاعلي وفق منهاج <b>العلوم والحياة – الصف الخامس – فلسطين</b> · نشاط (٢): الشحن باللمس والحث (التأثير)
+</footer>
+
+<script>
+/* ---------------- progress bar ---------------- */
+window.addEventListener('scroll', ()=>{
+  const h = document.documentElement;
+  const pct = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+  document.getElementById('progressBar').style.width = pct + '%';
+});
+
+/* ---------------- hero sparks ---------------- */
+const field = document.getElementById('sparkField');
+for(let i=0;i<26;i++){
+  const s = document.createElement('div');
+  s.className='spark';
+  s.style.left = (Math.random()*100)+'%';
+  s.style.top = (40+Math.random()*50)+'%';
+  s.style.animationDuration = (3+Math.random()*4)+'s';
+  s.style.animationDelay = (Math.random()*5)+'s';
+  field.appendChild(s);
+}
+
+/* ---------------- tabs ---------------- */
+function switchTab(n){
+  document.getElementById('tabBtn1').classList.toggle('active', n===1);
+  document.getElementById('tabBtn2').classList.toggle('active', n===2);
+  document.getElementById('panel1').classList.toggle('active', n===1);
+  document.getElementById('panel2').classList.toggle('active', n===2);
+}
+
+/* ---------------- lab state machine ---------------- */
+const state = {
+  1: {rodCharge:0, rodPos:'away', electroCharge:0, everTouched:false, mode:'contact'},
+  2: {rodCharge:0, rodPos:'away', electroCharge:0, everTouched:false, mode:'induction'}
+};
+
+function setLeafAngle(exp, angle){
+  angle = Math.max(0, Math.min(38, angle));
+  document.getElementById('leafR'+exp).style.setProperty('--ang', angle+'deg');
+  document.getElementById('leafL'+exp).style.setProperty('--ang', angle+'deg');
+}
+
+function updatePills(exp){
+  const s = state[exp];
+  const rodPill = document.getElementById('pillRod'+exp);
+  const elPill = document.getElementById('pillElectro'+exp);
+  rodPill.textContent = 'شحنة القضيب: ' + (s.rodCharge===0 ? 'صفر' : 'سالبة (' + s.rodCharge + '%)');
+  rodPill.classList.toggle('on', s.rodCharge>0);
+  const angle = Math.round((s.electroCharge/100)*38);
+  let label = 'حالة الكشّاف: متعادل';
+  if(angle>2) label = 'حالة الكشّاف: أوراق متباعدة (سالبة)';
+  elPill.textContent = label;
+  elPill.classList.toggle('on', angle>2);
+}
+
+function log(exp, html){
+  document.getElementById('readout'+exp).innerHTML = html;
+}
+
+function rub(exp){
+  const s = state[exp];
+  s.rodCharge = Math.min(100, s.rodCharge + 34);
+  const rod = document.getElementById('rod'+exp);
+  rod.classList.add('charged-neg');
+  document.getElementById('cloth'+exp).style.transform = 'translateY(-3px) rotate(-4deg)';
+  setTimeout(()=> document.getElementById('cloth'+exp).style.transform = '', 180);
+
+  updatePills(exp);
+  if(s.rodCharge >= 34){
+    document.getElementById('btnNear'+exp).disabled = false;
+  }
+  log(exp, `فركتَ المسطرة بالصوف. <b>انتقلت إلكترونات من الصوف إلى المسطرة</b>، فأصبحت المسطرة مشحونة بشحنة سالبة (${s.rodCharge}%). ${s.rodCharge<100 ? 'يمكنك الفرك أكثر لزيادة الشحنة، أو تابع للخطوة التالية.' : 'وصلت المسطرة لأقصى شحنة ممكنة.'}`);
+}
+
+function moveNear(exp){
+  const s = state[exp];
+  s.rodPos = 'near';
+  const rod = document.getElementById('rod'+exp);
+  rod.className = 'rod plastic charged-neg rod-pos-near';
+  rod.style.transform = 'translate(calc(50% + var(--tx,-34px)),0) rotate(6deg)';
+
+  if(s.mode==='contact'){
+    document.getElementById('btnTouch'+exp).disabled = false;
+    log(exp, `قرّبتَ المسطرة المشحونة من قرص الكشّاف. لاحظ أنّها لم تلامسه بعد — قرص الكشّاف <b>ما زال متعادلاً</b>. اضغط "المس قرص الكشّاف" لإتمام الشحن باللمس.`);
+  } else {
+    // induction: immediate but temporary divergence
+    setLeafAngle(exp, s.rodCharge*0.36);
+    document.getElementById('btnAway'+exp).disabled = false;
+    document.getElementById('btnNear'+exp).disabled = true;
+    updatePills(exp);
+    log(exp, `قرّبتَ المسطرة <b>دون ملامسة</b> قرص الكشّاف. لاحظ أنّ ورقتَي الكشّاف <span class="state-good">تباعدتا فوراً</span>! هذا يحدث بسبب <b>الحثّ (التأثير)</b>: تنافرت الإلكترونات في الكشّاف بعيداً عن القرص فتجمّعت في الورقتين. الشحنة هنا لم تنتقل فعلياً بعد — جرّب إبعاد المسطرة الآن.`);
+  }
+}
+
+function touch(exp){
+  const s = state[exp];
+  s.rodPos = 'touch';
+  s.everTouched = true;
+  const rod = document.getElementById('rod'+exp);
+  rod.className = 'rod plastic charged-neg rod-pos-touch';
+  rod.style.transform = 'translate(calc(50% + var(--tx,-58px)),0) rotate(10deg)';
+
+  // charge transfer
+  const transferred = s.rodCharge * 0.55;
+  s.electroCharge = Math.min(100, s.electroCharge + transferred);
+  s.rodCharge = Math.max(0, s.rodCharge - transferred*0.4);
+  setLeafAngle(exp, s.electroCharge*0.38);
+  updatePills(exp);
+
+  document.getElementById('btnTouch'+exp).disabled = true;
+  document.getElementById('btnAway'+exp).disabled = false;
+  log(exp, `لامست المسطرة قرص الكشّاف: <b>انتقل جزء من الإلكترونات من المسطرة إلى الكشّاف</b>، فأصبحت ورقتا الكشّاف مشحونتين بنفس الشحنة (سالبة)، لذلك <span class="state-good">تتنافران وتتباعدان</span>. الآن جرّب إبعاد المسطرة لترى هل تبقى الشحنة أم تزول.`);
+}
+
+function moveAway(exp){
+  const s = state[exp];
+  s.rodPos = 'away';
+  const rod = document.getElementById('rod'+exp);
+  rod.className = 'rod plastic ' + (s.rodCharge>0 ? 'charged-neg ' : '') + 'rod-pos-away';
+  rod.style.transform = 'translate(calc(50% + var(--tx,0px)),0) rotate(0deg)';
+
+  document.getElementById('btnAway'+exp).disabled = true;
+
+  if(s.mode==='contact'){
+    updatePills(exp);
+    log(exp, `أبعدتَ المسطرة عن الكشّاف، ولاحظ أنّ <span class="state-good">ورقتَي الكشّاف بقيتا متباعدتين</span>! هذا يثبت أنّ الشحن باللمس ينتج <b>شحنة دائمة</b> لا تزول بمجرد إبعاد الجسم المشحون. (لإفراغ الشحنة، اضغط "إعادة الضبط" — وهذا يماثل لمس القرص بالإصبع).`);
+    document.getElementById('btnNear'+exp).disabled = true;
+  } else {
+    setLeafAngle(exp, 0);
+    s.electroCharge = 0;
+    updatePills(exp);
+    document.getElementById('btnNear'+exp).disabled = false;
+    log(exp, `أبعدتَ المسطرة، ولاحظ أنّ <span class="state-good">ورقتَي الكشّاف عادتا للالتصاق</span> فوراً! هذا يثبت أنّ الشحن بالحث (التأثير) هو <b>شحن مؤقت</b> يزول تماماً بمجرد إبعاد الجسم المشحون، لأنّه لم يحدث انتقال فعلي للشحنة.`);
+  }
+}
+
+function resetExp(exp){
+  const s = state[exp];
+  s.rodCharge = 0; s.rodPos='away'; s.electroCharge=0; s.everTouched=false;
+  const rod = document.getElementById('rod'+exp);
+  rod.className = 'rod plastic rod-pos-away';
+  rod.style.transform = 'translate(calc(50% + var(--tx,0px)),0) rotate(0deg)';
+  setLeafAngle(exp, 0);
+  document.getElementById('btnNear'+exp).disabled = true;
+  if(exp===1) document.getElementById('btnTouch'+exp).disabled = true;
+  document.getElementById('btnAway'+exp).disabled = true;
+  updatePills(exp);
+  log(exp, 'تمّت إعادة ضبط التجربة (كأنّك لمست القرص بإصبعك لتفريغ الشحنة/التأريض). ابدأ من جديد بفرك المسطرة بالصوف.');
+}
+
+/* ---------------- conclusion check ---------------- */
+function checkConclusions(){
+  const s1 = document.getElementById('status1');
+  const a1a = document.getElementById('q1a').value, a1b = document.getElementById('q1b').value;
+  if(a1a==='سالبة' && a1b==='دائمة'){ s1.textContent='✅ إجابة صحيحة تماماً!'; s1.className='fill-status ok'; }
+  else if(!a1a || !a1b){ s1.textContent='الرجاء اختيار كلمة لكل فراغ.'; s1.className='fill-status no'; }
+  else { s1.textContent='❌ حاول مرة أخرى، راجع نتيجة التجربة الأولى في المختبر.'; s1.className='fill-status no'; }
+
+  const s2 = document.getElementById('status2');
+  const a2a = document.getElementById('q2a').value, a2b = document.getElementById('q2b').value;
+  if(a2a==='تتباعد أوراقه' && a2b==='مؤقتة'){ s2.textContent='✅ إجابة صحيحة تماماً!'; s2.className='fill-status ok'; }
+  else if(!a2a || !a2b){ s2.textContent='الرجاء اختيار كلمة لكل فراغ.'; s2.className='fill-status no'; }
+  else { s2.textContent='❌ حاول مرة أخرى، راجع نتيجة التجربة الثانية في المختبر.'; s2.className='fill-status no'; }
+}
+
+/* ---------------- quiz reveal ---------------- */
+function toggleReveal(btn){
+  const note = btn.previousElementSibling;
+  note.classList.toggle('show');
+  btn.textContent = note.classList.contains('show') ? '🙈 إخفاء الإجابة' : '👁️ كشف الإجابة';
+}
+
+/* init pills */
+updatePills(1); updatePills(2);
+</script>
+</body>
+</html>

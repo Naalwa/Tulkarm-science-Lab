@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta http-equiv="Content-Language" content="ar">
+<title>تحوّلات الطاقة الضوئية | العلوم والحياة - الصف الخامس</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sky:#eaf6ff;
+  --paper:#fff9ee;
+  --sun:#ffb627;
+  --sun-deep:#ff7a3d;
+  --navy:#123a5e;
+  --navy-2:#1b4b78;
+  --panel:#0e2740;
+  --wire:#e4572e;
+  --leaf:#2e9e6a;
+  --ink:#123047;
+  --card:#ffffff;
+  --line:#d9e6ef;
+  --shadow: 0 18px 40px -18px rgba(18,58,94,.35);
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--sky);
+  color:var(--ink);
+  font-family:'Tajawal',Tahoma,'Segoe UI',sans-serif;
+  direction:rtl;
+  overflow-x:hidden;
+}
+h1,h2,h3,.display{font-family:'Cairo',Tahoma,sans-serif;}
+::selection{background:var(--sun);color:var(--panel);}
+:focus-visible{outline:3px solid var(--sun-deep); outline-offset:3px; border-radius:6px;}
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important;}
+}
+
+/* ---------- NAV ---------- */
+.nav{
+  position:sticky; top:0; z-index:60;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:12px 22px;
+  background:rgba(234,246,255,.86); backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+}
+.brand{display:flex; align-items:center; gap:10px; font-family:'Cairo'; font-weight:800; color:var(--navy); font-size:1.05rem;}
+.brand .dot{width:14px;height:14px;border-radius:50%;background:radial-gradient(circle at 30% 30%, #fff2c9, var(--sun) 60%, var(--sun-deep));box-shadow:0 0 14px var(--sun);}
+.nav a{color:var(--navy); text-decoration:none; font-size:.85rem; font-weight:700; margin-inline-start:16px; opacity:.75; transition:opacity .2s;}
+.nav a:hover{opacity:1;}
+.navlinks{display:flex; flex-wrap:wrap;}
+@media(max-width:720px){.navlinks{display:none;}}
+
+/* ---------- HERO ---------- */
+.hero{
+  position:relative; padding:64px 22px 40px; text-align:center;
+  overflow:hidden;
+}
+.hero-sun{
+  position:absolute; top:-90px; right:-90px; width:280px; height:280px; border-radius:50%;
+  background:radial-gradient(circle at 35% 35%, #fff6dc, var(--sun) 55%, var(--sun-deep) 85%);
+  box-shadow:0 0 90px 20px rgba(255,182,39,.55);
+  animation:pulse 4s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.06);}}
+.eyebrow{
+  display:inline-block; font-weight:900; letter-spacing:.5px; font-size:.8rem;
+  color:var(--navy); background:#fff; border:1px solid var(--line);
+  padding:6px 16px; border-radius:999px; box-shadow:var(--shadow);
+}
+h1.title{font-size:clamp(2rem,5vw,3.3rem); margin:18px 0 6px; color:var(--navy); font-weight:900;}
+.subtitle{color:#3a6180; font-size:1.05rem; margin-bottom:34px;}
+
+/* signature: 3D rotating cube */
+.cube-stage{
+  perspective:1200px; width:220px; height:220px; margin:10px auto 30px;
+}
+.cube{
+  width:100%; height:100%; position:relative; transform-style:preserve-3d;
+  animation:spin 16s linear infinite;
+}
+.cube.paused{animation-play-state:paused;}
+@keyframes spin{ from{transform:rotateX(-18deg) rotateY(0deg);} to{transform:rotateX(-18deg) rotateY(360deg);} }
+.face{
+  position:absolute; width:220px; height:220px; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  border-radius:18px; color:#fff; font-family:'Cairo'; font-weight:800; gap:6px; font-size:1rem;
+  border:1px solid rgba(255,255,255,.25);
+  box-shadow: inset 0 0 40px rgba(255,255,255,.08);
+  transition:filter .3s, box-shadow .3s;
+}
+.face span.ic{font-size:2.1rem;}
+.face.active{box-shadow: 0 0 0 4px #fff, 0 0 30px rgba(255,255,255,.8);}
+.f1{background:linear-gradient(160deg,var(--sun),var(--sun-deep)); transform:rotateY(0deg) translateZ(110px);}
+.f2{background:linear-gradient(160deg,#5ab0ff,#1b4b78); transform:rotateY(90deg) translateZ(110px);}
+.f3{background:linear-gradient(160deg,#ffe07a,#e4572e); transform:rotateY(180deg) translateZ(110px);}
+.f4{background:linear-gradient(160deg,#7de3a8,var(--leaf)); transform:rotateY(-90deg) translateZ(110px);}
+.f5{background:linear-gradient(160deg,#c9a6ff,#7a4fd6); transform:rotateX(90deg) translateZ(110px);}
+.f6{background:linear-gradient(160deg,#ffb0c6,#e4572e); transform:rotateX(-90deg) translateZ(110px);}
+
+.cta-row{display:flex; gap:14px; justify-content:center; flex-wrap:wrap;}
+.btn{
+  border:none; cursor:pointer; font-family:'Cairo'; font-weight:800; font-size:.95rem;
+  padding:14px 26px; border-radius:14px; transition:transform .15s, box-shadow .15s;
+}
+.btn:active{transform:translateY(2px);}
+.btn-primary{background:linear-gradient(135deg,var(--sun),var(--sun-deep)); color:#3a1900; box-shadow:0 12px 24px -8px rgba(255,122,61,.6);}
+.btn-primary:hover{transform:translateY(-3px);}
+.btn-ghost{background:#fff; color:var(--navy); border:2px solid var(--navy); }
+.btn-ghost:hover{background:var(--navy); color:#fff;}
+
+/* ---------- SECTION SHELL ---------- */
+section{padding:64px 20px; max-width:1080px; margin:0 auto;}
+.sec-head{text-align:center; margin-bottom:34px;}
+.sec-num{font-family:'Cairo'; font-weight:900; color:var(--sun-deep); font-size:.85rem; letter-spacing:2px;}
+.sec-title{font-size:clamp(1.5rem,3.4vw,2.1rem); color:var(--navy); margin:6px 0 8px;}
+.sec-desc{color:#4a6c86; max-width:640px; margin:0 auto; line-height:1.9;}
+
+/* ---------- EXPLAIN CARDS ---------- */
+.grid3{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:18px;}
+.card{
+  background:var(--card); border-radius:20px; padding:22px; box-shadow:var(--shadow);
+  border:1px solid var(--line); transition:transform .25s;
+}
+.card:hover{transform:translateY(-6px);}
+.card .ic{font-size:2rem; margin-bottom:10px; display:block;}
+.card h3{margin:0 0 8px; color:var(--navy); font-size:1.05rem;}
+.card p{margin:0; color:#4a6c86; font-size:.92rem; line-height:1.8;}
+
+.law-box{
+  margin-top:30px; background:linear-gradient(135deg,var(--navy),var(--navy-2)); color:#fff;
+  border-radius:20px; padding:26px 28px; text-align:center; box-shadow:var(--shadow);
+  position:relative; overflow:hidden;
+}
+.law-box::before{content:"";position:absolute; inset:0; background:radial-gradient(circle at 15% 20%, rgba(255,182,39,.25), transparent 45%);}
+.law-box b{color:var(--sun);}
+.law-box p{position:relative; font-family:'Cairo'; font-weight:800; font-size:1.15rem; margin:0; line-height:1.9;}
+
+/* ---------- LAB ---------- */
+.lab-wrap{
+  background:var(--paper); border-radius:28px; padding:30px; box-shadow:var(--shadow); border:1px solid var(--line);
+}
+.lab-grid{display:grid; grid-template-columns:1.15fr .85fr; gap:26px;}
+@media(max-width:860px){.lab-grid{grid-template-columns:1fr;}}
+
+.scene{
+  perspective:1100px; background:linear-gradient(180deg,#cdeeff,#eaf6ff 60%); border-radius:20px;
+  padding:26px 20px 34px; position:relative; min-height:400px; overflow:hidden;
+  border:1px solid var(--line);
+}
+.scene-sun{
+  position:absolute; top:16px; left:16px; width:70px; height:70px; border-radius:50%;
+  background:radial-gradient(circle at 35% 35%, #fff6dc, var(--sun) 55%, var(--sun-deep) 90%);
+  transition:box-shadow .3s, transform .3s;
+}
+.scene-sun::after{
+  content:""; position:absolute; inset:-14px; border-radius:50%;
+  background:radial-gradient(circle, rgba(255,182,39,.5), transparent 70%);
+  animation:raypulse 2.4s ease-in-out infinite;
+}
+@keyframes raypulse{0%,100%{opacity:.5; transform:scale(1);}50%{opacity:.9; transform:scale(1.15);}}
+
+.rig{
+  transform-style:preserve-3d; margin:70px auto 0; width:min(100%,420px); position:relative;
+  transform:rotateX(8deg);
+}
+.panel3d{
+  width:180px; height:110px; margin:0 auto; position:relative;
+  background:repeating-linear-gradient(90deg,#0e2740,#0e2740 20px,#123a5e 21px,#123a5e 40px);
+  border-radius:8px; border:3px solid var(--panel);
+  transform:rotateX(35deg); box-shadow:0 25px 30px -15px rgba(14,39,64,.5);
+  transition:filter .3s;
+}
+.panel3d::after{
+  content:""; position:absolute; inset:0; border-radius:6px; background:linear-gradient(135deg, rgba(255,255,255,.35), transparent 55%);
+}
+.panel-label{text-align:center; font-size:.75rem; color:var(--navy); font-weight:800; margin-top:10px;}
+
+.wire-svg{width:100%; height:110px; display:block; margin-top:-6px;}
+.wire-path{fill:none; stroke:var(--wire); stroke-width:4; stroke-linecap:round; stroke-dasharray:10 8;}
+.wire-flow{fill:none; stroke:#fff; stroke-width:4; stroke-linecap:round; opacity:0;}
+.wire-flow.on{opacity:1; stroke-dasharray:6 220; animation:flow 1.1s linear infinite;}
+@keyframes flow{to{stroke-dashoffset:-226;}}
+
+.devices{display:flex; justify-content:center; gap:16px; margin-top:6px; flex-wrap:wrap;}
+.device{
+  width:104px; text-align:center; padding:12px 8px; border-radius:16px; cursor:pointer;
+  background:#fff; border:2px solid var(--line); transition:all .2s; user-select:none;
+}
+.device:hover{border-color:var(--sun-deep); transform:translateY(-3px);}
+.device.selected{border-color:var(--navy); background:#eaf3ff; box-shadow:0 8px 16px -8px rgba(18,58,94,.4);}
+.device .glyph{font-size:1.9rem; display:block; transition:transform .3s;}
+.device.active .glyph.fan{animation:spinfan .5s linear infinite;}
+.device.active .glyph.lamp{filter:drop-shadow(0 0 10px var(--sun));}
+.device.active .glyph.bell{animation:ring .28s ease-in-out infinite;}
+@keyframes spinfan{to{transform:rotate(360deg);}}
+@keyframes ring{0%,100%{transform:rotate(0deg);}50%{transform:rotate(14deg);}}
+.device small{display:block; font-size:.72rem; color:#4a6c86; margin-top:4px; font-weight:700;}
+
+.controls{margin-top:18px;}
+.slider-row{display:flex; align-items:center; gap:12px; margin-bottom:14px;}
+.slider-row label{font-weight:800; color:var(--navy); font-size:.9rem; min-width:120px;}
+input[type=range]{flex:1; accent-color:var(--sun-deep);}
+.pct{font-family:'Cairo'; font-weight:900; color:var(--sun-deep); min-width:44px; text-align:center;}
+
+.flow-labels{display:flex; justify-content:center; gap:8px; margin-top:16px; flex-wrap:wrap; min-height:34px;}
+.tag{
+  padding:6px 14px; border-radius:999px; font-weight:800; font-size:.8rem; opacity:0; transform:translateY(6px);
+  transition:opacity .4s, transform .4s; font-family:'Cairo';
+}
+.tag.show{opacity:1; transform:translateY(0);}
+.tag.t-sun{background:#fff2cf; color:#8a5200;}
+.tag.t-elec{background:#dbe9ff; color:var(--navy);}
+.tag.t-out{background:#dcf5e8; color:#116240;}
+.arrow{align-self:center; color:var(--navy); font-weight:900; opacity:0; transition:opacity .4s;}
+.arrow.show{opacity:1;}
+
+/* notebook */
+.notebook{background:#fff; border-radius:20px; padding:22px; box-shadow:var(--shadow); border:1px solid var(--line);}
+.notebook h3{margin-top:0; color:var(--navy); font-size:1.05rem; display:flex; align-items:center; gap:8px;}
+.nb-q{margin-bottom:16px;}
+.nb-q .q{font-weight:700; font-size:.88rem; color:#274472; margin-bottom:6px;}
+.nb-a{
+  background:var(--paper); border:1px dashed #c9b98c; border-radius:10px; padding:10px 12px;
+  font-family:'Cairo'; font-weight:800; color:var(--navy); min-height:22px; font-size:.92rem;
+  transition:background .3s;
+}
+.nb-a.filled{background:#fff2cf;}
+.hint{font-size:.78rem; color:#9aa; color:#8098ac;}
+
+/* multi cell challenge */
+.challenge{margin-top:24px; background:#fff; border-radius:20px; padding:24px; box-shadow:var(--shadow); border:1px solid var(--line);}
+.cells-row{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin:16px 0;}
+.cell-chip{
+  width:52px; height:34px; border-radius:6px; background:repeating-linear-gradient(90deg,#0e2740,#0e2740 8px,#123a5e 9px,#123a5e 16px);
+  border:2px solid var(--panel); box-shadow:0 4px 8px rgba(0,0,0,.15);
+}
+.add-cell{
+  width:52px; height:34px; border-radius:6px; border:2px dashed var(--navy); background:transparent; color:var(--navy);
+  font-weight:900; cursor:pointer; font-size:1.1rem;
+}
+.status-bar{height:14px; border-radius:8px; background:#e6eef5; overflow:hidden; margin:12px 0;}
+.status-fill{height:100%; width:0%; background:linear-gradient(90deg,var(--sun),var(--leaf)); transition:width .4s;}
+.status-text{font-weight:800; color:var(--navy); font-size:.9rem;}
+.device-need{display:flex; gap:10px; flex-wrap:wrap; margin-top:14px;}
+.need-chip{padding:8px 14px; border-radius:12px; font-weight:700; font-size:.85rem; background:#f1f5f9; border:2px solid var(--line); cursor:pointer; transition:.2s;}
+.need-chip.on{border-color:var(--leaf); background:#e6f8ee; color:#116240;}
+.need-chip.off-power{border-color:#e4572e; background:#fdeae4; color:#a53312;}
+
+/* conclusion builder */
+.blank-line{
+  display:inline-flex; align-items:center; justify-content:center; min-width:150px; padding:6px 14px;
+  border-bottom:3px solid var(--sun-deep); font-family:'Cairo'; font-weight:900; color:var(--navy);
+  margin:0 6px; background:#fff2cf; border-radius:8px 8px 0 0;
+}
+.word-bank{display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:20px;}
+.word{
+  padding:9px 18px; border-radius:999px; background:#fff; border:2px solid var(--navy); color:var(--navy);
+  font-weight:800; cursor:pointer; font-family:'Cairo'; font-size:.88rem; transition:.2s;
+}
+.word:hover{background:var(--navy); color:#fff;}
+.word.used{opacity:.35; pointer-events:none;}
+.concl-sentence{text-align:center; font-size:1.15rem; line-height:2.4; color:var(--navy); font-weight:700;}
+
+/* quiz */
+.quiz-card{background:#fff; border-radius:20px; padding:22px; box-shadow:var(--shadow); border:1px solid var(--line); margin-bottom:16px;}
+.quiz-q{font-weight:800; color:var(--navy); margin-bottom:12px;}
+.opts{display:grid; gap:10px;}
+.opt{
+  text-align:right; padding:12px 16px; border-radius:12px; border:2px solid var(--line); background:#f8fbfd;
+  cursor:pointer; font-weight:700; color:#274472; transition:.2s;
+}
+.opt:hover{border-color:var(--sun-deep);}
+.opt.correct{border-color:var(--leaf); background:#e6f8ee; color:#116240;}
+.opt.wrong{border-color:#e4572e; background:#fdeae4; color:#a53312;}
+.score-box{text-align:center; font-family:'Cairo'; font-weight:900; color:var(--navy); font-size:1.1rem; margin-top:10px;}
+
+footer{text-align:center; padding:40px 20px; color:#7492a8; font-size:.85rem;}
+.msg-toast{
+  position:fixed; bottom:20px; left:50%; transform:translateX(-50%) translateY(20px); opacity:0;
+  background:var(--navy); color:#fff; padding:12px 22px; border-radius:14px; font-weight:800; z-index:99;
+  transition:opacity .3s, transform .3s; box-shadow:var(--shadow); font-family:'Cairo'; max-width:90%; text-align:center;
+}
+.msg-toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+
+  /* ══ RESPONSIVE MOBILE & TABLET ══ */
+  @media (max-width: 768px) {
+    body { padding: 8px !important; font-size: 15px !important; overflow-x: hidden !important; }
+    .container, [class*="container"], [class*="wrapper"] { padding: 8px !important; max-width: 100% !important; }
+    canvas { width: 100% !important; height: auto !important; display: block !important; touch-action: none; max-width: 100% !important; }
+    svg { max-width: 100% !important; height: auto !important; }
+    h1 { font-size: clamp(18px,5vw,32px) !important; }
+    h2 { font-size: clamp(15px,4vw,26px) !important; }
+    h3 { font-size: clamp(13px,3.5vw,20px) !important; }
+    [class*="grid"] { grid-template-columns: 1fr !important; }
+    [class*="flex"] { flex-wrap: wrap !important; }
+    input[type="range"] { width: 100% !important; min-height: 36px; }
+    input[type="number"], input[type="text"], select, textarea {
+      font-size: 16px !important; width: 100% !important; box-sizing: border-box; padding: 8px !important; }
+    button { min-height: 44px !important; font-size: 14px !important; touch-action: manipulation; padding: 10px 14px !important; }
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 13px !important; }
+    th, td { padding: 6px 4px !important; }
+    header { padding: 10px 12px !important; }
+    .controls, [class*="controls"] { flex-direction: column !important; gap: 8px !important; }
+    .lab-window, [class*="lab-window"] { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+  }
+  @media (max-width: 480px) {
+    body { padding: 4px !important; }
+    button { width: 100% !important; }
+  }
+  /* ══ END RESPONSIVE ══ */
+</style>
+</head>
+<body>
+<style>
+.vlab-back{position:fixed;top:10px;left:10px;z-index:99999;
+background:rgba(10,22,40,0.93);border:1px solid rgba(0,200,150,0.4);
+border-radius:22px;padding:8px 16px;display:inline-flex;align-items:center;gap:7px;
+color:#00C896;font-family:Tajawal,Cairo,Arial,sans-serif;font-size:13px;font-weight:700;
+text-decoration:none;backdrop-filter:blur(8px);box-shadow:0 4px 18px rgba(0,0,0,0.3);
+transition:background 0.2s;}
+.vlab-back:hover{background:rgba(0,200,150,0.18);}
+</style>
+<a href="../grade5.html" class="vlab-back">&#8594; العودة للصف</a>
+
+
+<nav class="nav">
+  <div class="brand"><span class="dot"></span> تحوّلات الطاقة الضوئية</div>
+  <div class="navlinks">
+    <a href="#explain">الشرح</a>
+    <a href="#lab">المختبر الافتراضي</a>
+    <a href="#challenge">تحدٍّ</a>
+    <a href="#conclusion">الاستنتاج</a>
+    <a href="#quiz">اختبر نفسك</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-sun" aria-hidden="true"></div>
+  <span class="eyebrow">العلوم والحياة · الصف الخامس · فلسطين</span>
+  <h1 class="title">تحوّلات الطاقة الضوئية</h1>
+  <p class="subtitle">من ضوء الشمس إلى حركة ونور وصوت... رحلة الطاقة لا تتوقف، بل تتغيّر شكلها فقط</p>
+
+  <div class="cube-stage">
+    <div class="cube" id="heroCube">
+      <div class="face f1" data-type="sun"><span class="ic">☀️</span>ضوئية</div>
+      <div class="face f2" data-type="elec"><span class="ic">⚡</span>كهربائية</div>
+      <div class="face f3" data-type="light"><span class="ic">💡</span>ضوئية (مصباح)</div>
+      <div class="face f4" data-type="motion"><span class="ic">🌀</span>حركية</div>
+      <div class="face f5" data-type="sound"><span class="ic">🔔</span>صوتية</div>
+      <div class="face f6" data-type="heat"><span class="ic">🔥</span>حرارية</div>
+    </div>
+  </div>
+
+  <div class="cta-row">
+    <button class="btn btn-primary" onclick="document.getElementById('lab').scrollIntoView()">🔬 ابدأ المختبر الافتراضي</button>
+    <button class="btn btn-ghost" onclick="document.getElementById('explain').scrollIntoView()">📖 اقرأ الشرح أولاً</button>
+  </div>
+</header>
+
+<!-- EXPLAIN -->
+<section id="explain">
+  <div class="sec-head">
+    <div class="sec-num">أولاً</div>
+    <h2 class="sec-title">كيف تتحوّل الطاقة الضوئية؟</h2>
+    <p class="sec-desc">تأمّل الصورة في كتابك: بيت عليه ألواح شمسية على السطح، وأسلاك كهربائية تنقل الطاقة إلى الأجهزة داخل البيت.</p>
+  </div>
+
+  <div class="grid3">
+    <div class="card">
+      <span class="ic">☀️</span>
+      <h3>مصدر الطاقة</h3>
+      <p>مصدر الطاقة في الصورة هو <b>الشمس</b>. تصل أشعتها إلى الخلايا الشمسية الموجودة على سطح البيت.</p>
+    </div>
+    <div class="card">
+      <span class="ic">🔋</span>
+      <h3>الخلية الشمسية</h3>
+      <p>تحوّل الخلية الشمسية <b>الطاقة الضوئية</b> المستمدة من الشمس إلى <b>طاقة كهربائية</b> تسري في الأسلاك.</p>
+    </div>
+    <div class="card">
+      <span class="ic">💡</span>
+      <h3>المصباح والأجهزة</h3>
+      <p>تتحوّل الطاقة الكهربائية الناتجة عن الخلية الشمسية إلى <b>طاقة ضوئية</b> في المصباح، أو حركية في المروحة، أو صوتية في الجرس.</p>
+    </div>
+  </div>
+
+  <div class="law-box">
+    <p>" الطاقة <b>لا تفنى</b> ولا <b>تُستحدَث</b>، وإنما يمكن تحويلها من شكل إلى آخر "<br>
+    <span style="font-size:.85rem;font-weight:600;opacity:.85">— قانون حفظ الطاقة</span></p>
+  </div>
+</section>
+
+<!-- LAB -->
+<section id="lab">
+  <div class="sec-head">
+    <div class="sec-num">ثانياً · نشاط عملي</div>
+    <h2 class="sec-title">المختبر الافتراضي: تحوّلات الطاقة الضوئية</h2>
+    <p class="sec-desc">اختر شدّة أشعة الشمس، ثم اختر جهازًا لتوصيله بالخلية الشمسية، واضغط "تشغيل الدارة" لتشاهد كيف تتحوّل الطاقة خطوة بخطوة.</p>
+  </div>
+
+  <div class="lab-wrap">
+    <div class="lab-grid">
+      <div class="scene">
+        <div class="scene-sun" id="sceneSun"></div>
+        <div class="rig">
+          <div class="panel3d" id="panel3d"></div>
+          <div class="panel-label">خلية شمسية</div>
+          <svg class="wire-svg" viewBox="0 0 400 110">
+            <path class="wire-path" d="M60,10 C60,70 340,20 340,90" />
+            <path class="wire-flow" id="wireFlow" d="M60,10 C60,70 340,20 340,90" />
+          </svg>
+          <div class="devices" id="deviceRow">
+            <div class="device" data-device="fan" data-cost="30" tabindex="0" role="button" aria-label="مروحة">
+              <span class="glyph fan">🌀</span>مروحة<small>حركية</small>
+            </div>
+            <div class="device" data-device="lamp" data-cost="20" tabindex="0" role="button" aria-label="مصباح">
+              <span class="glyph lamp">💡</span>مصباح<small>ضوئية</small>
+            </div>
+            <div class="device" data-device="bell" data-cost="15" tabindex="0" role="button" aria-label="جرس">
+              <span class="glyph bell">🔔</span>جرس<small>صوتية</small>
+            </div>
+          </div>
+          <div class="flow-labels" id="flowLabels">
+            <span class="tag t-sun" id="tagSun">طاقة ضوئية</span>
+            <span class="arrow" id="arrow1">←</span>
+            <span class="tag t-elec" id="tagElec">طاقة كهربائية</span>
+            <span class="arrow" id="arrow2">←</span>
+            <span class="tag t-out" id="tagOut">—</span>
+          </div>
+        </div>
+
+        <div class="controls">
+          <div class="slider-row">
+            <label for="sunSlider">☀️ شدة أشعة الشمس</label>
+            <input type="range" id="sunSlider" min="10" max="100" value="80">
+            <span class="pct" id="sunPct">80%</span>
+          </div>
+          <div class="cta-row" style="justify-content:flex-start">
+            <button class="btn btn-primary" id="runBtn">▶️ تشغيل الدارة</button>
+            <button class="btn btn-ghost" id="resetBtn">↺ إعادة</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="notebook">
+        <h3>📓 دفتر ملاحظات التجربة</h3>
+        <div class="nb-q">
+          <div class="q">١. ما مصدر الطاقة في التجربة؟</div>
+          <div class="nb-a" id="nbSource">— شغّل الدارة لتظهر النتيجة —</div>
+        </div>
+        <div class="nb-q">
+          <div class="q">٢. الطاقة الضوئية المستمدة من الشمس تحوّلت في الخلية الشمسية إلى:</div>
+          <div class="nb-a" id="nbToElec">—</div>
+        </div>
+        <div class="nb-q">
+          <div class="q">٣. الطاقة الكهربائية الناتجة تحوّلت في الجهاز المختار إلى:</div>
+          <div class="nb-a" id="nbToOut">—</div>
+        </div>
+        <div class="nb-q">
+          <div class="q">٤. هل اختفت الطاقة أم تحوّلت إلى شكل آخر؟</div>
+          <div class="nb-a" id="nbLaw">—</div>
+        </div>
+        <p class="hint">💡 جرّب الأجهزة الثلاثة (مروحة، مصباح، جرس) لتقارن بين النتائج.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CHALLENGE -->
+<section id="challenge">
+  <div class="sec-head">
+    <div class="sec-num">ثالثاً · أفكّر</div>
+    <h2 class="sec-title">لماذا لا يمكن تشغيل كل الأجهزة معًا بخلية واحدة؟</h2>
+    <p class="sec-desc">حاول تشغيل المصباح والمروحة والجرس معًا باستخدام خلية شمسية واحدة، ثم أضف خلايا حتى تحل المشكلة، كما في مشروع السيارة الشمسية.</p>
+  </div>
+  <div class="challenge">
+    <div class="status-text">عدد الخلايا الشمسية: <span id="cellCount">1</span> · الطاقة المتاحة: <span id="powerAvail">30</span> وحدة</div>
+    <div class="cells-row" id="cellsRow">
+      <div class="cell-chip"></div>
+      <button class="add-cell" id="addCell" aria-label="إضافة خلية شمسية">+</button>
+    </div>
+    <div class="status-bar"><div class="status-fill" id="statusFill"></div></div>
+    <div class="device-need" id="needRow">
+      <div class="need-chip" data-cost="20" data-name="💡 مصباح">💡 مصباح (20)</div>
+      <div class="need-chip" data-cost="30" data-name="🌀 مروحة">🌀 مروحة (30)</div>
+      <div class="need-chip" data-cost="15" data-name="🔔 جرس">🔔 جرس (15)</div>
+    </div>
+    <p class="hint" id="challengeMsg" style="margin-top:14px;">اضغط على الأجهزة لتشغيلها، وراقب هل تكفي طاقة الخلايا الحالية.</p>
+  </div>
+</section>
+
+<!-- CONCLUSION -->
+<section id="conclusion">
+  <div class="sec-head">
+    <div class="sec-num">رابعاً · أستنتج</div>
+    <h2 class="sec-title">أكمل جملة الاستنتاج</h2>
+    <p class="sec-desc">اسحب — أو اضغط — على الكلمة المناسبة من القائمة لتضعها في الفراغ الصحيح.</p>
+  </div>
+  <div class="card" style="max-width:720px; margin:0 auto;">
+    <p class="concl-sentence">
+      الطاقة تتحوّل من <span class="blank-line" id="blank1">؟</span> إلى <span class="blank-line" id="blank2">؟</span>، ولا يمكن أن تفنى أو تُستحدَث من العدم.
+    </p>
+    <div class="word-bank" id="wordBank">
+      <span class="word" data-target="blank1" data-value="ضوئية">ضوئية</span>
+      <span class="word" data-target="blank2" data-value="كهربائية">كهربائية</span>
+      <span class="word" data-target="blank2" data-value="حركية">حركية</span>
+      <span class="word" data-target="blank2" data-value="صوتية">صوتية</span>
+    </div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz">
+  <div class="sec-head">
+    <div class="sec-num">خامساً</div>
+    <h2 class="sec-title">اختبر نفسك</h2>
+    <p class="sec-desc">أجب عن الأسئلة التالية للتأكد من فهمك للدرس.</p>
+  </div>
+  <div id="quizArea"></div>
+  <div class="score-box" id="scoreBox"></div>
+</section>
+
+<footer>
+  صفحة تفاعلية لدرس "تحوّلات الطاقة الضوئية" — منهاج العلوم والحياة، الصف الخامس، فلسطين 🇵🇸
+</footer>
+
+<div class="msg-toast" id="toast"></div>
+
+<script>
+/* ---------------- utility ---------------- */
+function toast(msg, ms){
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(function(){ t.classList.remove('show'); }, ms || 2400);
+}
+
+/* ---------------- hero cube sync with scroll ---------------- */
+var heroCube = document.getElementById('heroCube');
+
+/* ---------------- LAB ---------------- */
+var sunSlider = document.getElementById('sunSlider');
+var sunPct = document.getElementById('sunPct');
+var sceneSun = document.getElementById('sceneSun');
+var panel3d = document.getElementById('panel3d');
+var deviceRow = document.getElementById('deviceRow');
+var wireFlow = document.getElementById('wireFlow');
+var runBtn = document.getElementById('runBtn');
+var resetBtn = document.getElementById('resetBtn');
+
+var selectedDevice = null;
+
+function updateSun(){
+  var v = sunSlider.value;
+  sunPct.textContent = v + '%';
+  var glow = 20 + (v/100)*70;
+  sceneSun.style.boxShadow = '0 0 ' + glow + 'px ' + (glow*0.5) + 'px rgba(255,182,39,.6)';
+  sceneSun.style.transform = 'scale(' + (0.8 + v/100*0.5) + ')';
+  panel3d.style.filter = 'brightness(' + (0.6 + v/100*0.7) + ')';
+}
+sunSlider.addEventListener('input', updateSun);
+updateSun();
+
+document.querySelectorAll('.device').forEach(function(d){
+  function select(){
+    document.querySelectorAll('.device').forEach(function(x){x.classList.remove('selected');});
+    d.classList.add('selected');
+    selectedDevice = d.getAttribute('data-device');
+  }
+  d.addEventListener('click', select);
+  d.addEventListener('keydown', function(e){ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); select(); } });
+});
+
+var outLabels = { fan:{name:'طاقة حركية', icon:'🌀', word:'حركية'}, lamp:{name:'طاقة ضوئية', icon:'💡', word:'ضوئية'}, bell:{name:'طاقة صوتية', icon:'🔔', word:'صوتية'} };
+
+function showTag(el){ el.classList.add('show'); }
+function hideAllTags(){
+  ['tagSun','arrow1','tagElec','arrow2','tagOut'].forEach(function(id){
+    document.getElementById(id).classList.remove('show');
+  });
+}
+
+runBtn.addEventListener('click', function(){
+  if(!selectedDevice){
+    toast('اختر جهازًا أولاً (مروحة، مصباح، أو جرس) ⚠️');
+    return;
+  }
+  var intensity = parseInt(sunSlider.value,10);
+  hideAllTags();
+  wireFlow.classList.remove('on');
+  document.querySelectorAll('.device').forEach(function(x){x.classList.remove('active');});
+
+  if(intensity < 25){
+    toast('الإضاءة ضعيفة جدًا، لا تكفي لتشغيل الخلية الشمسية 🌥️');
+    return;
+  }
+
+  // stage 1: sun
+  setTimeout(function(){ showTag(document.getElementById('tagSun')); }, 100);
+  // stage 2: electric
+  setTimeout(function(){
+    showTag(document.getElementById('arrow1'));
+    showTag(document.getElementById('tagElec'));
+    wireFlow.classList.add('on');
+  }, 700);
+  // stage 3: device output
+  setTimeout(function(){
+    showTag(document.getElementById('arrow2'));
+    var out = document.getElementById('tagOut');
+    var info = outLabels[selectedDevice];
+    out.textContent = info.icon + ' ' + info.name;
+    showTag(out);
+    var devEl = document.querySelector('.device[data-device="'+selectedDevice+'"]');
+    devEl.classList.add('active');
+  }, 1500);
+
+  // notebook fill
+  setTimeout(function(){
+    var info = outLabels[selectedDevice];
+    fillNb('nbSource', 'الشمس ☀️');
+    fillNb('nbToElec', 'طاقة كهربائية ⚡');
+    fillNb('nbToOut', info.name + ' ' + info.icon);
+    fillNb('nbLaw', 'لم تختفِ الطاقة، وإنما تحوّلت إلى شكل آخر ✅');
+  }, 1600);
+});
+
+function fillNb(id, text){
+  var el = document.getElementById(id);
+  el.textContent = text;
+  el.classList.add('filled');
+}
+
+resetBtn.addEventListener('click', function(){
+  hideAllTags();
+  wireFlow.classList.remove('on');
+  document.querySelectorAll('.device').forEach(function(x){x.classList.remove('active','selected');});
+  selectedDevice = null;
+  ['nbSource','nbToElec','nbToOut','nbLaw'].forEach(function(id){
+    var el = document.getElementById(id);
+    el.textContent = '—';
+    el.classList.remove('filled');
+  });
+});
+
+/* ---------------- CHALLENGE: multi solar cells ---------------- */
+var cellCount = 1;
+var CAP_PER_CELL = 30;
+var activeDevices = {};
+var cellsRow = document.getElementById('cellsRow');
+var addCellBtn = document.getElementById('addCell');
+var cellCountEl = document.getElementById('cellCount');
+var powerAvailEl = document.getElementById('powerAvail');
+var statusFill = document.getElementById('statusFill');
+var needRow = document.getElementById('needRow');
+var challengeMsg = document.getElementById('challengeMsg');
+
+function totalNeed(){
+  var s = 0;
+  Object.keys(activeDevices).forEach(function(k){ if(activeDevices[k]) s += parseInt(k===undefined?0:document.querySelector('.need-chip[data-name="'+k+'"]').getAttribute('data-cost'),10); });
+  return s;
+}
+
+function recalcChallenge(){
+  var need = 0;
+  var chips = document.querySelectorAll('.need-chip');
+  chips.forEach(function(c){
+    var name = c.getAttribute('data-name');
+    if(activeDevices[name]) need += parseInt(c.getAttribute('data-cost'),10);
+  });
+  var avail = cellCount * CAP_PER_CELL;
+  powerAvailEl.textContent = avail;
+  var pct = Math.min(100, (need/Math.max(avail,1))*100);
+  statusFill.style.width = pct + '%';
+
+  chips.forEach(function(c){
+    var name = c.getAttribute('data-name');
+    c.classList.remove('on','off-power');
+    if(activeDevices[name]){
+      c.classList.add(need <= avail ? 'on' : 'off-power');
+    }
+  });
+
+  if(need === 0){
+    challengeMsg.textContent = 'اضغط على الأجهزة لتشغيلها، وراقب هل تكفي طاقة الخلايا الحالية.';
+  } else if(need <= avail){
+    challengeMsg.textContent = '✅ ممتاز! الطاقة المتوفرة (' + avail + ') تكفي لتشغيل الأجهزة المطلوبة (' + need + ') معًا.';
+  } else {
+    challengeMsg.textContent = '⚠️ الطاقة غير كافية! تحتاج (' + need + ') وحدة، ومتوفر لديك (' + avail + ') فقط. أضف خلية شمسية أخرى ➕.';
+  }
+}
+
+needRow.querySelectorAll('.need-chip').forEach(function(chip){
+  chip.addEventListener('click', function(){
+    var name = chip.getAttribute('data-name');
+    activeDevices[name] = !activeDevices[name];
+    recalcChallenge();
+  });
+});
+
+addCellBtn.addEventListener('click', function(){
+  if(cellCount >= 6){ toast('وصلت للحد الأقصى من الخلايا في هذا النموذج 🔋'); return; }
+  cellCount++;
+  cellCountEl.textContent = cellCount;
+  var chip = document.createElement('div');
+  chip.className = 'cell-chip';
+  cellsRow.insertBefore(chip, addCellBtn);
+  recalcChallenge();
+});
+recalcChallenge();
+
+/* ---------------- CONCLUSION word bank ---------------- */
+document.querySelectorAll('.word').forEach(function(w){
+  w.addEventListener('click', function(){
+    var target = document.getElementById(w.getAttribute('data-target'));
+    target.textContent = w.getAttribute('data-value');
+    w.classList.add('used');
+    var b1 = document.getElementById('blank1').textContent;
+    var b2 = document.getElementById('blank2').textContent;
+    if(b1 !== '؟' && b2 !== '؟'){
+      toast('🌟 صحيح: الطاقة تتحوّل من ' + b1 + ' إلى ' + b2 + '، ولا تفنى!');
+    }
+  });
+});
+
+/* ---------------- QUIZ ---------------- */
+var quizData = [
+  {
+    q: '١. ما مصدر الطاقة الذي تعتمد عليه الخلية الشمسية؟',
+    options: ['الرياح','الشمس','الماء','النار'],
+    correct: 1
+  },
+  {
+    q: '٢. الخلية الشمسية تحوّل الطاقة الضوئية إلى:',
+    options: ['طاقة حرارية','طاقة صوتية','طاقة كهربائية','طاقة كيميائية'],
+    correct: 2
+  },
+  {
+    q: '٣. عند تشغيل مروحة بواسطة خلية شمسية، تتحوّل الطاقة الكهربائية إلى:',
+    options: ['طاقة ضوئية','طاقة حركية','طاقة نووية','لا شيء'],
+    correct: 1
+  },
+  {
+    q: '٤. وفق قانون حفظ الطاقة، الطاقة عند تحوّلها من شكل إلى آخر:',
+    options: ['تفنى تمامًا','تزداد باستمرار','لا تفنى ولا تُستحدَث','تختفي أحيانًا'],
+    correct: 2
+  }
+];
+
+var quizArea = document.getElementById('quizArea');
+var scoreBox = document.getElementById('scoreBox');
+var answered = {};
+
+quizData.forEach(function(item, qi){
+  var card = document.createElement('div');
+  card.className = 'quiz-card';
+  var qEl = document.createElement('div');
+  qEl.className = 'quiz-q';
+  qEl.textContent = item.q;
+  card.appendChild(qEl);
+  var optsWrap = document.createElement('div');
+  optsWrap.className = 'opts';
+  item.options.forEach(function(opt, oi){
+    var b = document.createElement('button');
+    b.className = 'opt';
+    b.textContent = opt;
+    b.addEventListener('click', function(){
+      if(answered[qi] !== undefined) return;
+      answered[qi] = oi;
+      var buttons = optsWrap.querySelectorAll('.opt');
+      buttons.forEach(function(bt, bi){
+        if(bi === item.correct) bt.classList.add('correct');
+        else if(bi === oi) bt.classList.add('wrong');
+      });
+      updateScore();
+    });
+    optsWrap.appendChild(b);
+  });
+  card.appendChild(optsWrap);
+  quizArea.appendChild(card);
+});
+
+function updateScore(){
+  var total = Object.keys(answered).length;
+  var correct = 0;
+  Object.keys(answered).forEach(function(qi){
+    if(answered[qi] === quizData[qi].correct) correct++;
+  });
+  if(total === quizData.length){
+    scoreBox.textContent = '🎉 نتيجتك: ' + correct + ' من ' + quizData.length +
+      (correct === quizData.length ? ' — ممتاز! أتقنت الدرس 🌟' : ' — راجع الدرس مرة أخرى 📖');
+  } else {
+    scoreBox.textContent = 'أجبت عن ' + total + ' من ' + quizData.length + ' أسئلة';
+  }
+}
+</script>
+</body>
+</html>

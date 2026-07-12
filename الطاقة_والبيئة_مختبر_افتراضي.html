@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>الطاقة والبيئة | مختبر افتراضي - الصف الخامس</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-night:#0a1a2b;
+    --bg-night2:#12314a;
+    --bg-day:#eaf4fb;
+    --coal:#3a3532;
+    --oil:#c77f30;
+    --gas:#ff7a3d;
+    --solar:#ffc145;
+    --wind:#4fc3e8;
+    --water:#1aa398;
+    --parchment:#f7f2e7;
+    --ink:#132234;
+    --ink-soft:#3b4a5c;
+    --success:#33b485;
+    --danger:#d9584c;
+    --smoke:#8c8a86;
+    --gold:#e0a63b;
+    --card-radius:22px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:'Tajawal',sans-serif;
+    background:var(--bg-day);
+    color:var(--ink);
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.display{font-family:'Cairo',sans-serif;}
+  ::selection{background:var(--gold);color:#fff;}
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:sticky;top:0;z-index:100;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:12px 26px;
+    background:rgba(10,26,43,0.92);
+    backdrop-filter:blur(8px);
+    color:var(--parchment);
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  nav .brand{font-family:'Cairo',sans-serif;font-weight:900;font-size:1.05rem;display:flex;align-items:center;gap:8px;}
+  nav .brand span.dot{width:10px;height:10px;border-radius:50%;background:var(--solar);box-shadow:0 0 12px var(--solar);}
+  nav ul{list-style:none;display:flex;gap:4px;margin:0;padding:0;flex-wrap:wrap;}
+  nav a{
+    color:var(--parchment);text-decoration:none;font-size:0.85rem;
+    padding:8px 12px;border-radius:999px;transition:.25s;
+    white-space:nowrap;
+  }
+  nav a:hover{background:rgba(255,255,255,0.12);}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    min-height:78vh;
+    background:linear-gradient(180deg,var(--bg-night) 0%, var(--bg-night2) 100%);
+    display:flex;align-items:center;justify-content:center;
+    overflow:hidden;
+    padding:60px 20px 90px;
+    perspective:1200px;
+  }
+  .hero-stars{position:absolute;inset:0;}
+  .star{position:absolute;background:#fff;border-radius:50%;opacity:.7;animation:twinkle 3s infinite ease-in-out;}
+  @keyframes twinkle{0%,100%{opacity:.15}50%{opacity:.9}}
+
+  .hero-stage{
+    position:relative;z-index:2;
+    max-width:1000px;width:100%;
+    display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:40px;
+  }
+  .hero-text{flex:1;min-width:280px;color:var(--parchment);text-align:center;}
+  .eyebrow{
+    display:inline-block;font-family:'Cairo';font-weight:700;font-size:.8rem;
+    letter-spacing:1px;color:var(--bg-night);background:var(--solar);
+    padding:6px 16px;border-radius:999px;margin-bottom:16px;
+  }
+  .hero-text h1{font-size:2.4rem;font-weight:900;line-height:1.35;margin:0 0 14px;}
+  .hero-text p{font-size:1.05rem;color:#c9d8e6;line-height:1.9;max-width:520px;margin:0 auto 22px;}
+  .hero-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+  .btn{
+    font-family:'Cairo';font-weight:700;font-size:.95rem;
+    padding:13px 26px;border-radius:14px;border:none;cursor:pointer;
+    transition:transform .2s, box-shadow .2s;
+  }
+  .btn:active{transform:scale(.96);}
+  .btn-primary{background:var(--solar);color:var(--bg-night);box-shadow:0 8px 22px rgba(255,193,69,.35);}
+  .btn-primary:hover{transform:translateY(-3px);}
+  .btn-ghost{background:transparent;border:2px solid rgba(255,255,255,.35);color:var(--parchment);}
+  .btn-ghost:hover{background:rgba(255,255,255,.1);}
+
+  /* rotating 3D energy orb (signature element) */
+  .orb-wrap{width:280px;height:280px;perspective:900px;flex-shrink:0;}
+  .orb{
+    width:100%;height:100%;position:relative;transform-style:preserve-3d;
+    animation:spin 22s linear infinite;
+  }
+  @keyframes spin{from{transform:rotateY(0deg) rotateX(8deg)}to{transform:rotateY(360deg) rotateX(8deg)}}
+  .orb-core{
+    position:absolute;inset:38px;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #fff7d8, var(--solar) 55%, #b5811e 100%);
+    box-shadow:0 0 60px rgba(255,193,69,.55), inset -14px -14px 30px rgba(0,0,0,.25);
+  }
+  .orb-ring{
+    position:absolute;inset:0;border:2px dashed rgba(255,255,255,.25);border-radius:50%;
+  }
+  .orb-ring.r2{inset:14px;transform:rotateX(70deg);}
+  .orb-ring.r3{inset:14px;transform:rotateY(70deg);}
+  .orb-chip{
+    position:absolute;width:52px;height:52px;border-radius:14px;
+    display:flex;align-items:center;justify-content:center;font-size:1.5rem;
+    background:var(--parchment);box-shadow:0 6px 16px rgba(0,0,0,.35);
+    transform-style:preserve-3d;
+  }
+  .orb-chip.c1{top:0;left:50%;margin-left:-26px;transform:translateZ(130px);background:var(--coal);}
+  .orb-chip.c2{top:50%;right:0;margin-top:-26px;transform:translateZ(130px) rotateY(90deg);background:var(--oil);}
+  .orb-chip.c3{bottom:0;left:50%;margin-left:-26px;transform:translateZ(130px) rotateY(180deg);background:var(--gas);}
+  .orb-chip.c4{top:50%;left:0;margin-top:-26px;transform:translateZ(130px) rotateY(270deg);background:var(--wind);}
+  .orb-chip.c5{top:15%;right:15%;transform:translateZ(130px) rotateX(45deg);background:var(--water);}
+  .orb-chip.c6{bottom:15%;left:15%;transform:translateZ(130px) rotateX(-45deg);background:var(--solar);}
+
+  .hero-hills{position:absolute;bottom:0;left:0;right:0;height:90px;
+    background:linear-gradient(180deg, transparent, rgba(0,0,0,.35));}
+
+  /* ---------- SECTION GENERIC ---------- */
+  section{padding:70px 20px;max-width:1100px;margin:0 auto;}
+  .section-head{text-align:center;max-width:680px;margin:0 auto 42px;}
+  .section-head .eyebrow{background:var(--ink);color:var(--parchment);}
+  .section-head h2{font-size:1.9rem;margin:0 0 10px;color:var(--ink);}
+  .section-head p{color:var(--ink-soft);line-height:1.8;font-size:1rem;}
+
+  .quote-block{
+    background:var(--parchment);border-right:6px solid var(--gold);
+    padding:26px 30px;border-radius:16px;line-height:2;font-size:1.05rem;
+    box-shadow:0 10px 30px rgba(19,34,52,.08);
+  }
+
+  /* ---------- CARD GRID (3D flip) ---------- */
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;margin-top:30px;}
+  .flip-card{perspective:1400px;height:270px;cursor:pointer;}
+  .flip-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .7s cubic-bezier(.4,.2,.2,1);}
+  .flip-card.flipped .flip-inner{transform:rotateY(180deg);}
+  .flip-face{
+    position:absolute;inset:0;backface-visibility:hidden;border-radius:var(--card-radius);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:20px;text-align:center;color:#fff;box-shadow:0 14px 34px rgba(0,0,0,.18);
+  }
+  .flip-front .icon{font-size:3rem;margin-bottom:10px;filter:drop-shadow(0 6px 10px rgba(0,0,0,.25));}
+  .flip-front h3{font-size:1.15rem;margin:0 0 6px;}
+  .flip-front .tag{font-size:.75rem;background:rgba(255,255,255,.25);padding:4px 12px;border-radius:999px;}
+  .flip-back{transform:rotateY(180deg);background:var(--ink);text-align:right;align-items:flex-start;justify-content:center;}
+  .flip-back p{font-size:.9rem;line-height:1.75;margin:4px 0;color:#dbe6f0;}
+  .flip-back .hint{margin-top:auto;font-size:.72rem;color:#8fa3b8;align-self:center;}
+
+  .c-coal .flip-front{background:linear-gradient(160deg,#4a4440,var(--coal));}
+  .c-oil .flip-front{background:linear-gradient(160deg,#e2954a,var(--oil));}
+  .c-gas .flip-front{background:linear-gradient(160deg,#ff9a63,var(--gas));}
+  .c-wind .flip-front{background:linear-gradient(160deg,#8fe0f7,var(--wind));}
+  .c-solar .flip-front{background:linear-gradient(160deg,#ffe08a,var(--solar));color:#4a3a08;}
+  .c-water .flip-front{background:linear-gradient(160deg,#5cd6c8,var(--water));}
+  .badge-nr{background:#5c1f1a;}
+  .badge-r{background:#144d38;}
+
+  /* ---------- LAB ---------- */
+  .lab-wrap{
+    background:linear-gradient(180deg,#0e2337,#0a1a2b);
+    border-radius:28px;padding:38px 24px;color:var(--parchment);
+  }
+  .lab-tabs{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:26px;}
+  .lab-tab{
+    font-family:'Cairo';font-weight:700;font-size:.85rem;padding:9px 18px;
+    border-radius:999px;border:2px solid transparent;cursor:pointer;
+    background:rgba(255,255,255,.08);color:var(--parchment);transition:.2s;
+  }
+  .lab-tab[data-active="true"]{background:var(--solar);color:var(--bg-night);}
+
+  .source-picker{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:26px;}
+  .source-btn{
+    display:flex;flex-direction:column;align-items:center;gap:6px;
+    background:rgba(255,255,255,.06);border:2px solid rgba(255,255,255,.12);
+    padding:12px 16px;border-radius:16px;cursor:pointer;color:var(--parchment);
+    font-family:'Cairo';font-size:.8rem;transition:.2s;min-width:86px;
+  }
+  .source-btn .ic{font-size:1.6rem;}
+  .source-btn[data-active="true"]{border-color:var(--solar);background:rgba(255,193,69,.14);transform:translateY(-3px);}
+
+  .stage{
+    position:relative;min-height:340px;border-radius:20px;overflow:hidden;
+    background:linear-gradient(180deg,#173350 0%, #0d2032 70%, #081420 100%);
+    display:flex;align-items:flex-end;justify-content:center;
+    margin-bottom:22px;
+  }
+  .ground{position:absolute;bottom:0;left:0;right:0;height:70px;background:#0a1a24;}
+  .smog-overlay{position:absolute;inset:0;background:rgba(90,80,70,0);transition:background 1.2s;pointer-events:none;}
+
+  /* fossil plant */
+  .plant{position:relative;display:flex;align-items:flex-end;gap:14px;padding-bottom:70px;z-index:2;}
+  .stack{width:26px;height:150px;background:linear-gradient(180deg,#5a5450,#33302d);border-radius:4px 4px 0 0;position:relative;}
+  .stack::before{content:'';position:absolute;top:-8px;left:-4px;right:-4px;height:12px;background:#242220;border-radius:6px;}
+  .smoke-particle{
+    position:absolute;bottom:150px;left:50%;width:20px;height:20px;border-radius:50%;
+    background:radial-gradient(circle,rgba(200,198,195,.85),rgba(120,118,115,.15));
+    transform:translateX(-50%);opacity:0;
+  }
+  .stack.on .smoke-particle{animation:rise 3.5s ease-in infinite;}
+  @keyframes rise{
+    0%{opacity:0;transform:translate(-50%,0) scale(.4);}
+    15%{opacity:.85;}
+    100%{opacity:0;transform:translate(-50%,-160px) translateX(30px) scale(2.4);}
+  }
+  .drum{width:60px;height:40px;border-radius:8px;background:linear-gradient(160deg,#7a6a52,#4d4130);}
+
+  /* wind turbine */
+  .turbine{position:relative;z-index:2;padding-bottom:70px;}
+  .pole{width:8px;height:170px;background:#dfe7ee;margin:0 auto;border-radius:2px;}
+  .rotor{position:absolute;top:0;left:50%;width:4px;height:4px;background:#fff;border-radius:50%;}
+  .blades{position:absolute;top:-4px;left:50%;transform:translateX(-50%);width:2px;height:2px;
+    animation:rotate 2.4s linear infinite;animation-play-state:paused;}
+  .blades.spin{animation-play-state:running;}
+  .blade{position:absolute;width:6px;height:78px;background:linear-gradient(180deg,#fff,#c8d6e0);
+    border-radius:6px;top:0;left:-2px;transform-origin:top center;}
+  .blade:nth-child(1){transform:rotate(0deg);}
+  .blade:nth-child(2){transform:rotate(120deg);}
+  .blade:nth-child(3){transform:rotate(240deg);}
+  @keyframes rotate{from{transform:translateX(-50%) rotate(0deg)}to{transform:translateX(-50%) rotate(360deg)}}
+
+  /* solar */
+  .solar-scene{position:relative;z-index:2;padding-bottom:70px;display:flex;align-items:flex-end;gap:10px;}
+  .sun{width:70px;height:70px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff7cf,var(--solar));
+    box-shadow:0 0 0 rgba(255,193,69,.4);margin-bottom:60px;}
+  .sun.glow{animation:pulseGlow 1.6s ease-in-out infinite;}
+  @keyframes pulseGlow{0%,100%{box-shadow:0 0 20px 6px rgba(255,193,69,.35)}50%{box-shadow:0 0 45px 18px rgba(255,193,69,.6)}}
+  .panel-rack{width:120px;height:70px;background:#1c2b3a;border:3px solid #35485c;border-radius:6px;
+    display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(3,1fr);gap:2px;padding:4px;transform:rotateX(35deg) rotateZ(0deg);}
+  .cell{background:linear-gradient(160deg,#2a5a86,#173350);border-radius:2px;}
+  .cell.active{background:linear-gradient(160deg,#5fc7ff,#1877b3);box-shadow:0 0 8px rgba(95,199,255,.7);}
+
+  /* water */
+  .dam{position:relative;z-index:2;padding-bottom:70px;width:220px;}
+  .reservoir{height:70px;background:linear-gradient(180deg,#2196a8,#0e5f6b);border-radius:8px 8px 0 0;position:relative;overflow:hidden;}
+  .wave{position:absolute;bottom:0;left:-50%;width:200%;height:14px;
+    background:repeating-linear-gradient(90deg,rgba(255,255,255,.35) 0 20px, transparent 20px 40px);
+    animation:waveMove 2s linear infinite;animation-play-state:paused;}
+  .wave.run{animation-play-state:running;}
+  @keyframes waveMove{from{transform:translateX(0)}to{transform:translateX(50%)}}
+  .fall{width:14px;height:0;background:linear-gradient(180deg,#bfe9f2,#2196a8);margin:0 auto;transition:height .4s;}
+  .turbine-house{width:60px;height:26px;background:#33455a;margin:0 auto;border-radius:0 0 6px 6px;}
+
+  .lab-readouts{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:20px;}
+  .readout{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:14px 16px;}
+  .readout .label{font-size:.75rem;color:#a9bccf;margin-bottom:6px;}
+  .readout .value{font-family:'Cairo';font-weight:900;font-size:1.3rem;}
+  .bar-track{background:rgba(255,255,255,.12);border-radius:999px;height:10px;overflow:hidden;margin-top:8px;}
+  .bar-fill{height:100%;border-radius:999px;transition:width .3s linear;}
+
+  .lab-controls{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:18px;}
+  .conclusion-box{
+    background:rgba(255,193,69,.1);border:1.5px dashed var(--solar);border-radius:16px;
+    padding:18px 20px;font-size:.95rem;line-height:1.9;display:none;
+  }
+  .conclusion-box.show{display:block;animation:fadeUp .5s ease;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+  /* ---------- CLASSIFY GAME ---------- */
+  .classify-wrap{margin-top:50px;}
+  .pool{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:26px;min-height:70px;}
+  .pool-chip{
+    font-family:'Cairo';font-weight:700;font-size:.9rem;color:#fff;
+    padding:12px 18px;border-radius:14px;cursor:pointer;user-select:none;
+    box-shadow:0 8px 18px rgba(0,0,0,.15);transition:.2s;display:flex;align-items:center;gap:8px;
+  }
+  .pool-chip:hover{transform:translateY(-3px);}
+  .pool-chip[data-selected="true"]{outline:3px solid var(--ink);outline-offset:2px;}
+  .bins{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  @media(max-width:600px){.bins{grid-template-columns:1fr;}}
+  .bin{
+    min-height:160px;border-radius:20px;padding:18px;
+    border:3px dashed #c8d6e0;background:#fff;
+  }
+  .bin h4{margin:0 0 12px;font-family:'Cairo';text-align:center;font-size:1rem;}
+  .bin.renew{border-color:var(--success);}
+  .bin.nonrenew{border-color:var(--danger);}
+  .bin-items{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;}
+  .bin-item{padding:8px 14px;border-radius:10px;color:#fff;font-family:'Cairo';font-size:.82rem;position:relative;}
+  .bin-item.wrong{outline:3px solid var(--danger);}
+  .bin-item.right{outline:3px solid var(--success);}
+  .score-line{text-align:center;margin-top:16px;font-family:'Cairo';font-weight:700;color:var(--ink-soft);}
+
+  /* ---------- WORKSHEET ---------- */
+  .worksheet{display:flex;flex-direction:column;gap:26px;margin-top:20px;}
+  .q-card{background:#fff;border-radius:18px;padding:22px 24px;box-shadow:0 10px 26px rgba(19,34,52,.08);}
+  .q-card .qnum{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:30px;height:30px;border-radius:50%;background:var(--ink);color:#fff;
+    font-family:'Cairo';font-weight:700;font-size:.85rem;margin-left:10px;
+  }
+  .q-card p.qtext{display:inline;font-weight:600;font-size:1.02rem;}
+  .q-card textarea{
+    width:100%;margin-top:12px;border-radius:12px;border:1.5px solid #d8e0e8;
+    padding:12px 14px;font-family:'Tajawal';font-size:.95rem;resize:vertical;min-height:60px;
+  }
+  .q-card textarea:focus{outline:none;border-color:var(--gold);}
+  .reveal-btn{
+    margin-top:10px;font-family:'Cairo';font-size:.8rem;font-weight:700;
+    background:var(--ink);color:#fff;border:none;padding:8px 16px;border-radius:10px;cursor:pointer;
+  }
+  .model-answer{
+    display:none;margin-top:12px;background:#f2f8f5;border-right:4px solid var(--success);
+    padding:12px 16px;border-radius:10px;font-size:.9rem;line-height:1.8;color:#1f4436;
+  }
+  .model-answer.show{display:block;}
+
+  .fact-box{
+    display:flex;gap:16px;align-items:flex-start;background:#fff6e6;
+    border:1.5px solid var(--gold);border-radius:18px;padding:22px;margin-top:34px;
+  }
+  .fact-box .ic{font-size:2rem;}
+  .fact-box p{margin:0;line-height:2;font-size:.95rem;}
+  .fact-box b.good{color:var(--success);}
+  .fact-box b.bad{color:var(--danger);}
+
+  /* ---------- QUIZ ---------- */
+  .quiz-card{background:#fff;border-radius:18px;padding:22px 24px;margin-bottom:18px;box-shadow:0 10px 26px rgba(19,34,52,.08);}
+  .quiz-q{font-family:'Cairo';font-weight:700;margin-bottom:14px;}
+  .quiz-opts{display:flex;flex-direction:column;gap:10px;}
+  .opt{
+    padding:12px 16px;border-radius:12px;border:1.5px solid #dfe6ec;cursor:pointer;transition:.2s;
+    font-size:.95rem;
+  }
+  .opt:hover{border-color:var(--gold);}
+  .opt.correct{background:#e8f8f0;border-color:var(--success);font-weight:700;}
+  .opt.incorrect{background:#fdecea;border-color:var(--danger);}
+  #quizResult{text-align:center;font-family:'Cairo';font-weight:900;font-size:1.3rem;margin-top:20px;color:var(--ink);}
+
+  footer{
+    background:var(--bg-night);color:#8fa3b8;text-align:center;padding:30px 20px;font-size:.85rem;
+  }
+  .to-top{
+    position:fixed;bottom:22px;left:22px;width:46px;height:46px;border-radius:50%;
+    background:var(--solar);color:var(--bg-night);border:none;font-size:1.2rem;cursor:pointer;
+    box-shadow:0 8px 20px rgba(0,0,0,.25);z-index:50;
+  }
+  @media(max-width:700px){
+    .hero-text h1{font-size:1.7rem;}
+    section{padding:50px 16px;}
+    .orb-wrap{width:210px;height:210px;}
+  }
+
+  /* ══ RESPONSIVE MOBILE & TABLET ══ */
+  @media (max-width: 768px) {
+    body { padding: 8px !important; font-size: 15px !important; overflow-x: hidden !important; }
+    .container, [class*="container"], [class*="wrapper"] { padding: 8px !important; max-width: 100% !important; }
+    canvas { width: 100% !important; height: auto !important; display: block !important; touch-action: none; max-width: 100% !important; }
+    svg { max-width: 100% !important; height: auto !important; }
+    h1 { font-size: clamp(18px,5vw,32px) !important; }
+    h2 { font-size: clamp(15px,4vw,26px) !important; }
+    h3 { font-size: clamp(13px,3.5vw,20px) !important; }
+    [class*="grid"] { grid-template-columns: 1fr !important; }
+    [class*="flex"] { flex-wrap: wrap !important; }
+    input[type="range"] { width: 100% !important; min-height: 36px; }
+    input[type="number"], input[type="text"], select, textarea {
+      font-size: 16px !important; width: 100% !important; box-sizing: border-box; padding: 8px !important; }
+    button { min-height: 44px !important; font-size: 14px !important; touch-action: manipulation; padding: 10px 14px !important; }
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 13px !important; }
+    th, td { padding: 6px 4px !important; }
+    header { padding: 10px 12px !important; }
+    .controls, [class*="controls"] { flex-direction: column !important; gap: 8px !important; }
+    .lab-window, [class*="lab-window"] { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+  }
+  @media (max-width: 480px) {
+    body { padding: 4px !important; }
+    button { width: 100% !important; }
+  }
+  /* ══ END RESPONSIVE ══ */
+</style>
+</head>
+<body>
+<style>
+.vlab-back{position:fixed;top:10px;left:10px;z-index:99999;
+background:rgba(10,22,40,0.93);border:1px solid rgba(0,200,150,0.4);
+border-radius:22px;padding:8px 16px;display:inline-flex;align-items:center;gap:7px;
+color:#00C896;font-family:Tajawal,Cairo,Arial,sans-serif;font-size:13px;font-weight:700;
+text-decoration:none;backdrop-filter:blur(8px);box-shadow:0 4px 18px rgba(0,0,0,0.3);
+transition:background 0.2s;}
+.vlab-back:hover{background:rgba(0,200,150,0.18);}
+</style>
+<a href="../grade5.html" class="vlab-back">&#8594; العودة للصف</a>
+
+
+<nav>
+  <div class="brand"><span class="dot"></span> الطاقة والبيئة</div>
+  <ul>
+    <li><a href="#intro">مقدمة</a></li>
+    <li><a href="#nonrenew">غير متجددة</a></li>
+    <li><a href="#renew">متجددة</a></li>
+    <li><a href="#lab">المختبر الافتراضي</a></li>
+    <li><a href="#classify">صنّف المصادر</a></li>
+    <li><a href="#worksheet">ورقة العمل</a></li>
+    <li><a href="#quiz">اختبر نفسك</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="hero-stars" id="stars"></div>
+  <div class="hero-stage">
+    <div class="hero-text">
+      <span class="eyebrow">مادة العلوم والحياة · الصف الخامس · فلسطين</span>
+      <h1>الدرس الثالث: الطاقة والبيئة<br>أنواع مصادر الطاقة</h1>
+      <p>هل تعلم أن كل جهاز نستخدمه، وكل سيارة تسير، وكل مصباح يُضاء، يحتاج إلى طاقة؟ في هذا الدرس سنكتشف من أين تأتي هذه الطاقة، ولماذا بعض مصادرها يضرّ بيئتنا بينما البعض الآخر صديق لها.</p>
+      <div class="hero-cta">
+        <button class="btn btn-primary" onclick="document.getElementById('intro').scrollIntoView()">ابدأ الدرس</button>
+        <button class="btn btn-ghost" onclick="document.getElementById('lab').scrollIntoView()">جرّب المختبر الافتراضي 🧪</button>
+      </div>
+    </div>
+    <div class="orb-wrap">
+      <div class="orb">
+        <div class="orb-ring"></div>
+        <div class="orb-ring r2"></div>
+        <div class="orb-ring r3"></div>
+        <div class="orb-core"></div>
+        <div class="orb-chip c1">⛏️</div>
+        <div class="orb-chip c2">🛢️</div>
+        <div class="orb-chip c3">🔥</div>
+        <div class="orb-chip c4">🌬️</div>
+        <div class="orb-chip c5">💧</div>
+        <div class="orb-chip c6">☀️</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-hills"></div>
+</section>
+
+<!-- INTRO -->
+<section id="intro">
+  <div class="section-head">
+    <span class="eyebrow">النص القرائي</span>
+    <h2>الطاقة التي نستخدمها اليوم</h2>
+    <p>اقرأ النص التالي جيدًا، فهو الأساس الذي سنبني عليه تجربتنا في المختبر الافتراضي.</p>
+  </div>
+  <div class="quote-block">
+    الطاقة التي نستخدمها اليوم، والتي تعتمد بشكل مُفرط على الوقود، هي السبب الرئيس لتلوّث البيئة، وتُسبّب الضرر للكائنات الحيّة، وهي قابلة للنَّفاد.
+    وبما أنّ عدد سكّان العالم في ازدياد مستمر، سيزداد الطّلب على الطّاقة، إذن لا بدّ من البحث عن مصادر طاقة صديقة للبيئة وغير قابلة للنَّفاد (متجدّدة).
+  </div>
+</section>
+
+<!-- NON RENEWABLE -->
+<section id="nonrenew">
+  <div class="section-head">
+    <span class="eyebrow">القسم الأول</span>
+    <h2>مصادر الطاقة غير المتجددة</h2>
+    <p>مصادر مصنوعة من بقايا كائنات عاشت قبل ملايين السنين، تُنتج طاقة كبيرة لكنّها تنفد يومًا ما وتلوّث الهواء عند احتراقها. اضغط على البطاقة لقلبها ومعرفة المزيد.</p>
+  </div>
+  <div class="grid">
+    <div class="flip-card c-coal" onclick="this.classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-face flip-front">
+          <div class="icon">⛏️</div>
+          <h3>الفحم الحجري</h3>
+          <span class="tag badge-nr">غير متجدد</span>
+        </div>
+        <div class="flip-face flip-back">
+          <p>• صخر أسود يتكوّن من بقايا نباتات قديمة مدفونة تحت الأرض ملايين السنين.</p>
+          <p>• يُحرق لإنتاج الكهرباء، وينتج عن حرقه دخان كثيف وغازات ضارة.</p>
+          <p>• كمّيته على الأرض محدودة، وسينفد يومًا ما.</p>
+          <span class="hint">اضغط لإعادة البطاقة</span>
+        </div>
+      </div>
+    </div>
+    <div class="flip-card c-oil" onclick="this.classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-face flip-front">
+          <div class="icon">🛢️</div>
+          <h3>النفط</h3>
+          <span class="tag badge-nr">غير متجدد</span>
+        </div>
+        <div class="flip-face flip-back">
+          <p>• سائل أسود يُستخرج من باطن الأرض أو تحت قاع البحار عبر محطات تكرير خاصة.</p>
+          <p>• يُستخدم وقودًا للسيارات والطائرات وفي صناعة البلاستيك.</p>
+          <p>• الانسكابات النفطية تلوّث مياه البحار وتؤذي الكائنات البحرية.</p>
+          <span class="hint">اضغط لإعادة البطاقة</span>
+        </div>
+      </div>
+    </div>
+    <div class="flip-card c-gas" onclick="this.classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-face flip-front">
+          <div class="icon">🔥</div>
+          <h3>الغاز الطبيعي</h3>
+          <span class="tag badge-nr">غير متجدد</span>
+        </div>
+        <div class="flip-face flip-back">
+          <p>• غاز يُستخرج من الأرض عبر محطات إنتاج خاصة، وغالبًا يرافق حقول النفط.</p>
+          <p>• يُستخدم في الطهي والتدفئة وتوليد الكهرباء.</p>
+          <p>• عند إحراقه يُطلق غازات تسهم في تلوّث الهواء والاحتباس الحراري.</p>
+          <span class="hint">اضغط لإعادة البطاقة</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RENEWABLE -->
+<section id="renew">
+  <div class="section-head">
+    <span class="eyebrow">القسم الثاني</span>
+    <h2>مصادر الطاقة المتجددة (الصديقة للبيئة)</h2>
+    <p>مصادر متوفرة في الطبيعة باستمرار ولا تنفد، ولا تنتج ملوّثات تضرّ الهواء أو الماء.</p>
+  </div>
+  <div class="grid">
+    <div class="flip-card c-wind" onclick="this.classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-face flip-front">
+          <div class="icon">🌬️</div>
+          <h3>الرياح</h3>
+          <span class="tag badge-r">متجدد</span>
+        </div>
+        <div class="flip-face flip-back">
+          <p>• تُحرّك الرياح شفرات التوربينات الكبيرة، فتُنتج كهرباء نظيفة.</p>
+          <p>• لا تنفد أبدًا ولا تنتج أي دخان أو تلوّث.</p>
+          <p>• تُبنى مزارع الرياح في المناطق المكشوفة والمرتفعة.</p>
+          <span class="hint">اضغط لإعادة البطاقة</span>
+        </div>
+      </div>
+    </div>
+    <div class="flip-card c-solar" onclick="this.classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-face flip-front">
+          <div class="icon">☀️</div>
+          <h3>الشمس</h3>
+          <span class="tag badge-r">متجدد</span>
+        </div>
+        <div class="flip-face flip-back">
+          <p>• تحوّل الألواح الشمسية ضوء الشمس مباشرة إلى كهرباء.</p>
+          <p>• مصدر لا ينفد طالما بقيت الشمس مشرقة، ولا يلوّث البيئة إطلاقًا.</p>
+          <p>• تُستخدم في تسخين المياه وتشغيل الأجهزة المنزلية أيضًا.</p>
+          <span class="hint">اضغط لإعادة البطاقة</span>
+        </div>
+      </div>
+    </div>
+    <div class="flip-card c-water" onclick="this.classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-face flip-front">
+          <div class="icon">💧</div>
+          <h3>المياه الجارية</h3>
+          <span class="tag badge-r">متجدد</span>
+        </div>
+        <div class="flip-face flip-back">
+          <p>• اندفاع المياه من ارتفاع عالٍ (كما في السدود) يُدير توربينات لتوليد الكهرباء.</p>
+          <p>• دورة الماء في الطبيعة تجعله مصدرًا لا ينضب.</p>
+          <p>• لا ينتج أي انبعاثات ضارة أثناء توليد الطاقة.</p>
+          <span class="hint">اضغط لإعادة البطاقة</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="fact-box">
+    <div class="ic">💡</div>
+    <p>
+      تُعدّ <b class="good">الشمس مصدرًا للطاقة المتجدّدة</b> لأنّها لا تَنْفَد وغير مُلوِّثة للبيئة، بينما يُعدّ
+      <b class="bad">الفحم مصدرًا للطاقة غير المتجدّدة</b> لأنّه يَنْفَد ويُلوِّث البيئة.
+    </p>
+  </div>
+</section>
+
+<!-- LAB -->
+<section id="lab">
+  <div class="section-head">
+    <span class="eyebrow">نشاط عملي</span>
+    <h2>المختبر الافتراضي: قارِن بين مصدرَي طاقة</h2>
+    <p>اختر مصدر طاقة، ثم اضغط "شغّل المحطة" وراقب ماذا يحدث للمخزون وللبيئة. سجّل ملاحظاتك ثم قارن بين مصدرين مختلفين لتصل إلى استنتاجك الخاص.</p>
+  </div>
+
+  <div class="lab-wrap">
+    <div class="source-picker" id="sourcePicker">
+      <div class="source-btn" data-src="coal" data-active="true"><span class="ic">⛏️</span>فحم حجري</div>
+      <div class="source-btn" data-src="oil"><span class="ic">🛢️</span>نفط</div>
+      <div class="source-btn" data-src="wind"><span class="ic">🌬️</span>رياح</div>
+      <div class="source-btn" data-src="solar"><span class="ic">☀️</span>شمس</div>
+      <div class="source-btn" data-src="water"><span class="ic">💧</span>مياه جارية</div>
+    </div>
+
+    <div class="stage" id="stage">
+      <div class="smog-overlay" id="smog"></div>
+      <div class="ground"></div>
+
+      <!-- fossil (coal/oil) -->
+      <div class="plant" id="scene-fossil">
+        <div class="drum"></div>
+        <div class="stack" id="stack1">
+          <div class="smoke-particle" style="animation-delay:0s"></div>
+          <div class="smoke-particle" style="animation-delay:1.1s"></div>
+          <div class="smoke-particle" style="animation-delay:2.2s"></div>
+        </div>
+        <div class="stack" id="stack2" style="height:110px;">
+          <div class="smoke-particle" style="animation-delay:.6s"></div>
+          <div class="smoke-particle" style="animation-delay:1.7s"></div>
+        </div>
+      </div>
+
+      <!-- wind -->
+      <div class="turbine" id="scene-wind" style="display:none;">
+        <div class="pole">
+          <div class="blades" id="blades">
+            <div class="blade"></div><div class="blade"></div><div class="blade"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- solar -->
+      <div class="solar-scene" id="scene-solar" style="display:none;">
+        <div class="sun" id="sun"></div>
+        <div class="panel-rack" id="panelRack">
+          <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+          <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+          <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+        </div>
+      </div>
+
+      <!-- water -->
+      <div class="dam" id="scene-water" style="display:none;">
+        <div class="reservoir"><div class="wave" id="wave"></div></div>
+        <div class="fall" id="fall"></div>
+        <div class="turbine-house"></div>
+      </div>
+    </div>
+
+    <div class="lab-readouts">
+      <div class="readout">
+        <div class="label">⚡ الطاقة المُنتجة</div>
+        <div class="value" id="energyOut">0 وحدة</div>
+      </div>
+      <div class="readout">
+        <div class="label">🗄️ المخزون المتبقّي</div>
+        <div class="value" id="stockLabel">100%</div>
+        <div class="bar-track"><div class="bar-fill" id="stockBar" style="width:100%;background:var(--gold);"></div></div>
+      </div>
+      <div class="readout">
+        <div class="label">🌫️ نسبة تلوّث الهواء</div>
+        <div class="value" id="pollutionLabel">0%</div>
+        <div class="bar-track"><div class="bar-fill" id="pollutionBar" style="width:0%;background:var(--danger);"></div></div>
+      </div>
+    </div>
+
+    <div class="lab-controls">
+      <button class="btn btn-primary" id="runBtn" onclick="runSimulation()">▶️ شغّل المحطة</button>
+      <button class="btn btn-ghost" onclick="resetSimulation()">↺ أعد التجربة</button>
+    </div>
+
+    <div class="conclusion-box" id="conclusionBox"></div>
+  </div>
+</section>
+
+<!-- CLASSIFY GAME -->
+<section id="classify" class="classify-wrap">
+  <div class="section-head">
+    <span class="eyebrow">نشاط تصنيف</span>
+    <h2>صنّف مصادر الطاقة</h2>
+    <p>اضغط على أحد المصادر، ثم اضغط على الصندوق المناسب (متجدّدة / غير متجدّدة) لوضعه فيه.</p>
+  </div>
+
+  <div class="pool" id="pool">
+    <div class="pool-chip" style="background:var(--coal)" data-key="coal" data-type="nonrenew">⛏️ فحم حجري</div>
+    <div class="pool-chip" style="background:var(--oil)" data-key="oil" data-type="nonrenew">🛢️ نفط</div>
+    <div class="pool-chip" style="background:var(--gas)" data-key="gas" data-type="nonrenew">🔥 غاز طبيعي</div>
+    <div class="pool-chip" style="background:var(--wind)" data-key="wind" data-type="renew">🌬️ رياح</div>
+    <div class="pool-chip" style="background:var(--solar);color:#4a3a08" data-key="solar" data-type="renew">☀️ شمس</div>
+    <div class="pool-chip" style="background:var(--water)" data-key="water" data-type="renew">💧 مياه جارية</div>
+  </div>
+
+  <div class="bins">
+    <div class="bin renew" data-bin="renew">
+      <h4>🌱 مصادر متجدّدة</h4>
+      <div class="bin-items" id="binRenew"></div>
+    </div>
+    <div class="bin nonrenew" data-bin="nonrenew">
+      <h4>🛢️ مصادر غير متجدّدة</h4>
+      <div class="bin-items" id="binNonrenew"></div>
+    </div>
+  </div>
+  <div class="score-line" id="scoreLine">النتيجة: 0 / 6</div>
+</section>
+
+<!-- WORKSHEET -->
+<section id="worksheet">
+  <div class="section-head">
+    <span class="eyebrow">ورقة عمل تفاعلية</span>
+    <h2>أجب عن الأسئلة التالية</h2>
+    <p>اكتب إجابتك في المكان المخصص، ثم اضغط "أظهر إجابة نموذجية" للمقارنة.</p>
+  </div>
+  <div class="worksheet" id="worksheetList"></div>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz">
+  <div class="section-head">
+    <span class="eyebrow">تقييم ذاتي</span>
+    <h2>اختبر نفسك</h2>
+    <p>اختر الإجابة الصحيحة لكل سؤال.</p>
+  </div>
+  <div id="quizList"></div>
+  <div id="quizResult"></div>
+</section>
+
+<footer>
+  مادة العلوم والحياة – الصف الخامس – فلسطين · الدرس الثالث: الطاقة والبيئة · صُمِّم كأداة تعلّم تفاعلية 🌍
+</footer>
+
+<button class="to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+/* ---------- stars ---------- */
+const starsWrap=document.getElementById('stars');
+for(let i=0;i<60;i++){
+  const s=document.createElement('div');
+  s.className='star';
+  s.style.width=s.style.height=(Math.random()*2+1)+'px';
+  s.style.top=Math.random()*80+'%';
+  s.style.left=Math.random()*100+'%';
+  s.style.animationDelay=(Math.random()*3)+'s';
+  starsWrap.appendChild(s);
+}
+
+/* ---------- LAB SIMULATION ---------- */
+const sourceData={
+  coal:{name:'الفحم الحجري',type:'nonrenew',energyRate:6,stockRate:9,pollutionRate:8,scene:'fossil'},
+  oil:{name:'النفط',type:'nonrenew',energyRate:7,stockRate:8,pollutionRate:7,scene:'fossil'},
+  wind:{name:'الرياح',type:'renew',energyRate:5,scene:'wind'},
+  solar:{name:'الشمس',type:'renew',energyRate:4,scene:'solar'},
+  water:{name:'المياه الجارية',type:'renew',energyRate:6,scene:'water'}
+};
+let currentSource='coal';
+let simTimer=null;
+let energy=0, stock=100, pollution=0;
+
+const stageScenes=['scene-fossil','scene-wind','scene-solar','scene-water'];
+function showScene(key){
+  const map={coal:'scene-fossil',oil:'scene-fossil',wind:'scene-wind',solar:'scene-solar',water:'scene-water'};
+  stageScenes.forEach(id=>document.getElementById(id).style.display='none');
+  document.getElementById(map[key]).style.display='flex';
+}
+
+document.getElementById('sourcePicker').addEventListener('click',e=>{
+  const btn=e.target.closest('.source-btn');
+  if(!btn) return;
+  resetSimulation();
+  document.querySelectorAll('.source-btn').forEach(b=>b.dataset.active='false');
+  btn.dataset.active='true';
+  currentSource=btn.dataset.src;
+  showScene(currentSource);
+});
+showScene('coal');
+
+function runSimulation(){
+  if(simTimer) return;
+  document.getElementById('runBtn').textContent='⏸️ قيد التشغيل...';
+  const data=sourceData[currentSource];
+  const isFossil=data.type==='nonrenew';
+
+  // start visuals
+  if(isFossil){
+    document.getElementById('stack1').classList.add('on');
+    document.getElementById('stack2').classList.add('on');
+  } else if(currentSource==='wind'){
+    document.getElementById('blades').classList.add('spin');
+  } else if(currentSource==='solar'){
+    document.getElementById('sun').classList.add('glow');
+    document.querySelectorAll('#panelRack .cell').forEach(c=>c.classList.add('active'));
+  } else if(currentSource==='water'){
+    document.getElementById('wave').classList.add('run');
+    document.getElementById('fall').style.height='170px';
+  }
+
+  simTimer=setInterval(()=>{
+    energy+=data.energyRate;
+    document.getElementById('energyOut').textContent=energy+' وحدة';
+
+    if(isFossil){
+      stock=Math.max(0,stock-data.stockRate);
+      pollution=Math.min(100,pollution+data.pollutionRate);
+      document.getElementById('stockLabel').textContent=stock+'%';
+      document.getElementById('stockBar').style.width=stock+'%';
+      document.getElementById('pollutionLabel').textContent=pollution+'%';
+      document.getElementById('pollutionBar').style.width=pollution+'%';
+      document.getElementById('smog').style.background='rgba(90,80,70,'+(pollution/220)+')';
+      if(stock<=0){
+        endSimulation(true);
+      }
+    } else {
+      document.getElementById('stockLabel').textContent='∞ لا ينفد';
+      document.getElementById('stockBar').style.width='100%';
+      document.getElementById('stockBar').style.background='var(--success)';
+      document.getElementById('pollutionLabel').textContent='0% نظيف';
+      document.getElementById('pollutionBar').style.width='4%';
+      document.getElementById('pollutionBar').style.background='var(--success)';
+      if(energy>=data.energyRate*10){
+        endSimulation(false);
+      }
+    }
+  },400);
+}
+
+function endSimulation(fossilRanOut){
+  clearInterval(simTimer);
+  simTimer=null;
+  document.getElementById('runBtn').textContent='▶️ شغّل المحطة';
+  const box=document.getElementById('conclusionBox');
+  const data=sourceData[currentSource];
+  if(fossilRanOut){
+    box.innerHTML='🔎 <b>الاستنتاج:</b> نفد مخزون "'+data.name+'" تمامًا بعد فترة قصيرة من الاستخدام، وارتفعت نسبة تلوّث الهواء إلى '+pollution+'%. هذا يوضّح أنّ الوقود الأحفوري <b>مصدر غير متجدّد وملوِّث للبيئة</b>.';
+  } else {
+    box.innerHTML='🔎 <b>الاستنتاج:</b> استمرّت محطة "'+data.name+'" في إنتاج الطاقة دون أن ينفد المصدر، ودون أي تلوّث للهواء. هذا يوضّح أنّ '+data.name+' <b>مصدر طاقة متجدّد وصديق للبيئة</b>.';
+  }
+  box.classList.add('show');
+}
+
+function resetSimulation(){
+  clearInterval(simTimer);
+  simTimer=null;
+  energy=0;stock=100;pollution=0;
+  document.getElementById('runBtn').textContent='▶️ شغّل المحطة';
+  document.getElementById('energyOut').textContent='0 وحدة';
+  document.getElementById('stockLabel').textContent='100%';
+  document.getElementById('stockBar').style.width='100%';
+  document.getElementById('stockBar').style.background='var(--gold)';
+  document.getElementById('pollutionLabel').textContent='0%';
+  document.getElementById('pollutionBar').style.width='0%';
+  document.getElementById('pollutionBar').style.background='var(--danger)';
+  document.getElementById('smog').style.background='rgba(90,80,70,0)';
+  document.getElementById('conclusionBox').classList.remove('show');
+  document.getElementById('conclusionBox').innerHTML='';
+
+  document.getElementById('stack1').classList.remove('on');
+  document.getElementById('stack2').classList.remove('on');
+  document.getElementById('blades').classList.remove('spin');
+  document.getElementById('sun').classList.remove('glow');
+  document.querySelectorAll('#panelRack .cell').forEach(c=>c.classList.remove('active'));
+  document.getElementById('wave').classList.remove('run');
+  document.getElementById('fall').style.height='0';
+}
+
+/* ---------- CLASSIFY GAME ---------- */
+let selectedChip=null;
+const placed={};
+document.getElementById('pool').addEventListener('click',e=>{
+  const chip=e.target.closest('.pool-chip');
+  if(!chip || chip.dataset.placed) return;
+  document.querySelectorAll('.pool-chip').forEach(c=>c.dataset.selected='false');
+  chip.dataset.selected='true';
+  selectedChip=chip;
+});
+
+document.querySelectorAll('.bin').forEach(bin=>{
+  bin.addEventListener('click',()=>{
+    if(!selectedChip) return;
+    const key=selectedChip.dataset.key;
+    const type=selectedChip.dataset.type;
+    const binType=bin.dataset.bin;
+    const targetList=bin.querySelector('.bin-items');
+    const item=document.createElement('div');
+    item.className='bin-item '+(type===binType?'right':'wrong');
+    item.style.background=selectedChip.style.background;
+    item.style.color=selectedChip.style.color||'#fff';
+    item.textContent=selectedChip.textContent+(type===binType?' ✓':' ✗');
+    targetList.appendChild(item);
+
+    selectedChip.style.display='none';
+    selectedChip.dataset.placed='true';
+    placed[key]=(type===binType);
+    selectedChip=null;
+    updateScore();
+  });
+});
+
+function updateScore(){
+  const total=Object.keys(placed).length;
+  const correct=Object.values(placed).filter(v=>v).length;
+  document.getElementById('scoreLine').textContent='النتيجة: '+correct+' / 6  ('+total+' من 6 مصنّفة)';
+}
+
+/* ---------- WORKSHEET QUESTIONS ---------- */
+const worksheetData=[
+  {
+    q:'اُكتب مصادر الطاقة الموضّحة في مجموعة الصور الأولى.',
+    a:'الفحم الحجري، النفط، الغاز الطبيعي.'
+  },
+  {
+    q:'وُصف النّص السّابق الوقود بأنّه (قابل للنّفاد). ناقش وزملاءك هذا الوصف.',
+    a:'هذه المصادر تكوّنت عبر ملايين السنين من بقايا كائنات حية، وكمّيتها في باطن الأرض محدودة، فكلّما استخدمناها أكثر اقترب نفادها ولن تتجدّد في وقت قصير.'
+  },
+  {
+    q:'اُكتب بعض أشكال التلوّث الناتجة عن الوقود.',
+    a:'تلوّث الهواء بالغازات والدخان الناتج عن الاحتراق، وتلوّث المياه بالانسكابات النفطية، وتلوّث التربة أحيانًا.'
+  },
+  {
+    q:'ما الأسباب التي دفعت للبحث عن مصادر طاقة بديلة عن الوقود؟',
+    a:'لأنّ الوقود مصدر ملوّث للبيئة وقابل للنّفاد، ولأنّ عدد سكان العالم في ازدياد مستمر مما يزيد الطلب على الطاقة، لذلك لا بد من مصادر متجددة وصديقة للبيئة.'
+  },
+  {
+    q:'ورد في النص "مصادر طاقة صديقة للبيئة". ناقش وزملاءك هذه العبارة.',
+    a:'تعني مصادر لا تُطلق ملوّثات عند استخدامها، مثل الشمس والرياح والمياه الجارية، فهي لا تضرّ الهواء أو الماء أو الكائنات الحية.'
+  },
+  {
+    q:'اُكتب مصادر الطاقة الصديقة للبيئة الموضّحة في مجموعة الصور الثانية.',
+    a:'الرياح، الشمس، المياه الجارية.'
+  }
+];
+
+const wsList=document.getElementById('worksheetList');
+worksheetData.forEach((item,i)=>{
+  const card=document.createElement('div');
+  card.className='q-card';
+  card.innerHTML=`
+    <span class="qnum">${i+1}</span><p class="qtext">${item.q}</p>
+    <textarea placeholder="اكتب إجابتك هنا..."></textarea>
+    <button class="reveal-btn">أظهر إجابة نموذجية</button>
+    <div class="model-answer">${item.a}</div>
+  `;
+  card.querySelector('.reveal-btn').addEventListener('click',function(){
+    const ans=card.querySelector('.model-answer');
+    ans.classList.toggle('show');
+    this.textContent=ans.classList.contains('show')?'إخفاء الإجابة':'أظهر إجابة نموذجية';
+  });
+  wsList.appendChild(card);
+});
+
+/* ---------- QUIZ ---------- */
+const quizData=[
+  {q:'أي مما يلي يُعدّ مصدر طاقة متجدّدًا؟',opts:['الفحم الحجري','النفط','الشمس','الغاز الطبيعي'],correct:2},
+  {q:'لماذا يُعدّ الفحم مصدر طاقة غير متجدّد؟',opts:['لأنّه رخيص الثمن','لأنّه ينفد ويلوّث البيئة','لأنّه لا يُستخرج من الأرض','لأنّه لا يُستخدم في الصناعة'],correct:1},
+  {q:'ما الذي يحرّك شفرات توربينات طاقة الرياح؟',opts:['الماء','الشمس','الرياح','الفحم'],correct:2},
+  {q:'أين تُستخرج معظم كميات النفط والغاز الطبيعي؟',opts:['من قمم الجبال','من باطن الأرض أو تحت البحار','من الغابات','من الغيوم'],correct:1},
+  {q:'ما سبب ازدياد الحاجة إلى مصادر طاقة بديلة؟',opts:['قلّة عدد السكان','رخص أسعار الوقود','تلوّث البيئة ونفاد الوقود مع ازدياد عدد السكان','عدم توفر الكهرباء أصلًا'],correct:2}
+];
+let quizScore=0;
+let answeredCount=0;
+const quizList=document.getElementById('quizList');
+quizData.forEach((item,qi)=>{
+  const card=document.createElement('div');
+  card.className='quiz-card';
+  card.innerHTML=`<div class="quiz-q">${qi+1}. ${item.q}</div><div class="quiz-opts"></div>`;
+  const optsWrap=card.querySelector('.quiz-opts');
+  item.opts.forEach((opt,oi)=>{
+    const optEl=document.createElement('div');
+    optEl.className='opt';
+    optEl.textContent=opt;
+    optEl.addEventListener('click',()=>{
+      if(optEl.dataset.answered) return;
+      Array.from(optsWrap.children).forEach(o=>o.dataset.answered='true');
+      if(oi===item.correct){
+        optEl.classList.add('correct');
+        quizScore++;
+      } else {
+        optEl.classList.add('incorrect');
+        optsWrap.children[item.correct].classList.add('correct');
+      }
+      answeredCount++;
+      if(answeredCount===quizData.length){
+        document.getElementById('quizResult').textContent='نتيجتك: '+quizScore+' من '+quizData.length+' 🎉';
+      }
+    });
+    optsWrap.appendChild(optEl);
+  });
+  quizList.appendChild(card);
+});
+</script>
+</body>
+</html>

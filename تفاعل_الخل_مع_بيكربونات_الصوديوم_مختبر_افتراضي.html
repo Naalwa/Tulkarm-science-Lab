@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<!-- ترميز النص UTF-8 يضمن عرض اللغة العربية بشكل صحيح على جميع الأجهزة (حاسوب وهاتف) وفي جميع المتصفحات -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta http-equiv="Content-Language" content="ar">
+<title>تفاعل الخل مع بيكربونات الصوديوم | مختبر افتراضي - الصف السادس</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700;900&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-deep:#071427;
+    --bg-deep-2:#0a1c33;
+    --panel:#0e2a42;
+    --panel-2:#123252;
+    --line: rgba(255,255,255,.09);
+    --glass-tint: rgba(150, 220, 230, .08);
+    --vinegar: #e7b55b;
+    --vinegar-dark:#c9903a;
+    --soda:#f4f6f2;
+    --co2:#8fe9b5;
+    --lime:#c7f24c;
+    --alert:#ef6f5b;
+    --ink:#eaf2f5;
+    --muted:#9fb4c2;
+    --radius: 22px;
+    --shadow-deep: 0 30px 60px -20px rgba(0,0,0,.6);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1100px 700px at 85% -10%, #123a57 0%, transparent 60%),
+      radial-gradient(900px 600px at 5% 10%, #0f2c46 0%, transparent 55%),
+      linear-gradient(180deg,var(--bg-deep) 0%, var(--bg-deep-2) 100%);
+    color:var(--ink);
+    font-family:'Tajawal', 'Segoe UI', sans-serif;
+    line-height:1.85;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.display{ font-family:'Cairo','Tajawal',sans-serif; }
+  a{color:inherit;}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 22px;}
+
+  /* ===== nav ===== */
+  .topnav{
+    position:sticky; top:0; z-index:50;
+    backdrop-filter: blur(14px);
+    background:rgba(7,20,39,.72);
+    border-bottom:1px solid var(--line);
+  }
+  .topnav-inner{
+    max-width:1100px;margin:0 auto;padding:12px 22px;
+    display:flex;align-items:center;justify-content:space-between;gap:14px;
+  }
+  .brand{display:flex;align-items:center;gap:10px;font-weight:900;font-size:15px;}
+  .brand-dot{width:12px;height:12px;border-radius:50%;background:var(--co2);box-shadow:0 0 14px var(--co2);}
+  .navlinks{display:flex;gap:4px;font-size:13.5px;flex-wrap:wrap;}
+  .navlinks a{
+    padding:8px 12px;border-radius:10px;text-decoration:none;color:var(--muted);
+    transition:.2s;white-space:nowrap;
+  }
+  .navlinks a:hover, .navlinks a:focus-visible{background:var(--panel);color:var(--ink);}
+
+  /* ===== hero ===== */
+  .hero{padding:64px 0 40px;position:relative;}
+  .hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center;}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    background:var(--panel);border:1px solid var(--line);
+    padding:7px 14px;border-radius:999px;font-size:12.5px;color:var(--co2);
+    font-weight:700;letter-spacing:.3px;
+  }
+  .hero h1{font-size:clamp(30px,4.6vw,50px);margin:18px 0 14px;font-weight:900;line-height:1.25;}
+  .hero h1 span{color:var(--vinegar);}
+  .hero p.lead{color:var(--muted);font-size:17px;max-width:52ch;}
+  .hero-tags{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px;}
+  .tag{
+    font-size:12.5px;padding:6px 12px;border-radius:10px;
+    background:var(--panel-2);border:1px solid var(--line);color:var(--muted);
+  }
+  .cta-row{margin-top:28px;display:flex;gap:12px;flex-wrap:wrap;}
+  .btn{
+    border:none;cursor:pointer;font-family:inherit;font-weight:800;font-size:15px;
+    padding:14px 24px;border-radius:14px;transition:.2s transform, .2s box-shadow;
+  }
+  .btn-primary{background:linear-gradient(135deg,var(--co2),#5fd0a0);color:#062017;box-shadow:0 14px 30px -10px rgba(143,233,181,.45);}
+  .btn-primary:hover{transform:translateY(-2px);}
+  .btn-ghost{background:transparent;border:1px solid var(--line);color:var(--ink);}
+  .btn-ghost:hover{background:var(--panel);}
+
+  /* ===== hero beaker scene (signature element) ===== */
+  .scene{ perspective:1300px; display:flex;justify-content:center;}
+  .rig{
+    width:230px;position:relative;transform-style:preserve-3d;
+    animation:float 6s ease-in-out infinite;
+  }
+  @keyframes float{ 0%,100%{transform:rotateX(8deg) rotateY(-14deg) translateY(0px);} 50%{transform:rotateX(8deg) rotateY(-14deg) translateY(-14px);} }
+  .beaker{
+    position:relative;width:210px;height:250px;margin:0 auto;
+    border-radius:16px 16px 46px 46px;
+    background:linear-gradient(160deg, rgba(255,255,255,.16), rgba(255,255,255,.02) 40%, rgba(255,255,255,.1));
+    border:2px solid rgba(255,255,255,.28);
+    box-shadow: inset 0 0 30px rgba(255,255,255,.06), var(--shadow-deep);
+    overflow:hidden;
+  }
+  .beaker .lip{position:absolute;top:-10px;right:-8px;left:-8px;height:16px;border-radius:10px;background:rgba(255,255,255,.22);border:2px solid rgba(255,255,255,.3);}
+  .liquid-demo{position:absolute;bottom:0;left:0;right:0;height:56%;background:linear-gradient(180deg,#f0c877,var(--vinegar-dark));}
+  .foam-demo{position:absolute;bottom:56%;left:0;right:0;height:0;background:#fff;opacity:.85;border-radius:50% 50% 0 0/ 100% 100% 0 0;}
+  .bub{position:absolute;bottom:10%;width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.85);opacity:0;}
+  @keyframes rise{ 0%{transform:translateY(0) scale(.4); opacity:0;} 15%{opacity:.9;} 100%{transform:translateY(-230px) scale(1.15);opacity:0;} }
+  .bub1{right:20px;animation:rise 2.6s ease-in infinite;}
+  .bub2{right:70px;animation:rise 3.1s ease-in infinite .5s;}
+  .bub3{right:120px;animation:rise 2.3s ease-in infinite 1.1s;}
+  .bub4{right:150px;animation:rise 2.9s ease-in infinite 1.6s;}
+  .bub5{right:45px;animation:rise 2.2s ease-in infinite .8s;}
+  .shelf{width:250px;height:16px;margin:14px auto 0;border-radius:50%;background:radial-gradient(closest-side, rgba(0,0,0,.5), transparent 70%);}
+
+  /* ===== sections ===== */
+  section{padding:70px 0;}
+  .section-head{max-width:640px;margin-bottom:36px;}
+  .kicker{color:var(--co2);font-weight:800;font-size:13px;letter-spacing:.5px;}
+  .section-head h2{font-size:clamp(24px,3.4vw,34px);margin:10px 0 8px;}
+  .section-head p{color:var(--muted);font-size:15.5px;}
+
+  .card{
+    background:linear-gradient(180deg, var(--panel), var(--panel-2));
+    border:1px solid var(--line);border-radius:var(--radius);
+    padding:26px;
+  }
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+
+  .def-card h3{margin:0 0 8px;font-size:17px;display:flex;align-items:center;gap:8px;}
+  .def-card p{color:var(--muted);font-size:14.5px;margin:0;}
+  .molecule-badge{
+    width:34px;height:34px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;
+    font-weight:900;font-size:13px;flex:none;
+  }
+
+  .equation-box{
+    margin-top:22px;padding:22px;border-radius:18px;
+    background:#06131f;border:1px solid var(--line);
+    text-align:center;overflow-x:auto;
+  }
+  .equation{font-family:'Cairo',sans-serif;font-weight:800;font-size:clamp(15px,2.6vw,22px);white-space:nowrap;color:var(--ink);}
+  .equation .plus{color:var(--muted);padding:0 10px;}
+  .equation .arrow{color:var(--lime);padding:0 14px;}
+  .equation small{display:block;color:var(--muted);font-weight:500;font-size:12.5px;margin-top:10px;}
+
+  .signs-list{list-style:none;margin:22px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .signs-list li{
+    display:flex;gap:12px;align-items:flex-start;
+    background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;font-size:14.5px;
+  }
+  .signs-list li b{display:block;margin-bottom:2px;}
+  .num{
+    flex:none;width:26px;height:26px;border-radius:8px;background:var(--co2);color:#062017;
+    display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;
+  }
+
+  .safety{
+    margin-top:22px;display:flex;gap:12px;align-items:flex-start;
+    background:rgba(239,111,91,.09);border:1px solid rgba(239,111,91,.35);
+    padding:16px 18px;border-radius:14px;font-size:14px;color:#f2c6be;
+  }
+
+  /* ===== LAB ===== */
+  .lab-section{background:linear-gradient(180deg, transparent, rgba(15,44,70,.35) 12%, rgba(15,44,70,.35) 88%, transparent);}
+  .lab-grid{display:grid;grid-template-columns:.95fr 1.25fr;gap:26px;align-items:start;}
+  @media (max-width:880px){ .lab-grid{grid-template-columns:1fr;} .hero-grid{grid-template-columns:1fr;} .grid2{grid-template-columns:1fr;} .grid3{grid-template-columns:1fr 1fr;} .signs-list{grid-template-columns:1fr;} }
+  @media (max-width:560px){ .grid3{grid-template-columns:1fr;} }
+
+  .lab-stage{
+    perspective:1400px;
+    background:radial-gradient(circle at 50% 20%, #163a58, #08192b 70%);
+    border-radius:26px;border:1px solid var(--line);
+    padding:34px 20px 20px;
+    display:flex;flex-direction:column;align-items:center;
+    position:relative; min-height:420px; justify-content:flex-end;
+  }
+  .stage-label{position:absolute;top:16px;right:20px;left:20px;display:flex;justify-content:space-between;font-size:12px;color:var(--muted);}
+  .bench{width:78%;height:16px;border-radius:50%;background:radial-gradient(closest-side, rgba(0,0,0,.55), transparent 72%);margin-top:10px;}
+
+  .lab-beaker-wrap{transform-style:preserve-3d;transition:transform .5s;}
+  .lab-beaker-wrap.shake{animation:shakeit .5s ease;}
+  @keyframes shakeit{ 0%,100%{transform:rotateY(0deg);} 20%{transform:rotateY(-4deg) translateX(-3px);} 40%{transform:rotateY(3deg) translateX(3px);} 60%{transform:rotateY(-2deg);} 80%{transform:rotateY(2deg);} }
+
+  .lab-beaker{
+    position:relative;width:190px;height:230px;
+    border-radius:14px 14px 40px 40px;
+    background:linear-gradient(160deg, rgba(255,255,255,.18), rgba(255,255,255,.03) 45%, rgba(255,255,255,.12));
+    border:2px solid rgba(255,255,255,.3);
+    box-shadow: inset 0 0 26px rgba(255,255,255,.07), 0 30px 50px -20px rgba(0,0,0,.6);
+    overflow:hidden;
+  }
+  .lab-beaker .lip{position:absolute;top:-9px;right:-8px;left:-8px;height:14px;border-radius:9px;background:rgba(255,255,255,.24);border:2px solid rgba(255,255,255,.32);}
+  .ml-marks{position:absolute;left:6px;top:20px;bottom:20px;width:26px;font-size:9px;color:rgba(255,255,255,.45);display:flex;flex-direction:column;justify-content:space-between;font-family:'Cairo',sans-serif;}
+  .liquid{
+    position:absolute;bottom:0;left:0;right:0;height:0%;
+    background:linear-gradient(180deg,#f2ce89,var(--vinegar-dark));
+    transition:height .6s cubic-bezier(.2,.9,.3,1), background 1.2s;
+  }
+  .liquid .surface{position:absolute;top:-3px;left:0;right:0;height:6px;background:rgba(255,255,255,.35);border-radius:50%;filter:blur(1px);}
+  .powder{
+    position:absolute;bottom:0;left:12%;right:12%;height:0;background:var(--soda);
+    border-radius:50% 50% 4px 4px / 70% 70% 4px 4px;transition:height .5s;opacity:.95;
+  }
+  .foam{position:absolute;bottom:0;left:0;right:0;height:0;background:#fdfdfb;opacity:.9;transition:height .35s ease-out;border-radius:0;}
+  .bubble{position:absolute;bottom:6%;border-radius:50%;background:rgba(255,255,255,.9);opacity:0;pointer-events:none;}
+  .steamText{
+    position:absolute;top:-34px;left:50%;transform:translateX(-50%);
+    font-family:'Cairo',sans-serif;font-weight:800;font-size:13px;color:var(--co2);
+    opacity:0;white-space:nowrap;
+  }
+  .steamText.show{animation:popfade 1.6s ease forwards;}
+  @keyframes popfade{ 0%{opacity:0;transform:translate(-50%,10px) scale(.8);} 20%{opacity:1;transform:translate(-50%,-6px) scale(1);} 80%{opacity:1;} 100%{opacity:0;transform:translate(-50%,-26px) scale(1);} }
+
+  .controls{margin-top:8px;}
+  .ctrl-row{margin-bottom:20px;}
+  .ctrl-row label{display:flex;justify-content:space-between;font-weight:800;font-size:14.5px;margin-bottom:8px;}
+  .ctrl-row label span.val{color:var(--co2);font-family:'Cairo',sans-serif;}
+  input[type=range]{
+    -webkit-appearance:none;width:100%;height:8px;border-radius:6px;
+    background:linear-gradient(90deg,var(--vinegar),var(--co2));outline:none;
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none;width:24px;height:24px;border-radius:50%;
+    background:#fff;border:4px solid var(--co2);cursor:pointer;box-shadow:0 3px 10px rgba(0,0,0,.4);
+  }
+  input[type=range]::-moz-range-thumb{width:24px;height:24px;border-radius:50%;background:#fff;border:4px solid var(--co2);cursor:pointer;}
+
+  .lab-buttons{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px;}
+  .btn-react{background:linear-gradient(135deg,var(--vinegar),#c9903a);color:#2a1a00;}
+  .btn-reset{background:transparent;border:1px solid var(--line);color:var(--muted);}
+  .btn:disabled{opacity:.5;cursor:not-allowed;transform:none !important;}
+
+  .observe-box{margin-top:22px;padding:18px;border-radius:16px;background:#06131f;border:1px solid var(--line);}
+  .observe-box h4{margin:0 0 10px;font-size:14.5px;}
+  .chk{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--muted);margin-bottom:8px;cursor:pointer;}
+  .chk input{width:18px;height:18px;accent-color:var(--co2);}
+  .chk.checked{color:var(--ink);}
+
+  .results-panel{margin-top:20px;}
+  .metric-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px;}
+  .metric{
+    background:#06131f;border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center;
+  }
+  .metric b{display:block;font-family:'Cairo',sans-serif;font-size:22px;color:var(--co2);}
+  .metric span{font-size:11.5px;color:var(--muted);}
+
+  table.log{width:100%;border-collapse:collapse;font-size:13.5px;}
+  table.log th, table.log td{padding:9px 10px;text-align:center;border-bottom:1px solid var(--line);}
+  table.log th{color:var(--muted);font-weight:700;font-size:12px;}
+  table.log tr:last-child td{border-bottom:none;}
+  .empty-row td{color:var(--muted);padding:20px;}
+
+  .hint{font-size:13px;color:var(--muted);margin-top:10px;line-height:1.9;}
+  .steps-list{list-style:none;margin:0;padding:0;counter-reset:step;}
+  .steps-list li{
+    counter-increment:step; position:relative; padding:10px 0 10px 0; padding-right:40px;
+    font-size:14px;color:var(--muted);border-bottom:1px dashed var(--line);
+  }
+  .steps-list li:last-child{border-bottom:none;}
+  .steps-list li::before{
+    content:counter(step); position:absolute;right:0;top:8px;
+    width:24px;height:24px;border-radius:7px;background:var(--panel-2);border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;font-family:'Cairo',sans-serif;font-weight:800;color:var(--co2);font-size:12px;
+  }
+
+  /* ===== quiz ===== */
+  .quiz-card{margin-bottom:16px;}
+  .q-title{font-weight:800;font-size:15.5px;margin-bottom:14px;}
+  .opt{
+    display:block;width:100%;text-align:right;background:#06131f;border:1px solid var(--line);
+    color:var(--ink);padding:13px 16px;border-radius:12px;margin-bottom:10px;cursor:pointer;
+    font-family:inherit;font-size:14.5px;transition:.15s;
+  }
+  .opt:hover{border-color:var(--co2);}
+  .opt.correct{background:rgba(143,233,181,.15);border-color:var(--co2);}
+  .opt.wrong{background:rgba(239,111,91,.15);border-color:var(--alert);}
+  .opt:disabled{cursor:default;}
+  .explain{font-size:13.5px;color:var(--muted);margin-top:6px;display:none;padding:10px 14px;background:var(--panel-2);border-radius:10px;}
+  .explain.show{display:block;}
+  .quiz-score{
+    text-align:center;padding:24px;border-radius:18px;background:var(--panel);border:1px solid var(--line);display:none;
+  }
+  .quiz-score.show{display:block;}
+  .quiz-score b{font-family:'Cairo',sans-serif;font-size:30px;color:var(--co2);display:block;margin-bottom:6px;}
+
+  footer{padding:40px 0 60px;text-align:center;color:var(--muted);font-size:12.5px;}
+  .footnote{
+    max-width:640px;margin:0 auto 18px;padding:14px 18px;border-radius:14px;
+    background:var(--panel);border:1px solid var(--line);font-size:12.5px;line-height:1.9;
+  }
+  code{background:#06131f;padding:2px 7px;border-radius:6px;font-size:12px;color:var(--co2);}
+
+  ::selection{background:var(--co2);color:#062017;}
+  :focus-visible{outline:2px solid var(--co2);outline-offset:3px;}
+  @media (prefers-reduced-motion:reduce){
+    .rig, .bub1,.bub2,.bub3,.bub4,.bub5{animation:none !important;}
+  }
+
+  /* ══ RESPONSIVE MOBILE & TABLET ══ */
+  @media (max-width: 768px) {
+    body { padding: 8px !important; font-size: 15px !important; overflow-x: hidden !important; }
+    .container, [class*="container"], [class*="wrapper"] { padding: 8px !important; max-width: 100% !important; }
+    canvas { width: 100% !important; height: auto !important; display: block !important; touch-action: none; max-width: 100% !important; }
+    svg { max-width: 100% !important; height: auto !important; }
+    h1 { font-size: clamp(18px,5vw,32px) !important; }
+    h2 { font-size: clamp(15px,4vw,26px) !important; }
+    h3 { font-size: clamp(13px,3.5vw,20px) !important; }
+    [class*="grid"] { grid-template-columns: 1fr !important; }
+    [class*="flex"] { flex-wrap: wrap !important; }
+    input[type="range"] { width: 100% !important; min-height: 36px; }
+    input[type="number"], input[type="text"], select, textarea {
+      font-size: 16px !important; width: 100% !important; box-sizing: border-box; padding: 8px !important; }
+    button { min-height: 44px !important; font-size: 14px !important; touch-action: manipulation; padding: 10px 14px !important; }
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 13px !important; }
+    th, td { padding: 6px 4px !important; }
+    header { padding: 10px 12px !important; }
+    .controls, [class*="controls"] { flex-direction: column !important; gap: 8px !important; }
+    .lab-window, [class*="lab-window"] { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+  }
+  @media (max-width: 480px) {
+    body { padding: 4px !important; }
+    button { width: 100% !important; }
+  }
+  /* ══ END RESPONSIVE ══ */
+</style>
+</head>
+<body>
+<style>
+.vlab-back{position:fixed;top:10px;left:10px;z-index:99999;
+background:rgba(10,22,40,0.93);border:1px solid rgba(0,200,150,0.4);
+border-radius:22px;padding:8px 16px;display:inline-flex;align-items:center;gap:7px;
+color:#00C896;font-family:Tajawal,Cairo,Arial,sans-serif;font-size:13px;font-weight:700;
+text-decoration:none;backdrop-filter:blur(8px);box-shadow:0 4px 18px rgba(0,0,0,0.3);
+transition:background 0.2s;}
+.vlab-back:hover{background:rgba(0,200,150,0.18);}
+</style>
+<a href="../grade6.html" class="vlab-back">&#8594; العودة للصف</a>
+
+
+<nav class="topnav">
+  <div class="topnav-inner">
+    <div class="brand"><span class="brand-dot"></span> مختبر العلوم التفاعلي</div>
+    <div class="navlinks">
+      <a href="#sharh">الدرس</a>
+      <a href="#lab">المختبر الافتراضي</a>
+      <a href="#quiz">اختبر نفسك</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ===================== HERO ===================== -->
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">🧪 منهاج العلوم والحياة — الصف السادس — فلسطين</span>
+      <h1>تفاعل <span>الخلّ</span> مع بيكربونات الصوديوم</h1>
+      <p class="lead">درس تفاعلي مع مختبر افتراضي واقعي: امزج، راقب، سجّل نتائجك، وتوصّل إلى استنتاجاتك الخاصة كعالم صغير.</p>
+      <div class="hero-tags">
+        <span class="tag">تفاعل كيميائي</span>
+        <span class="tag">حمض وقاعدة</span>
+        <span class="tag">غاز CO₂</span>
+        <span class="tag">مختبر افتراضي ثلاثي الأبعاد</span>
+      </div>
+      <div class="cta-row">
+        <button class="btn btn-primary" onclick="document.getElementById('lab').scrollIntoView()">ابدأ التجربة الآن ⬇</button>
+        <button class="btn btn-ghost" onclick="document.getElementById('sharh').scrollIntoView()">اقرأ شرح الدرس أولاً</button>
+      </div>
+    </div>
+    <div class="scene">
+      <div class="rig">
+        <div class="beaker">
+          <div class="lip"></div>
+          <div class="liquid-demo"></div>
+          <div class="bub bub1"></div><div class="bub bub2"></div><div class="bub bub3"></div>
+          <div class="bub bub4"></div><div class="bub bub5"></div>
+        </div>
+        <div class="shelf"></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ===================== LESSON ===================== -->
+<section id="sharh" class="wrap">
+  <div class="section-head">
+    <div class="kicker">أولًا: الشرح</div>
+    <h2>ماذا يحدث عندما يلتقي الخلّ بصودا الخبز؟</h2>
+    <p>قبل أن ندخل المختبر، لنفهم المواد التي سنعمل بها وما الذي يجعل هذا التفاعل مميزًا.</p>
+  </div>
+
+  <div class="grid2">
+    <div class="card def-card">
+      <h3><span class="molecule-badge" style="background:var(--vinegar);color:#2a1a00;">CH₃</span> الخلّ (حمض الخليك)</h3>
+      <p>سائل حمضي شفاف نستخدمه في الطبخ، يحتوي على نسبة صغيرة (حوالي 5%) من حمض الخليك مذابة في الماء. المحاليل الحمضية تتفاعل مع المواد القاعدية لتُنتج مواد جديدة.</p>
+    </div>
+    <div class="card def-card">
+      <h3><span class="molecule-badge" style="background:var(--soda);color:#123252;">Na</span> بيكربونات الصوديوم (صودا الخبز)</h3>
+      <p>مسحوق أبيض صلب، وهو مادة قاعدية (أساسية)، يُستخدم في المخبوزات لأنه عندما يتفاعل مع الأحماض يُطلق فقاعات غاز تجعل العجين يرتفع وينتفخ.</p>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:20px;">
+    <h3 style="margin-top:0;">التفاعل الكيميائي: تعريف</h3>
+    <p style="color:var(--muted);margin-bottom:0;">التفاعل الكيميائي هو عملية تتحول فيها مادة أو أكثر (المتفاعلات) إلى مادة أو أكثر جديدة (النواتج) لها خصائص مختلفة تمامًا عن المواد الأصلية، ولا يمكن استعادة المواد الأصلية بطرق فيزيائية بسيطة.</p>
+
+    <div class="equation-box">
+      <div class="equation">
+        حمض الخليك <span class="plus">+</span> بيكربونات الصوديوم <span class="arrow">⟶</span> خلّات الصوديوم <span class="plus">+</span> ماء <span class="plus">+</span> ثاني أكسيد الكربون
+      </div>
+      <div class="equation" style="margin-top:10px;font-size:15px;color:var(--muted);">
+        CH₃COOH <span class="plus">+</span> NaHCO₃ <span class="arrow">⟶</span> CH₃COONa <span class="plus">+</span> H₂O <span class="plus">+</span> CO₂
+      </div>
+      <small>معادلة موصوفة بالكلمات ورمزيًا لتسهيل الفهم — لا حاجة لحفظها، فقط لفهم فكرة تحوّل المواد</small>
+    </div>
+
+    <ul class="signs-list">
+      <li><span class="num">1</span><div><b>فقاعات غاز</b>دليل على تكوّن غاز جديد (ثاني أكسيد الكربون) لم يكن موجودًا قبل التفاعل.</div></li>
+      <li><span class="num">2</span><div><b>صوت فوران وفحيح</b>ناتج عن اندفاع الغاز بسرعة إلى خارج السائل.</div></li>
+      <li><span class="num">3</span><div><b>تغيّر طفيف في الحرارة</b>هذا التفاعل ماص للحرارة، أي أنه يمتص حرارة من المحيط فتشعر ببرودة خفيفة في الكأس.</div></li>
+      <li><span class="num">4</span><div><b>تكوّن رغوة</b>نتيجة احتباس فقاعات الغاز في السائل قبل أن تتصاعد وتتلاشى.</div></li>
+    </ul>
+
+    <div class="safety">
+      ⚠️ <div><b>ملاحظة سلامة:</b> الخلّ وصودا الخبز مادتان آمنتان للاستخدام المنزلي، لكن يُفضّل دائمًا تنفيذ التجارب الحقيقية بإشراف المعلم أو أحد الوالدين، وعدم تذوّق نواتج التجارب.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== VIRTUAL LAB ===================== -->
+<section id="lab" class="lab-section">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">ثانيًا: المختبر الافتراضي</div>
+      <h2>نفّذ التجربة بنفسك وسجّل النتائج</h2>
+      <p>حدّد كمية كل مادة، اضغط زر التفاعل، وراقب الكأس ثلاثي الأبعاد وهو يفور أمامك.</p>
+    </div>
+
+    <div class="lab-grid">
+      <!-- Stage -->
+      <div class="lab-stage">
+        <div class="stage-label"><span>🧫 محطة العمل</span><span id="stageStatus">جاهز للتفاعل</span></div>
+        <div class="lab-beaker-wrap" id="beakerWrap">
+          <div class="lab-beaker" id="beaker">
+            <div class="steamText" id="steamText">🌡️ برودة طفيفة!</div>
+            <div class="lip"></div>
+            <div class="ml-marks"><span>60</span><span>45</span><span>30</span><span>15</span><span>0</span></div>
+            <div class="foam" id="foam"></div>
+            <div class="powder" id="powder"></div>
+            <div class="liquid" id="liquid"><div class="surface"></div></div>
+          </div>
+        </div>
+        <div class="bench"></div>
+      </div>
+
+      <!-- Controls + results -->
+      <div>
+        <div class="card">
+          <h3 style="margin-top:0;">خطوات التجربة</h3>
+          <ol class="steps-list">
+            <li>حرّك مؤشر كمية الخلّ لتحديد الكمية التي ستضاف للكأس (مل).</li>
+            <li>حرّك مؤشر كمية بيكربونات الصوديوم (غم).</li>
+            <li>اضغط زر «ابدأ التفاعل» وراقب ماذا يحدث داخل الكأس.</li>
+            <li>ضع علامة ✓ أمام كل ملاحظة رصدتها فعليًا.</li>
+            <li>سجّل النتيجة في جدول النتائج، وكرّر التجربة بكميات مختلفة للمقارنة.</li>
+          </ol>
+
+          <div class="controls">
+            <div class="ctrl-row">
+              <label>كمية الخلّ (مل) <span class="val" id="vinegarVal">30 مل</span></label>
+              <input type="range" id="vinegarRange" min="10" max="60" step="5" value="30">
+            </div>
+            <div class="ctrl-row">
+              <label>كمية بيكربونات الصوديوم (غم) <span class="val" id="sodaVal">3 غم</span></label>
+              <input type="range" id="sodaRange" min="1" max="6" step="0.5" value="3">
+            </div>
+          </div>
+
+          <div class="lab-buttons">
+            <button class="btn btn-react" id="reactBtn">🧪 ابدأ التفاعل</button>
+            <button class="btn btn-reset" id="resetBtn">↺ إعادة ضبط الكأس</button>
+          </div>
+
+          <div class="observe-box">
+            <h4>ماذا لاحظت؟ (علّم كل ما رأيته)</h4>
+            <label class="chk"><input type="checkbox" data-obs="bubbles"> شاهدت فقاعات غاز تتصاعد</label>
+            <label class="chk"><input type="checkbox" data-obs="foam"> شاهدت رغوة تتكوّن</label>
+            <label class="chk"><input type="checkbox" data-obs="temp"> شعرت/توقعت انخفاضًا في درجة الحرارة</label>
+            <label class="chk"><input type="checkbox" data-obs="sound"> تخيّلت صوت فوران وفحيح</label>
+          </div>
+        </div>
+
+        <div class="card results-panel">
+          <h3 style="margin-top:0;">نتائج التجربة الحالية</h3>
+          <div class="metric-row">
+            <div class="metric"><b id="gasVal">0 مل</b><span>حجم غاز CO₂ الناتج (تقريبًا)</span></div>
+            <div class="metric"><b id="tempVal">0°C</b><span>التغيّر في درجة الحرارة</span></div>
+            <div class="metric"><b id="limitVal">—</b><span>المادة المحدِّدة للتفاعل</span></div>
+          </div>
+          <p class="hint">💡 «المادة المحدِّدة» هي المادة التي تنفد أولًا وتوقف التفاعل، حتى لو بقيت كمية من المادة الأخرى.</p>
+
+          <h4 style="margin:18px 0 10px;font-size:14.5px;">سجلّ النتائج (دفتر الملاحظات)</h4>
+          <div style="overflow-x:auto;">
+            <table class="log" id="logTable">
+              <thead>
+                <tr><th>#</th><th>الخلّ (مل)</th><th>الصودا (غم)</th><th>الغاز الناتج (مل)</th><th>الملاحظات المسجّلة</th></tr>
+              </thead>
+              <tbody id="logBody">
+                <tr class="empty-row"><td colspan="5">لم تُسجَّل أي تجربة بعد — نفّذ تجربتك الأولى!</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CONCLUSION QUESTIONS / QUIZ ===================== -->
+<section id="quiz" class="wrap">
+  <div class="section-head">
+    <div class="kicker">ثالثًا: الاستنتاج</div>
+    <h2>اختبر فهمك للتجربة</h2>
+    <p>أجب عن الأسئلة التالية بناءً على ما شاهدته وسجّلته في المختبر الافتراضي.</p>
+  </div>
+  <div id="quizContainer"></div>
+  <div class="quiz-score card" id="quizScore">
+    <b id="scoreText">0 / 0</b>
+    <span id="scoreMsg" style="color:var(--muted);"></span>
+  </div>
+</section>
+
+<footer>
+  <div class="footnote">
+    🔤 <b>ترميز الصفحة:</b> تستخدم هذه الصفحة ترميز <code>UTF-8</code> مع تحديد <code>lang="ar"</code> و <code>dir="rtl"</code>، لذلك تُعرض النصوص العربية بشكل صحيح واتجاه سليم من اليمين لليسار على أي متصفح، هاتف، أو حاسوب دون الحاجة لأي إعداد إضافي.
+  </div>
+  <div class="wrap">صمّمت هذه الصفحة كمختبر تفاعلي داعم لمنهاج العلوم والحياة — الصف السادس — فلسطين 🇵🇸</div>
+</footer>
+
+<script>
+/* ============ LAB SIMULATION ============ */
+const vinegarRange = document.getElementById('vinegarRange');
+const sodaRange = document.getElementById('sodaRange');
+const vinegarVal = document.getElementById('vinegarVal');
+const sodaVal = document.getElementById('sodaVal');
+const liquid = document.getElementById('liquid');
+const powder = document.getElementById('powder');
+const foam = document.getElementById('foam');
+const beakerWrap = document.getElementById('beakerWrap');
+const reactBtn = document.getElementById('reactBtn');
+const resetBtn = document.getElementById('resetBtn');
+const stageStatus = document.getElementById('stageStatus');
+const steamText = document.getElementById('steamText');
+const gasVal = document.getElementById('gasVal');
+const tempVal = document.getElementById('tempVal');
+const limitVal = document.getElementById('limitVal');
+const logBody = document.getElementById('logBody');
+let trialCount = 0;
+let reacting = false;
+
+function syncLabels(){
+  vinegarVal.textContent = vinegarRange.value + ' مل';
+  sodaVal.textContent = sodaRange.value + ' غم';
+  const fillPct = Math.min(65, 15 + (parseFloat(vinegarRange.value)/60)*45);
+  liquid.style.height = fillPct + '%';
+  const powderPct = Math.min(14, 2 + parseFloat(sodaRange.value)*1.8);
+  powder.style.height = powderPct + '%';
+}
+vinegarRange.addEventListener('input', syncLabels);
+sodaRange.addEventListener('input', syncLabels);
+syncLabels();
+
+function computeChemistry(vinegarMl, sodaG){
+  // مبسّطة: الخل محلول 5% حمض خليك، كثافة ~1.0 g/mL
+  const molarMassAceticAcid = 60.05;
+  const molarMassBaking = 84.01;
+  const acidGrams = vinegarMl * 1.0 * 0.05;
+  const molesAcid = acidGrams / molarMassAceticAcid;
+  const molesSoda = sodaG / molarMassBaking;
+  const limitingIsAcid = molesAcid < molesSoda;
+  const molesCO2 = Math.min(molesAcid, molesSoda);
+  const volumeCO2mL = molesCO2 * 24500; // الحجم المولي التقريبي عند الظروف العادية
+  const intensity = Math.min(1, molesCO2 / 0.01); // لتحجيم الرسوم المتحركة
+  const tempDrop = (0.5 + intensity * 3.2).toFixed(1);
+  return { volumeCO2mL: Math.round(volumeCO2mL), tempDrop, limitingIsAcid, intensity };
+}
+
+function spawnBubbles(count, intensity){
+  for(let i=0;i<count;i++){
+    setTimeout(()=>{
+      const b = document.createElement('div');
+      b.className = 'bubble';
+      const size = 4 + Math.random()*7;
+      b.style.width = size+'px';
+      b.style.height = size+'px';
+      b.style.left = (10 + Math.random()*80) + '%';
+      b.style.bottom = '8%';
+      document.getElementById('beaker').appendChild(b);
+      const rise = 120 + Math.random()*90;
+      const dur = 1200 + Math.random()*900;
+      b.animate([
+        { transform:'translateY(0) scale(.5)', opacity:0 },
+        { opacity:.9, offset:.15 },
+        { transform:`translateY(-${rise}px) scale(1.2)`, opacity:0 }
+      ], { duration: dur, easing:'ease-in' });
+      setTimeout(()=> b.remove(), dur+50);
+    }, i * (140 - intensity*70));
+  }
+}
+
+reactBtn.addEventListener('click', ()=>{
+  if(reacting) return;
+  reacting = true;
+  reactBtn.disabled = true;
+  stageStatus.textContent = 'جارٍ التفاعل...';
+
+  const vinegarMl = parseFloat(vinegarRange.value);
+  const sodaG = parseFloat(sodaRange.value);
+  const chem = computeChemistry(vinegarMl, sodaG);
+
+  beakerWrap.classList.add('shake');
+  setTimeout(()=> beakerWrap.classList.remove('shake'), 550);
+
+  foam.style.height = (18 + chem.intensity*22) + '%';
+  spawnBubbles(Math.round(10 + chem.intensity*22), chem.intensity);
+
+  setTimeout(()=>{
+    steamText.classList.remove('show'); void steamText.offsetWidth; steamText.classList.add('show');
+  }, 300);
+
+  setTimeout(()=>{
+    foam.style.height = '4%';
+    powder.style.height = '0%';
+    stageStatus.textContent = 'اكتمل التفاعل ✔';
+
+    gasVal.textContent = chem.volumeCO2mL + ' مل';
+    tempVal.textContent = '−' + chem.tempDrop + '°C';
+    limitVal.textContent = chem.limitingIsAcid ? 'الخلّ (الحمض)' : 'بيكربونات الصوديوم';
+
+    logTrial(vinegarMl, sodaG, chem.volumeCO2mL);
+
+    reacting = false;
+    reactBtn.disabled = false;
+  }, 2000);
+});
+
+resetBtn.addEventListener('click', ()=>{
+  vinegarRange.value = 30; sodaRange.value = 3;
+  syncLabels();
+  foam.style.height = '0%';
+  gasVal.textContent = '0 مل';
+  tempVal.textContent = '0°C';
+  limitVal.textContent = '—';
+  stageStatus.textContent = 'جاهز للتفاعل';
+  document.querySelectorAll('.chk input').forEach(c=>{ c.checked=false; c.parentElement.classList.remove('checked'); });
+});
+
+document.querySelectorAll('.chk input').forEach(c=>{
+  c.addEventListener('change', ()=> c.parentElement.classList.toggle('checked', c.checked));
+});
+
+function logTrial(vinegarMl, sodaG, gasMl){
+  trialCount++;
+  if(trialCount === 1){ logBody.innerHTML = ''; }
+  const checked = Array.from(document.querySelectorAll('.chk input:checked')).map(c=>c.parentElement.textContent.trim());
+  const notes = checked.length ? checked.join('، ') : 'لم تُسجَّل ملاحظات';
+  const row = document.createElement('tr');
+  row.innerHTML = `<td>${trialCount}</td><td>${vinegarMl}</td><td>${sodaG}</td><td>${gasMl}</td><td style="font-size:12px;">${notes}</td>`;
+  logBody.appendChild(row);
+}
+
+/* ============ QUIZ ============ */
+const questions = [
+  {
+    q: 'ما نوع التفاعل الذي يحدث بين الخلّ وبيكربونات الصوديوم؟',
+    options: ['تفاعل فيزيائي فقط', 'تفاعل كيميائي', 'لا يوجد تفاعل'],
+    correct: 1,
+    explain: 'صحيح! تتكوّن مواد جديدة (خلّات الصوديوم، ماء، وثاني أكسيد الكربون) لها خصائص مختلفة عن المواد الأصلية، وهذا يدل على تفاعل كيميائي.'
+  },
+  {
+    q: 'ما اسم الغاز الناتج عن هذا التفاعل؟',
+    options: ['غاز الأكسجين', 'غاز ثاني أكسيد الكربون', 'غاز الهيدروجين'],
+    correct: 1,
+    explain: 'هذا الغاز هو ثاني أكسيد الكربون (CO₂)، وهو المسؤول عن الفقاعات والرغوة التي شاهدتها في المختبر الافتراضي.'
+  },
+  {
+    q: 'أي ملاحظة رصدتها في المختبر الافتراضي تدل بوضوح على حدوث تفاعل كيميائي؟',
+    options: ['تصاعد فقاعات غاز جديد', 'بقاء السائل بلا أي تغيير', 'اختفاء الكأس نفسه'],
+    correct: 0,
+    explain: 'تصاعد فقاعات غاز لم يكن موجودًا قبل الخلط دليل قوي على تكوّن مادة جديدة، أي حدوث تفاعل كيميائي.'
+  },
+  {
+    q: 'ماذا يحدث لدرجة الحرارة عادة أثناء هذا التفاعل؟',
+    options: ['ترتفع بشدة جدًا', 'تنخفض قليلًا', 'تبقى ثابتة تمامًا دون أي تغيّر'],
+    correct: 1,
+    explain: 'هذا التفاعل ماصّ للحرارة، أي يمتص طاقة حرارية من المحيط، لذلك تشعر ببرودة خفيفة حول الكأس.'
+  },
+  {
+    q: 'إذا استمررت بزيادة كمية بيكربونات الصوديوم مع بقاء كمية الخلّ ثابتة، ماذا نتوقع أن يحدث للفقاعات؟',
+    options: ['تزداد الفقاعات ثم تتوقف عن الازدياد لأن الخلّ ينفد', 'تزداد الفقاعات إلى ما لا نهاية', 'لا تتأثر كمية الفقاعات إطلاقًا'],
+    correct: 0,
+    explain: 'عندما ينفد الخلّ (المادة المحدِّدة)، يتوقف التفاعل عن إنتاج المزيد من الغاز حتى لو بقيت كمية إضافية من الصودا دون أن تتفاعل.'
+  }
+];
+
+let score = 0;
+let answered = 0;
+const quizContainer = document.getElementById('quizContainer');
+
+questions.forEach((item, qi)=>{
+  const card = document.createElement('div');
+  card.className = 'card quiz-card';
+  const title = document.createElement('div');
+  title.className = 'q-title';
+  title.textContent = `${qi+1}. ${item.q}`;
+  card.appendChild(title);
+
+  const explainBox = document.createElement('div');
+  explainBox.className = 'explain';
+  explainBox.textContent = item.explain;
+
+  item.options.forEach((opt, oi)=>{
+    const b = document.createElement('button');
+    b.className = 'opt';
+    b.textContent = opt;
+    b.addEventListener('click', ()=>{
+      const buttons = card.querySelectorAll('.opt');
+      if(buttons[0].disabled) return;
+      buttons.forEach((btn,i)=>{
+        btn.disabled = true;
+        if(i === item.correct) btn.classList.add('correct');
+        else if(i === oi) btn.classList.add('wrong');
+      });
+      if(oi === item.correct) score++;
+      answered++;
+      explainBox.classList.add('show');
+      if(answered === questions.length) showScore();
+    });
+    card.appendChild(b);
+  });
+  card.appendChild(explainBox);
+  quizContainer.appendChild(card);
+});
+
+function showScore(){
+  const box = document.getElementById('quizScore');
+  box.classList.add('show');
+  document.getElementById('scoreText').textContent = `${score} / ${questions.length}`;
+  let msg = '';
+  if(score === questions.length) msg = 'ممتاز! فهمت التجربة والتفاعل الكيميائي بشكل كامل 🌟';
+  else if(score >= questions.length/2) msg = 'جيد جدًا! راجع الأجزاء التي أخطأت فيها من شرح الدرس أعلاه.';
+  else msg = 'لا بأس، عُد إلى شرح الدرس والمختبر الافتراضي وحاول مجددًا 💪';
+  document.getElementById('scoreMsg').textContent = msg;
+  box.scrollIntoView({behavior:'smooth', block:'center'});
+}
+</script>
+</body>
+</html>
