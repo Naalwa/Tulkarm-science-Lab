@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta http-equiv="Content-Language" content="ar">
+<title>الكربوهيدرات (السكّريات)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FFF8EC;
+    --paper:#FFFDF8;
+    --ink:#1F2A33;
+    --teal:#0B7285;
+    --teal-dark:#075A68;
+    --amber:#F2A40C;
+    --coral:#FF6B5E;
+    --grape:#7B4FA0;
+    --leaf:#3F9A5C;
+    --line:#E7D9BE;
+    --glass:rgba(255,255,255,.55);
+    --shadow: 0 18px 40px -16px rgba(31,42,51,.35);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:'Tajawal',sans-serif;
+    background:
+      radial-gradient(1200px 600px at 90% -10%, rgba(242,164,12,.18), transparent 60%),
+      radial-gradient(1000px 700px at -10% 20%, rgba(11,114,133,.15), transparent 55%),
+      var(--cream);
+    color:var(--ink);
+    line-height:1.85;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,h4{font-family:'Cairo',sans-serif;margin:0 0 .4em;}
+  p{margin:0 0 1em;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 22px;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    padding:64px 0 90px;
+    overflow:hidden;
+    background:linear-gradient(160deg,var(--teal) 0%, var(--teal-dark) 55%, #053b46 100%);
+    color:#fff;
+    border-bottom:10px solid var(--amber);
+  }
+  .hero::before, .hero::after{
+    content:"";
+    position:absolute; border-radius:50%;
+    filter:blur(2px);
+  }
+  .hero::before{width:280px;height:280px;background:rgba(242,164,12,.35);top:-90px;left:-60px;}
+  .hero::after{width:200px;height:200px;background:rgba(255,107,94,.3);bottom:-70px;right:8%;}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:'Cairo',sans-serif;font-weight:700;font-size:.85rem;
+    background:rgba(255,255,255,.14);
+    border:1px solid rgba(255,255,255,.35);
+    padding:6px 16px;border-radius:999px;
+    letter-spacing:.5px;
+  }
+  .hero h1{
+    font-size:clamp(2rem,5vw,3.4rem);
+    font-weight:900;
+    margin-top:18px;
+    text-shadow:0 6px 24px rgba(0,0,0,.25);
+  }
+  .hero h1 span{color:var(--amber);}
+  .hero p.lead{
+    max-width:640px;font-size:1.15rem;color:rgba(255,255,255,.92);margin-top:10px;
+  }
+  .hero-meta{display:flex;flex-wrap:wrap;gap:14px;margin-top:30px;}
+  .meta-chip{
+    background:rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.25);
+    backdrop-filter:blur(6px);
+    padding:10px 18px;border-radius:14px;
+    font-size:.92rem;font-weight:500;
+  }
+  .meta-chip b{font-family:'Cairo',sans-serif;color:var(--amber);}
+
+  /* molecule scene - 3D rotating hexagons (glucose ring motif) */
+  .molecule-scene{
+    position:absolute; left:50%; top:18px; transform:translateX(-50%);
+    width:min(92%,920px); height:230px; perspective:1000px; pointer-events:none;
+  }
+  .hexring{
+    position:absolute; width:64px;height:64px;
+    transform-style:preserve-3d;
+    animation:float 7s ease-in-out infinite;
+  }
+  .hexring svg{width:100%;height:100%;filter:drop-shadow(0 10px 14px rgba(0,0,0,.25));}
+  @keyframes float{
+    0%,100%{transform:translateY(0) rotateY(0deg);}
+    50%{transform:translateY(-22px) rotateY(180deg);}
+  }
+  @keyframes spin3d{ from{transform:rotateY(0);} to{transform:rotateY(360deg);} }
+
+  /* ---------- NAV ---------- */
+  nav.toc{
+    position:sticky; top:0; z-index:50;
+    background:rgba(255,248,236,.92); backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  nav.toc .wrap{display:flex;gap:6px;overflow-x:auto;padding:10px 22px;scrollbar-width:thin;}
+  nav.toc a{
+    white-space:nowrap;
+    font-family:'Cairo',sans-serif;font-weight:700;font-size:.9rem;
+    color:var(--teal-dark);
+    text-decoration:none;
+    padding:9px 16px;border-radius:10px;
+    transition:.25s;
+  }
+  nav.toc a:hover{background:var(--teal);color:#fff;}
+
+  /* ---------- SECTION SHELL ---------- */
+  section{padding:64px 0;}
+  section.alt{background:var(--paper);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .tag{
+    display:inline-block;font-family:'Cairo',sans-serif;font-weight:800;font-size:.78rem;
+    color:var(--teal-dark); background:rgba(11,114,133,.1);
+    padding:5px 14px;border-radius:999px;margin-bottom:12px;letter-spacing:.4px;
+  }
+  .sec-title{font-size:clamp(1.5rem,3vw,2.2rem);font-weight:800;color:var(--ink);}
+  .sec-sub{color:#5b6b75;max-width:680px;font-size:1.02rem;}
+
+  /* ---------- INTRO CARDS (3D flip) ---------- */
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:34px;}
+  @media(max-width:860px){.grid3{grid-template-columns:1fr;}}
+  .flip-card{perspective:1300px;height:230px;}
+  .flip-inner{
+    position:relative;width:100%;height:100%;
+    transform-style:preserve-3d; transition:transform .7s cubic-bezier(.2,.8,.2,1);
+  }
+  .flip-card:hover .flip-inner, .flip-card.flipped .flip-inner{transform:rotateY(180deg);}
+  .flip-front,.flip-back{
+    position:absolute;inset:0; border-radius:20px; padding:22px;
+    backface-visibility:hidden; box-shadow:var(--shadow);
+    display:flex;flex-direction:column;justify-content:center;
+  }
+  .flip-front{background:#fff;border:2px solid var(--line);text-align:center;}
+  .flip-front .icon{font-size:2.6rem;margin-bottom:8px;}
+  .flip-front h3{color:var(--teal-dark);font-size:1.2rem;}
+  .flip-back{
+    transform:rotateY(180deg);
+    color:#fff; font-size:.95rem;
+  }
+  .flip-back.c1{background:linear-gradient(135deg,var(--teal),var(--teal-dark));}
+  .flip-back.c2{background:linear-gradient(135deg,var(--amber),#c9790a);}
+  .flip-back.c3{background:linear-gradient(135deg,var(--coral),#c4453a);}
+  .flip-back ul{margin:0;padding-inline-start:18px;}
+  .flip-back li{margin-bottom:5px;}
+
+  /* ---------- COMPARISON TABLE ---------- */
+  .table-wrap{overflow-x:auto;margin-top:30px;border-radius:18px;box-shadow:var(--shadow);}
+  table.comp{width:100%;border-collapse:collapse;background:#fff;font-size:.97rem;min-width:600px;}
+  table.comp th{
+    background:var(--teal); color:#fff; font-family:'Cairo',sans-serif;
+    padding:14px 12px; font-size:1rem;
+  }
+  table.comp td{padding:13px 12px;text-align:center;border-bottom:1px solid var(--line);}
+  table.comp tr:nth-child(odd) td{background:#FFFBF2;}
+  table.comp td.ex{font-weight:700;color:var(--teal-dark);}
+
+  /* ---------- LAB SECTION ---------- */
+  .lab-shell{
+    background:linear-gradient(170deg,#0d2530,#0a1c24);
+    border-radius:26px; padding:34px; color:#eaf3f4; margin-top:30px;
+    box-shadow:var(--shadow); position:relative; overflow:hidden;
+  }
+  .lab-shell::before{
+    content:"";position:absolute;inset:0;
+    background-image:radial-gradient(circle,rgba(255,255,255,.05) 1px,transparent 1px);
+    background-size:18px 18px; opacity:.5; pointer-events:none;
+  }
+  .lab-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;position:relative;z-index:2;}
+  .lab-head h3{color:#fff;font-size:1.5rem;}
+  .lab-tabs{display:flex;gap:8px;flex-wrap:wrap;}
+  .lab-tab{
+    font-family:'Cairo',sans-serif;font-weight:700;font-size:.88rem;cursor:pointer;
+    padding:9px 18px;border-radius:999px;border:1px solid rgba(255,255,255,.25);
+    background:rgba(255,255,255,.06); color:#cfe7e9; transition:.25s;
+  }
+  .lab-tab.active{background:var(--amber); color:#1c1304; border-color:var(--amber);}
+
+  .lab-stage{position:relative;z-index:2;margin-top:26px;display:grid;grid-template-columns:1.3fr 1fr;gap:28px;}
+  @media(max-width:880px){.lab-stage{grid-template-columns:1fr;}}
+
+  .bench{
+    background:rgba(255,255,255,.04);
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:18px;padding:24px;min-height:380px;
+    display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
+    perspective:1100px;
+  }
+  .rack{
+    display:flex;gap:18px;align-items:flex-end;
+    transform:rotateX(8deg);
+    transform-style:preserve-3d;
+  }
+  .tube-unit{display:flex;flex-direction:column;align-items:center;gap:8px;}
+  .tube{
+    width:46px;height:140px;border-radius:0 0 23px 23px/0 0 30px 30px;
+    background:linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,.06));
+    border:2px solid rgba(255,255,255,.35);
+    position:relative; overflow:hidden;
+    box-shadow: inset -6px 0 10px rgba(255,255,255,.15), inset 6px 0 10px rgba(0,0,0,.18), 0 10px 18px rgba(0,0,0,.35);
+    transform-style:preserve-3d;
+    transition:transform .3s;
+  }
+  .tube:hover{transform:rotateY(8deg) translateY(-4px);}
+  .tube .liquid{
+    position:absolute;bottom:0;left:0;right:0;height:18%;
+    background:#cfd8db; transition:height .8s ease, background .8s ease;
+    border-radius:0 0 20px 20px;
+  }
+  .tube .precip{
+    position:absolute;bottom:0;left:0;right:0;height:0%;
+    background:#9c3b1f; transition:height 1s ease, opacity .6s ease;
+    opacity:0;
+  }
+  .tube .bubble{
+    position:absolute;width:6px;height:6px;border-radius:50%;
+    background:rgba(255,255,255,.6); opacity:0;
+    animation:rise 1.6s ease-in infinite;
+  }
+  @keyframes rise{
+    0%{bottom:5%;opacity:0;}
+    20%{opacity:.8;}
+    100%{bottom:90%;opacity:0;}
+  }
+  .tube-label{
+    font-family:'Cairo',sans-serif;font-size:.78rem;font-weight:700;color:#cfe7e9;
+    text-align:center;
+  }
+  .stand-bar{width:170px;height:10px;background:#3a4750;border-radius:6px;margin-top:8px;}
+
+  .controls{
+    background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.12);
+    border-radius:18px; padding:22px;
+  }
+  .controls h4{color:var(--amber);font-size:1.05rem;}
+  .field{margin-bottom:16px;}
+  .field label{display:block;font-size:.85rem;color:#bcdadd;margin-bottom:6px;font-weight:700;font-family:'Cairo',sans-serif;}
+  select, .btn{
+    width:100%; font-family:'Tajawal',sans-serif; font-size:.95rem;
+    padding:11px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.2);
+    background:rgba(255,255,255,.07); color:#fff; cursor:pointer;
+  }
+  select option{color:#111;}
+  .btn{
+    font-family:'Cairo',sans-serif;font-weight:700;
+    background:linear-gradient(135deg,var(--amber),#d98c0a);
+    border:none;color:#241a02;margin-top:6px; transition:.2s; box-shadow:0 8px 16px rgba(242,164,12,.3);
+  }
+  .btn:hover{transform:translateY(-2px);}
+  .btn:disabled{opacity:.4;cursor:not-allowed;transform:none;}
+  .btn.secondary{background:rgba(255,255,255,.1);color:#eaf3f4;box-shadow:none;border:1px solid rgba(255,255,255,.25);}
+
+  .readout{
+    margin-top:16px;background:rgba(0,0,0,.25);border-radius:14px;padding:14px 16px;
+    font-size:.92rem;min-height:60px;border-inline-start:4px solid var(--amber);
+  }
+  .readout b{color:var(--amber);}
+
+  /* mascot */
+  .mascot-row{display:flex;gap:14px;align-items:flex-start;margin-top:22px;position:relative;z-index:2;}
+  .mascot{
+    width:74px;height:84px;flex:none;position:relative;
+    animation:bob 3s ease-in-out infinite;
+  }
+  @keyframes bob{0%,100%{transform:translateY(0) rotate(-2deg);}50%{transform:translateY(-7px) rotate(2deg);}}
+  .speech{
+    position:relative;background:#fff;color:#222;border-radius:16px;
+    padding:14px 18px;font-size:.95rem;max-width:560px;box-shadow:var(--shadow);
+    border:2px solid var(--amber);
+  }
+  .speech::before{
+    content:""; position:absolute; top:18px; right:-10px;
+    border-width:8px 0 8px 12px; border-style:solid;
+    border-color:transparent transparent transparent var(--amber);
+  }
+  .speech::after{
+    content:""; position:absolute; top:19px; right:-7px;
+    border-width:7px 0 7px 10px; border-style:solid;
+    border-color:transparent transparent transparent #fff;
+  }
+
+  /* ---------- QUIZ ---------- */
+  .quiz-card{
+    background:#fff;border:2px solid var(--line);border-radius:18px;padding:22px 24px;margin-bottom:18px;
+    box-shadow:var(--shadow);
+  }
+  .quiz-card h4{font-size:1.05rem;color:var(--teal-dark);}
+  .opts{display:flex;flex-direction:column;gap:10px;margin-top:12px;}
+  .opt{
+    padding:11px 16px;border-radius:12px;border:1.5px solid var(--line);cursor:pointer;
+    font-weight:500; transition:.2s;
+  }
+  .opt:hover{border-color:var(--teal);background:#F2FAFB;}
+  .opt.correct{background:#E6F6EA;border-color:var(--leaf);color:#1d5c33;font-weight:700;}
+  .opt.wrong{background:#FDEAE8;border-color:var(--coral);color:#9a2c22;}
+  .fb{margin-top:10px;font-size:.9rem;color:#5b6b75;display:none;}
+
+  footer{
+    background:linear-gradient(160deg,#0a1c24,#053b46);
+    color:#cfe7e9; text-align:center; padding:38px 20px; font-size:.88rem;
+  }
+  footer b{color:var(--amber);font-family:'Cairo',sans-serif;}
+
+  .pill-list{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px;}
+  .pill{
+    background:#fff;border:1.5px solid var(--line);border-radius:999px;padding:8px 16px;
+    font-size:.88rem;font-weight:600;color:var(--teal-dark);
+  }
+  .pill b{color:var(--coral);}
+
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:28px;}
+  @media(max-width:760px){.two-col{grid-template-columns:1fr;}}
+  .info-box{
+    background:#fff;border:2px solid var(--line);border-radius:18px;padding:22px;box-shadow:var(--shadow);
+  }
+  .info-box h4{color:var(--coral);font-size:1.05rem;}
+  .info-box.green h4{color:var(--leaf);}
+  .info-box.purple h4{color:var(--grape);}
+
+  /* ═══ RESPONSIVE MOBILE & TABLET — AUTO-INJECTED ═══ */
+  @media (max-width: 768px) {
+    body { padding: 8px !important; font-size: 15px !important; overflow-x: hidden !important; }
+    .container, [class*="container"], [class*="wrapper"] { padding: 8px !important; max-width: 100% !important; }
+    canvas { width: 100% !important; height: auto !important; display: block !important; touch-action: none; max-width: 100% !important; }
+    svg { max-width: 100% !important; height: auto !important; }
+    h1 { font-size: clamp(18px, 5vw, 32px) !important; }
+    h2 { font-size: clamp(16px, 4vw, 26px) !important; }
+    h3 { font-size: clamp(14px, 3.5vw, 22px) !important; }
+    p, li, td, th, label, span { font-size: clamp(13px, 3.5vw, 16px) !important; }
+    [class*="grid"] { grid-template-columns: 1fr !important; }
+    [class*="flex"] { flex-wrap: wrap !important; }
+    input[type="range"] { width: 100% !important; min-height: 36px; }
+    input[type="number"], input[type="text"], select, textarea { 
+      font-size: 16px !important; width: 100% !important; box-sizing: border-box; padding: 8px !important;
+    }
+    button { min-height: 44px !important; font-size: 14px !important; touch-action: manipulation; padding: 10px 14px !important; }
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 13px !important; }
+    th, td { padding: 6px 4px !important; white-space: nowrap; }
+    [style*="display: grid"], [style*="display:grid"] { display: flex !important; flex-direction: column !important; }
+    .lab-window, [class*="lab-window"] { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+    header { padding: 12px !important; }
+    .controls, [class*="controls"] { flex-direction: column !important; gap: 8px !important; }
+  }
+  @media (max-width: 480px) {
+    body { padding: 4px !important; }
+    h1 { font-size: clamp(16px, 5vw, 24px) !important; }
+    button { width: 100% !important; }
+  }
+  /* ═══ END RESPONSIVE ═══ */
+</style>
+</head>
+<body>
+
+<style>
+.vlab-back-btn {
+  position: fixed; top: 10px; left: 10px; z-index: 99999;
+  background: rgba(10,22,40,0.93); border: 1px solid rgba(0,200,150,0.4);
+  border-radius: 22px; padding: 8px 16px;
+  display: inline-flex; align-items: center; gap: 7px;
+  color: #00C896; font-family: Tajawal, Cairo, Arial, sans-serif;
+  font-size: 13px; font-weight: 700; text-decoration: none;
+  backdrop-filter: blur(8px); box-shadow: 0 4px 18px rgba(0,0,0,0.3);
+  transition: background 0.2s;
+}
+.vlab-back-btn:hover { background: rgba(0,200,150,0.18); color: #00C896; }
+</style>
+
+<a href="../grade9.html" class="vlab-back-btn">&#8594; العودة للصف</a>
+
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="molecule-scene" id="moleculeScene"></div>
+  <div class="wrap" style="position:relative;z-index:2;">
+    <span class="eyebrow">🧪 العلوم والحياة · الصف التاسع · فلسطين</span>
+    <h1>الكربوهيدرات <span>(السكّريات)</span></h1>
+    <p class="lead">رحلة تفاعلية مع المعلّمة الافتراضية «د. سُكَّرة» لاكتشاف أنواع السكّريات الثلاثة، وإجراء تجربة الكشف عنها بنفسك داخل مختبر افتراضي ثلاثي الأبعاد.</p>
+    <div class="hero-meta">
+      <div class="meta-chip"><b>الدرس:</b> ١-١ الكربوهيدرات (السكّريات)</div>
+      <div class="meta-chip"><b>الوحدة:</b> المركّبات الحيوية</div>
+      <div class="meta-chip"><b>النشاط:</b> الكشف عن السكّريات الأحادية والثنائية وعديدة التسكّر</div>
+    </div>
+  </div>
+</header>
+
+<nav class="toc">
+  <div class="wrap">
+    <a href="#intro">📖 المقدّمة</a>
+    <a href="#types">🔬 الأنواع</a>
+    <a href="#compare">📊 جدول المقارنة</a>
+    <a href="#lab">⚗️ المختبر الافتراضي</a>
+    <a href="#conclude">🧠 الاستنتاجات</a>
+    <a href="#quiz">✅ تحقّق من فهمك</a>
+  </div>
+</nav>
+
+<!-- ============ INTRO ============ -->
+<section id="intro">
+  <div class="wrap">
+    <span class="tag">١-١ مدخل الدرس</span>
+    <h2 class="sec-title">ما هي الكربوهيدرات؟</h2>
+    <p class="sec-sub">
+      تُمثّل الأغذية النشويّة كالخبز غنيّةً بالكربوهيدرات، وهناك أمثلة أخرى كثيرة في بيتك. تتضمّن الكربوهيدرات
+      السكّريات الأحاديّة والثنائيّة وعديدة التسكّر <em>(ملحوظة: تُصنَّف ثنائيّة التسكّر أيضًا ضمن قليلة التسكّر)</em>.
+      تُعدّ الكربوهيدرات المصدر الأساسي للطاقة اللازمة للخلايا؛ لأنها تُمدّها بمصدرٍ سريعٍ لها، ويتمّ امتصاص
+      السكّريات الأحاديّة سريعًا في القناة الهضميّة.
+    </p>
+    <div class="mascot-row">
+      <div class="mascot" id="mascotIntro"></div>
+      <div class="speech">
+        أهلًا بك! أنا <b>د. سُكَّرة</b> 👋 سنُجيب معًا عن سؤال الكتاب: <b>كيف يمكن الكشف عن الكربوهيدرات؟ وكيف يمكنك التمييز بينها؟</b>
+        تابع معي خطوة بخطوة، ثم انزل إلى المختبر الافتراضي لتجرّب ذلك بيدك!
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TYPES (3D flip cards) ============ -->
+<section id="types" class="alt">
+  <div class="wrap">
+    <span class="tag">٢ تصنيف السكّريات</span>
+    <h2 class="sec-title">ثلاثة أنواع رئيسية — مرّر الفأرة أو اضغط للقلب 🔄</h2>
+    <p class="sec-sub">كل بطاقة هنا مجسّمة ثلاثية الأبعاد: مرّر عليها (أو اضغط عليها من الهاتف) لترى التفاصيل والأمثلة.</p>
+    <div class="grid3">
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="icon">🍬</div>
+            <h3>سكّريات أحاديّة</h3>
+            <p style="color:#5b6b75;font-size:.85rem;">وحدة بناء واحدة بسيطة</p>
+          </div>
+          <div class="flip-back c1">
+            <h3 style="color:#fff;">Monosaccharides</h3>
+            <p>أبسط أشكال الكربوهيدرات، تتكوّن من جزيء سكّر واحد، وتُمتص مباشرة في الدم.</p>
+            <ul><li>غلوكوز (سكّر العنب)</li><li>فركتوز (سكّر الفاكهة)</li><li>غالاكتوز (سكّر الحليب)</li></ul>
+          </div>
+        </div>
+      </div>
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="icon">🧬</div>
+            <h3>سكّريات ثنائيّة</h3>
+            <p style="color:#5b6b75;font-size:.85rem;">اتحاد جزيئين أحاديين</p>
+          </div>
+          <div class="flip-back c2">
+            <h3 style="color:#fff;">Disaccharides</h3>
+            <p>تتكوّن من اتحاد جزيئَي سكّر أحادي، ويلزم تحليلها (بالماء أو الإنزيمات أو الحمض) قبل امتصاصها.</p>
+            <ul><li>سكروز = غلوكوز + فركتوز (سكّر المائدة)</li><li>لاكتوز = غلوكوز + غلاكتوز (سكّر الحليب)</li><li>مالتوز = غلوكوز + غلوكوز (سكّر الشعير)</li></ul>
+          </div>
+        </div>
+      </div>
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="icon">🌾</div>
+            <h3>عديدة التسكّر</h3>
+            <p style="color:#5b6b75;font-size:.85rem;">سلاسل طويلة متعدّدة الوحدات</p>
+          </div>
+          <div class="flip-back c3">
+            <h3 style="color:#fff;">Polysaccharides</h3>
+            <p>تتكوّن من اتحاد عدد كبير من جزيئات السكّر الأحادي، ولا تُذاب في الماء غالبًا.</p>
+            <ul><li>النشا (في الأرز والخبز)</li><li>السليلوز (في جدران خلايا النبات)</li><li>الغلايكوجين (في الكبد والعضلات)</li></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ COMPARISON TABLE ============ -->
+<section id="compare">
+  <div class="wrap">
+    <span class="tag">٣ جدول السكّريات الغذائية</span>
+    <h2 class="sec-title">السكّر الثنائي ← مكوّناته الأحاديّة</h2>
+    <div class="table-wrap">
+      <table class="comp">
+        <thead>
+          <tr><th>السكّر الثنائي</th><th>السكّريات الأحاديّة المكوّنة له</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>مالتوز (سكّر الشعير)</td><td class="ex">غلوكوز + غلوكوز</td></tr>
+          <tr><td>سكروز (سكّر المائدة)</td><td class="ex">غلوكوز + فركتوز</td></tr>
+          <tr><td>لاكتوز (سكّر الحليب)</td><td class="ex">غلوكوز + غلاكتوز</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="pill-list">
+      <span class="pill">المصدر المفضّل للطاقة لخلايا الدماغ ⚡ <b>الغلوكوز</b></span>
+      <span class="pill">أيّ السكّريات الأحاديّة أكثر <b>حلاوة</b>؟ الفركتوز 🍯</span>
+      <span class="pill">عند اتحاد عدد كبير منها ينتج <b>النشا والسيليولوز</b> 🌿</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ VIRTUAL LAB ============ -->
+<section id="lab" class="alt">
+  <div class="wrap">
+    <span class="tag">٤ نشاط (٤): الكشف عن وجود السكّريات بأنواعها الثلاثة</span>
+    <h2 class="sec-title">المختبر الافتراضي ⚗️</h2>
+    <p class="sec-sub">
+      نفّذ التجربة كما وردت في كتابك: اختر المادة، أضف الكاشف المناسب، سخّن الأنبوب في حمّام ماء ساخن، وسجّل ملاحظاتك.
+      ستظهر النتيجة الحقيقية للّون أمامك في أنبوب الاختبار ثلاثي الأبعاد!
+    </p>
+
+    <div class="lab-shell">
+      <div class="lab-head">
+        <h3>🧫 منضدة المختبر</h3>
+        <div class="lab-tabs">
+          <div class="lab-tab active" data-tab="benedict" onclick="switchTab('benedict')">اختبار بندكت (أحادي/ثنائي)</div>
+          <div class="lab-tab" data-tab="lugol" onclick="switchTab('lugol')">اختبار لوغول (عديد التسكّر)</div>
+        </div>
+      </div>
+
+      <!-- BENEDICT TAB -->
+      <div class="lab-stage" id="tab-benedict">
+        <div class="bench">
+          <div class="rack" id="benedictRack"></div>
+        </div>
+        <div class="controls">
+          <h4>خطوات عملك</h4>
+          <div class="field">
+            <label>١. اختر محتوى الأنبوب</label>
+            <select id="benSelect" onchange="renderBenedict()">
+              <option value="water">ماء (أنبوب الضبط)</option>
+              <option value="glucose">محلول غلوكوز</option>
+              <option value="sucrose">محلول سكروز (سكّر المائدة)</option>
+              <option value="sucrose_acid">سكروز + عصير ليمون (محلَّل)</option>
+            </select>
+          </div>
+          <button class="btn" id="addReagentBtn" onclick="addBenedict()">٢. أضِف ٢مل محلول بندكت 🧴</button>
+          <button class="btn secondary" id="heatBtn" onclick="heatTube()" disabled>٣. ضع الأنبوب في حمّام الماء الساخن 🔥</button>
+          <div class="readout" id="benedictReadout">اختر مادة الأنبوب أولًا ثم أضف الكاشف وسخّنه لترى النتيجة.</div>
+        </div>
+      </div>
+
+      <!-- LUGOL TAB -->
+      <div class="lab-stage" id="tab-lugol" style="display:none;">
+        <div class="bench">
+          <div class="rack" id="lugolRack"></div>
+        </div>
+        <div class="controls">
+          <h4>خطوات عملك</h4>
+          <div class="field">
+            <label>١. اختر محتوى الأنبوب</label>
+            <select id="lugSelect" onchange="renderLugol()">
+              <option value="starch">محلول نشا (الأرز)</option>
+              <option value="glucose">محلول غلوكوز</option>
+              <option value="water">ماء</option>
+            </select>
+          </div>
+          <button class="btn" id="addLugolBtn" onclick="addLugol()">٢. أضِف نقاط محلول لوغول 🟤</button>
+          <div class="readout" id="lugolReadout">اختر المادة ثم أضف محلول لوغول لترى التفاعل.</div>
+        </div>
+      </div>
+
+      <div class="mascot-row">
+        <div class="mascot" id="mascotLab"></div>
+        <div class="speech" id="labSpeech">
+          ابدأ بأنبوب الغلوكوز في اختبار بندكت، وراقب اللون قبل التسخين وبعده — هذا بالضبط ما طلبه نشاط (٤) في كتابك!
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONCLUSIONS ============ -->
+<section id="conclude">
+  <div class="wrap">
+    <span class="tag">٥ ماذا استنتجنا؟</span>
+    <h2 class="sec-title">الاستنتاجات من التجربة</h2>
+    <div class="two-col">
+      <div class="info-box">
+        <h4>🔴 الكشف عن السكّريات الأحاديّة (مثل الغلوكوز)</h4>
+        <p>عند إضافة محلول بندكت الأزرق وتسخينه في حمّام ماء ساخن، يتكوّن <b>راسب آجريّ اللون (أحمر طوبي)</b>؛
+        لأن الغلوكوز سكّر أحادي مُختزِل يتفاعل مباشرة مع كبريتات النحاس في الكاشف.</p>
+      </div>
+      <div class="info-box purple">
+        <h4>🔵 السكّريات الثنائيّة (مثل السكروز)</h4>
+        <p>يبقى لون محلول بندكت <b>أزرق دون تغيّر</b>؛ لأن السكروز سكّر غير مختزل في صورته الأصليّة. لكن بعد إضافة
+        قطرات من عصير الليمون (حمض) الذي يحلّل الرابطة بين وحدتَيه، يتحوّل اللون إلى الأحمر الآجري — لأنه تحوّل إلى
+        غلوكوز وفركتوز حرّين!</p>
+      </div>
+      <div class="info-box green">
+        <h4>🟤 عديدات التسكّر (مثل النشا)</h4>
+        <p>عند إضافة محلول لوغول إلى محلول النشا، يتحوّل اللون إلى <b>أزرق غامق (أزرق-أسود)</b>، وهو الدليل القاطع
+        على وجود النشا، بينما لا يحدث هذا التغيّر مع المحاليل الخالية منه.</p>
+      </div>
+      <div class="info-box">
+        <h4>💡 أهمية الأنبوب الذي يحتوي الماء فقط</h4>
+        <p>يُستخدَم كـ <b>أنبوب ضبط (كنترول)</b> للمقارنة، للتأكّد أن تغيّر اللون في الأنابيب الأخرى ناتج فعلًا عن
+        وجود السكّر وليس عن أي عامل آخر في التجربة.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ QUIZ ============ -->
+<section id="quiz" class="alt">
+  <div class="wrap">
+    <span class="tag">٦ تحقّق من فهمك</span>
+    <h2 class="sec-title">أسئلة الكتاب — أجب وشاهد النتيجة فورًا</h2>
+
+    <div class="quiz-card">
+      <h4>١. أيّ السكّريات الأحاديّة الأكثر حلاوة؟</h4>
+      <div class="opts" data-answer="1">
+        <div class="opt" onclick="checkOpt(this,false)">أ. الغلوكوز</div>
+        <div class="opt" onclick="checkOpt(this,true)">ب. الفركتوز</div>
+        <div class="opt" onclick="checkOpt(this,false)">ج. الغلاكتوز</div>
+      </div>
+    </div>
+
+    <div class="quiz-card">
+      <h4>٢. ما السكّريّات الثنائيّة الواردة في الجدول؟ وما السكّر الأحادي المشترك بينها؟</h4>
+      <div class="opts" data-answer="2">
+        <div class="opt" onclick="checkOpt(this,false)">أ. فركتوز ولاكتوز ومالتوز — والمشترك هو الفركتوز</div>
+        <div class="opt" onclick="checkOpt(this,true)">ب. مالتوز وسكروز ولاكتوز — والمشترك هو الغلوكوز</div>
+        <div class="opt" onclick="checkOpt(this,false)">ج. نشا وسليلوز وغلايكوجين — والمشترك هو الغلاكتوز</div>
+      </div>
+    </div>
+
+    <div class="quiz-card">
+      <h4>٣. ما لون الراسب الذي يدلّ على وجود سكّر أحادي مختزل بعد اختبار بندكت؟</h4>
+      <div class="opts" data-answer="3">
+        <div class="opt" onclick="checkOpt(this,false)">أ. أزرق فاتح</div>
+        <div class="opt" onclick="checkOpt(this,true)">ب. أحمر آجري (طوبي)</div>
+        <div class="opt" onclick="checkOpt(this,false)">ج. أصفر باهت</div>
+      </div>
+    </div>
+
+    <div class="quiz-card">
+      <h4>٤. عند اتحاد عددٍ كبير من السكّريات الأحاديّة معًا، ينتج:</h4>
+      <div class="opts" data-answer="4">
+        <div class="opt" onclick="checkOpt(this,false)">أ. سكّر ثنائي فقط</div>
+        <div class="opt" onclick="checkOpt(this,true)">ب. عديد تسكّر، كالنشا والسليولوز</div>
+        <div class="opt" onclick="checkOpt(this,false)">ج. ماء وملح</div>
+      </div>
+    </div>
+
+    <div class="quiz-card">
+      <h4>٥. ما الهدف من إضافة عصير الليمون إلى أنبوب السكروز في التجربة؟</h4>
+      <div class="opts" data-answer="5">
+        <div class="opt" onclick="checkOpt(this,false)">أ. لتغيير رائحة المحلول فقط</div>
+        <div class="opt" onclick="checkOpt(this,true)">ب. لتحليل الرابطة بين وحدتَي السكروز إلى غلوكوز وفركتوز حرّين</div>
+        <div class="opt" onclick="checkOpt(this,false)">ج. لتبريد المحلول قبل التسخين</div>
+      </div>
+    </div>
+
+    <div class="mascot-row" style="margin-top:10px;">
+      <div class="mascot" id="mascotQuiz"></div>
+      <div class="speech" id="quizSpeech">أحسنت! كلما أجبت أكثر، ساعدتني على معرفة أيّ جزء من الدرس تحتاج مراجعته 🌟</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    صُمِّمت هذه الصفحة التفاعلية وفق منهاج <b>العلوم والحياة — الصف التاسع</b> في فلسطين، درس «الكربوهيدرات (السكّريات)» — نشاط (٤): الكشف عن وجود السكّريات بأنواعها الثلاثة في غذائك.<br>
+    تعمل الصفحة بالكامل على الهاتف والحاسوب، وتدعم اللغة العربية (UTF-8 / RTL).
+  </div>
+</footer>
+
+<script>
+/* ============ Hexagon "glucose ring" decorative scene ============ */
+(function buildMolecules(){
+  const scene = document.getElementById('moleculeScene');
+  const colors = ['#F2A40C','#FF6B5E','#7BD0DB','#9DE0B5'];
+  const positions = [ {l:'6%',t:'10px'}, {l:'24%',t:'90px'}, {l:'46%',t:'0px'},
+                       {l:'64%',t:'100px'}, {l:'82%',t:'20px'}, {l:'93%',t:'110px'} ];
+  positions.forEach((p,i)=>{
+    const div = document.createElement('div');
+    div.className='hexring';
+    div.style.left=p.l; div.style.top=p.t;
+    div.style.animationDelay=(i*0.6)+'s';
+    const c = colors[i%colors.length];
+    div.innerHTML = `<svg viewBox="0 0 100 100"><polygon points="50,3 95,27 95,73 50,97 5,73 5,27"
+      fill="${c}" opacity="0.85" stroke="#fff" stroke-width="3"/></svg>`;
+    scene.appendChild(div);
+  });
+})();
+
+/* ============ Mascot SVG (flask character) ============ */
+function mascotSVG(mood){
+  // mood: 'happy' | 'think' | 'cheer'
+  const eyes = mood==='cheer' ? `<path d="M24 34 q5 6 10 0" stroke="#1F2A33" stroke-width="3" fill="none" stroke-linecap="round"/>
+                                  <path d="M44 34 q5 6 10 0" stroke="#1F2A33" stroke-width="3" fill="none" stroke-linecap="round"/>`
+                               : `<circle cx="29" cy="33" r="3.4" fill="#1F2A33"/><circle cx="49" cy="33" r="3.4" fill="#1F2A33"/>`;
+  const mouth = mood==='think' ? `<path d="M30 46 q9 -3 18 0" stroke="#1F2A33" stroke-width="3" fill="none" stroke-linecap="round"/>`
+                                : `<path d="M28 45 q11 10 22 0" stroke="#1F2A33" stroke-width="3" fill="none" stroke-linecap="round"/>`;
+  return `
+  <svg viewBox="0 0 78 90" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="39" cy="83" rx="22" ry="5" fill="rgba(0,0,0,.18)"/>
+    <path d="M30 8 h18 v18 l16 38 a10 10 0 0 1 -9 14 H23 a10 10 0 0 1 -9 -14 l16 -38 Z"
+      fill="#EAF7F8" stroke="#0B7285" stroke-width="3"/>
+    <rect x="30" y="4" width="18" height="8" rx="2" fill="#0B7285"/>
+    <path d="M22 56 h34 l6 12 a10 10 0 0 1 -9 12 H25 a10 10 0 0 1 -9 -12 Z" fill="#7BD0DB" opacity=".85"/>
+    ${eyes}
+    ${mouth}
+    <circle cx="20" cy="58" r="3" fill="#fff" opacity=".7"/>
+    <circle cx="55" cy="64" r="2" fill="#fff" opacity=".6"/>
+  </svg>`;
+}
+document.getElementById('mascotIntro').innerHTML = mascotSVG('happy');
+document.getElementById('mascotLab').innerHTML = mascotSVG('think');
+document.getElementById('mascotQuiz').innerHTML = mascotSVG('cheer');
+
+function setLabSpeech(text){ document.getElementById('labSpeech').textContent = text; }
+
+/* ============ LAB DATA ============ */
+const benedictColors = {
+  before: { water:'#cfe9f5', glucose:'#cfe9f5', sucrose:'#cfe9f5', sucrose_acid:'#cfe9f5' }
+};
+const benedictNames = { water:'ماء', glucose:'غلوكوز', sucrose:'سكروز', sucrose_acid:'سكروز محلَّل (+ ليمون)' };
+const lugolNames = { starch:'نشا', glucose:'غلوكوز', water:'ماء' };
+
+let benState = { reagentAdded:false, heated:false };
+let lugState = { reagentAdded:false };
+
+function tubeHTML(id, labelText){
+  return `<div class="tube-unit">
+    <div class="tube" id="${id}">
+      <div class="liquid" id="${id}-liquid" style="height:18%;background:#cfd8db;"></div>
+      <div class="precip" id="${id}-precip"></div>
+    </div>
+    <div class="tube-label">${labelText}</div>
+  </div>`;
+}
+
+function renderBenedict(){
+  benState = { reagentAdded:false, heated:false };
+  const sel = document.getElementById('benSelect').value;
+  document.getElementById('benedictRack').innerHTML = tubeHTML('benTube', benedictNames[sel]);
+  document.getElementById('benedictReadout').innerHTML = `أنبوب يحتوي محلول <b>${benedictNames[sel]}</b>. اضغط "أضِف محلول بندكت" للمتابعة.`;
+  document.getElementById('addReagentBtn').disabled = false;
+  document.getElementById('heatBtn').disabled = true;
+  setLabSpeech('جهّز الأنبوب، والخطوة التالية إضافة محلول بندكت الأزرق — ٢ مل تمامًا كما في كتابك.');
+}
+
+function addBenedict(){
+  if(benState.reagentAdded) return;
+  benState.reagentAdded = true;
+  const liquid = document.getElementById('benTube-liquid');
+  liquid.style.height = '55%';
+  liquid.style.background = '#2f6fb0';
+  document.getElementById('addReagentBtn').disabled = true;
+  document.getElementById('heatBtn').disabled = false;
+  document.getElementById('benedictReadout').innerHTML = 'تمّت إضافة محلول بندكت — لاحظ اللون الأزرق الفاتح المميز للكاشف. الآن سخّن الأنبوب في حمّام الماء الساخن لمدة دقيقتين.';
+  setLabSpeech('ممتاز! الآن ضع الأنبوب في حمّام ماء ساخن لمدة دقيقتين، وراقب ماذا سيحدث للون 👀');
+}
+
+function heatTube(){
+  if(benState.heated) return;
+  benState.heated = true;
+  const sel = document.getElementById('benSelect').value;
+  const liquid = document.getElementById('benTube-liquid');
+  const precip = document.getElementById('benTube-precip');
+  document.getElementById('heatBtn').disabled = true;
+
+  // bubbles while "heating"
+  const tube = document.getElementById('benTube');
+  for(let i=0;i<4;i++){
+    const b = document.createElement('div');
+    b.className='bubble';
+    b.style.left = (10+i*9)+'px';
+    b.style.animationDelay = (i*0.3)+'s';
+    tube.appendChild(b);
+  }
+
+  setTimeout(()=>{
+    let readout = '';
+    if(sel==='glucose'){
+      liquid.style.background = '#3f7fc4';
+      precip.style.height='40%';
+      precip.style.opacity='1';
+      readout = '🔴 <b>نتيجة إيجابية!</b> ظهر راسب أحمر آجري — هذا دليل على أن الغلوكوز سكّر أحادي مختزِل.';
+      setLabSpeech('رائع! هذا بالضبط الراسب الآجري الذي وصفه الكتاب لسكّر أحادي مثل الغلوكوز 🔥');
+    } else if(sel==='sucrose'){
+      liquid.style.background = '#2f6fb0';
+      readout = '🔵 <b>نتيجة سلبية:</b> بقي اللون أزرق دون تغيّر — السكروز سكّر ثنائي غير مختزِل في حالته الأصلية. جرّب الآن "سكروز + عصير ليمون".';
+      setLabSpeech('لاحظ أن اللون لم يتغيّر مع السكروز. ماذا لو أضفنا له عصير ليمون قبل التسخين؟ جرّب الخيار الثالث في القائمة!');
+    } else if(sel==='sucrose_acid'){
+      liquid.style.background = '#3f7fc4';
+      precip.style.height='38%';
+      precip.style.opacity='1';
+      readout = '🔴 <b>تحوّل اللون إلى الأحمر الآجري!</b> الحمض في عصير الليمون حلّل الرابطة بين الغلوكوز والفركتوز في السكروز، فظهرت خاصية الاختزال.';
+      setLabSpeech('هذا هو سرّ التجربة! الحمض حوّل السكروز إلى غلوكوز وفركتوز حرّين، فصار قادرًا على اختزال بندكت 🍋');
+    } else {
+      readout = '⚪ <b>أنبوب الضبط:</b> لم يتغيّر اللون، لأن الماء لا يحتوي على سكّر مختزِل. يُستخدم للمقارنة مع بقية الأنابيب.';
+      setLabSpeech('هذا أنبوب الضبط — لا يحتوي سكّرًا، لذا لم يتغيّر لونه. هذه هي فائدة وجود أنبوب مقارنة في كل تجربة علمية.');
+    }
+    document.getElementById('benedictReadout').innerHTML = readout;
+  }, 1300);
+}
+
+function renderLugol(){
+  lugState = { reagentAdded:false };
+  const sel = document.getElementById('lugSelect').value;
+  document.getElementById('lugolRack').innerHTML = tubeHTML('lugTube', lugolNames[sel]);
+  document.getElementById('lugolReadout').innerHTML = `أنبوب يحتوي محلول <b>${lugolNames[sel]}</b>. أضِف محلول لوغول للكشف عن النشا.`;
+  document.getElementById('addLugolBtn').disabled = false;
+  setLabSpeech('محلول لوغول كاشف بنّي اللون مخصّص لعديدات التسكّر كالنشا — أضِفه وراقب التغيّر فورًا، دون الحاجة للتسخين!');
+}
+
+function addLugol(){
+  if(lugState.reagentAdded) return;
+  lugState.reagentAdded = true;
+  const sel = document.getElementById('lugSelect').value;
+  const liquid = document.getElementById('lugTube-liquid');
+  document.getElementById('addLugolBtn').disabled = true;
+  liquid.style.height='55%';
+
+  setTimeout(()=>{
+    let readout='';
+    if(sel==='starch'){
+      liquid.style.background = '#1b2336';
+      readout = '⚫🔵 <b>نتيجة إيجابية:</b> تحوّل اللون فورًا إلى أزرق غامق (أزرق-أسود) — دليل قاطع على وجود النشا.';
+      setLabSpeech('هذا هو اللون الأزرق-الأسود المميز! تذكّره دائمًا: لوغول + نشا = أزرق غامق.');
+    } else {
+      liquid.style.background = '#b06a2e';
+      readout = '🟤 <b>نتيجة سلبية:</b> بقي اللون بنيًّا مصفرًّا كلون الكاشف نفسه، لعدم وجود عديد تسكّر في هذه المادة.';
+      setLabSpeech('لا تغيّر في اللون هنا، لأن هذه المادة لا تحتوي على عديد تسكّر مثل النشا.');
+    }
+    document.getElementById('lugolReadout').innerHTML = readout;
+  }, 700);
+}
+
+function switchTab(name){
+  document.querySelectorAll('.lab-tab').forEach(t=>t.classList.toggle('active', t.dataset.tab===name));
+  document.getElementById('tab-benedict').style.display = name==='benedict' ? 'grid':'none';
+  document.getElementById('tab-lugol').style.display = name==='lugol' ? 'grid':'none';
+  if(name==='lugol') setLabSpeech('انتقلنا لاختبار لوغول الخاص بالكشف عن عديدات التسكّر مثل النشا.');
+  else setLabSpeech('عدنا لاختبار بندكت للتمييز بين السكّريات الأحاديّة والثنائيّة.');
+}
+
+renderBenedict();
+renderLugol();
+
+/* ============ QUIZ LOGIC ============ */
+function checkOpt(el, isCorrect){
+  const group = el.parentElement;
+  if(group.dataset.locked) return;
+  group.dataset.locked = '1';
+  [...group.children].forEach(c=>c.style.pointerEvents='none');
+  el.classList.add(isCorrect ? 'correct':'wrong');
+  if(!isCorrect){
+    [...group.children].forEach(c=>{ if(c.onclick.toString().includes('true')) c.classList.add('correct'); });
+  }
+  const qs = document.getElementById('quizSpeech');
+  qs.textContent = isCorrect ? 'إجابة صحيحة! أحسنت 🌟' : 'ليست هذه، لكن لا بأس — انظر إلى الإجابة الصحيحة المظلّلة باللون الأخضر وراجع الفقرة المرتبطة بها أعلاه.';
+}
+</script>
+</body>
+</html>

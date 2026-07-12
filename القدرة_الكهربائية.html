@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>القدرة الكهربائية - الصف التاسع</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@400;700;900&display=swap');
+
+  :root {
+    --blue-deep: #0a1628;
+    --blue-mid: #0d2244;
+    --blue-glow: #1a4a8a;
+    --electric: #00d4ff;
+    --electric-dim: #0099bb;
+    --gold: #f5c842;
+    --gold-dim: #c9a020;
+    --green-neon: #39ff14;
+    --red-wire: #e63946;
+    --white: #f0f6ff;
+    --gray-light: #b0c4de;
+    --panel-bg: rgba(10,22,50,0.92);
+    --card-bg: rgba(20,40,80,0.85);
+    --border-glow: rgba(0,212,255,0.35);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Cairo', 'Tajawal', sans-serif;
+    background: var(--blue-deep);
+    color: var(--white);
+    min-height: 100vh;
+    overflow-x: hidden;
+    direction: rtl;
+  }
+
+  /* ─── Animated Background ─── */
+  .bg-grid {
+    position: fixed; inset: 0; z-index: 0;
+    background-image:
+      linear-gradient(rgba(0,212,255,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+    animation: gridMove 20s linear infinite;
+  }
+  @keyframes gridMove { 0%{background-position:0 0} 100%{background-position:40px 40px} }
+
+  .particles { position:fixed; inset:0; z-index:0; pointer-events:none; }
+  .particle {
+    position:absolute; width:3px; height:3px; border-radius:50%;
+    background:var(--electric); opacity:0;
+    animation: float var(--dur,8s) var(--delay,0s) infinite ease-in-out;
+  }
+  @keyframes float {
+    0%,100%{opacity:0;transform:translateY(100vh) scale(0)}
+    10%,90%{opacity:.6}
+    50%{transform:translateY(-20px) scale(1.5)}
+  }
+
+  /* ─── Header ─── */
+  header {
+    position: relative; z-index: 10;
+    background: linear-gradient(135deg, #0d2244 0%, #0a1628 50%, #1a0a40 100%);
+    border-bottom: 2px solid var(--electric);
+    box-shadow: 0 0 40px rgba(0,212,255,0.3);
+    padding: 20px 16px 16px;
+    text-align: center;
+  }
+  .header-badge {
+    display:inline-block; background:rgba(0,212,255,0.1);
+    border:1px solid var(--electric); border-radius:20px;
+    padding:4px 16px; font-size:0.75rem; color:var(--electric);
+    letter-spacing:1px; margin-bottom:12px;
+  }
+  header h1 {
+    font-size: clamp(1.6rem,5vw,2.8rem);
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--electric) 0%, var(--gold) 50%, var(--electric) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 20px rgba(0,212,255,0.5));
+    line-height: 1.2;
+  }
+  header p { color:var(--gray-light); margin-top:8px; font-size:0.9rem; }
+
+  /* ─── Navigation ─── */
+  nav {
+    position: relative; z-index: 10;
+    display: flex; justify-content: center; flex-wrap: wrap; gap: 8px;
+    padding: 14px 16px;
+    background: var(--blue-mid);
+    border-bottom: 1px solid var(--border-glow);
+  }
+  .nav-btn {
+    background: rgba(0,212,255,0.08);
+    border: 1px solid rgba(0,212,255,0.3);
+    color: var(--white); padding: 8px 18px;
+    border-radius: 24px; cursor: pointer;
+    font-family: 'Cairo',sans-serif; font-size: 0.85rem; font-weight: 600;
+    transition: all .3s; white-space:nowrap;
+  }
+  .nav-btn:hover, .nav-btn.active {
+    background: var(--electric); color: var(--blue-deep);
+    border-color: var(--electric);
+    box-shadow: 0 0 20px rgba(0,212,255,0.5);
+    transform: translateY(-2px);
+  }
+
+  /* ─── Sections ─── */
+  .section { display:none; position:relative; z-index:5; padding:20px 16px; max-width:1200px; margin:0 auto; }
+  .section.active { display:block; animation: fadeIn .4s ease; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+
+  /* ─── Cards ─── */
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-glow);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 20px;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05);
+  }
+  .card-title {
+    font-size: 1.2rem; font-weight: 700;
+    color: var(--electric);
+    margin-bottom: 16px;
+    display: flex; align-items: center; gap: 10px;
+    border-bottom: 1px solid var(--border-glow);
+    padding-bottom: 12px;
+  }
+  .card-title .icon { font-size: 1.5rem; }
+
+  /* ─── Formula Box 3D ─── */
+  .formula-3d {
+    background: linear-gradient(145deg, #1a3060, #0d1e40);
+    border: 2px solid var(--gold);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    margin: 16px 0;
+    position: relative;
+    transform-style: preserve-3d;
+    box-shadow:
+      0 6px 0 #8a6d00,
+      0 8px 20px rgba(0,0,0,0.5),
+      inset 0 1px 0 rgba(255,255,255,0.1);
+  }
+  .formula-3d::before {
+    content:'';position:absolute;inset:0;border-radius:12px;
+    background:linear-gradient(135deg,rgba(245,200,66,0.1),transparent);
+    pointer-events:none;
+  }
+  .formula-text { font-size:clamp(1.4rem,4vw,2rem); font-weight:900; color:var(--gold); letter-spacing:4px; }
+  .formula-label { font-size:0.8rem; color:var(--gray-light); margin-top:8px; }
+
+  /* ─── Symbols Table ─── */
+  .sym-grid {
+    display: grid; grid-template-columns: repeat(auto-fill,minmax(140px,1fr)); gap:12px;
+    margin-top:16px;
+  }
+  .sym-card {
+    background: rgba(0,212,255,0.07);
+    border: 1px solid rgba(0,212,255,0.25);
+    border-radius:12px; padding:14px 10px; text-align:center;
+    transition:all .3s; cursor:default;
+  }
+  .sym-card:hover {
+    background:rgba(0,212,255,0.18);
+    transform:translateY(-4px) scale(1.03);
+    box-shadow:0 8px 24px rgba(0,212,255,0.25);
+  }
+  .sym-arabic { font-size:2rem; font-weight:900; color:var(--gold); }
+  .sym-name { font-size:0.8rem; color:var(--electric); margin-top:4px; font-weight:600; }
+  .sym-unit { font-size:0.72rem; color:var(--gray-light); }
+
+  /* ─── Info Row ─── */
+  .info-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:16px; }
+  .info-box {
+    background:linear-gradient(135deg,rgba(0,212,255,0.08),rgba(26,74,138,0.3));
+    border:1px solid rgba(0,212,255,0.2); border-radius:12px; padding:16px;
+  }
+  .info-box h4 { color:var(--gold); font-size:0.9rem; margin-bottom:8px; }
+  .info-box p { font-size:0.85rem; line-height:1.7; color:var(--gray-light); }
+
+  /* ─── LAB SECTION ─── */
+  .lab-wrapper {
+    display:grid; grid-template-columns:1fr 1fr; gap:20px;
+  }
+  @media(max-width:768px){ .lab-wrapper{grid-template-columns:1fr;} }
+
+  /* Circuit Canvas */
+  .circuit-panel {
+    background:linear-gradient(145deg,#0a1e40,#071228);
+    border:2px solid rgba(0,212,255,0.4); border-radius:16px; padding:20px;
+    position:relative; overflow:hidden;
+    box-shadow:0 0 40px rgba(0,212,255,0.15), inset 0 0 60px rgba(0,0,0,0.5);
+    min-height:320px;
+  }
+  .circuit-panel::before {
+    content:'';position:absolute;inset:0;
+    background:radial-gradient(ellipse at 50% 50%,rgba(0,212,255,0.04),transparent 70%);
+  }
+
+  #circuitCanvas { width:100%; height:280px; display:block; }
+
+  /* Controls */
+  .controls-panel {
+    background:var(--card-bg); border:1px solid var(--border-glow);
+    border-radius:16px; padding:20px; backdrop-filter:blur(12px);
+  }
+  .control-group { margin-bottom:20px; }
+  .control-label {
+    font-size:0.85rem; font-weight:700; color:var(--electric);
+    margin-bottom:8px; display:flex; justify-content:space-between;
+  }
+  .control-value {
+    background:rgba(0,212,255,0.1); border:1px solid rgba(0,212,255,0.3);
+    border-radius:8px; padding:4px 12px; font-weight:900; color:var(--gold);
+    font-size:1rem;
+  }
+  input[type=range] {
+    width:100%; -webkit-appearance:none; height:6px;
+    background:linear-gradient(90deg,var(--electric-dim),var(--electric));
+    border-radius:3px; outline:none; cursor:pointer;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance:none; width:20px; height:20px;
+    background:var(--gold); border-radius:50%; cursor:pointer;
+    box-shadow:0 0 10px rgba(245,200,66,0.6);
+    transition:transform .2s;
+  }
+  input[type=range]::-webkit-slider-thumb:hover { transform:scale(1.2); }
+
+  .bulb-selector {
+    display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px;
+  }
+  .bulb-btn {
+    background:rgba(0,212,255,0.06); border:2px solid rgba(0,212,255,0.2);
+    border-radius:10px; padding:12px 8px; cursor:pointer; text-align:center;
+    transition:all .3s; color:var(--white); font-family:'Cairo',sans-serif;
+    font-size:0.82rem; font-weight:600;
+  }
+  .bulb-btn:hover,.bulb-btn.selected {
+    background:rgba(245,200,66,0.15); border-color:var(--gold);
+    color:var(--gold); box-shadow:0 0 16px rgba(245,200,66,0.3);
+    transform:scale(1.03);
+  }
+  .bulb-btn .watt { font-size:1.1rem; font-weight:900; display:block; }
+
+  .voltage-btns { display:flex; gap:8px; flex-wrap:wrap; }
+  .volt-btn {
+    flex:1; min-width:60px; background:rgba(230,57,70,0.1);
+    border:2px solid rgba(230,57,70,0.3); border-radius:8px; padding:8px 4px;
+    cursor:pointer; color:var(--white); font-family:'Cairo',sans-serif;
+    font-size:0.9rem; font-weight:700; transition:all .3s; text-align:center;
+  }
+  .volt-btn:hover,.volt-btn.selected {
+    background:rgba(230,57,70,0.3); border-color:var(--red-wire);
+    box-shadow:0 0 14px rgba(230,57,70,0.4);
+  }
+
+  .measure-btn {
+    width:100%; padding:14px; border:none;
+    background:linear-gradient(135deg,var(--electric),var(--blue-glow));
+    color:var(--blue-deep); border-radius:12px; cursor:pointer;
+    font-family:'Cairo',sans-serif; font-size:1rem; font-weight:900;
+    transition:all .3s; margin-top:8px;
+    box-shadow:0 4px 20px rgba(0,212,255,0.4);
+  }
+  .measure-btn:hover {
+    transform:translateY(-2px);
+    box-shadow:0 8px 30px rgba(0,212,255,0.6);
+  }
+  .measure-btn:active { transform:translateY(1px); }
+
+  /* Meters 3D */
+  .meters-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:16px 0; }
+  .meter-3d {
+    background:linear-gradient(145deg,#1c3a1c,#0f200f);
+    border:2px solid #2a6a2a; border-radius:12px; padding:12px;
+    text-align:center; position:relative;
+    box-shadow:0 4px 0 #0a140a, 0 6px 20px rgba(0,0,0,0.5),
+               inset 0 1px 0 rgba(255,255,255,0.08);
+  }
+  .meter-3d.red-meter {
+    background:linear-gradient(145deg,#3a1c1c,#200f0f);
+    border-color:#6a2a2a;
+    box-shadow:0 4px 0 #140a0a, 0 6px 20px rgba(0,0,0,0.5),
+               inset 0 1px 0 rgba(255,255,255,0.08);
+  }
+  .meter-label { font-size:0.7rem; color:#aaa; text-transform:uppercase; letter-spacing:1px; }
+  .meter-value { font-size:1.6rem; font-weight:900; color:var(--green-neon);
+    text-shadow:0 0 10px rgba(57,255,20,0.6); line-height:1.2; }
+  .meter-3d.red-meter .meter-value { color:#ff6b6b; text-shadow:0 0 10px rgba(255,107,107,0.6); }
+  .meter-unit { font-size:0.72rem; color:#888; }
+
+  /* Results Table */
+  .results-table-wrap { overflow-x:auto; }
+  .results-table {
+    width:100%; border-collapse:collapse; font-size:0.82rem;
+  }
+  .results-table th {
+    background:linear-gradient(135deg,rgba(0,212,255,0.2),rgba(0,100,150,0.2));
+    color:var(--electric); padding:10px 8px; text-align:center;
+    border:1px solid rgba(0,212,255,0.2); font-weight:700; font-size:0.78rem;
+  }
+  .results-table td {
+    padding:9px 8px; text-align:center;
+    border:1px solid rgba(0,212,255,0.1); color:var(--white);
+    background:rgba(10,30,60,0.5); transition:background .3s;
+  }
+  .results-table tr:hover td { background:rgba(0,212,255,0.07); }
+  .results-table td.highlight { color:var(--gold); font-weight:700; }
+  .results-table td.measured { color:var(--green-neon); font-weight:700; }
+  .results-table tr.trial1 td { border-right:3px solid rgba(245,200,66,0.3); }
+
+  .add-trial-btn {
+    background:linear-gradient(135deg,rgba(57,255,20,0.15),rgba(0,150,0,0.1));
+    border:2px solid rgba(57,255,20,0.4); color:var(--green-neon);
+    border-radius:10px; padding:10px 20px; cursor:pointer;
+    font-family:'Cairo',sans-serif; font-size:0.85rem; font-weight:700;
+    margin-top:12px; transition:all .3s; display:inline-block;
+  }
+  .add-trial-btn:hover {
+    background:rgba(57,255,20,0.25);
+    box-shadow:0 0 20px rgba(57,255,20,0.3);
+    transform:translateY(-2px);
+  }
+  .reset-btn {
+    background:rgba(230,57,70,0.1); border:2px solid rgba(230,57,70,0.3);
+    color:var(--red-wire); border-radius:10px; padding:10px 20px;
+    cursor:pointer; font-family:'Cairo',sans-serif; font-size:0.85rem;
+    font-weight:700; margin-top:12px; margin-right:10px; transition:all .3s;
+  }
+  .reset-btn:hover { background:rgba(230,57,70,0.25); transform:translateY(-2px); }
+
+  /* ─── Conclusions ─── */
+  .conclusion-card {
+    background:linear-gradient(135deg,rgba(57,255,20,0.07),rgba(0,212,255,0.05));
+    border:2px solid rgba(57,255,20,0.3); border-radius:16px; padding:20px;
+    margin-bottom:16px; position:relative; overflow:hidden;
+  }
+  .conclusion-card::before {
+    content:''; position:absolute; top:0; right:0;
+    width:80px; height:80px;
+    background:radial-gradient(rgba(57,255,20,0.15),transparent);
+  }
+  .conclusion-card h4 { color:var(--green-neon); margin-bottom:10px; font-size:1rem; }
+  .conclusion-card p { color:var(--gray-light); line-height:1.8; font-size:0.9rem; }
+
+  /* ─── Quiz ─── */
+  .quiz-q { margin-bottom:24px; }
+  .quiz-q h4 { color:var(--gold); margin-bottom:12px; font-size:0.95rem; line-height:1.6; }
+  .quiz-options { display:grid; gap:8px; }
+  .quiz-opt {
+    background:rgba(0,212,255,0.05); border:1px solid rgba(0,212,255,0.2);
+    border-radius:10px; padding:12px 16px; cursor:pointer;
+    font-family:'Cairo',sans-serif; font-size:0.88rem; color:var(--white);
+    transition:all .3s; text-align:right;
+  }
+  .quiz-opt:hover:not(.answered) { background:rgba(0,212,255,0.12); border-color:var(--electric); }
+  .quiz-opt.correct { background:rgba(57,255,20,0.15); border-color:var(--green-neon); color:var(--green-neon); }
+  .quiz-opt.wrong { background:rgba(230,57,70,0.15); border-color:var(--red-wire); color:var(--red-wire); }
+  .quiz-feedback { margin-top:8px; padding:10px 14px; border-radius:8px; font-size:0.85rem; display:none; }
+  .quiz-feedback.show { display:block; }
+  .quiz-feedback.correct-fb { background:rgba(57,255,20,0.1); color:var(--green-neon); border:1px solid rgba(57,255,20,0.3); }
+  .quiz-feedback.wrong-fb { background:rgba(230,57,70,0.1); color:var(--red-wire); border:1px solid rgba(230,57,70,0.3); }
+
+  .score-display {
+    text-align:center; padding:24px;
+    background:linear-gradient(135deg,rgba(245,200,66,0.1),rgba(0,212,255,0.1));
+    border:2px solid var(--gold); border-radius:16px;
+    display:none;
+  }
+  .score-display.show { display:block; animation:fadeIn .5s ease; }
+  .score-num { font-size:3rem; font-weight:900; color:var(--gold); }
+
+  /* ─── Notification ─── */
+  .notif {
+    position:fixed; top:20px; left:50%; transform:translateX(-50%);
+    background:linear-gradient(135deg,#1a3060,#0d1e40);
+    border:2px solid var(--electric); border-radius:12px;
+    padding:14px 24px; z-index:1000; font-size:0.9rem; font-weight:700;
+    color:var(--electric); text-align:center; min-width:280px;
+    box-shadow:0 8px 32px rgba(0,0,0,0.5);
+    transition:all .4s; opacity:0; pointer-events:none;
+  }
+  .notif.show { opacity:1; }
+
+  /* ─── Mobile fixes ─── */
+  @media(max-width:480px) {
+    .sym-grid { grid-template-columns:repeat(3,1fr); }
+    .meters-row { grid-template-columns:1fr 1fr; }
+    header h1 { font-size:1.4rem; }
+  }
+
+  /* ─── Bulb Glow Animation ─── */
+  @keyframes bulbPulse {
+    0%,100%{filter:drop-shadow(0 0 4px var(--gold)) drop-shadow(0 0 10px rgba(245,200,66,0.5))}
+    50%{filter:drop-shadow(0 0 12px var(--gold)) drop-shadow(0 0 30px rgba(245,200,66,0.8))}
+  }
+  .glow-active { animation:bulbPulse 1.5s ease-in-out infinite; }
+
+  /* ─── Wire animation ─── */
+  @keyframes currentFlow {
+    0%{stroke-dashoffset:100}
+    100%{stroke-dashoffset:0}
+  }
+  .current-line {
+    stroke-dasharray:6 4;
+    animation:currentFlow .8s linear infinite;
+  }
+
+  /* ═══ RESPONSIVE MOBILE & TABLET — AUTO-INJECTED ═══ */
+  @media (max-width: 768px) {
+    body { padding: 8px !important; font-size: 15px !important; overflow-x: hidden !important; }
+    .container, [class*="container"], [class*="wrapper"] { padding: 8px !important; max-width: 100% !important; }
+    canvas { width: 100% !important; height: auto !important; display: block !important; touch-action: none; max-width: 100% !important; }
+    svg { max-width: 100% !important; height: auto !important; }
+    h1 { font-size: clamp(18px, 5vw, 32px) !important; }
+    h2 { font-size: clamp(16px, 4vw, 26px) !important; }
+    h3 { font-size: clamp(14px, 3.5vw, 22px) !important; }
+    p, li, td, th, label, span { font-size: clamp(13px, 3.5vw, 16px) !important; }
+    [class*="grid"] { grid-template-columns: 1fr !important; }
+    [class*="flex"] { flex-wrap: wrap !important; }
+    input[type="range"] { width: 100% !important; min-height: 36px; }
+    input[type="number"], input[type="text"], select, textarea { 
+      font-size: 16px !important; width: 100% !important; box-sizing: border-box; padding: 8px !important;
+    }
+    button { min-height: 44px !important; font-size: 14px !important; touch-action: manipulation; padding: 10px 14px !important; }
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 13px !important; }
+    th, td { padding: 6px 4px !important; white-space: nowrap; }
+    [style*="display: grid"], [style*="display:grid"] { display: flex !important; flex-direction: column !important; }
+    .lab-window, [class*="lab-window"] { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+    header { padding: 12px !important; }
+    .controls, [class*="controls"] { flex-direction: column !important; gap: 8px !important; }
+  }
+  @media (max-width: 480px) {
+    body { padding: 4px !important; }
+    h1 { font-size: clamp(16px, 5vw, 24px) !important; }
+    button { width: 100% !important; }
+  }
+  /* ═══ END RESPONSIVE ═══ */
+</style>
+</head>
+<body>
+
+<style>
+.vlab-back-btn {
+  position: fixed; top: 10px; left: 10px; z-index: 99999;
+  background: rgba(10,22,40,0.93); border: 1px solid rgba(0,200,150,0.4);
+  border-radius: 22px; padding: 8px 16px;
+  display: inline-flex; align-items: center; gap: 7px;
+  color: #00C896; font-family: Tajawal, Cairo, Arial, sans-serif;
+  font-size: 13px; font-weight: 700; text-decoration: none;
+  backdrop-filter: blur(8px); box-shadow: 0 4px 18px rgba(0,0,0,0.3);
+  transition: background 0.2s;
+}
+.vlab-back-btn:hover { background: rgba(0,200,150,0.18); color: #00C896; }
+</style>
+
+<a href="../grade9.html" class="vlab-back-btn">&#8594; العودة للصف</a>
+
+
+<div class="bg-grid"></div>
+<div class="particles" id="particles"></div>
+
+<div class="notif" id="notif"></div>
+
+<!-- Header -->
+<header>
+  <div class="header-badge">🔬 منهاج العلوم والحياة • الصف التاسع • فلسطين</div>
+  <h1>⚡ القدرة الكهربائية وعلاقتها بفرق الجهد والتيار</h1>
+  <p>نشاط (٢) — مختبر افتراضي تفاعلي ثلاثي الأبعاد</p>
+</header>
+
+<!-- Navigation -->
+<nav>
+  <button class="nav-btn active" onclick="showSection('theory')">📚 الشرح النظري</button>
+  <button class="nav-btn" onclick="showSection('lab')">🔬 المختبر الافتراضي</button>
+  <button class="nav-btn" onclick="showSection('results')">📊 النتائج والاستنتاجات</button>
+  <button class="nav-btn" onclick="showSection('quiz')">✏️ اختبر نفسك</button>
+</nav>
+
+<!-- ══════════════════ THEORY ══════════════════ -->
+<section class="section active" id="theory">
+
+  <div class="card">
+    <div class="card-title"><span class="icon">⚡</span> ما هي القدرة الكهربائية؟</div>
+    <p style="line-height:1.9;font-size:0.92rem;color:var(--gray-light)">
+      القدرة الكهربائية هي <strong style="color:var(--electric)">الطاقة الكهربائية المحوَّلة في وحدة الزمن</strong>.
+      فعندما يمر التيار الكهربائي خلال مصباح، تتحوّل الطاقة الكهربائية إلى حرارة وضوء.
+      المصباح ذو القدرة الأعلى يحوّل طاقةً أكبر في نفس الزمن، فيُضيء أكثر.
+    </p>
+
+    <div class="formula-3d">
+      <div class="formula-label">القدرة الكهربائية (ق)</div>
+      <div class="formula-text">ق = ج × ت</div>
+      <div class="formula-label" style="margin-top:8px">القدرة = الجهد × التيار</div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="formula-3d" style="border-color:var(--electric)">
+        <div class="formula-label">الطاقة الكهربائية (ط)</div>
+        <div class="formula-text" style="font-size:1.4rem">ط = ق × ز</div>
+        <div class="formula-label">ط = ج × ت × ز</div>
+      </div>
+      <div class="formula-3d" style="border-color:var(--green-neon)">
+        <div class="formula-label">من قانون أوم</div>
+        <div class="formula-text" style="font-size:1.4rem">ق = ت² × م</div>
+        <div class="formula-label">أو: ق = ج² ÷ م</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Symbols -->
+  <div class="card">
+    <div class="card-title"><span class="icon">🔤</span> الرموز العربية المستخدمة</div>
+    <div class="sym-grid">
+      <div class="sym-card">
+        <div class="sym-arabic">ج</div>
+        <div class="sym-name">الجهد الكهربائي</div>
+        <div class="sym-unit">الوحدة: فولت (V)</div>
+      </div>
+      <div class="sym-card">
+        <div class="sym-arabic">ت</div>
+        <div class="sym-name">شدة التيار</div>
+        <div class="sym-unit">الوحدة: أمبير (A)</div>
+      </div>
+      <div class="sym-card">
+        <div class="sym-arabic">م</div>
+        <div class="sym-name">المقاومة</div>
+        <div class="sym-unit">الوحدة: أوم (Ω)</div>
+      </div>
+      <div class="sym-card">
+        <div class="sym-arabic">ق</div>
+        <div class="sym-name">القدرة الكهربائية</div>
+        <div class="sym-unit">الوحدة: واط (W)</div>
+      </div>
+      <div class="sym-card">
+        <div class="sym-arabic">ز</div>
+        <div class="sym-name">الزمن</div>
+        <div class="sym-unit">الوحدة: ثانية (s)</div>
+      </div>
+      <div class="sym-card">
+        <div class="sym-arabic">ط</div>
+        <div class="sym-name">الطاقة الكهربائية</div>
+        <div class="sym-unit">الوحدة: جول (J)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Info boxes -->
+  <div class="card">
+    <div class="card-title"><span class="icon">💡</span> حقائق مهمة</div>
+    <div class="info-grid">
+      <div class="info-box">
+        <h4>🔌 وحدة القياس</h4>
+        <p>تُقاس القدرة بالواط (W). الكيلوواط = ١٠٠٠ واط. عداد الكهرباء يقيس الطاقة بالكيلوواط·ساعة.</p>
+      </div>
+      <div class="info-box">
+        <h4>💡 المصباح العادي vs LED</h4>
+        <p>مصباح LED بقدرة ٤W يعطي ضوءاً مساوياً لمصباح تقليدي ٤٠W. يوفّر LED ٩٠٪ من الطاقة!</p>
+      </div>
+      <div class="info-box">
+        <h4>⚡ علاقة القدرة بالتيار</h4>
+        <p>كلما زادت القدرة، زادت شدة التيار المار (عند نفس الجهد). مصباح ٤W يسحب تياراً أكبر من مصباح ٢W.</p>
+      </div>
+      <div class="info-box">
+        <h4>🔋 الطاقة والزمن</h4>
+        <p>الطاقة المستهلكة تتناسب طردياً مع الزمن. مصباح ٤W يستهلك ٢٤٠J في دقيقة واحدة.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="icon">🔬</span> أدوات التجربة</div>
+    <div style="line-height:2;font-size:0.9rem;color:var(--gray-light)">
+      <p>📌 مصباح <strong style="color:var(--gold)">2W-12V</strong> — مصباح <strong style="color:var(--gold)">4W-12V</strong></p>
+      <p>📌 مفتاح تحكم بمصدر الجهد</p>
+      <p>📌 <strong style="color:var(--electric)">فولتميتر</strong> — لقياس فرق الجهد (ج) بالفولت</p>
+      <p>📌 <strong style="color:var(--electric)">أميتر</strong> — لقياس شدة التيار (ت) بالأمبير</p>
+      <p>📌 مصدر كهربائي متغير</p>
+    </div>
+  </div>
+
+</section>
+
+<!-- ══════════════════ LAB ══════════════════ -->
+<section class="section" id="lab">
+
+  <div class="card" style="text-align:center;padding:14px">
+    <div style="font-size:0.85rem;color:var(--gray-light)">
+      🎯 اختَر المصباح وفرق الجهد ← اضغط <strong style="color:var(--electric)">قِس النتيجة</strong> ← سجّلها في الجدول
+    </div>
+  </div>
+
+  <div class="lab-wrapper">
+    <!-- Circuit -->
+    <div>
+      <div class="circuit-panel">
+        <canvas id="circuitCanvas"></canvas>
+      </div>
+      <div class="meters-row">
+        <div class="meter-3d red-meter">
+          <div class="meter-label">⚡ فرق الجهد (ج)</div>
+          <div class="meter-value" id="mVolt">0.00</div>
+          <div class="meter-unit">فولت (V)</div>
+        </div>
+        <div class="meter-3d">
+          <div class="meter-label">〰️ التيار (ت)</div>
+          <div class="meter-value" id="mCurr">0.000</div>
+          <div class="meter-unit">أمبير (A)</div>
+        </div>
+        <div class="meter-3d" style="background:linear-gradient(145deg,#1a1a3a,#0f0f20);border-color:#3a3a8a;">
+          <div class="meter-label">⚡ القدرة (ق)</div>
+          <div class="meter-value" id="mPow" style="color:#bf9fff;text-shadow:0 0 10px rgba(191,159,255,0.6)">0.00</div>
+          <div class="meter-unit">واط (W)</div>
+        </div>
+        <div class="meter-3d" style="background:linear-gradient(145deg,#1a3020,#0f2010);border-color:#3a8a3a;">
+          <div class="meter-label">🔁 ج × ت</div>
+          <div class="meter-value" id="mJT" style="color:#98ff98;text-shadow:0 0 10px rgba(152,255,152,0.6)">0.000</div>
+          <div class="meter-unit">النتيجة</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls-panel">
+      <div class="control-group">
+        <div class="card-title" style="font-size:1rem;margin-bottom:12px"><span class="icon">💡</span> اختَر المصباح</div>
+        <div class="bulb-selector">
+          <button class="bulb-btn selected" onclick="selectBulb('2W',this)">
+            <span class="watt">💡 2W</span>
+            مصباح ٢ واط<br><small style="color:var(--gray-light)">م = ٧٢ أوم</small>
+          </button>
+          <button class="bulb-btn" onclick="selectBulb('4W',this)">
+            <span class="watt">💡 4W</span>
+            مصباح ٤ واط<br><small style="color:var(--gray-light)">م = ٣٦ أوم</small>
+          </button>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <div class="card-title" style="font-size:1rem;margin-bottom:12px"><span class="icon">🔋</span> اختَر فرق الجهد (ج)</div>
+        <div class="voltage-btns">
+          <button class="volt-btn selected" onclick="selectVolt(3,this)">٣ V</button>
+          <button class="volt-btn" onclick="selectVolt(6,this)">٦ V</button>
+          <button class="volt-btn" onclick="selectVolt(9,this)">٩ V</button>
+          <button class="volt-btn" onclick="selectVolt(12,this)">١٢ V</button>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <div class="card-title" style="font-size:1rem;margin-bottom:8px"><span class="icon">⏱️</span> الزمن (ز)</div>
+        <div class="control-label">
+          <span>اضبط الزمن بالثواني</span>
+          <span class="control-value" id="timeDisp">٦٠ ثانية</span>
+        </div>
+        <input type="range" id="timeSlider" min="10" max="120" value="60"
+          oninput="updateTime(this.value)">
+      </div>
+
+      <button class="measure-btn" onclick="measure()">⚡ قِس النتيجة الآن</button>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="card" style="margin-top:20px">
+    <div class="card-title"><span class="icon">📊</span> جدول تسجيل النتائج</div>
+    <div class="results-table-wrap">
+      <table class="results-table" id="dataTable">
+        <thead>
+          <tr>
+            <th>المحاولة</th>
+            <th>المصباح</th>
+            <th>فرق الجهد (ج) — فولت</th>
+            <th>شدة التيار (ت) — أمبير</th>
+            <th>ج × ت</th>
+            <th>القدرة المُسمّاة (ق)</th>
+            <th>الطاقة (ط = ق × ز) — جول</th>
+            <th>ملاحظات</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+          <tr><td colspan="8" style="color:var(--gray-light);padding:24px;font-size:0.85rem">
+            🔬 نفّذ التجربة واضغط "أضف للجدول" لتسجيل النتائج...
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:10px">
+      <button class="add-trial-btn" onclick="addTrial()" id="addBtn" disabled>➕ أضف للجدول</button>
+      <button class="reset-btn" onclick="resetTable()">🗑️ مسح الجدول</button>
+    </div>
+  </div>
+
+</section>
+
+<!-- ══════════════════ RESULTS ══════════════════ -->
+<section class="section" id="results">
+
+  <div class="card">
+    <div class="card-title"><span class="icon">📈</span> تحليل النتائج</div>
+    <div id="analysisContent" style="color:var(--gray-light);font-size:0.88rem;line-height:1.8">
+      <p>⚠️ نفّذ التجربة أولاً وأضف النتائج للجدول، ثم ارجع لهذه الصفحة لرؤية التحليل.</p>
+    </div>
+  </div>
+
+  <div class="conclusion-card">
+    <h4>🔍 الاستنتاج الأول: القدرة وشدة التيار</h4>
+    <p>
+      المصباح ذو القدرة الأعلى <strong style="color:var(--gold)">(٤W)</strong> يسمح بمرور <strong style="color:var(--gold)">تيار أكبر</strong>
+      مقارنةً بالمصباح ذي القدرة الأقل <strong style="color:var(--electric)">(٢W)</strong> عند نفس فرق الجهد.
+      <br>∴ <strong style="color:var(--green-neon)">شدة الإضاءة تتناسب طردياً مع القدرة الكهربائية</strong>
+    </p>
+  </div>
+
+  <div class="conclusion-card">
+    <h4>🔍 الاستنتاج الثاني: العلاقة بين القدرة وفرق الجهد</h4>
+    <p>
+      عند زيادة فرق الجهد (ج) مع نفس المصباح، تزداد شدة التيار (ت) وبالتالي تزداد القدرة (ق = ج × ت).
+      <br>∴ <strong style="color:var(--green-neon)">القدرة تتناسب طردياً مع فرق الجهد المسلّط على المصباح</strong>
+    </p>
+  </div>
+
+  <div class="conclusion-card">
+    <h4>🔍 الاستنتاج الثالث: ق = ج × ت</h4>
+    <p>
+      النتيجة العددية لحاصل ضرب <strong style="color:var(--gold)">(ج × ت)</strong> تساوي دائماً
+      <strong style="color:var(--electric)">القدرة المُسمّاة على المصباح</strong>.
+      <br>∴ <strong style="color:var(--green-neon)">القدرة الكهربائية = فرق الجهد × شدة التيار</strong>
+    </p>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="icon">📊</span> مقارنة بصرية للقدرة</div>
+    <canvas id="chartCanvas" width="600" height="280" style="width:100%;border-radius:8px;background:rgba(0,0,0,0.2)"></canvas>
+    <div id="chartLegend" style="display:flex;gap:16px;flex-wrap:wrap;margin-top:10px;font-size:0.8rem;color:var(--gray-light)">
+      <span>📊 أضف بيانات من المختبر لرسم المخطط</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="icon">❓</span> أسئلة التحليل</div>
+    <div style="display:grid;gap:14px">
+      <div class="info-box">
+        <h4>❓ أيّ المصباحَين أعطى شدة إضاءة أكبر؟ ما دليلك؟</h4>
+        <p>المصباح ذو القدرة الأعلى (٤W) يُضيء أكثر، لأنه يسحب تياراً أكبر ويحوّل طاقةً أكبر في نفس الزمن.</p>
+      </div>
+      <div class="info-box">
+        <h4>❓ ما علاقة شدة الإضاءة مع قدرة المصباح؟</h4>
+        <p>علاقة طردية: كلما ازدادت قدرة المصباح، ازدادت شدة إضاءته، لأنه يستهلك طاقةً كهربائيةً أكبر في الثانية.</p>
+      </div>
+      <div class="info-box">
+        <h4>❓ هل ازدادت كذلك قيمة الطاقة المتحولة؟</h4>
+        <p>نعم، الطاقة = القدرة × الزمن (ط = ق × ز)؛ فمصباح ٤W يستهلك ضعف طاقة مصباح ٢W في نفس المدة الزمنية.</p>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ══════════════════ QUIZ ══════════════════ -->
+<section class="section" id="quiz">
+
+  <div class="card">
+    <div class="card-title"><span class="icon">✏️</span> اختبر فهمك للقدرة الكهربائية</div>
+    <div id="quizContainer"></div>
+    <div class="score-display" id="scoreBox">
+      <div style="font-size:1rem;color:var(--gray-light);margin-bottom:8px">نتيجتك</div>
+      <div class="score-num" id="scoreNum">0/0</div>
+      <div style="font-size:1rem;color:var(--electric);margin-top:8px" id="scoreTxt"></div>
+    </div>
+    <button class="measure-btn" id="submitQuiz" onclick="submitQuiz()" style="display:none">✅ تحقق من إجاباتي</button>
+    <button class="measure-btn" id="retryQuiz" onclick="initQuiz()" style="display:none;background:linear-gradient(135deg,var(--gold),#a07000);color:#000">🔄 أعِد الاختبار</button>
+  </div>
+
+</section>
+
+<script>
+// ═══════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════
+let selBulb = '2W';
+let selVolt = 3;
+let selTime = 60;
+let measured = false;
+let currMeasured = {};
+let tableData = [];
+
+const bulbR = { '2W': 72, '4W': 36 };
+const bulbW = { '2W': 2, '4W': 4 };
+
+// ═══════════════════════════════════════════
+// PARTICLES
+// ═══════════════════════════════════════════
+(function() {
+  const c = document.getElementById('particles');
+  for(let i=0;i<25;i++){
+    const p=document.createElement('div');
+    p.className='particle';
+    p.style.cssText=`left:${Math.random()*100}%;--dur:${6+Math.random()*10}s;--delay:${-Math.random()*10}s`;
+    c.appendChild(p);
+  }
+})();
+
+// ═══════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+  if(id==='results') updateAnalysis();
+}
+
+// ═══════════════════════════════════════════
+// LAB CONTROLS
+// ═══════════════════════════════════════════
+function selectBulb(w, btn) {
+  selBulb = w; measured = false;
+  document.getElementById('addBtn').disabled = true;
+  document.querySelectorAll('.bulb-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  resetMeters();
+  drawCircuit();
+}
+
+function selectVolt(v, btn) {
+  selVolt = v; measured = false;
+  document.getElementById('addBtn').disabled = true;
+  document.querySelectorAll('.volt-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  resetMeters();
+  drawCircuit();
+}
+
+function updateTime(v) {
+  selTime = parseInt(v);
+  const ar = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
+  const arNum = String(v).split('').map(d=>ar[parseInt(d)]||d).join('');
+  document.getElementById('timeDisp').textContent = arNum + ' ثانية';
+}
+
+function resetMeters() {
+  document.getElementById('mVolt').textContent='0.00';
+  document.getElementById('mCurr').textContent='0.000';
+  document.getElementById('mPow').textContent='0.00';
+  document.getElementById('mJT').textContent='0.000';
+}
+
+function measure() {
+  const R = bulbR[selBulb];
+  const J = selVolt;
+  const T = J / R;
+  const Q = J * T;
+  const energy = Q * selTime;
+
+  // Animate meters
+  animateMeter('mVolt', 0, J, 600, 2);
+  animateMeter('mCurr', 0, T, 700, 3);
+  animateMeter('mPow', 0, Q, 800, 2);
+  animateMeter('mJT', 0, J*T, 800, 3);
+
+  currMeasured = { bulb:selBulb, volt:J, curr:T, power:Q, jt:J*T, time:selTime, energy };
+  measured = true;
+  document.getElementById('addBtn').disabled = false;
+
+  drawCircuit(true);
+  showNotif(`✅ تم القياس: ق = ${Q.toFixed(3)} W — ط = ${energy.toFixed(1)} J`);
+}
+
+function animateMeter(id, from, to, duration, decimals) {
+  const el = document.getElementById(id);
+  const start = performance.now();
+  function step(now) {
+    const t = Math.min((now-start)/duration, 1);
+    const ease = 1-Math.pow(1-t,3);
+    el.textContent = (from+(to-from)*ease).toFixed(decimals);
+    if(t<1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+function addTrial() {
+  if(!measured) return;
+  tableData.push({...currMeasured});
+  renderTable();
+  measured=false;
+  document.getElementById('addBtn').disabled=true;
+  showNotif('✅ تمت إضافة النتيجة للجدول بنجاح!');
+}
+
+function resetTable() {
+  tableData=[];
+  renderTable();
+  resetMeters();
+  measured=false;
+  document.getElementById('addBtn').disabled=true;
+  drawCircuit();
+  showNotif('🗑️ تم مسح الجدول');
+}
+
+function renderTable() {
+  const tbody = document.getElementById('tableBody');
+  if(tableData.length===0){
+    tbody.innerHTML='<tr><td colspan="8" style="color:var(--gray-light);padding:24px;font-size:0.85rem">🔬 نفّذ التجربة واضغط "أضف للجدول" لتسجيل النتائج...</td></tr>';
+    return;
+  }
+  tbody.innerHTML = tableData.map((d,i)=>`
+    <tr class="${i<2?'trial1':''}">
+      <td>${i+1}</td>
+      <td class="highlight">💡 ${d.bulb}</td>
+      <td>${d.volt.toFixed(1)}</td>
+      <td class="measured">${d.curr.toFixed(3)}</td>
+      <td class="measured">${d.jt.toFixed(3)}</td>
+      <td class="highlight">${d.power.toFixed(2)} W</td>
+      <td>${d.energy.toFixed(1)}</td>
+      <td style="font-size:0.75rem;color:var(--gray-light)">
+        ${d.bulb==='4W'?'إضاءة أقوى':'إضاءة أخفت'}
+      </td>
+    </tr>`).join('');
+}
+
+// ═══════════════════════════════════════════
+// CIRCUIT CANVAS
+// ═══════════════════════════════════════════
+function drawCircuit(active) {
+  const canvas = document.getElementById('circuitCanvas');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.offsetWidth; const H = 280;
+  canvas.width = W; canvas.height = H;
+
+  // Background
+  ctx.fillStyle='rgba(5,15,30,0)';
+  ctx.clearRect(0,0,W,H);
+
+  const cx=W/2, cy=H/2;
+  const bw=Math.min(W*0.7,320), bh=Math.min(H*0.65,170);
+  const x0=cx-bw/2, y0=cy-bh/2, x1=cx+bw/2, y1=cy+bh/2;
+
+  // Glow filter
+  ctx.shadowBlur=0; ctx.shadowColor='transparent';
+
+  const wireColor = active ? '#00d4ff' : '#2a5a7a';
+  const wireWidth = active ? 3 : 2;
+
+  if(active) {
+    ctx.shadowBlur=12; ctx.shadowColor='#00d4ff';
+  }
+
+  // Draw circuit wires
+  ctx.strokeStyle=wireColor; ctx.lineWidth=wireWidth;
+  ctx.lineCap='round'; ctx.lineJoin='round';
+
+  // Top wire
+  ctx.beginPath(); ctx.moveTo(x0,y0); ctx.lineTo(x1,y0); ctx.stroke();
+  // Bottom wire
+  ctx.beginPath(); ctx.moveTo(x0,y1); ctx.lineTo(x1,y1); ctx.stroke();
+  // Left wire
+  ctx.beginPath(); ctx.moveTo(x0,y0); ctx.lineTo(x0,y1); ctx.stroke();
+  // Right wire
+  ctx.beginPath(); ctx.moveTo(x1,y0); ctx.lineTo(x1,y1); ctx.stroke();
+
+  ctx.shadowBlur=0;
+
+  // Battery (left side)
+  drawBattery(ctx, x0, cy, active);
+
+  // Switch (top)
+  drawSwitch(ctx, cx, y0, active);
+
+  // Bulb (right)
+  drawBulb(ctx, x1, cy, active);
+
+  // Ammeter (bottom-left area)
+  drawMeter(ctx, x0+bw*0.3, y1, 'ت', '#39ff14', active);
+
+  // Voltmeter (spans bulb)
+  drawVoltmeter(ctx, x1, y0+bh*0.3, y1-bh*0.3, active);
+
+  // Labels
+  ctx.fillStyle='rgba(176,196,222,0.8)'; ctx.font=`${Math.max(10,W*0.025)}px Cairo`;
+  ctx.textAlign='center';
+  ctx.fillText(`ج = ${selVolt}V`, x0-32, cy+4);
+  ctx.fillText(`م = ${bulbR[selBulb]}Ω`, x1+36, cy+4);
+  ctx.fillText(`${selBulb}`, x1+36, cy+18);
+
+  // Current flow animation
+  if(active) drawCurrentFlow(ctx, x0,y0,x1,y1,W);
+}
+
+function drawBattery(ctx,x,cy,active) {
+  const h=40, w=20;
+  ctx.fillStyle=active?'#2a6a4a':'#1a3a2a';
+  ctx.strokeStyle=active?'#39ff14':'#2a6a3a';
+  ctx.lineWidth=2;
+  roundRect(ctx,x-w/2-30,cy-h/2,w,h,4);
+  ctx.fill(); ctx.stroke();
+  // terminals
+  for(let i=0;i<3;i++){
+    ctx.fillStyle=i%2===0?'#39ff14':'#888';
+    ctx.fillRect(x-w/2-30+w-4,cy-h/2+6+i*12,8,6);
+  }
+  ctx.fillStyle=active?'#39ff14':'#666';
+  ctx.font='10px Cairo'; ctx.textAlign='center';
+  ctx.fillText('🔋', x-30, cy+4);
+}
+
+function drawSwitch(ctx,cx,y,active) {
+  ctx.strokeStyle=active?'#f5c842':'#5a4a1a';
+  ctx.lineWidth=3;
+  ctx.beginPath();
+  ctx.moveTo(cx-18,y); ctx.arc(cx,y,8,Math.PI,active?-0.3:-0.6,false);
+  ctx.stroke();
+  ctx.fillStyle=active?'#f5c842':'#888';
+  ctx.beginPath(); ctx.arc(cx-18,y,5,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(cx+18,y,5,0,Math.PI*2); ctx.fill();
+  ctx.font='10px Cairo'; ctx.fillStyle=active?'#f5c842':'#666';
+  ctx.textAlign='center'; ctx.fillText('مفتاح',cx,y-16);
+}
+
+function drawBulb(ctx,x,cy,active) {
+  const r=22;
+  // Bulb body
+  if(active) { ctx.shadowBlur=30; ctx.shadowColor='#f5c842'; }
+  ctx.fillStyle=active?'rgba(255,220,50,0.3)':'rgba(50,50,80,0.5)';
+  ctx.strokeStyle=active?'#f5c842':'#4a4a6a';
+  ctx.lineWidth=2;
+  ctx.beginPath();
+  ctx.arc(x,cy-5,r,Math.PI*0.1,Math.PI*0.9);
+  // Screw base
+  ctx.lineTo(x+10,cy+14); ctx.lineTo(x-10,cy+14); ctx.closePath();
+  ctx.fill(); ctx.stroke();
+  // Base segments
+  for(let i=0;i<3;i++){
+    ctx.strokeStyle=active?'rgba(245,200,66,0.6)':'rgba(100,100,130,0.4)';
+    ctx.lineWidth=1;
+    ctx.beginPath();
+    ctx.moveTo(x-9,cy+8+i*3); ctx.lineTo(x+9,cy+8+i*3); ctx.stroke();
+  }
+  // Filament
+  ctx.strokeStyle=active?'#fff7a0':'#666';
+  ctx.lineWidth=1.5; ctx.shadowBlur=0;
+  ctx.beginPath();
+  ctx.moveTo(x-6,cy+4); ctx.lineTo(x-3,cy-4); ctx.lineTo(x,cy+4);
+  ctx.lineTo(x+3,cy-4); ctx.lineTo(x+6,cy+4); ctx.stroke();
+  // Label
+  ctx.shadowBlur=0;
+  ctx.fillStyle=active?'#f5c842':'#888';
+  ctx.font='9px Cairo'; ctx.textAlign='center';
+  ctx.fillText('💡',x,cy-32);
+}
+
+function drawMeter(ctx,x,y,label,color,active) {
+  const r=16;
+  ctx.fillStyle=`rgba(${active?'0,100,0':'20,30,50'},0.8)`;
+  ctx.strokeStyle=active?color:'#2a4a2a';
+  ctx.lineWidth=2;
+  ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fill(); ctx.stroke();
+  ctx.fillStyle=active?color:'#666';
+  ctx.font=`bold 12px Cairo`; ctx.textAlign='center';
+  ctx.fillText(label,x,y+4);
+}
+
+function drawVoltmeter(ctx,x,y0,y1,active) {
+  const mx=x+30, my=(y0+y1)/2, r=16;
+  ctx.strokeStyle=active?'rgba(230,57,70,0.6)':'rgba(80,20,20,0.4)';
+  ctx.lineWidth=1.5; ctx.setLineDash([4,4]);
+  ctx.beginPath(); ctx.moveTo(x,y0); ctx.lineTo(mx,y0); ctx.lineTo(mx,my-r); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(x,y1); ctx.lineTo(mx,y1); ctx.lineTo(mx,my+r); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle='rgba(80,20,20,0.8)';
+  ctx.strokeStyle=active?'#e63946':'#5a2020';
+  ctx.lineWidth=2;
+  ctx.beginPath(); ctx.arc(mx,my,r,0,Math.PI*2); ctx.fill(); ctx.stroke();
+  ctx.fillStyle=active?'#ff6b6b':'#666';
+  ctx.font='bold 11px Cairo'; ctx.textAlign='center';
+  ctx.fillText('ج',mx,my+4);
+}
+
+function drawCurrentFlow(ctx,x0,y0,x1,y1,W) {
+  // Animated dots along circuit path
+  const t=(Date.now()/600)%1;
+  const path=[
+    {x:x0,y:y0},{x:x1,y:y0},
+    {x:x1,y:y1},{x:x0,y:y1},{x:x0,y:y0}
+  ];
+  // Calculate total path length
+  let totalLen=0;
+  for(let i=0;i<path.length-1;i++){
+    totalLen+=Math.hypot(path[i+1].x-path[i].x,path[i+1].y-path[i].y);
+  }
+  // Draw dots
+  for(let d=0;d<6;d++){
+    const pos=((t+d/6)*totalLen)%totalLen;
+    let rem=pos, prev=path[0];
+    for(let i=0;i<path.length-1;i++){
+      const seg=Math.hypot(path[i+1].x-path[i].x,path[i+1].y-path[i].y);
+      if(rem<=seg){
+        const px=path[i].x+(path[i+1].x-path[i].x)*(rem/seg);
+        const py=path[i].y+(path[i+1].y-path[i].y)*(rem/seg);
+        ctx.shadowBlur=8; ctx.shadowColor='#00d4ff';
+        ctx.fillStyle='#00d4ff';
+        ctx.beginPath(); ctx.arc(px,py,4,0,Math.PI*2); ctx.fill();
+        ctx.shadowBlur=0;
+        break;
+      }
+      rem-=seg;
+    }
+  }
+  requestAnimationFrame(()=>drawCircuit(true));
+}
+
+function roundRect(ctx,x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.lineTo(x+w-r,y); ctx.arcTo(x+w,y,x+w,y+r,r);
+  ctx.lineTo(x+w,y+h-r); ctx.arcTo(x+w,y+h,x+w-r,y+h,r);
+  ctx.lineTo(x+r,y+h); ctx.arcTo(x,y+h,x,y+h-r,r);
+  ctx.lineTo(x,y+r); ctx.arcTo(x,y,x+r,y,r);
+  ctx.closePath();
+}
+
+// ═══════════════════════════════════════════
+// NOTIFICATIONS
+// ═══════════════════════════════════════════
+let notifTimer;
+function showNotif(msg) {
+  const n=document.getElementById('notif');
+  n.textContent=msg; n.classList.add('show');
+  clearTimeout(notifTimer);
+  notifTimer=setTimeout(()=>n.classList.remove('show'),3000);
+}
+
+// ═══════════════════════════════════════════
+// ANALYSIS & CHART
+// ═══════════════════════════════════════════
+function updateAnalysis() {
+  const el=document.getElementById('analysisContent');
+  if(tableData.length===0){
+    el.innerHTML='<p>⚠️ نفّذ التجربة أولاً وأضف النتائج للجدول، ثم ارجع لهذه الصفحة لرؤية التحليل.</p>';
+    return;
+  }
+  const rows=tableData.map((d,i)=>`
+    <tr>
+      <td style="padding:8px;color:var(--gold)">${i+1}</td>
+      <td style="padding:8px;color:var(--electric)">💡${d.bulb}</td>
+      <td style="padding:8px">${d.volt}V</td>
+      <td style="padding:8px;color:var(--green-neon)">${d.curr.toFixed(3)}A</td>
+      <td style="padding:8px;color:#bf9fff">${d.power.toFixed(2)}W</td>
+      <td style="padding:8px;color:var(--gold)">${d.energy.toFixed(1)}J</td>
+    </tr>`).join('');
+  el.innerHTML=`
+    <table style="width:100%;border-collapse:collapse">
+      <tr>
+        <th style="padding:8px;color:var(--electric);border-bottom:1px solid rgba(0,212,255,0.2)">#</th>
+        <th style="padding:8px;color:var(--electric);border-bottom:1px solid rgba(0,212,255,0.2)">المصباح</th>
+        <th style="padding:8px;color:var(--electric);border-bottom:1px solid rgba(0,212,255,0.2)">الجهد</th>
+        <th style="padding:8px;color:var(--electric);border-bottom:1px solid rgba(0,212,255,0.2)">التيار</th>
+        <th style="padding:8px;color:var(--electric);border-bottom:1px solid rgba(0,212,255,0.2)">القدرة</th>
+        <th style="padding:8px;color:var(--electric);border-bottom:1px solid rgba(0,212,255,0.2)">الطاقة</th>
+      </tr>
+      ${rows}
+    </table>`;
+  drawChart();
+}
+
+function drawChart() {
+  if(tableData.length===0) return;
+  const canvas=document.getElementById('chartCanvas');
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width, H=canvas.height;
+  const pad=60;
+
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='rgba(5,15,40,0.8)';
+  ctx.fillRect(0,0,W,H);
+
+  // Grid
+  ctx.strokeStyle='rgba(0,212,255,0.08)'; ctx.lineWidth=1;
+  for(let i=0;i<=5;i++){
+    const y=H-pad-(i/5)*(H-pad*2);
+    ctx.beginPath(); ctx.moveTo(pad,y); ctx.lineTo(W-20,y); ctx.stroke();
+  }
+
+  // Data
+  const maxP=Math.max(...tableData.map(d=>d.power),4)*1.2;
+  const barW=Math.min(50,(W-pad*2)/(tableData.length+1)-10);
+
+  tableData.forEach((d,i)=>{
+    const x=pad+i*(barW+12)+barW/2+10;
+    const barH=((d.power)/maxP)*(H-pad*2);
+    const y=H-pad-barH;
+    const color=d.bulb==='4W'?'#f5c842':'#00d4ff';
+
+    // Bar shadow
+    ctx.shadowBlur=15; ctx.shadowColor=color;
+    ctx.fillStyle=color+'88';
+    ctx.fillRect(x-barW/2,y+3,barW,barH);
+
+    // Bar
+    const grad=ctx.createLinearGradient(0,y,0,H-pad);
+    grad.addColorStop(0,color);
+    grad.addColorStop(1,color+'44');
+    ctx.fillStyle=grad;
+    ctx.fillRect(x-barW/2,y,barW,barH);
+    ctx.shadowBlur=0;
+
+    // Label
+    ctx.fillStyle='#fff';
+    ctx.font='10px Cairo'; ctx.textAlign='center';
+    ctx.fillText(`${d.volt}V`,x,H-pad+14);
+    ctx.fillText(`${d.bulb}`,x,H-pad+26);
+    ctx.fillStyle=color;
+    ctx.font='bold 11px Cairo';
+    ctx.fillText(`${d.power.toFixed(1)}W`,x,y-6);
+  });
+
+  // Axes
+  ctx.strokeStyle='rgba(0,212,255,0.4)'; ctx.lineWidth=2;
+  ctx.beginPath(); ctx.moveTo(pad,20); ctx.lineTo(pad,H-pad); ctx.lineTo(W-20,H-pad); ctx.stroke();
+
+  // Y labels
+  ctx.fillStyle='var(--gray-light)'; ctx.font='10px Cairo'; ctx.textAlign='left';
+  for(let i=0;i<=4;i++){
+    const val=(maxP/4)*i;
+    const y=H-pad-(i/4)*(H-pad*2);
+    ctx.fillText(`${val.toFixed(1)}W`,2,y+3);
+  }
+
+  // Legend
+  const leg=document.getElementById('chartLegend');
+  leg.innerHTML=`
+    <span style="color:#00d4ff">■ مصباح ٢W</span>
+    <span style="color:#f5c842">■ مصباح ٤W</span>
+    <span style="color:var(--gray-light)">— القدرة (W) عند فرق جهد مختلف</span>`;
+}
+
+// ═══════════════════════════════════════════
+// QUIZ
+// ═══════════════════════════════════════════
+const questions = [
+  {
+    q:'مصباح كهربائي موصول بجهد ١٢ فولت يمر خلاله تيار ٠.٣٣ أمبير. ما قدرته؟',
+    opts:['أ) ١٠ واط','ب) ٣.٩٦ واط','ج) ٢٠ واط','د) ٠.٣٣ واط'],
+    correct:1,
+    explain:'ق = ج × ت = ١٢ × ٠.٣٣ = ٣.٩٦ واط'
+  },
+  {
+    q:'مصباح قدرته ٤W يعمل لمدة ٣٠ ثانية. ما الطاقة الكهربائية المستهلكة؟',
+    opts:['أ) ١٢٠ جول','ب) ٧.٥ جول','ج) ٣٤ جول','د) ٤ جول'],
+    correct:0,
+    explain:'ط = ق × ز = ٤ × ٣٠ = ١٢٠ جول'
+  },
+  {
+    q:'عند مقارنة مصباح 2W ومصباح 4W عند نفس الجهد، أيّهما يسمح بمرور تيار أكبر؟',
+    opts:['أ) مصباح 2W','ب) مصباح 4W','ج) متساويان','د) يعتمد على الجهد فقط'],
+    correct:1,
+    explain:'مصباح 4W مقاومته أقل (36Ω مقابل 72Ω)، فيسمح بتيار أكبر: ت = ج ÷ م'
+  },
+  {
+    q:'وحدة قياس القدرة الكهربائية هي:',
+    opts:['أ) جول','ب) أمبير','ج) واط','د) فولت'],
+    correct:2,
+    explain:'القدرة تقاس بالواط (W) = فولت × أمبير = جول/ثانية'
+  },
+  {
+    q:'إذا تضاعف فرق الجهد على مصباح (مقاومته ثابتة)، ماذا يحدث للقدرة؟',
+    opts:['أ) تتضاعف (×٢)','ب) تتضاعف أربع مرات (×٤)','ج) تبقى ثابتة','د) تنخفض إلى النصف'],
+    correct:1,
+    explain:'ق = ج²÷م؛ إذا تضاعف ج تصبح ق = (٢ج)²÷م = ٤×ج²÷م، أي تتضاعف أربع مرات'
+  }
+];
+
+let answered = [];
+
+function initQuiz() {
+  answered = new Array(questions.length).fill(null);
+  const el=document.getElementById('quizContainer');
+  el.innerHTML = questions.map((q,i)=>`
+    <div class="quiz-q" id="qq${i}">
+      <h4>${i+1}. ${q.q}</h4>
+      <div class="quiz-options">
+        ${q.opts.map((o,j)=>`
+          <button class="quiz-opt" onclick="selectOpt(${i},${j},this)">${o}</button>
+        `).join('')}
+      </div>
+      <div class="quiz-feedback" id="qf${i}"></div>
+    </div>`).join('');
+  document.getElementById('scoreBox').classList.remove('show');
+  document.getElementById('submitQuiz').style.display='block';
+  document.getElementById('retryQuiz').style.display='none';
+}
+
+function selectOpt(qi, oi, btn) {
+  if(answered[qi]!==null) return;
+  answered[qi]=oi;
+  document.querySelectorAll(`#qq${qi} .quiz-opt`).forEach(b=>b.classList.add('answered'));
+  btn.classList.add(oi===questions[qi].correct?'correct':'wrong');
+  if(oi===questions[qi].correct){
+    document.querySelectorAll(`#qq${qi} .quiz-opt`)[questions[qi].correct].classList.add('correct');
+  }
+}
+
+function submitQuiz() {
+  let score=0;
+  questions.forEach((q,i)=>{
+    const fb=document.getElementById('qf'+i);
+    const ans=answered[i];
+    if(ans===null){
+      fb.textContent='⚠️ لم تختر إجابة — الإجابة الصحيحة: '+q.opts[q.correct];
+      fb.className='quiz-feedback show wrong-fb';
+    } else if(ans===q.correct){
+      score++;
+      fb.textContent='✅ ممتاز! '+q.explain;
+      fb.className='quiz-feedback show correct-fb';
+    } else {
+      fb.textContent='❌ إجابة خاطئة. الصحيحة: '+q.opts[q.correct]+' — '+q.explain;
+      fb.className='quiz-feedback show wrong-fb';
+    }
+  });
+  const pct=Math.round(score/questions.length*100);
+  const box=document.getElementById('scoreBox');
+  document.getElementById('scoreNum').textContent=`${score}/${questions.length}`;
+  document.getElementById('scoreTxt').textContent=
+    pct>=80?'🌟 ممتاز! أنت تتقن درس القدرة الكهربائية':
+    pct>=60?'👍 جيد! راجع الأسئلة الخاطئة وحاول مجدداً':
+    '📚 تحتاج مراجعة إضافية — ارجع للشرح النظري';
+  box.classList.add('show');
+  document.getElementById('submitQuiz').style.display='none';
+  document.getElementById('retryQuiz').style.display='block';
+}
+
+// ═══════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════
+window.addEventListener('load',()=>{
+  drawCircuit(false);
+  initQuiz();
+  updateTime(60);
+});
+
+window.addEventListener('resize',()=>{
+  drawCircuit(measured);
+});
+</script>
+</body>
+</html>

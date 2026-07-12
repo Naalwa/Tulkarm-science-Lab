@@ -219,7 +219,7 @@
   .floor-grid {
     position: absolute;
     bottom: 30px; left: 50%; transform: translateX(-50%);
-    width: 100%; min-width: 400px; height: 40px;
+    width: 800px; height: 40px;
     background:
       linear-gradient(90deg, rgba(0,188,212,0.1) 1px, transparent 1px),
       linear-gradient(rgba(0,188,212,0.05) 1px, transparent 1px);
@@ -231,7 +231,7 @@
   /* Table */
   .lab-table-3d {
     position: relative;
-    width: 100%; min-width: 360px;
+    width: 720px;
     max-width: 95%;
   }
   .table-surface {
@@ -599,8 +599,6 @@
   /* ── GRAPH ── */
   .graph-section { padding: 20px; }
   canvas#graphCanvas {
-    width: 100% !important;
-    height: auto !important;
     width: 100%; max-width: 700px;
     background: #080f1e;
     border-radius: 16px;
@@ -714,38 +712,46 @@
     .readout-val { font-size: 20px; }
     .controls-panel { grid-template-columns: 1fr; }
   }
+
+  /* ══ RESPONSIVE MOBILE & TABLET ══ */
+  @media (max-width: 768px) {
+    body { padding: 8px !important; font-size: 15px !important; overflow-x: hidden !important; }
+    .container, [class*="container"], [class*="wrapper"] { padding: 8px !important; max-width: 100% !important; }
+    canvas { width: 100% !important; height: auto !important; display: block !important; touch-action: none; max-width: 100% !important; }
+    svg { max-width: 100% !important; height: auto !important; }
+    h1 { font-size: clamp(18px,5vw,32px) !important; }
+    h2 { font-size: clamp(15px,4vw,26px) !important; }
+    h3 { font-size: clamp(13px,3.5vw,20px) !important; }
+    [class*="grid"] { grid-template-columns: 1fr !important; }
+    [class*="flex"] { flex-wrap: wrap !important; }
+    input[type="range"] { width: 100% !important; min-height: 36px; }
+    input[type="number"], input[type="text"], select, textarea {
+      font-size: 16px !important; width: 100% !important; box-sizing: border-box; padding: 8px !important; }
+    button { min-height: 44px !important; font-size: 14px !important; touch-action: manipulation; padding: 10px 14px !important; }
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 13px !important; }
+    th, td { padding: 6px 4px !important; }
+    header { padding: 10px 12px !important; }
+    .controls, [class*="controls"] { flex-direction: column !important; gap: 8px !important; }
+    .lab-window, [class*="lab-window"] { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+  }
+  @media (max-width: 480px) {
+    body { padding: 4px !important; }
+    button { width: 100% !important; }
+  }
+  /* ══ END RESPONSIVE ══ */
 </style>
 </head>
 <body>
-
 <style>
-.back-to-lab {
-    position: fixed;
-    top: 12px;
-    left: 12px;
-    z-index: 9999;
-    background: rgba(10,22,40,0.92);
-    border: 1px solid rgba(0,200,150,0.35);
-    border-radius: 24px;
-    padding: 8px 16px;
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    color: #00C896;
-    font-family: Tajawal, Cairo, sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-    text-decoration: none;
-    backdrop-filter: blur(8px);
-    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
-    transition: background 0.2s;
-}
-.back-to-lab:hover { background: rgba(0,200,150,0.15); }
+.vlab-back{position:fixed;top:10px;left:10px;z-index:99999;
+background:rgba(10,22,40,0.93);border:1px solid rgba(0,200,150,0.4);
+border-radius:22px;padding:8px 16px;display:inline-flex;align-items:center;gap:7px;
+color:#00C896;font-family:Tajawal,Cairo,Arial,sans-serif;font-size:13px;font-weight:700;
+text-decoration:none;backdrop-filter:blur(8px);box-shadow:0 4px 18px rgba(0,0,0,0.3);
+transition:background 0.2s;}
+.vlab-back:hover{background:rgba(0,200,150,0.18);}
 </style>
-<a href="../grade10.html" class="back-to-lab">
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-  العودة للصف العاشر
-</a>
+<a href="../grade10.html" class="vlab-back">&#8594; العودة للصف</a>
 
 
 <!-- HERO -->
@@ -1508,24 +1514,6 @@ function showTab(id) {
 
 // Init
 updateControls();
-
-  // Make canvas responsive
-  function resizeGraphCanvas() {
-    const c = document.getElementById('graphCanvas');
-    if (!c) return;
-    const parent = c.parentElement;
-    const newW = Math.min(parent.offsetWidth - 20, 700);
-    if (newW < 300) return;
-    const ratio = c.height / c.width;
-    c.width = newW;
-    c.height = Math.round(newW * ratio);
-    if (typeof drawGraph === 'function') drawGraph();
-    else if (typeof draw === 'function') draw();
-    else if (typeof render === 'function') render();
-  }
-  window.addEventListener('resize', resizeGraphCanvas);
-  window.addEventListener('load', function(){ setTimeout(resizeGraphCanvas, 100); });
-
 </script>
 </body>
 </html>

@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>العوامل التي تعتمد عليها المقاومة الكهربائية</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700;800;900&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0c1a26;
+  --bg-2:#0f2333;
+  --panel:#132c3f;
+  --panel-2:#0e2130;
+  --line:#25455c;
+  --copper:#c9793f;
+  --copper-light:#e6a15e;
+  --current:#ffc266;
+  --current-glow:#ffdca0;
+  --graphite:#3c4046;
+  --graphite-light:#6b7077;
+  --wood:#8a5a35;
+  --wood-light:#c98f5a;
+  --text:#eaf1f6;
+  --muted:#8fa8ba;
+  --danger:#e0503c;
+  --ok:#5fbf8f;
+  --radius:16px;
+  font-size:16px;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:
+    radial-gradient(circle at 15% 5%, rgba(201,121,63,0.10), transparent 40%),
+    radial-gradient(circle at 90% 15%, rgba(95,191,143,0.08), transparent 35%),
+    var(--bg);
+  color:var(--text);
+  font-family:'Tajawal','Cairo',Tahoma,Arial,sans-serif;
+  line-height:1.7;
+  overflow-x:hidden;
+}
+h1,h2,h3,.eyebrow,.big-num,.gauge-value{font-family:'Cairo','Tajawal',Tahoma,Arial,sans-serif;}
+::selection{background:var(--copper);color:#0c1a26;}
+:focus-visible{outline:2px solid var(--current);outline-offset:3px;}
+
+a{color:inherit;}
+.wrap{max-width:920px;margin:0 auto;padding:0 18px;}
+
+/* ---------- HERO ---------- */
+.hero{
+  position:relative;
+  padding:56px 0 40px;
+  border-bottom:1px solid var(--line);
+  background:
+    linear-gradient(180deg, rgba(12,26,38,0) 0%, rgba(12,26,38,0.9) 100%),
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 46px),
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 46px);
+}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:0.82rem;font-weight:700;letter-spacing:.5px;
+  color:var(--copper-light);
+  background:rgba(201,121,63,0.12);
+  border:1px solid rgba(201,121,63,0.35);
+  padding:6px 14px;border-radius:999px;
+  margin-bottom:18px;
+}
+.eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--current);box-shadow:0 0 10px var(--current);}
+h1{
+  font-size:clamp(1.7rem,5vw,2.5rem);
+  font-weight:900;
+  margin:0 0 14px;
+  line-height:1.35;
+}
+h1 span{color:var(--copper-light);}
+.hero p.lead{color:var(--muted);font-size:1.05rem;max-width:70ch;margin:0 0 22px;}
+.meta-row{display:flex;flex-wrap:wrap;gap:10px;font-size:.85rem;color:var(--muted);}
+.meta-chip{
+  border:1px solid var(--line);
+  padding:6px 12px;border-radius:10px;
+  background:var(--panel-2);
+}
+
+/* moving current thread in hero background */
+.hero-wire{
+  margin-top:34px;height:70px;position:relative;border-radius:35px;
+  background:linear-gradient(90deg,#2a2a2a,#4b4b4b,#2a2a2a);
+  box-shadow:inset 0 3px 8px rgba(0,0,0,.5), inset 0 -3px 6px rgba(255,255,255,.05);
+  overflow:hidden;
+}
+.hero-wire::after{
+  content:"";position:absolute;inset:0;
+  background:repeating-linear-gradient(90deg, transparent 0 22px, rgba(255,194,102,.55) 22px 26px);
+  animation:flow 1.1s linear infinite;
+  mix-blend-mode:screen;
+}
+@keyframes flow{from{transform:translateX(0);}to{transform:translateX(-48px);}}
+
+/* ---------- SECTIONS ---------- */
+section{padding:44px 0;border-bottom:1px solid var(--line);}
+.section-head{display:flex;align-items:baseline;gap:12px;margin-bottom:22px;}
+.section-num{
+  font-family:'Cairo';font-weight:800;font-size:1rem;color:var(--copper-light);
+  background:var(--panel-2);border:1px solid var(--line);
+  width:34px;height:34px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;flex:none;
+}
+h2{font-size:1.5rem;margin:0;font-weight:800;}
+.card{
+  background:linear-gradient(180deg,var(--panel),var(--panel-2));
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:20px;
+}
+.card + .card{margin-top:14px;}
+
+/* question / hypothesis boxes */
+.qbox{border-right:4px solid var(--copper);padding-right:16px;margin:16px 0;}
+textarea, input[type=text]{
+  width:100%;background:var(--panel-2);color:var(--text);
+  border:1px solid var(--line);border-radius:10px;padding:12px 14px;
+  font-family:inherit;font-size:0.98rem;resize:vertical;min-height:64px;
+}
+textarea:focus,input:focus{border-color:var(--copper);}
+.hint{color:var(--muted);font-size:.85rem;margin-top:6px;}
+
+/* factor cards grid */
+.factors{display:grid;grid-template-columns:1fr;gap:14px;}
+@media(min-width:700px){.factors{grid-template-columns:repeat(3,1fr);}}
+.factor{
+  background:var(--panel-2);border:1px solid var(--line);border-radius:14px;padding:18px;
+  position:relative;overflow:hidden;
+}
+.factor h3{margin:0 0 8px;font-size:1.05rem;color:var(--copper-light);}
+.factor p{margin:0;color:var(--muted);font-size:.92rem;}
+.mini-demo{height:34px;margin:14px 0;border-radius:20px;background:linear-gradient(90deg,#333,#555,#333);position:relative;overflow:hidden;}
+.mini-demo.thin{height:14px;}
+.mini-demo.thick{height:50px;}
+.mini-demo.short{width:60%;}
+.mini-demo i{position:absolute;top:0;bottom:0;left:0;width:14px;background:rgba(255,194,102,.7);border-radius:20px;animation:travel 1.4s linear infinite;}
+@keyframes travel{from{transform:translateX(-20px);}to{transform:translateX(120%);}}
+
+/* ---------- LAB ---------- */
+.lab-shell{
+  background:radial-gradient(circle at 30% 0%, rgba(255,194,102,0.06), transparent 60%), var(--panel-2);
+  border:1px solid var(--line);border-radius:20px;padding:20px;
+  perspective:900px;
+}
+.controls{display:grid;gap:16px;margin-bottom:18px;}
+@media(min-width:700px){.controls{grid-template-columns:1fr 1fr;}}
+.control-group label{display:block;font-weight:700;font-size:.9rem;margin-bottom:8px;color:var(--text);}
+.control-group .val{color:var(--copper-light);font-weight:800;}
+input[type=range]{
+  -webkit-appearance:none;width:100%;height:6px;border-radius:4px;
+  background:linear-gradient(90deg,var(--copper),var(--line));outline:none;
+}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:20px;height:20px;border-radius:50%;
+  background:var(--current);border:3px solid #0c1a26;cursor:pointer;
+  box-shadow:0 0 8px rgba(255,194,102,.7);
+}
+input[type=range]::-moz-range-thumb{
+  width:20px;height:20px;border-radius:50%;background:var(--current);
+  border:3px solid #0c1a26;cursor:pointer;
+}
+
+.materials{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:6px;}
+.mat-btn{
+  flex:1;min-width:100px;border:2px solid var(--line);background:var(--panel);
+  color:var(--text);padding:12px 8px;border-radius:12px;cursor:pointer;
+  font-family:inherit;font-weight:700;font-size:.92rem;text-align:center;
+  transition:transform .15s, border-color .15s;
+}
+.mat-btn:hover{transform:translateY(-2px);}
+.mat-btn.active{border-color:var(--current);box-shadow:0 0 0 3px rgba(255,194,102,.15);}
+.swatch{width:100%;height:10px;border-radius:6px;margin-bottom:8px;}
+.swatch.graphite{background:linear-gradient(90deg,#2b2d31,#5a5f66);}
+.swatch.copper{background:linear-gradient(90deg,#8a4a20,#e6a15e);}
+.swatch.wood{background:linear-gradient(90deg,#5c3a20,#c98f5a);}
+
+/* circuit stage */
+.stage{
+  margin:22px 0; padding:26px 14px 34px;
+  border-radius:16px;background:linear-gradient(180deg,#0a1622,#0c1a26);
+  border:1px solid var(--line);
+  transform-style:preserve-3d;
+}
+.circuit-row{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}
+.battery{
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  font-size:.75rem;color:var(--muted);
+}
+.battery .cell{
+  width:34px;height:64px;border-radius:6px;
+  background:linear-gradient(180deg,#3a3a3a,#1c1c1c);
+  border:2px solid #555;position:relative;
+}
+.battery .cell::before{
+  content:"+";position:absolute;top:2px;left:50%;transform:translateX(-50%);
+  color:var(--current);font-weight:900;
+}
+.battery .cell::after{
+  content:"−";position:absolute;bottom:2px;left:50%;transform:translateX(-50%);
+  color:var(--muted);font-weight:900;
+}
+
+.wire-holder{flex:1;min-width:180px;display:flex;justify-content:center;}
+.wire3d{
+  position:relative;border-radius:999px;
+  transition:width .25s ease, height .25s ease, background .3s ease, box-shadow .3s ease;
+  box-shadow:inset 0 4px 6px rgba(255,255,255,.18), inset 0 -6px 10px rgba(0,0,0,.55), 0 8px 18px rgba(0,0,0,.35);
+}
+.wire3d .electron{
+  position:absolute;top:50%;width:10px;height:10px;margin-top:-5px;border-radius:50%;
+  background:radial-gradient(circle at 35% 35%, #fff, var(--current));
+  box-shadow:0 0 8px var(--current);
+}
+@keyframes moveRight{from{left:-6%;}to{left:106%;}}
+
+.gauge-wrap{display:flex;flex-direction:column;align-items:center;gap:6px;}
+.gauge{
+  width:112px;height:66px;position:relative;overflow:hidden;
+}
+.gauge svg{width:100%;height:100%;}
+.needle{
+  position:absolute;bottom:2px;left:50%;width:3px;height:46px;
+  background:var(--current);transform-origin:bottom center;
+  transform:translateX(-50%) rotate(-90deg);
+  transition:transform .4s cubic-bezier(.4,1.6,.4,1);
+  border-radius:2px;box-shadow:0 0 6px var(--current);
+}
+.gauge-face{
+  position:absolute;inset:0;border:2px solid #3a5468;border-bottom:none;
+  border-radius:112px 112px 0 0;background:#0d1e2c;
+}
+.gauge-label{font-size:.72rem;color:var(--muted);}
+.gauge-value{font-size:1rem;font-weight:800;color:var(--current-light,var(--current));}
+
+.readout{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:18px;
+}
+@media(min-width:520px){.readout{grid-template-columns:repeat(4,1fr);}}
+.stat{
+  background:var(--panel);border:1px solid var(--line);border-radius:12px;
+  padding:12px;text-align:center;
+}
+.stat .k{font-size:.75rem;color:var(--muted);margin-bottom:4px;}
+.stat .v{font-size:1.15rem;font-weight:800;color:var(--copper-light);direction:ltr;font-family:'Cairo';}
+
+.status-banner{
+  margin-top:14px;padding:10px 14px;border-radius:10px;font-weight:700;font-size:.9rem;
+  display:none;align-items:center;gap:8px;
+}
+.status-banner.show{display:flex;}
+.status-banner.danger{background:rgba(224,80,60,.15);color:#ff8a76;border:1px solid rgba(224,80,60,.4);}
+.status-banner.insulator{background:rgba(143,168,186,.12);color:var(--muted);border:1px solid var(--line);}
+.status-banner.ok{background:rgba(95,191,143,.12);color:var(--ok);border:1px solid rgba(95,191,143,.35);}
+
+.lab-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;}
+button.primary{
+  background:linear-gradient(180deg,var(--copper-light),var(--copper));
+  color:#1a1006;border:none;padding:12px 20px;border-radius:12px;
+  font-weight:800;font-family:inherit;cursor:pointer;font-size:.95rem;
+}
+button.ghost{
+  background:transparent;border:1px solid var(--line);color:var(--muted);
+  padding:12px 18px;border-radius:12px;font-family:inherit;cursor:pointer;font-weight:700;
+}
+button.primary:active,button.ghost:active{transform:translateY(1px);}
+
+/* results table */
+.table-wrap{overflow-x:auto;margin-top:16px;border-radius:12px;border:1px solid var(--line);}
+table{width:100%;border-collapse:collapse;font-size:.88rem;min-width:520px;}
+th,td{padding:10px 12px;text-align:center;border-bottom:1px solid var(--line);}
+th{background:var(--panel-2);color:var(--copper-light);font-weight:800;}
+tr:last-child td{border-bottom:none;}
+td.del{cursor:pointer;color:var(--danger);font-weight:800;}
+.empty-row td{color:var(--muted);padding:18px;}
+
+/* conclusion box */
+.law-box{
+  background:linear-gradient(180deg,rgba(201,121,63,.12),rgba(201,121,63,.03));
+  border:1px solid rgba(201,121,63,.4);border-radius:16px;padding:22px;
+}
+.law-box h3{margin-top:0;color:var(--copper-light);}
+.formula{
+  font-family:'Cairo';font-weight:800;font-size:1.25rem;text-align:center;
+  background:var(--panel-2);border:1px solid var(--line);border-radius:12px;
+  padding:16px;margin:14px 0;direction:ltr;
+}
+.formula small{display:block;font-size:.7rem;color:var(--muted);font-weight:500;margin-top:6px;direction:rtl;}
+ul.factlist{margin:14px 0 0;padding-right:20px;}
+ul.factlist li{margin-bottom:10px;}
+ul.factlist b{color:var(--copper-light);}
+
+/* quiz */
+.quiz-q{margin-bottom:22px;}
+.quiz-q p.q{font-weight:700;margin-bottom:10px;}
+.quiz-opts{display:grid;gap:8px;}
+.opt{
+  background:var(--panel-2);border:1px solid var(--line);border-radius:10px;
+  padding:10px 14px;cursor:pointer;font-family:inherit;color:var(--text);
+  text-align:right;font-size:.92rem;
+}
+.opt.correct{border-color:var(--ok);background:rgba(95,191,143,.15);}
+.opt.wrong{border-color:var(--danger);background:rgba(224,80,60,.15);}
+
+footer{padding:30px 0 50px;text-align:center;color:var(--muted);font-size:.85rem;}
+
+@media (prefers-reduced-motion:reduce){
+  .hero-wire::after,.wire3d .electron,.mini-demo i{animation:none !important;}
+}
+
+  /* ═══ RESPONSIVE MOBILE & TABLET — AUTO-INJECTED ═══ */
+  @media (max-width: 768px) {
+    body { padding: 8px !important; font-size: 15px !important; overflow-x: hidden !important; }
+    .container, [class*="container"], [class*="wrapper"] { padding: 8px !important; max-width: 100% !important; }
+    canvas { width: 100% !important; height: auto !important; display: block !important; touch-action: none; max-width: 100% !important; }
+    svg { max-width: 100% !important; height: auto !important; }
+    h1 { font-size: clamp(18px, 5vw, 32px) !important; }
+    h2 { font-size: clamp(16px, 4vw, 26px) !important; }
+    h3 { font-size: clamp(14px, 3.5vw, 22px) !important; }
+    p, li, td, th, label, span { font-size: clamp(13px, 3.5vw, 16px) !important; }
+    [class*="grid"] { grid-template-columns: 1fr !important; }
+    [class*="flex"] { flex-wrap: wrap !important; }
+    input[type="range"] { width: 100% !important; min-height: 36px; }
+    input[type="number"], input[type="text"], select, textarea { 
+      font-size: 16px !important; width: 100% !important; box-sizing: border-box; padding: 8px !important;
+    }
+    button { min-height: 44px !important; font-size: 14px !important; touch-action: manipulation; padding: 10px 14px !important; }
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 13px !important; }
+    th, td { padding: 6px 4px !important; white-space: nowrap; }
+    [style*="display: grid"], [style*="display:grid"] { display: flex !important; flex-direction: column !important; }
+    .lab-window, [class*="lab-window"] { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+    header { padding: 12px !important; }
+    .controls, [class*="controls"] { flex-direction: column !important; gap: 8px !important; }
+  }
+  @media (max-width: 480px) {
+    body { padding: 4px !important; }
+    h1 { font-size: clamp(16px, 5vw, 24px) !important; }
+    button { width: 100% !important; }
+  }
+  /* ═══ END RESPONSIVE ═══ */
+</style>
+</head>
+<body>
+
+<style>
+.vlab-back-btn {
+  position: fixed; top: 10px; left: 10px; z-index: 99999;
+  background: rgba(10,22,40,0.93); border: 1px solid rgba(0,200,150,0.4);
+  border-radius: 22px; padding: 8px 16px;
+  display: inline-flex; align-items: center; gap: 7px;
+  color: #00C896; font-family: Tajawal, Cairo, Arial, sans-serif;
+  font-size: 13px; font-weight: 700; text-decoration: none;
+  backdrop-filter: blur(8px); box-shadow: 0 4px 18px rgba(0,0,0,0.3);
+  transition: background 0.2s;
+}
+.vlab-back-btn:hover { background: rgba(0,200,150,0.18); color: #00C896; }
+</style>
+
+<a href="../grade9.html" class="vlab-back-btn">&#8594; العودة للصف</a>
+
+
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow"><span class="dot"></span> نشاط (5) — العلوم والحياة، الصف التاسع، فلسطين</span>
+    <h1>العوامل التي تعتمد عليها <span>المقاومة الكهربائية</span></h1>
+    <p class="lead">
+      لماذا يسخن بعض الأسلاك أكثر من غيرها؟ ولماذا نستخدم النحاس في أسلاك المنازل بينما لا نستخدم الخشب؟
+      في هذا الدرس التفاعلي ستكتشف بنفسك، عبر مختبر افتراضي حقيقي، العوامل الثلاثة التي تتحكم بمقاومة أي موصل للتيار الكهربائي.
+    </p>
+    <div class="meta-row">
+      <span class="meta-chip">⏱ نشاط عملي تفاعلي</span>
+      <span class="meta-chip">🔬 مختبر افتراضي ثلاثي الأبعاد</span>
+      <span class="meta-chip">🧪 جرافيت • نحاس • خشب</span>
+    </div>
+    <div class="hero-wire" aria-hidden="true"></div>
+  </div>
+</header>
+
+<!-- السؤال والفرضية -->
+<section>
+  <div class="wrap">
+    <div class="section-head"><span class="section-num">؟</span><h2>سؤال الدرس</h2></div>
+    <div class="card">
+      <p style="margin:0;font-size:1.05rem;">
+        ما العوامل التي تعتمد عليها قيمة المقاومة الكهربائية؟ وهل للمواد المختلفة مقاومات مختلفة؟
+      </p>
+    </div>
+
+    <div class="qbox">
+      <label for="hypothesis"><b>🌱 الفرضية:</b> اكتب فرضيتك التي تجيب عن السؤال أعلاه، قبل أن تبدأ التجربة.</label>
+      <textarea id="hypothesis" placeholder="أعتقد أن مقاومة الموصل تعتمد على..."></textarea>
+      <p class="hint">لا داعي للقلق إن كانت فرضيتك غير دقيقة تمامًا — الهدف أن تختبرها بنفسك في المختبر أدناه.</p>
+    </div>
+  </div>
+</section>
+
+<!-- الأدوات + شرح العوامل -->
+<section>
+  <div class="wrap">
+    <div class="section-head"><span class="section-num">🧰</span><h2>الأدوات والعوامل الثلاثة</h2></div>
+    <div class="card">
+      <p style="margin-top:0;color:var(--muted);">
+        الأدوات: بطارية (مصدر جهد)، أسطوانات جرافيت بأطوال وأقطار مختلفة، أميتر (لقياس التيار)، أسلاك توصيل، مفتاح.
+        في المختبر الافتراضي أدناه يمكنك أيضًا استبدال الجرافيت بالنحاس أو الخشب لمقارنة سلوكها.
+      </p>
+    </div>
+
+    <div class="factors">
+      <div class="factor">
+        <h3>1. طول الموصل (L)</h3>
+        <div class="mini-demo short"><i></i></div>
+        <div class="mini-demo"><i style="animation-duration:2.4s"></i></div>
+        <p>كلما طال الموصل ازدادت مقاومته — على الإلكترونات أن تقطع مسافة أطول وتصطدم بعدد أكبر من الذرات.</p>
+      </div>
+      <div class="factor">
+        <h3>2. مساحة مقطع الموصل (A)</h3>
+        <div class="mini-demo thin"><i style="animation-duration:2.6s"></i></div>
+        <div class="mini-demo thick"><i style="animation-duration:0.8s"></i></div>
+        <p>كلما زادت مساحة المقطع (القطر) قلّت المقاومة — يشبه الأمر مرور الماء في أنبوب أوسع بسهولة أكبر.</p>
+      </div>
+      <div class="factor">
+        <h3>3. نوع المادة (ρ)</h3>
+        <div class="mini-demo" style="background:linear-gradient(90deg,#8a4a20,#e6a15e)"><i style="animation-duration:0.6s"></i></div>
+        <div class="mini-demo" style="background:linear-gradient(90deg,#5c3a20,#c98f5a)"></div>
+        <p>لكل مادة مقاومة نوعية خاصة بها؛ فالنحاس موصل ممتاز، والخشب عازل يكاد لا يسمح بمرور التيار إطلاقًا.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- المختبر الافتراضي -->
+<section id="lab">
+  <div class="wrap">
+    <div class="section-head"><span class="section-num">⚗️</span><h2>المختبر الافتراضي</h2></div>
+    <p style="color:var(--muted);margin-top:-8px;">
+      اختر المادة، ثم غيّر الطول والقطر، وراقب قراءة الأميتر مباشرة. سجّل كل قراءة في الجدول لتحصل على بيانات كافية للاستنتاج.
+    </p>
+
+    <div class="lab-shell">
+      <div class="materials" role="group" aria-label="اختيار مادة الموصل">
+        <button class="mat-btn active" data-mat="graphite">
+          <div class="swatch graphite"></div> جرافيت
+        </button>
+        <button class="mat-btn" data-mat="copper">
+          <div class="swatch copper"></div> نحاس
+        </button>
+        <button class="mat-btn" data-mat="wood">
+          <div class="swatch wood"></div> خشب
+        </button>
+      </div>
+
+      <div class="controls">
+        <div class="control-group">
+          <label>طول الموصل (L): <span class="val" id="lenVal">10</span> سم</label>
+          <input type="range" id="lenSlider" min="5" max="25" step="1" value="10">
+        </div>
+        <div class="control-group">
+          <label>قطر المقطع (d): <span class="val" id="diaVal">1.0</span> مم</label>
+          <input type="range" id="diaSlider" min="0.3" max="3" step="0.1" value="1.0">
+        </div>
+      </div>
+
+      <div class="stage">
+        <div class="circuit-row">
+          <div class="battery" aria-hidden="true">
+            <div class="cell"></div>
+            <span>3V</span>
+          </div>
+          <div class="wire-holder">
+            <div class="wire3d" id="wire3d" aria-hidden="true"></div>
+          </div>
+          <div class="gauge-wrap">
+            <div class="gauge">
+              <div class="gauge-face"></div>
+              <div class="needle" id="needle"></div>
+            </div>
+            <span class="gauge-label">أميتر</span>
+            <span class="gauge-value" id="ammeterDigital">0.0 mA</span>
+          </div>
+        </div>
+
+        <div class="status-banner" id="statusBanner"></div>
+
+        <div class="readout">
+          <div class="stat"><div class="k">مادة الموصل</div><div class="v" id="statMat">جرافيت</div></div>
+          <div class="stat"><div class="k">مساحة المقطع</div><div class="v" id="statArea">0.79 مم²</div></div>
+          <div class="stat"><div class="k">المقاومة R</div><div class="v" id="statR">6.4 Ω</div></div>
+          <div class="stat"><div class="k">شدة التيار I</div><div class="v" id="statI">470 mA</div></div>
+        </div>
+      </div>
+
+      <div class="lab-actions">
+        <button class="primary" id="logBtn">📝 تسجيل هذه القراءة في الجدول</button>
+        <button class="ghost" id="clearBtn">مسح السجل</button>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>المادة</th><th>الطول (سم)</th><th>القطر (مم)</th><th>المقاومة (Ω)</th><th>التيار (mA)</th><th></th>
+            </tr>
+          </thead>
+          <tbody id="logBody">
+            <tr class="empty-row"><td colspan="6">لم تُسجَّل أي قراءة بعد — جرّب تغيير القيم أعلاه واضغط "تسجيل"</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- التحليل والتفسير -->
+<section>
+  <div class="wrap">
+    <div class="section-head"><span class="section-num">🔎</span><h2>التحليل والتفسير</h2></div>
+
+    <div class="qbox">
+      <label for="q1">ما تأثير طول السلك (أو الأسطوانة) على قيمة المقاومة؟</label>
+      <textarea id="q1" placeholder="بالرجوع إلى قراءاتك المسجّلة، صف العلاقة..."></textarea>
+    </div>
+    <div class="qbox">
+      <label for="q2">ما تأثير قطر السلك (أو الأسطوانة) على قيمة المقاومة؟</label>
+      <textarea id="q2" placeholder="قارن بين قراءتين لهما نفس الطول وقطر مختلف..."></textarea>
+    </div>
+    <div class="qbox">
+      <label for="q3">لو استخدمت مادة أخرى كالنحاس أو الخشب، بنفس الطول ومساحة المقطع، هل تتوقع أن يؤثر ذلك على قيمة المقاومة؟ فسّر ذلك.</label>
+      <textarea id="q3" placeholder="استخدم مختبر النحاس والخشب أعلاه لتتحقق من توقعك..."></textarea>
+    </div>
+  </div>
+</section>
+
+<!-- الاستنتاج والتطبيق -->
+<section>
+  <div class="wrap">
+    <div class="section-head"><span class="section-num">✅</span><h2>الاستنتاج والتطبيق</h2></div>
+
+    <div class="qbox">
+      <label for="conclusion">اكتب ملخّصًا لأبرز النتائج التي توصّلت إليها في إجابتك عن السؤال الرئيسي: ما العوامل التي تعتمد عليها قيمة المقاومة الكهربائية لمواد مختلفة كهربائيًا؟</label>
+      <textarea id="conclusion" placeholder="مما لاحظته في المختبر الافتراضي، أستنتج أن..."></textarea>
+    </div>
+
+    <div class="law-box">
+      <h3>مما سبق وجدنا أنّ مقاومة الموصل تعتمد على:</h3>
+      <ul class="factlist">
+        <li><b>طول الموصل (L):</b> تزداد مقاومة الموصل بازدياد طوله.</li>
+        <li><b>مساحة مقطع الموصل (A):</b> تزداد مقاومة الموصل بنقصان مساحة مقطعه.</li>
+        <li><b>نوع المادة (المقاومة النوعية ρ):</b> تختلف مقاومة الموصل باختلاف المادة المصنوع منها، ولذلك يُعرَّف لكل مادة "مقاومة نوعية" خاصة بها تتأثر أيضًا بدرجة الحرارة.</li>
+      </ul>
+      <div class="formula">
+        R = ρ × L / A
+        <small>المقاومة = المقاومة النوعية × الطول ÷ مساحة المقطع</small>
+      </div>
+      <p style="color:var(--muted);font-size:.9rem;margin-bottom:0;">
+        بإضافة عامل الحرارة: بعض المواد (كالنحاس) تزداد مقاومتها بارتفاع درجة الحرارة، بينما مواد أخرى مثل الكربون (الجرافيت) قد تنخفض مقاومتها مع ارتفاع درجة الحرارة.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- تحقق من فهمك -->
+<section style="border-bottom:none;">
+  <div class="wrap">
+    <div class="section-head"><span class="section-num">🧠</span><h2>تحقق من فهمك</h2></div>
+
+    <div class="card">
+      <div class="quiz-q">
+        <p class="q">1. إذا تضاعف طول الموصل مع بقاء العوامل الأخرى ثابتة، فإنّ مقاومته:</p>
+        <div class="quiz-opts" data-answer="0">
+          <button class="opt">تتضاعف</button>
+          <button class="opt">تنخفض إلى النصف</button>
+          <button class="opt">تبقى ثابتة</button>
+        </div>
+      </div>
+      <div class="quiz-q">
+        <p class="q">2. عند زيادة مساحة مقطع الموصل، فإنّ مقاومته:</p>
+        <div class="quiz-opts" data-answer="1">
+          <button class="opt">تزداد</button>
+          <button class="opt">تقلّ</button>
+          <button class="opt">تبقى ثابتة</button>
+        </div>
+      </div>
+      <div class="quiz-q">
+        <p class="q">3. أيّ المواد الثلاث التي جرّبتها في المختبر تُعدّ عازلًا كهربائيًا (لا يمرّ فيها التيار عمليًا)؟</p>
+        <div class="quiz-opts" data-answer="2">
+          <button class="opt">الجرافيت</button>
+          <button class="opt">النحاس</button>
+          <button class="opt">الخشب</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  درس تفاعلي — منهاج العلوم والحياة، الصف التاسع، فلسطين · مختبر افتراضي لمحاكاة نشاط (5): العوامل التي تعتمد عليها المقاومة الكهربائية
+</footer>
+
+<script>
+// ---------- ترميز واللغة ----------
+// الصفحة مضبوطة على UTF-8 و lang="ar" و dir="rtl" لضمان عرض صحيح للنصوص والرموز والوحدات العربية
+// على الهاتف والحاسوب معًا، وتُستخدم الأرقام والوحدات بالتدوين العربي المعتاد (سم، مم، أوم Ω، أمبير A).
+
+(function(){
+  // خصائص مبسّطة (بوحدات توضيحية: أوم·مم²/م) لتقريب سلوك كل مادة تربويًا
+  const MATERIALS = {
+    graphite: { name:'جرافيت', rho:100,     color1:'#2b2d31', color2:'#6b7077', glow:'rgba(255,194,102,.7)' },
+    copper:   { name:'نحاس',   rho:0.02,    color1:'#8a4a20', color2:'#e6a15e', glow:'rgba(255,178,90,.9)' },
+    wood:     { name:'خشب',    rho:1.0e7,   color1:'#5c3a20', color2:'#c98f5a', glow:'rgba(120,120,120,.4)' }
+  };
+  const V = 3; // فولت (مصدر الجهد)
+
+  let state = { mat:'graphite', len:10, dia:1.0 };
+  let log = [];
+
+  const lenSlider = document.getElementById('lenSlider');
+  const diaSlider = document.getElementById('diaSlider');
+  const lenVal = document.getElementById('lenVal');
+  const diaVal = document.getElementById('diaVal');
+  const wire3d = document.getElementById('wire3d');
+  const needle = document.getElementById('needle');
+  const ammeterDigital = document.getElementById('ammeterDigital');
+  const statMat = document.getElementById('statMat');
+  const statArea = document.getElementById('statArea');
+  const statR = document.getElementById('statR');
+  const statI = document.getElementById('statI');
+  const statusBanner = document.getElementById('statusBanner');
+  const logBody = document.getElementById('logBody');
+
+  function fmt(n, d=2){
+    if(!isFinite(n)) return '∞';
+    return n.toLocaleString('en-US', {maximumFractionDigits:d, minimumFractionDigits:0});
+  }
+
+  function compute(){
+    const m = MATERIALS[state.mat];
+    const Lm = state.len/100;                 // متر
+    const A = Math.PI * Math.pow(state.dia/2,2); // مم²
+    const R = m.rho * Lm / A;                  // أوم
+    const I = V / R;                           // أمبير
+    return {A,R,I,m};
+  }
+
+  function render(){
+    const {A,R,I,m} = compute();
+    const Imilli = I*1000;
+
+    // تحديث أبعاد السلك ثلاثي الأبعاد
+    const widthPx = 60 + (state.len-5)/(25-5) * 160;   // 60-220px
+    const heightPx = 10 + (state.dia-0.3)/(3-0.3) * 46; // 10-56px
+    wire3d.style.width = widthPx + 'px';
+    wire3d.style.height = heightPx + 'px';
+    wire3d.style.background = `linear-gradient(180deg, ${m.color2}, ${m.color1} 45%, ${m.color2})`;
+
+    // حالة الدائرة
+    let bannerClass = '', bannerText = '', current_mA_display, needleDeg;
+    let electronSpeed = 1.2;
+
+    if(state.mat === 'copper' && I > 2){
+      bannerClass = 'danger';
+      bannerText = '⚠️ مقاومة النحاس ضئيلة جدًا هنا فيمرّ تيار مرتفع جدًا (شبه قصر في الدائرة) — لهذا لا نستخدم سلكًا نحاسيًا عاريًا بهذا الشكل مباشرة على بطارية صغيرة.';
+      current_mA_display = '> 2000 mA';
+      needleDeg = 90;
+      electronSpeed = 0.25;
+    } else if(state.mat === 'wood'){
+      bannerClass = 'insulator';
+      bannerText = '🚫 الخشب عازل كهربائي: مقاومته عالية جدًا فلا يمرّ خلاله تيار يُذكر — الإلكترونات لا تستطيع الانتقال بحرية.';
+      current_mA_display = '≈ 0 mA';
+      needleDeg = -90;
+      electronSpeed = 0; // لا حركة
+    } else {
+      bannerClass = 'ok';
+      bannerText = '✅ الدائرة تعمل بشكل طبيعي، يمكنك تسجيل هذه القراءة.';
+      current_mA_display = fmt(Imilli,1) + ' mA';
+      const clamped = Math.max(0, Math.min(1, I/1)); // مقياس 0-1A
+      needleDeg = -90 + clamped*180;
+      electronSpeed = Math.max(0.2, 1.6 - clamped*1.3);
+    }
+
+    statusBanner.className = 'status-banner show ' + bannerClass;
+    statusBanner.textContent = bannerText;
+    needle.style.transform = `translateX(-50%) rotate(${needleDeg}deg)`;
+    ammeterDigital.textContent = current_mA_display;
+
+    statMat.textContent = m.name;
+    statArea.textContent = fmt(A,2) + ' مم²';
+    statR.textContent = (R > 100000 ? fmt(R/1000,0)+' kΩ' : fmt(R,2) + ' Ω');
+    statI.textContent = current_mA_display;
+
+    // إلكترونات متحركة
+    wire3d.querySelectorAll('.electron').forEach(e=>e.remove());
+    if(electronSpeed > 0){
+      for(let i=0;i<3;i++){
+        const el = document.createElement('div');
+        el.className='electron';
+        el.style.animation = `moveRight ${electronSpeed}s linear infinite`;
+        el.style.animationDelay = (i*electronSpeed/3)+'s';
+        el.style.boxShadow = `0 0 8px ${m.glow}`;
+        wire3d.appendChild(el);
+      }
+    }
+  }
+
+  lenSlider.addEventListener('input', e=>{
+    state.len = +e.target.value;
+    lenVal.textContent = state.len;
+    render();
+  });
+  diaSlider.addEventListener('input', e=>{
+    state.dia = +e.target.value;
+    diaVal.textContent = state.dia.toFixed(1);
+    render();
+  });
+  document.querySelectorAll('.mat-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('.mat-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      state.mat = btn.dataset.mat;
+      render();
+    });
+  });
+
+  function renderLog(){
+    if(log.length===0){
+      logBody.innerHTML = '<tr class="empty-row"><td colspan="6">لم تُسجَّل أي قراءة بعد — جرّب تغيير القيم أعلاه واضغط "تسجيل"</td></tr>';
+      return;
+    }
+    logBody.innerHTML = log.map((row,i)=>`
+      <tr>
+        <td>${row.matName}</td>
+        <td>${row.len}</td>
+        <td>${row.dia.toFixed(1)}</td>
+        <td>${row.R}</td>
+        <td>${row.I}</td>
+        <td class="del" data-i="${i}">حذف ✕</td>
+      </tr>`).join('');
+    logBody.querySelectorAll('.del').forEach(td=>{
+      td.addEventListener('click', ()=>{
+        log.splice(+td.dataset.i,1);
+        renderLog();
+      });
+    });
+  }
+
+  document.getElementById('logBtn').addEventListener('click', ()=>{
+    const {A,R,I,m} = compute();
+    const Rdisplay = R > 100000 ? fmt(R/1000,0)+' kΩ' : fmt(R,2);
+    const Idisplay = (state.mat==='wood') ? '≈0' : (state.mat==='copper' && I>2 ? '>2000' : fmt(I*1000,1));
+    log.push({ matName:m.name, len:state.len, dia:state.dia, R:Rdisplay, I:Idisplay });
+    renderLog();
+  });
+  document.getElementById('clearBtn').addEventListener('click', ()=>{
+    log = [];
+    renderLog();
+  });
+
+  // اختبار تحقق من الفهم
+  document.querySelectorAll('.quiz-opts').forEach(group=>{
+    const correct = +group.dataset.answer;
+    const opts = [...group.children];
+    opts.forEach((opt,i)=>{
+      opt.addEventListener('click', ()=>{
+        opts.forEach(o=>o.classList.remove('correct','wrong'));
+        if(i===correct){ opt.classList.add('correct'); }
+        else { opt.classList.add('wrong'); opts[correct].classList.add('correct'); }
+      });
+    });
+  });
+
+  render();
+  renderLog();
+})();
+</script>
+</body>
+</html>

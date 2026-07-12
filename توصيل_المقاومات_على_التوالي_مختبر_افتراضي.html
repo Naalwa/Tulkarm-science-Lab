@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta http-equiv="Content-Language" content="ar">
+<title>توصيل المقاومات على التوالي</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700;800;900&family=Tajawal:wght@300;400;500;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-deep:#0a1420;
+    --panel:#101d30;
+    --panel-light:#182a44;
+    --panel-border:#26395a;
+    --copper:#c98a4b;
+    --copper-light:#e3ab6f;
+    --teal:#46e0c5;
+    --teal-dim:#1f6e63;
+    --gold:#e8b23b;
+    --text:#eee6d8;
+    --text-dim:#93a6c2;
+    --wire-off:#3c4b66;
+    --danger:#d9695f;
+    --radius:16px;
+    font-size:16px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(ellipse at 20% -10%, #14233c 0%, transparent 60%),
+      radial-gradient(ellipse at 90% 10%, #142338 0%, transparent 55%),
+      var(--bg-deep);
+    color:var(--text);
+    font-family:'Tajawal', sans-serif;
+    line-height:1.75;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,h4,.display{font-family:'Cairo', sans-serif;}
+  .mono{font-family:'JetBrains Mono', monospace; direction:ltr; unicode-bidi:isolate;}
+
+  a{color:inherit;}
+  img{max-width:100%;}
+
+  /* ===== Circuit trace spine that threads the whole page ===== */
+  .spine-wrap{position:relative;}
+  .spine{
+    position:absolute; top:0; bottom:0; right:calc(50% - 1px); width:2px;
+    background:repeating-linear-gradient(to bottom, var(--copper) 0 6px, transparent 6px 14px);
+    opacity:.35; z-index:0;
+  }
+  @media (max-width:720px){ .spine{display:none;} }
+
+  /* ===== Top nav ===== */
+  .topnav{
+    position:sticky; top:0; z-index:50;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:.9rem 1.4rem;
+    background:rgba(10,20,32,.86);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--panel-border);
+  }
+  .topnav .brand{display:flex; align-items:center; gap:.6rem; font-family:'Cairo'; font-weight:800; font-size:1.05rem;}
+  .topnav .brand .dot{width:10px;height:10px;border-radius:50%;background:var(--teal); box-shadow:0 0 10px var(--teal);}
+  .topnav nav{display:flex; gap:1.4rem; font-size:.92rem; color:var(--text-dim);}
+  .topnav nav a{text-decoration:none; transition:color .2s;}
+  .topnav nav a:hover{color:var(--copper-light);}
+  @media (max-width:640px){ .topnav nav{display:none;} }
+
+  /* ===== Hero ===== */
+  .hero{
+    max-width:1100px; margin:0 auto; padding:4.2rem 1.4rem 2.5rem;
+    text-align:center; position:relative; z-index:1;
+  }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:.5rem;
+    color:var(--copper-light); font-size:.82rem; letter-spacing:.04em;
+    border:1px solid var(--panel-border); padding:.35rem .9rem; border-radius:999px;
+    background:var(--panel);
+  }
+  .hero h1{
+    font-size:clamp(2.1rem, 5vw, 3.4rem); font-weight:900; margin:1.1rem 0 .6rem;
+    background:linear-gradient(90deg, var(--copper-light), var(--gold) 55%, var(--copper-light));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .hero p.lead{color:var(--text-dim); font-size:1.08rem; max-width:640px; margin:0 auto;}
+  .hero .meta{margin-top:1.1rem; font-size:.85rem; color:var(--text-dim);}
+
+  /* hero circuit animation */
+  .hero-circuit{margin:2.6rem auto 0; max-width:640px;}
+  .hero-circuit svg{width:100%; height:auto; display:block;}
+  .flow-dash{stroke-dasharray:6 10; animation:dashmove 1.1s linear infinite;}
+  @keyframes dashmove{ to{ stroke-dashoffset:-160; } }
+
+  .scroll-cta{
+    display:inline-block; margin-top:2.3rem; padding:.8rem 1.8rem;
+    background:linear-gradient(180deg, var(--copper-light), var(--copper));
+    color:#1a1206; font-weight:700; border-radius:12px; text-decoration:none;
+    box-shadow:0 8px 18px -6px rgba(201,138,75,.55), inset 0 1px 0 rgba(255,255,255,.4);
+    transition:transform .15s;
+  }
+  .scroll-cta:hover{transform:translateY(-2px);}
+
+  /* ===== Sections ===== */
+  section{max-width:980px; margin:0 auto; padding:3.2rem 1.4rem; position:relative; z-index:1;}
+  .card{
+    background:linear-gradient(180deg, var(--panel-light), var(--panel));
+    border:1px solid var(--panel-border); border-radius:var(--radius);
+    padding:1.7rem 1.8rem; box-shadow:0 14px 30px -18px rgba(0,0,0,.7);
+  }
+  .node-label{
+    display:flex; align-items:center; gap:.8rem; margin-bottom:1.1rem;
+  }
+  .node-label .badge{
+    flex:0 0 auto; width:42px; height:42px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center; font-size:1.3rem;
+    background:radial-gradient(circle at 35% 30%, var(--panel-light), var(--bg-deep));
+    border:2px solid var(--copper); box-shadow:0 0 14px -2px rgba(201,138,75,.5);
+  }
+  .node-label h2{margin:0; font-size:1.35rem; color:var(--copper-light);}
+  .node-label .sub{font-size:.82rem; color:var(--text-dim); margin-top:.1rem;}
+
+  .q-box{border-inline-start:4px solid var(--teal); padding-inline-start:1rem;}
+  .q-box p{margin:.3rem 0 0; font-size:1.08rem;}
+
+  textarea.hyp{
+    width:100%; min-height:90px; margin-top:.8rem; resize:vertical;
+    background:var(--bg-deep); border:1px solid var(--panel-border); border-radius:10px;
+    color:var(--text); font-family:'Tajawal'; font-size:.98rem; padding:.8rem 1rem;
+  }
+  textarea.hyp:focus{outline:2px solid var(--teal); outline-offset:1px;}
+  .hint{font-size:.8rem; color:var(--text-dim); margin-top:.4rem;}
+
+  .tools-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:.9rem; margin-top:1rem;}
+  .tool-chip{
+    background:var(--bg-deep); border:1px solid var(--panel-border); border-radius:12px;
+    padding:.9rem .6rem; text-align:center; font-size:.85rem; color:var(--text-dim);
+  }
+  .tool-chip .ic{font-size:1.5rem; display:block; margin-bottom:.4rem;}
+
+  /* ===== Lab layout ===== */
+  .lab-grid{display:grid; grid-template-columns:1.35fr 1fr; gap:1.5rem;}
+  @media (max-width:860px){ .lab-grid{grid-template-columns:1fr;} }
+
+  .config-tabs{display:flex; gap:.5rem; margin-bottom:1.2rem; flex-wrap:wrap;}
+  .config-tabs button{
+    flex:1 1 auto; min-width:120px; padding:.65rem .5rem; border-radius:10px;
+    border:1px solid var(--panel-border); background:var(--bg-deep); color:var(--text-dim);
+    font-family:'Tajawal'; font-size:.86rem; cursor:pointer; transition:.2s;
+  }
+  .config-tabs button.active{
+    background:linear-gradient(180deg, var(--teal-dim), #123a35);
+    border-color:var(--teal); color:var(--teal); font-weight:700;
+  }
+
+  /* breadboard scene */
+  .scene{
+    perspective:1100px; border-radius:var(--radius); overflow:hidden;
+    background:radial-gradient(ellipse at 50% 0%, #16283f, var(--bg-deep) 70%);
+    border:1px solid var(--panel-border); padding:1.6rem 1rem 2rem;
+  }
+  .board{
+    transform:rotateX(8deg); transform-style:preserve-3d;
+    background:
+      linear-gradient(#16321f,#0f2417);
+    border-radius:12px; padding:1.6rem 1.2rem;
+    box-shadow:0 30px 40px -20px rgba(0,0,0,.7), inset 0 0 0 1px #0a1a10;
+    background-image:
+      radial-gradient(circle, rgba(255,255,255,.05) 1px, transparent 1.4px);
+    background-size:16px 16px;
+  }
+  .circuit-row{
+    display:flex; align-items:center; justify-content:center; gap:.4rem;
+    min-height:190px; flex-wrap:wrap;
+  }
+  .wire{ height:4px; background:var(--wire-off); flex:1 1 26px; min-width:22px; border-radius:2px; position:relative; overflow:hidden; }
+  .wire.on{ background:linear-gradient(90deg, var(--teal-dim), var(--teal)); box-shadow:0 0 10px var(--teal); }
+  .wire.on::after{
+    content:''; position:absolute; inset:0;
+    background:repeating-linear-gradient(90deg, rgba(255,255,255,.9) 0 4px, transparent 4px 14px);
+    animation:flowline linear infinite;
+  }
+  @keyframes flowline{ to{ background-position-x:-160px; } }
+
+  .battery{
+    display:flex; flex-direction:column; align-items:center; gap:2px; flex:0 0 auto;
+    transform:translateZ(10px);
+  }
+  .battery .cell{width:34px; border-radius:3px;}
+  .battery .cell.big{height:22px; background:linear-gradient(180deg,#e3ab6f,#a8672f); box-shadow:0 3px 6px rgba(0,0,0,.5);}
+  .battery .cell.small{width:20px; height:12px; background:linear-gradient(180deg,#e3ab6f,#a8672f);}
+  .battery .lbl{font-size:.72rem; color:var(--text-dim); margin-top:2px;}
+
+  .resistor{
+    flex:0 0 auto; display:flex; flex-direction:column; align-items:center; gap:.35rem;
+    transform:translateZ(14px);
+  }
+  .res-body{
+    width:78px; height:26px; border-radius:13px;
+    background:linear-gradient(180deg,#e9d6b0,#c9a465 45%,#9c7638);
+    box-shadow:0 6px 10px -3px rgba(0,0,0,.6), inset 0 -3px 4px rgba(0,0,0,.25), inset 0 2px 3px rgba(255,255,255,.5);
+    display:flex; align-items:center; justify-content:center; gap:4px; position:relative;
+  }
+  .res-body .band{width:6px; height:20px; border-radius:2px; box-shadow:inset 0 0 2px rgba(0,0,0,.4);}
+  .res-lbl{font-size:.74rem; color:var(--text-dim);}
+  .res-val{font-size:.78rem; color:var(--copper-light); font-family:'JetBrains Mono';}
+
+  .meter{
+    flex:0 0 auto; display:flex; flex-direction:column; align-items:center; gap:.3rem;
+    transform:translateZ(18px);
+  }
+  .meter .lcd{
+    background:#07130c; border:2px solid #24382c; border-radius:8px;
+    padding:.4rem .7rem; min-width:88px; text-align:center;
+    box-shadow:inset 0 2px 6px rgba(0,0,0,.7);
+  }
+  .meter .lcd .num{font-family:'JetBrains Mono'; font-size:1.05rem; color:var(--teal); text-shadow:0 0 8px rgba(70,224,197,.7);}
+  .meter .lcd .unit{font-size:.62rem; color:#4a7a6c;}
+  .meter .tag{
+    width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    background:radial-gradient(circle at 35% 30%, #1c2c22, #0e1a13); border:2px solid var(--teal-dim);
+    font-family:'Cairo'; font-weight:800; font-size:.9rem; color:var(--teal);
+  }
+
+  .switch-wrap{display:flex; flex-direction:column; align-items:center; gap:.4rem; flex:0 0 auto; transform:translateZ(16px);}
+  .switch-btn{
+    width:58px; height:30px; border-radius:15px; border:1px solid #244; cursor:pointer;
+    background:linear-gradient(180deg,#26466f,#132135); position:relative; transition:.25s;
+  }
+  .switch-btn .knob{
+    position:absolute; top:2px; right:2px; width:24px; height:24px; border-radius:50%;
+    background:linear-gradient(180deg,#d8dee6,#8a97a8); transition:.25s; box-shadow:0 2px 4px rgba(0,0,0,.5);
+  }
+  .switch-btn.closed{background:linear-gradient(180deg, var(--teal-dim), #0f4038); border-color:var(--teal);}
+  .switch-btn.closed .knob{right:auto; left:2px; background:linear-gradient(180deg,#c8fff2,#46e0c5);}
+
+  .controls{margin-top:1.5rem; display:grid; grid-template-columns:1fr 1fr; gap:1rem;}
+  @media (max-width:520px){ .controls{grid-template-columns:1fr;} }
+  .control{background:var(--bg-deep); border:1px solid var(--panel-border); border-radius:12px; padding:.85rem 1rem;}
+  .control label{display:flex; justify-content:space-between; font-size:.85rem; color:var(--text-dim); margin-bottom:.5rem;}
+  .control label b{color:var(--copper-light); font-family:'JetBrains Mono';}
+  .control select, .control input[type=range]{width:100%;}
+  .control select{
+    background:var(--panel); color:var(--text); border:1px solid var(--panel-border); border-radius:8px; padding:.45rem; font-family:'JetBrains Mono';
+  }
+
+  .lab-actions{display:flex; gap:.7rem; margin-top:1.3rem; flex-wrap:wrap;}
+  .btn{
+    padding:.7rem 1.2rem; border-radius:10px; border:none; cursor:pointer; font-family:'Tajawal'; font-weight:700; font-size:.9rem;
+    transition:transform .15s, box-shadow .15s;
+  }
+  .btn:active{transform:scale(.97);}
+  .btn-primary{background:linear-gradient(180deg, var(--teal), #1f8f7d); color:#04241d; box-shadow:0 6px 14px -6px rgba(70,224,197,.5);}
+  .btn-ghost{background:var(--panel); color:var(--text-dim); border:1px solid var(--panel-border);}
+  .btn-copper{background:linear-gradient(180deg, var(--copper-light), var(--copper)); color:#1c1204;}
+
+  /* right column: readings panel */
+  .readout-panel{display:flex; flex-direction:column; gap:1rem;}
+  .readout-card{background:var(--bg-deep); border:1px solid var(--panel-border); border-radius:12px; padding:1rem 1.1rem;}
+  .readout-card h4{margin:0 0 .5rem; font-size:.95rem; color:var(--copper-light);}
+  .readout-row{display:flex; justify-content:space-between; font-size:.9rem; padding:.3rem 0; border-bottom:1px dashed var(--panel-border);}
+  .readout-row:last-child{border-bottom:none;}
+  .readout-row span.v{font-family:'JetBrains Mono'; color:var(--teal);}
+
+  /* ===== Table ===== */
+  table.results{width:100%; border-collapse:collapse; margin-top:1rem; font-size:.92rem;}
+  table.results th, table.results td{border:1px solid var(--panel-border); padding:.7rem .6rem; text-align:center;}
+  table.results th{background:var(--panel-light); color:var(--copper-light); font-family:'Cairo'; font-weight:700;}
+  table.results td{background:var(--bg-deep);}
+  table.results td.filled{color:var(--teal); font-family:'JetBrains Mono'; font-weight:700;}
+  table.results td.empty{color:var(--text-dim); font-size:.85rem;}
+  .row-label{text-align:start !important; color:var(--text);}
+
+  /* analysis */
+  .analysis-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin-top:1.2rem;}
+  @media (max-width:720px){ .analysis-grid{grid-template-columns:1fr;} }
+  .analysis-card{background:var(--bg-deep); border:1px solid var(--panel-border); border-radius:12px; padding:1rem; text-align:center;}
+  .analysis-card .big{font-family:'JetBrains Mono'; font-size:1.3rem; color:var(--gold); margin:.3rem 0;}
+  .analysis-card .lbl{font-size:.82rem; color:var(--text-dim);}
+  .verdict{margin-top:1rem; padding:.9rem 1rem; border-radius:10px; font-size:.92rem; display:none;}
+  .verdict.ok{display:block; background:rgba(70,224,197,.08); border:1px solid var(--teal-dim); color:var(--teal);}
+
+  /* conclusion */
+  .fillblank{background:var(--bg-deep); border:1px solid var(--panel-border); border-radius:12px; padding:1.1rem 1.2rem; margin-top:1rem;}
+  .fillblank textarea{width:100%; min-height:80px; background:var(--panel); border:1px solid var(--panel-border); border-radius:8px; color:var(--text); padding:.7rem; font-family:'Tajawal';}
+  .reveal{margin-top:.9rem; padding:.9rem 1rem; border-radius:10px; background:rgba(232,178,59,.08); border:1px solid #4a3a17; display:none; font-size:.92rem;}
+  .reveal.show{display:block;}
+
+  .law-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin-top:1rem;}
+  @media (max-width:760px){ .law-grid{grid-template-columns:1fr;} }
+  .law-card{background:var(--bg-deep); border:1px solid var(--panel-border); border-radius:14px; padding:1.2rem; text-align:center;}
+  .law-card .formula{font-family:'JetBrains Mono'; font-size:1.25rem; color:var(--copper-light); margin:.6rem 0; direction:ltr;}
+  .law-card p{font-size:.85rem; color:var(--text-dim); margin:0;}
+
+  /* quiz */
+  .quiz-item{margin-bottom:1.4rem;}
+  .quiz-item p.q{font-weight:700; margin-bottom:.6rem;}
+  .quiz-opts{display:flex; flex-direction:column; gap:.5rem;}
+  .quiz-opts button{
+    text-align:start; padding:.65rem .9rem; border-radius:10px; border:1px solid var(--panel-border);
+    background:var(--bg-deep); color:var(--text); cursor:pointer; font-family:'Tajawal'; font-size:.9rem;
+  }
+  .quiz-opts button.correct{background:rgba(70,224,197,.15); border-color:var(--teal); color:var(--teal);}
+  .quiz-opts button.wrong{background:rgba(217,105,95,.15); border-color:var(--danger); color:var(--danger);}
+
+  footer{text-align:center; padding:2.5rem 1.4rem 3rem; color:var(--text-dim); font-size:.82rem; position:relative; z-index:1;}
+
+  ::selection{background:var(--teal); color:#04241d;}
+  :focus-visible{outline:2px solid var(--teal); outline-offset:2px;}
+
+  /* ═══ RESPONSIVE MOBILE & TABLET — AUTO-INJECTED ═══ */
+  @media (max-width: 768px) {
+    body { padding: 8px !important; font-size: 15px !important; overflow-x: hidden !important; }
+    .container, [class*="container"], [class*="wrapper"] { padding: 8px !important; max-width: 100% !important; }
+    canvas { width: 100% !important; height: auto !important; display: block !important; touch-action: none; max-width: 100% !important; }
+    svg { max-width: 100% !important; height: auto !important; }
+    h1 { font-size: clamp(18px, 5vw, 32px) !important; }
+    h2 { font-size: clamp(16px, 4vw, 26px) !important; }
+    h3 { font-size: clamp(14px, 3.5vw, 22px) !important; }
+    p, li, td, th, label, span { font-size: clamp(13px, 3.5vw, 16px) !important; }
+    [class*="grid"] { grid-template-columns: 1fr !important; }
+    [class*="flex"] { flex-wrap: wrap !important; }
+    input[type="range"] { width: 100% !important; min-height: 36px; }
+    input[type="number"], input[type="text"], select, textarea { 
+      font-size: 16px !important; width: 100% !important; box-sizing: border-box; padding: 8px !important;
+    }
+    button { min-height: 44px !important; font-size: 14px !important; touch-action: manipulation; padding: 10px 14px !important; }
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 13px !important; }
+    th, td { padding: 6px 4px !important; white-space: nowrap; }
+    [style*="display: grid"], [style*="display:grid"] { display: flex !important; flex-direction: column !important; }
+    .lab-window, [class*="lab-window"] { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+    header { padding: 12px !important; }
+    .controls, [class*="controls"] { flex-direction: column !important; gap: 8px !important; }
+  }
+  @media (max-width: 480px) {
+    body { padding: 4px !important; }
+    h1 { font-size: clamp(16px, 5vw, 24px) !important; }
+    button { width: 100% !important; }
+  }
+  /* ═══ END RESPONSIVE ═══ */
+</style>
+</head>
+<body>
+
+<style>
+.vlab-back-btn {
+  position: fixed; top: 10px; left: 10px; z-index: 99999;
+  background: rgba(10,22,40,0.93); border: 1px solid rgba(0,200,150,0.4);
+  border-radius: 22px; padding: 8px 16px;
+  display: inline-flex; align-items: center; gap: 7px;
+  color: #00C896; font-family: Tajawal, Cairo, Arial, sans-serif;
+  font-size: 13px; font-weight: 700; text-decoration: none;
+  backdrop-filter: blur(8px); box-shadow: 0 4px 18px rgba(0,0,0,0.3);
+  transition: background 0.2s;
+}
+.vlab-back-btn:hover { background: rgba(0,200,150,0.18); color: #00C896; }
+</style>
+
+<a href="../grade9.html" class="vlab-back-btn">&#8594; العودة للصف</a>
+
+
+<div class="topnav">
+  <div class="brand"><span class="dot"></span> فيزياء تفاعلية · الصف التاسع</div>
+  <nav>
+    <a href="#lesson">الدرس</a>
+    <a href="#lab">المختبر</a>
+    <a href="#results">النتائج</a>
+    <a href="#conclusion">الاستنتاج</a>
+    <a href="#quiz">تقييم سريع</a>
+  </nav>
+</div>
+
+<div class="spine-wrap">
+<div class="spine"></div>
+
+<!-- ===== HERO ===== -->
+<section class="hero" style="padding-top:3.6rem;">
+  <span class="eyebrow">🔌 نشاط (٣) · مبحث العلوم والحياة</span>
+  <h1>توصيل المقاومات على التوالي</h1>
+  <p class="lead">استقصِ العلاقة بين المقاومة الكلّية وشدّة التيار في دارة كهربائية، من خلال مختبر افتراضي واقعي تبني فيه دارتك، تُغلق المفتاح، وتقرأ الأجهزة بنفسك.</p>
+  <div class="meta">إعداد لمنهاج فلسطين — الصف التاسع · يعمل على الهاتف والحاسوب</div>
+
+  <div class="hero-circuit">
+    <svg viewBox="0 0 600 160" xmlns="http://www.w3.org/2000/svg">
+      <!-- static faint loop -->
+      <path d="M40 80 H180 M420 80 H560 M40 80 V30 H560 V80 M40 80 V130 H560 V80" fill="none" stroke="#26395a" stroke-width="3"/>
+      <!-- animated flow along top+bottom rails -->
+      <path class="flow-dash" d="M60 30 H540" fill="none" stroke="#46e0c5" stroke-width="3"/>
+      <path class="flow-dash" d="M540 130 H60" fill="none" stroke="#46e0c5" stroke-width="3"/>
+      <!-- battery symbol -->
+      <line x1="40" y1="60" x2="40" y2="100" stroke="#e3ab6f" stroke-width="5"/>
+      <line x1="40" y1="70" x2="40" y2="90" stroke="#e3ab6f" stroke-width="2"/>
+      <!-- resistor 1 -->
+      <rect x="200" y="18" width="80" height="24" rx="12" fill="#c9a465"/>
+      <text x="240" y="10" text-anchor="middle" fill="#93a6c2" font-size="12" font-family="Cairo">R1</text>
+      <!-- resistor 2 -->
+      <rect x="320" y="18" width="80" height="24" rx="12" fill="#c9a465"/>
+      <text x="360" y="10" text-anchor="middle" fill="#93a6c2" font-size="12" font-family="Cairo">R2</text>
+      <!-- ammeter -->
+      <circle cx="300" cy="130" r="16" fill="#07130c" stroke="#46e0c5" stroke-width="2"/>
+      <text x="300" y="135" text-anchor="middle" fill="#46e0c5" font-size="13" font-family="Cairo" font-weight="700">A</text>
+    </svg>
+  </div>
+
+  <a class="scroll-cta" href="#lesson">ابدأ الدرس ↓</a>
+</section>
+
+<!-- ===== LESSON: question + hypothesis + tools ===== -->
+<section id="lesson">
+  <div class="card" style="margin-bottom:1.4rem;">
+    <div class="node-label"><div class="badge">❓</div><div><h2>السؤال</h2><div class="sub">ما الذي نحاول اكتشافه؟</div></div></div>
+    <div class="q-box"><p>كيف يؤثر توصيل المقاومات على التوالي في الدارة الكهربائية على شدّة التيار المارّ فيها؟</p></div>
+  </div>
+
+  <div class="card" style="margin-bottom:1.4rem;">
+    <div class="node-label"><div class="badge">💡</div><div><h2>الفرضيّة</h2><div class="sub">اكتب توقّعك قبل إجراء التجربة</div></div></div>
+    <p style="margin:.2rem 0 0; font-size:.95rem; color:var(--text-dim);">ماذا تتوقّع أن تكون العلاقة بين قيمة المقاومة الكليّة والمقاومات الكهربائية المستخدمة فيها؟ وكيف سيؤثر إضافة مقاومات على شدّة التيار الكلّي؟</p>
+    <textarea class="hyp" placeholder="اكتب فرضيّتك هنا... مثال: أتوقّع أنّ توصيل مقاومتين على التوالي يزيد المقاومة الكليّة ويقلّل شدّة التيار."></textarea>
+    <div class="hint">فرضيتك محفوظة أثناء تصفّحك للصفحة فقط، راجعها بعد إتمام التجربة في قسم الاستنتاج.</div>
+  </div>
+
+  <div class="card">
+    <div class="node-label"><div class="badge">🧰</div><div><h2>الأدوات</h2><div class="sub">هذا المختبر الافتراضي يحاكيها جميعًا</div></div></div>
+    <div class="tools-grid">
+      <div class="tool-chip"><span class="ic">🔋</span>بطاريات</div>
+      <div class="tool-chip"><span class="ic">🎛️</span>مقاومتان معلومتان</div>
+      <div class="tool-chip"><span class="ic">Ⓐ</span>أميتر</div>
+      <div class="tool-chip"><span class="ic">Ⓥ</span>فولتميتر</div>
+      <div class="tool-chip"><span class="ic">🔌</span>أسلاك كهربائية</div>
+      <div class="tool-chip"><span class="ic">🔘</span>مفتاح</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== VIRTUAL LAB ===== -->
+<section id="lab">
+  <div class="node-label"><div class="badge">🧪</div><div><h2>المختبر الافتراضي</h2><div class="sub">كوّن الدارة، أغلق المفتاح، واقرأ الأجهزة</div></div></div>
+
+  <div class="lab-grid">
+    <div class="card">
+      <div class="config-tabs">
+        <button data-cfg="r1" class="active">دارة مقاومة (١) فقط</button>
+        <button data-cfg="r2">دارة مقاومة (٢) فقط</button>
+        <button data-cfg="series">المقاومتان معًا على التوالي</button>
+      </div>
+
+      <div class="scene">
+        <div class="board" id="board">
+          <div class="circuit-row" id="circuitRow">
+            <!-- populated by JS -->
+          </div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <div class="control">
+          <label>مقاومة (١) R1 <b id="r1ValLbl">220 Ω</b></label>
+          <select id="r1Select">
+            <option value="100">100 Ω</option>
+            <option value="220" selected>220 Ω</option>
+            <option value="330">330 Ω</option>
+            <option value="470">470 Ω</option>
+            <option value="680">680 Ω</option>
+            <option value="1000">1000 Ω</option>
+          </select>
+        </div>
+        <div class="control">
+          <label>مقاومة (٢) R2 <b id="r2ValLbl">330 Ω</b></label>
+          <select id="r2Select">
+            <option value="100">100 Ω</option>
+            <option value="220">220 Ω</option>
+            <option value="330" selected>330 Ω</option>
+            <option value="470">470 Ω</option>
+            <option value="680">680 Ω</option>
+            <option value="1000">1000 Ω</option>
+          </select>
+        </div>
+        <div class="control" style="grid-column:1/-1;">
+          <label>فرق جهد المصدر (البطارية) <b id="vValLbl">9.0 V</b></label>
+          <input type="range" id="vSlider" min="1.5" max="12" step="0.5" value="9">
+        </div>
+      </div>
+
+      <div class="lab-actions">
+        <button class="btn btn-primary" id="switchToggle">⏻ أغلق الدارة</button>
+        <button class="btn btn-copper" id="recordBtn">📌 تسجيل القراءة في الجدول</button>
+        <button class="btn btn-ghost" id="resetBtn">↺ إعادة ضبط الجدول</button>
+      </div>
+    </div>
+
+    <div class="readout-panel">
+      <div class="readout-card">
+        <h4>قراءات الأجهزة الحيّة</h4>
+        <div class="readout-row"><span>حالة المفتاح</span><span class="v" id="stateLbl">مفتوحة</span></div>
+        <div class="readout-row"><span>شدّة التيار (I)</span><span class="v" id="curLbl">0.00 mA</span></div>
+        <div class="readout-row"><span>فرق الجهد المقاس (V)</span><span class="v" id="voltLbl">0.00 V</span></div>
+        <div class="readout-row"><span>المقاومة الكليّة للدارة الحاليّة</span><span class="v" id="rtotLbl">220 Ω</span></div>
+      </div>
+      <div class="readout-card">
+        <h4>ملاحظة فيزيائية</h4>
+        <p style="font-size:.85rem; color:var(--text-dim); margin:0;" id="physNote">
+          أنت الآن تختبر مقاومة واحدة فقط في الدارة. لاحظ قيمة التيار، ثم بدّل إلى ال</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== RESULTS TABLE ===== -->
+<section id="results">
+  <div class="card">
+    <div class="node-label"><div class="badge">📋</div><div><h2>جدول التوصيل على التوالي</h2><div class="sub">سجّل قراءاتك من المختبر أعلاه</div></div></div>
+    <table class="results">
+      <thead>
+        <tr><th></th><th>فرق الجهد (V)</th><th>شدّة التيار (mA)</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="row-label">مقاومة (١)</td>
+          <td class="empty" id="cell-r1-v">—</td>
+          <td class="empty" id="cell-r1-i">—</td>
+        </tr>
+        <tr>
+          <td class="row-label">مقاومة (٢) موصولة على التوالي</td>
+          <td class="empty" id="cell-r2-v">—</td>
+          <td class="empty" id="cell-r2-i">—</td>
+        </tr>
+        <tr>
+          <td class="row-label">المقاومتان معًا (١) و(٢) على التوالي</td>
+          <td class="empty" id="cell-series-v">—</td>
+          <td class="empty" id="cell-series-i">—</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="analysis-grid">
+      <div class="analysis-card">
+        <div class="lbl">R1 + R2 (محسوبة من كل مقاومة منفردة)</div>
+        <div class="big" id="sumR">—</div>
+      </div>
+      <div class="analysis-card">
+        <div class="lbl">المقاومة الكليّة المقاسة (V/I) للتوالي</div>
+        <div class="big" id="measuredRtotal">—</div>
+      </div>
+      <div class="analysis-card">
+        <div class="lbl">هل تساوى المجموع مع المقاس؟</div>
+        <div class="big" id="matchResult">—</div>
+      </div>
+    </div>
+    <div class="verdict" id="verdictBox"></div>
+  </div>
+</section>
+
+<!-- ===== ANALYSIS / CONCLUSION ===== -->
+<section id="conclusion">
+  <div class="card">
+    <div class="node-label"><div class="badge">🧠</div><div><h2>التحليل والتفسير</h2><div class="sub">اربط بين قانون أوم والنتائج الكليّة</div></div></div>
+    <p style="font-size:.95rem;">وظّفنا قانون أوم في حساب قيمة المقاومة الكليّة، في حال وصلت المقاومتين معًا على التوالي. قارن بين شدّة التيار في الحالات الثلاث: هل تغيّرت شدّة التيار المارّة في كل نقطة من الدارة عندما كانت المقاومتان موصولتين معًا؟</p>
+  </div>
+
+  <div class="card" style="margin-top:1.4rem;">
+    <div class="node-label"><div class="badge">✍️</div><div><h2>الاستنتاج والتطبيق</h2><div class="sub">أكمل العلاقة بأسلوبك الخاص</div></div></div>
+    <div class="fillblank">
+      <p style="margin:0 0 .6rem; font-size:.92rem;">ما العلاقة بين كلٍّ من R1، وR2، والمقاومة الكليّة المحسوبة، عند توصيل المقاومتين معًا على التوالي؟</p>
+      <textarea id="studentConclusion" placeholder="اكتب استنتاجك هنا بلغتك الخاصة..."></textarea>
+      <div class="lab-actions" style="margin-top:.8rem;">
+        <button class="btn btn-copper" id="revealBtn">💡 أظهر الإجابة النموذجية</button>
+      </div>
+      <div class="reveal" id="revealBox">
+        المقاومة الكليّة لدارة التوالي تساوي مجموع المقاومات المفردة: <strong class="mono">R_total = R1 + R2</strong>.
+        كما أنّ شدّة التيار الكهربائي تبقى نفسها في جميع أجزاء دارة التوالي، بينما يتوزّع فرق الجهد الكلّي على المقاومات
+        بحيث يكون مجموع فروق الجهد الجزئية مساويًا لفرق جهد المصدر: <strong class="mono">V_total = V1 + V2</strong>.
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:1.4rem;">
+    <div class="node-label"><div class="badge">📐</div><div><h2>خلاصة القوانين</h2></div></div>
+    <div class="law-grid">
+      <div class="law-card">
+        <div class="lbl">شدّة التيار</div>
+        <div class="formula">I = I1 = I2</div>
+        <p>نفس شدّة التيار تمرّ بكل عنصر في دارة التوالي.</p>
+      </div>
+      <div class="law-card">
+        <div class="lbl">فرق الجهد</div>
+        <div class="formula">V = V1 + V2</div>
+        <p>فرق الجهد الكلّي يساوي مجموع فروق الجهد الجزئيّة.</p>
+      </div>
+      <div class="law-card">
+        <div class="lbl">المقاومة الكليّة</div>
+        <div class="formula">R = R1 + R2</div>
+        <p>المقاومة الكليّة تساوي مجموع المقاومات الموصولة على التوالي.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== QUIZ ===== -->
+<section id="quiz">
+  <div class="card">
+    <div class="node-label"><div class="badge">🎯</div><div><h2>تحقّق من فهمك</h2><div class="sub">ثلاثة أسئلة سريعة</div></div></div>
+
+    <div class="quiz-item">
+      <p class="q">١. عند توصيل مقاومتين على التوالي، ماذا يحدث لشدّة التيار في كل منهما؟</p>
+      <div class="quiz-opts">
+        <button data-correct="false">تختلف شدّة التيار من مقاومة لأخرى</button>
+        <button data-correct="true">تبقى شدّة التيار نفسها في كلتا المقاومتين</button>
+        <button data-correct="false">لا يمرّ تيار في المقاومة الثانية</button>
+      </div>
+    </div>
+
+    <div class="quiz-item">
+      <p class="q">٢. إذا كانت R1 = 220 Ω وR2 = 330 Ω، فما المقاومة الكليّة عند توصيلهما على التوالي؟</p>
+      <div class="quiz-opts">
+        <button data-correct="false">110 Ω</button>
+        <button data-correct="true">550 Ω</button>
+        <button data-correct="false">72600 Ω</button>
+      </div>
+    </div>
+
+    <div class="quiz-item">
+      <p class="q">٣. عند زيادة عدد المقاومات الموصولة على التوالي في الدارة (مع بقاء الجهد ثابتًا)، ماذا يحدث لشدّة التيار الكلّي؟</p>
+      <div class="quiz-opts">
+        <button data-correct="false">تزداد</button>
+        <button data-correct="true">تقلّ</button>
+        <button data-correct="false">تبقى دون تغيير</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  صُمّمت هذه الصفحة لتخدم منهاج العلوم والحياة – الصف التاسع – فلسطين · نشاط: توصيل المقاومات على التوالي
+</footer>
+</div><!-- /spine-wrap -->
+
+<script>
+(function(){
+  "use strict";
+
+  // ---------- resistor colour-band mapping (standard E-series look) ----------
+  const bandMap = {
+    100:  ['#5b3a29','#1a1a1a','#5b3a29'],
+    220:  ['#c0392b','#c0392b','#5b3a29'],
+    330:  ['#d9772e','#d9772e','#5b3a29'],
+    470:  ['#e8c93b','#7d4a9a','#5b3a29'],
+    680:  ['#2f6fb0','#8a8a8a','#5b3a29'],
+    1000: ['#5b3a29','#1a1a1a','#c0392b']
+  };
+
+  const state = {
+    config: 'r1',       // r1 | r2 | series
+    r1: 220,
+    r2: 330,
+    v: 9.0,
+    closed: false
+  };
+
+  const results = { r1:null, r2:null, series:null };
+
+  const $ = (id) => document.getElementById(id);
+
+  function resistorHTML(id, ohms){
+    const bands = bandMap[ohms] || bandMap[220];
+    return `<div class="resistor">
+      <div class="res-body">
+        ${bands.map(c=>`<div class="band" style="background:${c}"></div>`).join('')}
+      </div>
+      <div class="res-lbl">${id}</div>
+      <div class="res-val">${ohms} Ω</div>
+    </div>`;
+  }
+
+  function batteryHTML(){
+    return `<div class="battery">
+      <div class="cell big"></div>
+      <div class="cell small"></div>
+      <div class="lbl mono">${state.v.toFixed(1)} V</div>
+    </div>`;
+  }
+
+  function meterHTML(kind, valueText, unit){
+    return `<div class="meter">
+      <div class="tag">${kind}</div>
+      <div class="lcd"><span class="num">${valueText}</span><br><span class="unit">${unit}</span></div>
+    </div>`;
+  }
+
+  function switchHTML(){
+    return `<div class="switch-wrap">
+      <div class="lbl" style="font-size:.72rem;color:var(--text-dim)">المفتاح</div>
+    </div>`;
+  }
+
+  function wireHTML(){
+    return `<div class="wire ${state.closed ? 'on':''}"></div>`;
+  }
+
+  function computeCircuit(){
+    let rTotal;
+    if(state.config === 'r1') rTotal = state.r1;
+    else if(state.config === 'r2') rTotal = state.r2;
+    else rTotal = state.r1 + state.r2;
+
+    const I = state.closed ? (state.v / rTotal) : 0;   // amps
+    let Vmeasured;
+    if(state.config === 'series') Vmeasured = state.closed ? state.v : 0; // total across both
+    else Vmeasured = state.closed ? state.v : 0; // full source across the single resistor
+
+    return { rTotal, I, Vmeasured };
+  }
+
+  function renderCircuit(){
+    const row = $('circuitRow');
+    let html = '';
+    html += batteryHTML();
+    html += wireHTML();
+    if(state.config === 'r1'){
+      html += resistorHTML('R1', state.r1);
+    } else if(state.config === 'r2'){
+      html += resistorHTML('R2', state.r2);
+    } else {
+      html += resistorHTML('R1', state.r1);
+      html += wireHTML();
+      html += resistorHTML('R2', state.r2);
+    }
+    html += wireHTML();
+
+    const { I, Vmeasured } = computeCircuit();
+    html += meterHTML('A', (I*1000).toFixed(1), 'mA');
+    html += wireHTML();
+    html += meterHTML('V', Vmeasured.toFixed(2), 'V');
+    html += wireHTML();
+
+    row.innerHTML = html;
+
+    // set flow speed based on current
+    document.querySelectorAll('.wire.on').forEach(w=>{
+      const speed = Math.max(0.25, 1.4 - I*3); // faster (lower duration) with higher current
+      w.style.setProperty('--dur', speed+'s');
+      w.style.animationDuration = speed+'s';
+      const after = w;
+      after.style.setProperty('animation-duration', speed+'s');
+    });
+  }
+
+  function updateSwitchButton(){
+    const btn = $('switchToggle');
+    btn.textContent = state.closed ? '⏻ افتح الدارة' : '⏻ أغلق الدارة';
+    btn.classList.toggle('btn-primary', true);
+  }
+
+  function updateReadout(){
+    const { rTotal, I, Vmeasured } = computeCircuit();
+    $('stateLbl').textContent = state.closed ? 'مغلقة' : 'مفتوحة';
+    $('curLbl').textContent = (I*1000).toFixed(2) + ' mA';
+    $('voltLbl').textContent = Vmeasured.toFixed(2) + ' V';
+    $('rtotLbl').textContent = rTotal + ' Ω';
+
+    const notes = {
+      r1: 'أنت الآن تختبر مقاومة (١) فقط في الدارة. لاحظ قيمة التيار، ثم بدّل إلى مقاومة (٢) وقارن.',
+      r2: 'أنت الآن تختبر مقاومة (٢) فقط في الدارة. سجّل القراءة، ثم انتقل لتوصيل المقاومتين معًا.',
+      series: 'المقاومتان الآن موصولتان على التوالي: لاحظ أنّ شدّة التيار قلّت مقارنة بأيّ مقاومة بمفردها، بينما فرق الجهد يتوزّع بينهما.'
+    };
+    $('physNote').textContent = notes[state.config];
+  }
+
+  function refreshAll(){
+    $('r1ValLbl').textContent = state.r1 + ' Ω';
+    $('r2ValLbl').textContent = state.r2 + ' Ω';
+    $('vValLbl').textContent = state.v.toFixed(1) + ' V';
+    renderCircuit();
+    updateReadout();
+    updateSwitchButton();
+  }
+
+  // ---------- controls ----------
+  document.querySelectorAll('.config-tabs button').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('.config-tabs button').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      state.config = btn.dataset.cfg;
+      refreshAll();
+    });
+  });
+
+  $('r1Select').addEventListener('change', e=>{ state.r1 = parseInt(e.target.value,10); refreshAll(); });
+  $('r2Select').addEventListener('change', e=>{ state.r2 = parseInt(e.target.value,10); refreshAll(); });
+  $('vSlider').addEventListener('input', e=>{ state.v = parseFloat(e.target.value); refreshAll(); });
+
+  $('switchToggle').addEventListener('click', ()=>{
+    state.closed = !state.closed;
+    refreshAll();
+  });
+
+  $('recordBtn').addEventListener('click', ()=>{
+    if(!state.closed){
+      alert('أغلق الدارة أولًا لتتمكّن من قراءة الأجهزة وتسجيل القيمة.');
+      return;
+    }
+    const { rTotal, I, Vmeasured } = computeCircuit();
+    results[state.config] = { v: Vmeasured, i: I*1000, r: rTotal };
+
+    const map = { r1:'r1', r2:'r2', series:'series' };
+    const key = map[state.config];
+    $('cell-'+key+'-v').textContent = Vmeasured.toFixed(2);
+    $('cell-'+key+'-v').className = 'filled';
+    $('cell-'+key+'-i').textContent = (I*1000).toFixed(2);
+    $('cell-'+key+'-i').className = 'filled';
+
+    updateAnalysis();
+  });
+
+  $('resetBtn').addEventListener('click', ()=>{
+    results.r1 = results.r2 = results.series = null;
+    ['r1','r2','series'].forEach(k=>{
+      $('cell-'+k+'-v').textContent = '—'; $('cell-'+k+'-v').className='empty';
+      $('cell-'+k+'-i').textContent = '—'; $('cell-'+k+'-i').className='empty';
+    });
+    $('sumR').textContent='—'; $('measuredRtotal').textContent='—'; $('matchResult').textContent='—';
+    $('verdictBox').classList.remove('ok'); $('verdictBox').textContent='';
+  });
+
+  function updateAnalysis(){
+    if(results.r1 && results.r2){
+      const R1calc = results.r1.v / (results.r1.i/1000);
+      const R2calc = results.r2.v / (results.r2.i/1000);
+      const sum = R1calc + R2calc;
+      $('sumR').textContent = sum.toFixed(0) + ' Ω';
+    }
+    if(results.series){
+      const Rm = results.series.v / (results.series.i/1000);
+      $('measuredRtotal').textContent = Rm.toFixed(0) + ' Ω';
+      if(results.r1 && results.r2){
+        const R1calc = results.r1.v / (results.r1.i/1000);
+        const R2calc = results.r2.v / (results.r2.i/1000);
+        const sum = R1calc + R2calc;
+        const close = Math.abs(sum - Rm) < 1;
+        $('matchResult').textContent = close ? '✔ نعم' : '✘ تحقّق مجددًا';
+        if(close){
+          $('verdictBox').classList.add('ok');
+          $('verdictBox').textContent = 'ممتاز! تحقّقتَ عمليًا أنّ المقاومة الكليّة عند التوالي تساوي مجموع المقاومات المفردة، وأنّ شدّة التيار الكليّة قلّت بازدياد المقاومة الكليّة.';
+        }
+      }
+    }
+  }
+
+  // ---------- conclusion reveal ----------
+  $('revealBtn').addEventListener('click', ()=>{
+    $('revealBox').classList.toggle('show');
+  });
+
+  // ---------- quiz ----------
+  document.querySelectorAll('.quiz-item').forEach(item=>{
+    const buttons = item.querySelectorAll('.quiz-opts button');
+    buttons.forEach(b=>{
+      b.addEventListener('click', ()=>{
+        buttons.forEach(x=>{
+          x.classList.remove('correct','wrong');
+          x.disabled = true;
+        });
+        buttons.forEach(x=>{
+          if(x.dataset.correct === 'true') x.classList.add('correct');
+        });
+        if(b.dataset.correct !== 'true') b.classList.add('wrong');
+      });
+    });
+  });
+
+  refreshAll();
+})();
+</script>
+</body>
+</html>
