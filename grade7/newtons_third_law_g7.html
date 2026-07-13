@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta http-equiv="Content-Language" content="ar">
+<title>القانون الثالث لنيوتن — مختبر افتراضي تفاعلي | الصف السابع</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@500;600;700&family=Cairo:wght@400;500;600;700;800&family=Tajawal:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#16241f;
+  --paper:#f5f0e4;
+  --paper-2:#ece4d2;
+  --emerald:#1f7a5c;
+  --emerald-deep:#0d3d2e;
+  --emerald-glow:#33a67d;
+  --red:#c0392b;
+  --red-deep:#8f291d;
+  --blue:#2456a6;
+  --blue-deep:#173a76;
+  --gold:#c99a2e;
+  --line: rgba(22,36,31,0.14);
+  --shadow: 0 18px 40px -20px rgba(13,61,46,.45);
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Cairo',sans-serif;
+  line-height:1.9;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,.display{font-family:'El Messiri',serif;}
+.mono{font-family:'Tajawal',sans-serif; letter-spacing:.02em;}
+img,svg{display:block;max-width:100%;}
+button{font-family:'Cairo',sans-serif;cursor:pointer;border:none;}
+input[type=range]{accent-color:var(--emerald);}
+
+/* ===== NAV ===== */
+.nav{
+  position:sticky;top:0;z-index:50;
+  background:linear-gradient(180deg, var(--emerald-deep), var(--emerald));
+  color:#f5f0e4;
+  box-shadow:var(--shadow);
+}
+.nav-inner{
+  max-width:1180px;margin:0 auto;padding:12px 20px;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.05rem}
+.brand .mark{
+  width:34px;height:34px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%, var(--gold), var(--red) 70%);
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.5);
+  flex:none;
+}
+.nav-links{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;}
+.nav-links::-webkit-scrollbar{display:none;}
+.nav-links a{
+  color:#f5f0e4dd;text-decoration:none;font-size:.86rem;font-weight:600;
+  padding:8px 12px;border-radius:999px;white-space:nowrap;transition:.2s;
+}
+.nav-links a:hover,.nav-links a:focus-visible{background:rgba(255,255,255,.14);color:#fff;outline:none;}
+
+/* ===== HERO ===== */
+.hero{
+  position:relative;overflow:hidden;
+  padding:64px 20px 90px;
+  background:
+    radial-gradient(1100px 500px at 20% -10%, rgba(51,166,125,.25), transparent 60%),
+    radial-gradient(900px 500px at 100% 0%, rgba(201,154,46,.18), transparent 55%),
+    var(--paper);
+  text-align:center;
+}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:'Tajawal';font-size:.82rem;font-weight:500;
+  color:var(--emerald-deep);background:#fff;border:1px solid var(--line);
+  padding:7px 16px;border-radius:999px;box-shadow:var(--shadow);
+}
+.hero h1{
+  font-size:clamp(2.1rem,5vw,3.6rem);
+  margin:22px auto 10px;max-width:800px;color:var(--emerald-deep);
+  font-weight:700;
+}
+.hero h1 span{color:var(--red);}
+.hero p.lead{
+  max-width:620px;margin:0 auto 40px;color:#3c4a44;font-size:1.05rem;
+}
+/* 3D scene */
+.scene-wrap{perspective:1400px;margin:0 auto;width:min(560px,92vw);}
+.scene{
+  position:relative;height:230px;transform-style:preserve-3d;
+  transform:rotateX(18deg) rotateY(-16deg);
+  animation:sway 7s ease-in-out infinite;
+}
+@keyframes sway{
+  0%,100%{transform:rotateX(18deg) rotateY(-16deg);}
+  50%{transform:rotateX(15deg) rotateY(-8deg);}
+}
+.piece{position:absolute;top:50%;transform-style:preserve-3d;}
+.magnet3d{right:26%;width:100px;height:44px;transform:translateY(-50%);}
+.magnet3d .face{position:absolute;inset:0;border-radius:8px;}
+.magnet3d .front{background:linear-gradient(90deg,var(--red) 50%, var(--blue) 50%);box-shadow:var(--shadow);}
+.magnet3d .top{background:linear-gradient(90deg,#e07364 50%,#4d78c9 50%);transform:rotateX(90deg) translateY(-22px);height:16px;filter:brightness(1.15);}
+.magnet3d .side{background:linear-gradient(180deg,var(--red-deep),var(--blue-deep));width:16px;height:44px;transform:rotateY(90deg) translateZ(50px) translateX(-8px);}
+.nail3d{left:24%;width:86px;height:14px;transform:translateY(-50%);}
+.nail3d .front{position:absolute;inset:0;background:linear-gradient(90deg,#9aa1a6,#c8ccd0 40%,#7d838a);border-radius:2px 10px 10px 2px;box-shadow:var(--shadow);}
+.nail3d .front:after{content:'';position:absolute;left:-9px;top:0;width:0;height:0;border-style:solid;border-width:7px 10px 7px 0;border-color:transparent #9aa1a6 transparent transparent;}
+.arrows3d{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) translateZ(30px);display:flex;gap:6px;align-items:center;font-family:'Tajawal';font-size:.72rem;color:var(--emerald-deep);font-weight:700;}
+.zap{animation:blink 1.6s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:.25;}50%{opacity:1;}}
+.water3d{
+  position:absolute;bottom:-30px;left:50%;width:340px;height:70px;
+  transform:translateX(-50%) rotateX(78deg);
+  background:radial-gradient(ellipse at center, rgba(51,166,125,.35), rgba(31,122,92,.12) 70%, transparent 75%);
+  border-radius:50%;filter:blur(1px);
+}
+.scroll-cue{margin-top:36px;font-family:'Tajawal';font-size:.8rem;color:#5a6a63;}
+
+/* ===== SECTIONS ===== */
+section{padding:64px 20px;max-width:1100px;margin:0 auto;}
+.section-head{margin-bottom:34px;text-align:center;}
+.section-head .tag{
+  font-family:'Tajawal';font-size:.78rem;color:var(--emerald);font-weight:700;
+  letter-spacing:.05em;
+}
+.section-head h2{font-size:clamp(1.5rem,3vw,2.1rem);margin:8px 0 0;color:var(--emerald-deep);}
+.section-alt{background:linear-gradient(180deg,var(--paper-2),var(--paper));}
+
+/* concept cards flip */
+.grid-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;}
+.flip{perspective:1200px;height:200px;}
+.flip-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .7s cubic-bezier(.4,.2,.2,1);}
+.flip:hover .flip-inner,.flip:focus-within .flip-inner{transform:rotateY(180deg);}
+.flip-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:16px;padding:20px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:8px;
+  box-shadow:var(--shadow);}
+.flip-front{background:#fff;border:1px solid var(--line);}
+.flip-front .ic{width:52px;height:52px;}
+.flip-front b{font-size:1.02rem;color:var(--emerald-deep);}
+.flip-front small{font-family:'Tajawal';color:#7a887f;font-size:.78rem;}
+.flip-back{background:linear-gradient(160deg,var(--emerald-deep),var(--emerald));color:#f5f0e4;transform:rotateY(180deg);}
+.flip-back .pair{font-family:'Tajawal';font-size:.85rem;line-height:1.7;}
+.flip-back .pair b{display:block;font-size:.95rem;}
+.flip-back .vs{opacity:.7;font-size:.72rem;margin:2px 0;}
+
+/* law statement */
+.law-card{
+  background:linear-gradient(160deg,var(--emerald-deep),var(--emerald) 120%);
+  color:#f5f0e4;border-radius:22px;padding:40px clamp(20px,5vw,56px);
+  text-align:center;box-shadow:var(--shadow);position:relative;overflow:hidden;
+}
+.law-card:before{content:'';position:absolute;inset:0;background:
+  repeating-linear-gradient(135deg, rgba(255,255,255,.04) 0 2px, transparent 2px 24px);}
+.law-card h3{font-size:clamp(1.3rem,3vw,1.9rem);position:relative;margin:0 0 14px;}
+.law-card p{position:relative;font-family:'Tajawal';font-size:1rem;max-width:640px;margin:0 auto;opacity:.92;}
+.formula{
+  display:inline-flex;gap:10px;align-items:center;margin-top:22px;position:relative;
+  background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3);
+  padding:12px 26px;border-radius:14px;font-family:'Tajawal';font-size:1.15rem;font-weight:500;
+}
+
+/* ===== LAB ===== */
+.lab-wrap{
+  background:#fff;border:1px solid var(--line);border-radius:22px;padding:clamp(16px,3vw,32px);
+  box-shadow:var(--shadow);
+}
+.lab-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:26px;}
+@media (max-width:860px){.lab-grid{grid-template-columns:1fr;}}
+
+.tank-perspective{perspective:1200px;}
+.tank3d{
+  position:relative;transform-style:preserve-3d;transform:rotateX(32deg);
+  height:230px;margin:10px 6px 40px;border-radius:6px;
+}
+.tank-back{
+  position:absolute;inset:0;border-radius:6px;
+  background:linear-gradient(180deg,#dfe8e2,#c7d6cc);
+  border:3px solid #8fa39a;
+}
+.tank-water{
+  position:absolute;left:4px;right:4px;bottom:4px;height:70%;border-radius:0 0 4px 4px;
+  background:linear-gradient(180deg, rgba(76,166,209,.55), rgba(31,122,167,.75));
+  box-shadow:inset 0 8px 18px rgba(255,255,255,.35), inset 0 -10px 20px rgba(11,58,84,.4);
+  overflow:hidden;
+}
+.tank-water.filled{animation:none;}
+.wave{
+  position:absolute;top:0;left:-10%;width:120%;height:14px;
+  background:radial-gradient(ellipse at 25% 100%, rgba(255,255,255,.55) 0 40%, transparent 42%) repeat-x;
+  background-size:60px 14px;
+  animation:waveMove 2.4s linear infinite;
+  opacity:.8;
+}
+@keyframes waveMove{to{transform:translateX(60px);}}
+.tank-front-lip{
+  position:absolute;left:0;right:0;bottom:-14px;height:16px;border-radius:0 0 10px 10px;
+  background:#8fa39a;transform:rotateX(-58deg);transform-origin:top;box-shadow:var(--shadow);
+}
+
+.floater{
+  position:absolute;bottom:8px;width:92px;height:34px;
+  transform:translateZ(6px);
+  transition:left .25s linear;
+  cursor:grab;user-select:none;touch-action:none;
+}
+.floater:active{cursor:grabbing;}
+.floater .body{
+  position:absolute;inset:0;border-radius:8px;box-shadow:0 6px 10px rgba(0,0,0,.28);
+}
+.floater.magnetF .body{background:linear-gradient(90deg,var(--red) 50%,var(--blue) 50%);}
+.floater.ironF .body{background:linear-gradient(90deg,#a9afb4,#dfe3e6 45%,#83898f);border-radius:3px 12px 12px 3px;}
+.floater .ripple{
+  position:absolute;top:100%;left:50%;width:120px;height:16px;transform:translate(-50%,-4px);
+  background:radial-gradient(ellipse, rgba(255,255,255,.5), transparent 70%);
+  filter:blur(1px);
+}
+.floater .lbl{
+  position:absolute;top:-22px;left:50%;transform:translateX(-50%);
+  font-family:'Tajawal';font-size:.7rem;font-weight:700;color:var(--emerald-deep);
+  background:#fff;padding:1px 8px;border-radius:999px;border:1px solid var(--line);white-space:nowrap;
+}
+.floater.fixed .lbl:after{content:' 📌';}
+.forceArrow{position:absolute;bottom:22px;height:3px;border-radius:3px;transition:opacity .2s;opacity:0;}
+.forceArrow.on{opacity:1;}
+.forceArrow.a1{background:var(--gold);}
+.forceArrow.a2{background:var(--emerald);}
+.forceArrow:after{
+  content:'';position:absolute;top:50%;width:0;height:0;transform:translateY(-50%);
+  border-style:solid;
+}
+.forceArrow.a1:after{right:-10px;border-width:6px 0 6px 10px;border-color:transparent transparent transparent var(--gold);}
+.forceArrow.a2:after{left:-10px;border-width:6px 10px 6px 0;border-color:transparent var(--emerald) transparent transparent;}
+.arrow-tag{position:absolute;top:-18px;font-family:'Tajawal';font-size:.68rem;font-weight:700;white-space:nowrap;}
+
+.controls{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;}
+.btn{
+  padding:10px 16px;border-radius:12px;font-weight:700;font-size:.88rem;
+  background:var(--emerald);color:#fff;transition:.2s;box-shadow:0 6px 14px -6px rgba(15,76,58,.6);
+}
+.btn:hover{background:var(--emerald-deep);}
+.btn.secondary{background:#fff;color:var(--emerald-deep);border:1.5px solid var(--emerald);box-shadow:none;}
+.btn.secondary:hover{background:#eef7f2;}
+.btn:disabled{opacity:.45;cursor:not-allowed;}
+.btn.small{padding:6px 12px;font-size:.78rem;}
+
+.mode-row{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0;font-family:'Tajawal';font-size:.85rem;}
+.mode-row label{
+  display:flex;align-items:center;gap:6px;background:#f8f5ec;border:1px solid var(--line);
+  padding:8px 12px;border-radius:12px;cursor:pointer;
+}
+.mode-row input{accent-color:var(--emerald);}
+
+.slider-row{display:flex;flex-direction:column;gap:6px;margin:12px 0;font-family:'Tajawal';font-size:.85rem;}
+.slider-row .top{display:flex;justify-content:space-between;}
+.slider-row .top b{color:var(--emerald-deep);}
+
+.panel{background:#f8f5ec;border:1px solid var(--line);border-radius:16px;padding:18px;}
+.panel h3{margin:0 0 12px;font-size:1.05rem;color:var(--emerald-deep);}
+.data-table{width:100%;border-collapse:collapse;font-family:'Tajawal';font-size:.85rem;}
+.data-table th,.data-table td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:center;}
+.data-table th{color:#6b7871;font-weight:500;}
+.data-table td.hl{font-weight:800;}
+.data-table td.red{color:var(--red);}
+.data-table td.blue{color:var(--blue);}
+.result-line{
+  margin-top:14px;padding:12px 14px;border-radius:12px;background:#eaf5ee;border:1px dashed var(--emerald);
+  font-family:'Tajawal';font-size:.85rem;color:var(--emerald-deep);min-height:1.4em;
+}
+.hint{font-family:'Tajawal';font-size:.78rem;color:#7a887f;margin-top:6px;}
+
+/* reflection */
+.qa{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin-bottom:14px;box-shadow:var(--shadow);}
+.qa p.q{font-weight:700;margin:0 0 10px;}
+.qa textarea{
+  width:100%;min-height:56px;border-radius:10px;border:1px solid var(--line);padding:10px 12px;
+  font-family:'Cairo';font-size:.92rem;resize:vertical;background:#faf8f2;
+}
+.reveal-btn{margin-top:8px;}
+.answer{
+  display:none;margin-top:10px;padding:10px 12px;border-radius:10px;background:#f2ede0;
+  font-family:'Tajawal';font-size:.85rem;color:#4a5850;border-inline-start:4px solid var(--gold);
+}
+.answer.show{display:block;}
+
+/* rocket */
+.rocket-stage{
+  position:relative;height:220px;background:linear-gradient(180deg,#0d3d2e,#173a76 120%);
+  border-radius:18px;overflow:hidden;box-shadow:var(--shadow);
+}
+.stars{position:absolute;inset:0;background-image:radial-gradient(2px 2px at 20% 30%,#fff,transparent),radial-gradient(2px 2px at 70% 60%,#fff,transparent),radial-gradient(1.5px 1.5px at 40% 80%,#fff,transparent),radial-gradient(1.5px 1.5px at 85% 20%,#fff,transparent),radial-gradient(1.5px 1.5px at 55% 40%,#fff,transparent);opacity:.6;}
+.rocket{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);width:34px;transition:bottom 2.2s cubic-bezier(.3,.6,.3,1);}
+.rocket svg{width:100%;}
+.exhaust{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:16px;height:0;background:linear-gradient(180deg,var(--gold),transparent);border-radius:0 0 8px 8px;transition:height .3s;}
+.rocket.flying .exhaust{height:70px;animation:flicker .12s infinite;}
+@keyframes flicker{50%{opacity:.6;}}
+.tag-pair{position:absolute;font-family:'Tajawal';font-size:.72rem;color:#f5f0e4;background:rgba(0,0,0,.3);padding:2px 8px;border-radius:999px;opacity:0;transition:opacity .3s;}
+.rocket.flying .tag-pair{opacity:1;}
+.tag-up{bottom:130px;right:32%;}
+.tag-down{bottom:20px;right:32%;}
+
+/* quiz */
+.quiz-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin-bottom:14px;box-shadow:var(--shadow);}
+.quiz-card p.q{font-weight:700;margin:0 0 12px;}
+.opts{display:flex;flex-direction:column;gap:8px;}
+.opt{
+  display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:10px;border:1px solid var(--line);
+  font-family:'Tajawal';font-size:.88rem;cursor:pointer;background:#faf8f2;transition:.15s;
+}
+.opt:hover{background:#f2ede0;}
+.opt.correct{background:#e5f4ea;border-color:var(--emerald);}
+.opt.wrong{background:#fbe9e6;border-color:var(--red);}
+.score-bar{
+  position:sticky;bottom:14px;display:flex;justify-content:center;margin-top:10px;
+}
+.score-pill{
+  background:var(--emerald-deep);color:#fff;padding:10px 22px;border-radius:999px;
+  font-family:'Tajawal';font-weight:700;font-size:.9rem;box-shadow:var(--shadow);
+}
+
+footer{
+  background:var(--emerald-deep);color:#cfe3d8;text-align:center;padding:28px 20px;
+  font-family:'Tajawal';font-size:.8rem;
+}
+footer b{color:#fff;}
+
+.visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);}
+a:focus-visible,button:focus-visible,input:focus-visible,.opt:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="brand"><span class="mark" aria-hidden="true"></span> القانون الثالث لنيوتن</div>
+    <div class="nav-links">
+      <a href="#concept">الفكرة</a>
+      <a href="#lab">المختبر الافتراضي</a>
+      <a href="#think">استنتج</a>
+      <a href="#rocket">الصاروخ</a>
+      <a href="#quiz">اختبر نفسك</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <span class="eyebrow">منهاج العلوم والحياة · الصف السابع · فلسطين · الدرس الخامس</span>
+  <h1>لكل فعل <span>ردّ فعل</span> مساوٍ له في المقدار ومعاكس في الاتجاه</h1>
+  <p class="lead">جرّب بنفسك تجربة "المغناطيس وقطعة الحديد" داخل مختبر افتراضي ثلاثي الأبعاد، وشاهد قوّتَي الفعل وردّ الفعل أمامك لحظة بلحظة.</p>
+
+  <div class="scene-wrap">
+    <div class="scene" aria-hidden="true">
+      <div class="water3d"></div>
+      <div class="piece nail3d"><div class="front"></div></div>
+      <div class="piece magnet3d">
+        <div class="face front"></div>
+        <div class="face top"></div>
+        <div class="face side"></div>
+      </div>
+      <div class="arrows3d"><span class="zap">←</span> قوة الفعل / ردّ الفعل <span class="zap" style="animation-delay:.4s">→</span></div>
+    </div>
+  </div>
+  <p class="scroll-cue">مرّر للأسفل لتبدأ ↓</p>
+</header>
+
+<section id="concept">
+  <div class="section-head">
+    <span class="tag">قبل أن نبدأ</span>
+    <h2>الفعل يلازمه ردّ فعل دائمًا</h2>
+  </div>
+  <div class="grid-cards">
+
+    <div class="flip" tabindex="0">
+      <div class="flip-inner">
+        <div class="flip-face flip-front">
+          <svg class="ic" viewBox="0 0 64 64"><circle cx="32" cy="10" r="7" fill="#c99a2e"/><path d="M20 58l6-22 6 6 6-6 6 22M26 24l6-8 6 8M20 30l6-6M44 30l-6-6" stroke="#1f7a5c" stroke-width="4" fill="none" stroke-linecap="round"/></svg>
+          <b>المشي</b><small>القدم تدفع الأرض للخلف</small>
+        </div>
+        <div class="flip-face flip-back">
+          <div class="pair"><b>الفعل:</b> القدم تدفع الأرض إلى الخلف<div class="vs">⇅</div><b>ردّ الفعل:</b> الأرض تدفع القدم إلى الأمام فتتحرك</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flip" tabindex="0">
+      <div class="flip-inner">
+        <div class="flip-face flip-front">
+          <svg class="ic" viewBox="0 0 64 64"><path d="M6 44h52l-8 12H14z" fill="#2456a6"/><path d="M20 44V26h24v18" fill="#c8ccd0"/><path d="M4 44l14-10M60 44l-14-10" stroke="#1f7a5c" stroke-width="3" fill="none"/></svg>
+          <b>التجديف بالقارب</b><small>المجداف يدفع الماء للخلف</small>
+        </div>
+        <div class="flip-face flip-back">
+          <div class="pair"><b>الفعل:</b> المجداف يدفع الماء إلى الخلف<div class="vs">⇅</div><b>ردّ الفعل:</b> الماء يدفع القارب إلى الأمام</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flip" tabindex="0">
+      <div class="flip-inner">
+        <div class="flip-face flip-front">
+          <svg class="ic" viewBox="0 0 64 64"><ellipse cx="32" cy="26" rx="16" ry="20" fill="#c0392b"/><path d="M28 46l4 12 4-12" fill="#c0392b"/><rect x="27" y="6" width="10" height="6" rx="2" fill="#7a887f"/></svg>
+          <b>البالون المنطلق</b><small>الهواء يندفع من فتحة البالون</small>
+        </div>
+        <div class="flip-face flip-back">
+          <div class="pair"><b>الفعل:</b> البالون يدفع الهواء إلى الخارج<div class="vs">⇅</div><b>ردّ الفعل:</b> الهواء يدفع البالون في الاتجاه المعاكس</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flip" tabindex="0">
+      <div class="flip-inner">
+        <div class="flip-face flip-front">
+          <svg class="ic" viewBox="0 0 64 64"><rect x="26" y="10" width="12" height="34" rx="4" fill="#7a887f"/><path d="M22 44h20l-4 14h-12z" fill="#c99a2e"/><path d="M32 44v16" stroke="#c0392b" stroke-width="4"/></svg>
+          <b>الصاروخ</b><small>غازات الاحتراق تندفع للأسفل</small>
+        </div>
+        <div class="flip-face flip-back">
+          <div class="pair"><b>الفعل:</b> الصاروخ يدفع الغازات إلى الأسفل<div class="vs">⇅</div><b>ردّ الفعل:</b> الغازات تدفع الصاروخ إلى الأعلى</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="lab">
+  <div class="section-head">
+    <span class="tag">نشاط (١) — الفعل وردّ الفعل</span>
+    <h2>المختبر الافتراضي: المغناطيس وقطعة الحديد</h2>
+  </div>
+  <div class="lab-wrap">
+    <div class="lab-grid">
+      <div>
+        <div class="tank-perspective">
+          <div class="tank3d" id="tank">
+            <div class="tank-back"></div>
+            <div class="tank-water filled" id="water"><div class="wave"></div></div>
+            <div class="tank-front-lip"></div>
+            <div class="floater ironF" id="iron" style="left:18%;">
+              <span class="lbl">قطعة الحديد</span>
+              <div class="body"></div><div class="ripple"></div>
+            </div>
+            <div class="floater magnetF" id="magnet" style="left:62%;">
+              <span class="lbl">المغناطيس</span>
+              <div class="body"></div><div class="ripple"></div>
+            </div>
+            <div class="forceArrow a1" id="arrowIron"><span class="arrow-tag" style="color:var(--gold)">ردّ الفعل</span></div>
+            <div class="forceArrow a2" id="arrowMagnet" style="right:0;"><span class="arrow-tag" style="color:var(--emerald)">الفعل</span></div>
+          </div>
+        </div>
+
+        <div class="mode-row" role="radiogroup" aria-label="خطوات التجربة">
+          <label><input type="radio" name="mode" value="fixMagnet" checked> ١) ثبّت المغناطيس، وراقب الحديد</label>
+          <label><input type="radio" name="mode" value="fixIron"> ٢) ثبّت الحديد، وراقب المغناطيس</label>
+          <label><input type="radio" name="mode" value="free"> ٣) اترك القطعتين حرّتين</label>
+        </div>
+
+        <div class="slider-row">
+          <div class="top">كتلة المغناطيس <b id="mMagLbl">40 غ</b></div>
+          <input type="range" id="mMagnet" min="15" max="60" value="40">
+        </div>
+        <div class="slider-row">
+          <div class="top">كتلة قطعة الحديد <b id="mIronLbl">15 غ</b></div>
+          <input type="range" id="mIron" min="5" max="60" value="15">
+        </div>
+
+        <div class="controls">
+          <button class="btn" id="startBtn">▶ ابدأ التجربة</button>
+          <button class="btn secondary" id="resetBtn">↺ أعد الضبط</button>
+        </div>
+        <p class="hint">اسحب أي قطعة بإصبعك أو بالفأرة لتغيير موضعها قبل البدء.</p>
+      </div>
+
+      <div class="panel">
+        <h3>لوحة القياسات</h3>
+        <table class="data-table">
+          <thead><tr><th></th><th>المغناطيس</th><th>الحديد</th></tr></thead>
+          <tbody>
+            <tr><td>الكتلة (غ)</td><td class="blue hl" id="dMmag">40</td><td class="red hl" id="dMiron">15</td></tr>
+            <tr><td>القوة المؤثرة (وحدة)</td><td class="blue hl" id="dFmag">—</td><td class="red hl" id="dFiron">—</td></tr>
+            <tr><td>التسارع الناتج</td><td class="blue hl" id="dAmag">—</td><td class="red hl" id="dAiron">—</td></tr>
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="think" class="section-alt">
+  <div class="section-head">
+    <span class="tag">استنتج من التجربة</span>
+    <h2>أسئلة نشاط الفعل وردّ الفعل</h2>
+  </div>
+
+  <div class="qa">
+    <p class="q">١) كيف أثّر المغناطيس في قطعة الحديد؟ وما اتجاه حركتها في الخطوة (١)؟</p>
+    <textarea placeholder="اكتب ملاحظتك هنا..."></textarea>
+    <button class="btn secondary small reveal-btn" data-target="a1">أظهر الإجابة النموذجية</button>
+    <div class="answer" id="a1">جذبها المغناطيس نحوه، فتحركت قطعة الحديد باتجاه المغناطيس الثابت.</div>
+  </div>
+
+  <div class="qa">
+    <p class="q">٢) كيف أثّرت قطعة الحديد في المغناطيس؟ وما اتجاه حركته في الخطوة (٢)؟</p>
+    <textarea placeholder="اكتب ملاحظتك هنا..."></textarea>
+    <button class="btn secondary small reveal-btn" data-target="a2">أظهر الإجابة النموذجية</button>
+    <div class="answer" id="a2">جذبت قطعة الحديد المغناطيسَ نحوها، فتحرك المغناطيس باتجاه الحديد الثابت — أي بعكس ما لاحظناه في الخطوة (١).</div>
+  </div>
+
+  <div class="qa">
+    <p class="q">٣) عند ترك القطعتين حرّتين: أيّهما يؤثر بقوة على الآخر؟ وما العلاقة بين مقداري القوتين؟ وما اتجاههما؟</p>
+    <textarea placeholder="اكتب ملاحظتك هنا..."></textarea>
+    <button class="btn secondary small reveal-btn" data-target="a3">أظهر الإجابة النموذجية</button>
+    <div class="answer" id="a3">كل قطعة تؤثر بقوة في الأخرى في الوقت نفسه. القوتان متساويتان في المقدار ومتعاكستان في الاتجاه — فالمغناطيس يجذب الحديد بقوة، والحديد يجذب المغناطيس بقوة مساوية لها ومعاكسة لاتجاهها. يمكن تسمية القوتين: قوة الفعل وقوة ردّ الفعل.</div>
+  </div>
+
+  <div class="qa">
+    <p class="q">٤) لماذا يختلف مقدار التسارع بين المغناطيس وقطعة الحديد رغم أنّ القوة المؤثرة في كلٍّ منهما متساوية في المقدار؟</p>
+    <textarea placeholder="اكتب إجابتك هنا..."></textarea>
+    <button class="btn secondary small reveal-btn" data-target="a4">أظهر الإجابة النموذجية</button>
+    <div class="answer" id="a4">لأنّ التسارع يعتمد على الكتلة أيضًا (a = F/m)، فكلما صغرت كتلة الجسم أكبر تسارعه عند تأثير القوة نفسها فيه، لذلك تتسارع القطعة الأقلّ كتلة أكثر من القطعة الأكبر كتلة.</div>
+  </div>
+</section>
+
+<section id="rocket">
+  <div class="section-head">
+    <span class="tag">نشاط (٢)</span>
+    <h2>الصاروخ — مثال آخر على الفعل وردّ الفعل</h2>
+  </div>
+  <div class="rocket-stage">
+    <div class="stars"></div>
+    <div class="rocket" id="rocketEl">
+      <div class="exhaust"></div>
+      <svg viewBox="0 0 40 90"><rect x="10" y="6" width="20" height="54" rx="10" fill="#e8e4d6"/><path d="M20 0l10 14H10z" fill="#c0392b"/><path d="M10 44l-10 20h10zM30 44l10 20h-10z" fill="#2456a6"/></svg>
+      <span class="tag-pair tag-up">ردّ فعل: الصاروخ يندفع للأعلى</span>
+      <span class="tag-pair tag-down">فعل: الغازات تندفع للأسفل</span>
+    </div>
+  </div>
+  <div class="controls" style="justify-content:center;margin-top:16px;">
+    <button class="btn" id="launchBtn">🚀 أطلق الصاروخ</button>
+  </div>
+</section>
+
+<section id="quiz" class="section-alt">
+  <div class="section-head">
+    <span class="tag">اختبر نفسك</span>
+    <h2>أسئلة سريعة</h2>
+  </div>
+  <div id="quizList"></div>
+  <div class="score-bar"><div class="score-pill" id="scorePill">النتيجة: 0 / 3</div></div>
+</section>
+
+<footer>
+  إعداد رقمي تفاعلي لدرس <b>القانون الثالث لنيوتن</b> — منهاج العلوم والحياة، الصف السابع، وزارة التربية والتعليم الفلسطينية.
+</footer>
+
+<script>
+// ---------- reveal answers ----------
+document.querySelectorAll('.reveal-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const t=document.getElementById(btn.dataset.target);
+    t.classList.toggle('show');
+    btn.textContent = t.classList.contains('show') ? 'إخفاء الإجابة' : 'أظهر الإجابة النموذجية';
+  });
+});
+
+// ---------- LAB PHYSICS ----------
+const tank=document.getElementById('tank');
+const ironEl=document.getElementById('iron');
+const magEl=document.getElementById('magnet');
+const arrowIron=document.getElementById('arrowIron');
+const arrowMagnet=document.getElementById('arrowMagnet');
+const mMagnetInput=document.getElementById('mMagnet');
+const mIronInput=document.getElementById('mIron');
+const startBtn=document.getElementById('startBtn');
+const resetBtn=document.getElementById('resetBtn');
+
+let posIron=18, posMag=62; // % left
+let running=false;
+
+function currentMode(){ return document.querySelector('input[name=mode]:checked').value; }
+
+function updateMassLabels(){
+  document.getElementById('mMagLbl').textContent=mMagnetInput.value+' غ';
+  document.getElementById('mIronLbl').textContent=mIronInput.value+' غ';
+  document.getElementById('dMmag').textContent=mMagnetInput.value;
+  document.getElementById('dMiron').textContent=mIronInput.value;
+}
+mMagnetInput.addEventListener('input',updateMassLabels);
+mIronInput.addEventListener('input',updateMassLabels);
+updateMassLabels();
+
+function layout(){
+  ironEl.style.left=posIron+'%';
+  magEl.style.left=posMag+'%';
+  ironEl.classList.toggle('fixed', currentMode()==='fixIron');
+  magEl.classList.toggle('fixed', currentMode()==='fixMagnet');
+}
+layout();
+document.querySelectorAll('input[name=mode]').forEach(r=>r.addEventListener('change',()=>{resetSim(); layout();}));
+
+function resetSim(){
+  running=false;
+  posIron=18; posMag=62;
+  layout();
+  arrowIron.classList.remove('on'); arrowMagnet.classList.remove('on');
+  document.getElementById('dFmag').textContent='—';
+  document.getElementById('dFiron').textContent='—';
+  document.getElementById('dAmag').textContent='—';
+  document.getElementById('dAiron').textContent='—';
+  startBtn.disabled=false;
+}
+resetBtn.addEventListener('click',resetSim);
+
+// simple constant-force simulation
+const F = 6; // arbitrary equal magnitude "force units"
+
+startBtn.addEventListener('click',()=>{
+  if(running) return;
+  running=true; startBtn.disabled=true;
+  const mode=currentMode();
+  const mMag=parseFloat(mMagnetInput.value), mIron=parseFloat(mIronInput.value);
+  const aMag=(F/mMag).toFixed(2), aIron=(F/mIron).toFixed(2);
+
+  document.getElementById('dFmag').textContent=F+' وحدة';
+  document.getElementById('dFiron').textContent=F+' وحدة';
+  document.getElementById('dAmag').textContent=aMag+' وحدة/ث²';
+  document.getElementById('dAiron').textContent=aIron+' وحدة/ث²';
+  arrowIron.classList.add('on'); arrowMagnet.classList.add('on');
+
+  let moveIron = (mode!=='fixIron');
+  let moveMag  = (mode!=='fixMagnet');
+  const gap = posMag - posIron;
+  let targetIron=posIron, targetMag=posMag;
+
+  if(mode==='free'){
+    // meeting point divides inversely with mass -> lighter object travels further
+    const shareIron = mMag/(mMag+mIron);
+    const shareMag  = mIron/(mMag+mIron);
+    targetIron = posIron + gap*shareIron*0.85;
+    targetMag  = posMag  - gap*shareMag*0.85;
+  } else if(mode==='fixMagnet'){
+    targetIron = posMag - 14;
+    targetMag = posMag;
+  } else if(mode==='fixIron'){
+    targetMag = posIron + 14;
+    targetIron = posIron;
+  }
+
+  const duration=1400, t0=performance.now();
+  function step(t){
+    const p=Math.min(1,(t-t0)/duration);
+    const ease=1-Math.pow(1-p,3);
+    if(moveIron) posIron = posIron + (targetIron-posIron)*0; // placeholder unused
+    ironEl.style.left = (parseFloat(ironEl.style.left) + (moveIron ? 0:0)) + '%';
+    // direct interpolation instead of incremental (more stable)
+    const curIron = (parseFloat(document.getElementById('iron').dataset.start||posIron));
+    layoutStep(p,ease);
+    if(p<1) requestAnimationFrame(step); else finish();
+  }
+  const startIron=posIron, startMag=posMag;
+  function layoutStep(p,ease){
+    const ci = moveIron ? startIron+(targetIron-startIron)*ease : startIron;
+    const cm = moveMag  ? startMag +(targetMag -startMag)*ease : startMag;
+    ironEl.style.left=ci+'%'; magEl.style.left=cm+'%';
+  }
+  function finish(){
+    posIron = moveIron?targetIron:startIron;
+    posMag  = moveMag?targetMag:startMag;
+    running=false; startBtn.disabled=false;
+  }
+  requestAnimationFrame(step);
+});
+
+// ---------- dragging ----------
+function makeDraggable(el){
+  let dragging=false;
+  const start=(e)=>{ if(running) return; dragging=true; e.preventDefault(); };
+  const move=(e)=>{
+    if(!dragging) return;
+    const rect=tank.getBoundingClientRect();
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    let pct = ((clientX-rect.left)/rect.width)*100;
+    pct = Math.max(6,Math.min(84,pct));
+    el.style.left=pct+'%';
+    if(el===ironEl) posIron=pct; else posMag=pct;
+  };
+  const end=()=>{dragging=false;};
+  el.addEventListener('mousedown',start);
+  el.addEventListener('touchstart',start,{passive:false});
+  window.addEventListener('mousemove',move);
+  window.addEventListener('touchmove',move,{passive:false});
+  window.addEventListener('mouseup',end);
+  window.addEventListener('touchend',end);
+}
+makeDraggable(ironEl); makeDraggable(magEl);
+
+// ---------- rocket ----------
+const rocketEl=document.getElementById('rocketEl');
+document.getElementById('launchBtn').addEventListener('click',()=>{
+  rocketEl.classList.add('flying');
+  rocketEl.style.bottom='170px';
+  setTimeout(()=>{ rocketEl.style.bottom='14px'; rocketEl.classList.remove('flying'); },2600);
+});
+
+// ---------- quiz ----------
+const questions=[
+  {q:"لماذا لا تُلغي قوتا الفعل وردّ الفعل إحداهما الأخرى رغم تساويهما في المقدار؟",
+   opts:["لأنهما تؤثران في جسمين مختلفين","لأنهما تؤثران في نفس الجسم","لأن إحداهما أكبر من الأخرى","لأنهما في نفس الاتجاه"], correct:0},
+  {q:"إذا كانت كتلة الجسم الأول أصغر من كتلة الجسم الثاني، وأثّرت فيهما قوتان متساويتان في المقدار، فإنّ:",
+   opts:["تسارع الجسم الأول أكبر","تسارعهما متساويان دائمًا","تسارع الجسم الثاني أكبر","لا يتحرك أيّ منهما"], correct:0},
+  {q:"في حركة الصاروخ، ما اتجاه ردّ الفعل الذي يدفع الصاروخ إلى الأعلى؟",
+   opts:["اتجاه اندفاع الغاز نفسه","معاكس لاتجاه اندفاع الغازات للأسفل","لا علاقة له باتجاه الغازات","إلى الأسفل"], correct:1}
+];
+const quizList=document.getElementById('quizList');
+const scorePill=document.getElementById('scorePill');
+let score=0, answered=new Set();
+
+questions.forEach((item,i)=>{
+  const card=document.createElement('div'); card.className='quiz-card';
+  const p=document.createElement('p'); p.className='q'; p.textContent=`${i+1}) ${item.q}`;
+  card.appendChild(p);
+  const optsWrap=document.createElement('div'); optsWrap.className='opts';
+  item.opts.forEach((optText,oi)=>{
+    const opt=document.createElement('div'); opt.className='opt'; opt.tabIndex=0; opt.textContent=optText;
+    opt.addEventListener('click',()=>{
+      if(answered.has(i)) return;
+      answered.add(i);
+      const all=optsWrap.querySelectorAll('.opt');
+      all.forEach((o,idx)=>{
+        if(idx===item.correct) o.classList.add('correct');
+        else if(idx===oi) o.classList.add('wrong');
+      });
+      if(oi===item.correct) score++;
+      scorePill.textContent=`النتيجة: ${score} / ${questions.length}`;
+    });
+    opt.addEventListener('keydown',(e)=>{ if(e.key==='Enter'||e.key===' ') opt.click(); });
+    optsWrap.appendChild(opt);
+  });
+  card.appendChild(optsWrap);
+  quizList.appendChild(card);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="description" content="درس تفاعلي: العلاقة بين القوة المؤثرة في جسم ما وكتلته - علوم وحياة، الصف السابع - فلسطين">
+<title>العلاقة بين القوة المؤثرة في جسم وكتلته | مختبر افتراضي - الصف السابع</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;600;700;800;900&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F1EDE0;
+  --paper-line:rgba(31,42,36,.08);
+  --ink:#1F2A24;
+  --ink-soft:#5B6B60;
+  --chalk-1:#0E1D16;
+  --chalk-2:#16281F;
+  --wood:#A9642E;
+  --wood-dark:#7A431C;
+  --signal:#237A5C;
+  --signal-bright:#2FAE83;
+  --ruler-red:#C1443C;
+  --card:#FBFAF4;
+  --line:#D8D2C0;
+  --radius:14px;
+  --shadow:0 10px 30px -12px rgba(15,25,20,.25);
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--paper);
+  background-image:
+    linear-gradient(var(--paper-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--paper-line) 1px, transparent 1px);
+  background-size:26px 26px;
+  color:var(--ink);
+  font-family:'Tajawal', sans-serif;
+  line-height:1.8;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{font-family:'Cairo', sans-serif; margin:0 0 .5em; color:var(--ink); font-weight:800;}
+p{margin:0 0 1em;}
+a{color:inherit;}
+::selection{background:var(--signal-bright); color:#fff;}
+:focus-visible{outline:3px solid var(--signal-bright); outline-offset:3px;}
+
+.wrap{max-width:1080px; margin:0 auto; padding:0 20px;}
+
+/* ---------- NAV ---------- */
+.nav{
+  position:sticky; top:0; z-index:50;
+  background:rgba(241,237,224,.9); backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);
+}
+.nav-inner{
+  max-width:1080px; margin:0 auto; padding:10px 20px;
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  overflow-x:auto;
+}
+.nav-brand{font-family:'Cairo'; font-weight:800; font-size:15px; white-space:nowrap; color:var(--signal);}
+.nav-links{display:flex; gap:4px; white-space:nowrap;}
+.nav-links a{
+  font-size:14px; font-weight:600; padding:8px 12px; border-radius:999px;
+  text-decoration:none; color:var(--ink-soft); transition:.2s;
+}
+.nav-links a:hover{background:var(--signal); color:#fff;}
+
+/* ---------- HERO ---------- */
+.hero{
+  padding:64px 0 40px; position:relative; overflow:hidden;
+}
+.eyebrow{
+  display:inline-flex; align-items:center; gap:8px;
+  font-family:'Cairo'; font-weight:700; font-size:13px; color:var(--signal);
+  background:rgba(35,122,92,.1); border:1px solid rgba(35,122,92,.25);
+  padding:6px 14px; border-radius:999px; margin-bottom:18px;
+}
+.eyebrow::before{content:''; width:7px; height:7px; border-radius:50%; background:var(--signal-bright);}
+.hero h1{
+  font-size:clamp(30px,5vw,52px); line-height:1.25; max-width:820px;
+}
+.hero h1 em{font-style:normal; color:var(--signal); position:relative;}
+.hero-sub{font-size:clamp(16px,2vw,19px); color:var(--ink-soft); max-width:640px;}
+.hero-meta{
+  display:flex; flex-wrap:wrap; gap:10px; margin-top:26px;
+}
+.chip{
+  font-size:13px; font-weight:600; background:var(--card); border:1px solid var(--line);
+  padding:7px 14px; border-radius:10px; color:var(--ink-soft);
+}
+.chip b{color:var(--ink);}
+
+/* ---------- SECTION SHELL ---------- */
+section{padding:56px 0;}
+.section-head{margin-bottom:28px; max-width:720px;}
+.section-num{
+  font-family:'Cairo'; font-weight:800; color:var(--wood); font-size:14px; letter-spacing:.5px;
+}
+.section-head h2{font-size:clamp(24px,3.4vw,34px); margin-top:6px;}
+.section-head p{color:var(--ink-soft); margin-top:8px;}
+
+.card{
+  background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+  box-shadow:var(--shadow);
+}
+
+/* ---------- LESSON EXPLANATION ---------- */
+.concept-grid{display:grid; grid-template-columns:1.1fr .9fr; gap:22px;}
+@media(max-width:820px){.concept-grid{grid-template-columns:1fr;}}
+.concept-text p{color:var(--ink); }
+.concept-text strong{color:var(--signal);}
+.example-box{padding:22px 24px;}
+.example-box h3{font-size:17px; display:flex; align-items:center; gap:8px;}
+.example-box h3::before{content:''; width:8px; height:8px; background:var(--ruler-red); border-radius:2px;}
+.example-list{list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:14px;}
+.example-list li{
+  display:flex; gap:12px; align-items:flex-start; font-size:15px; color:var(--ink-soft);
+  padding-bottom:14px; border-bottom:1px dashed var(--line);
+}
+.example-list li:last-child{border-bottom:none; padding-bottom:0;}
+.ex-icon{
+  flex:0 0 auto; width:34px; height:34px; border-radius:9px; display:flex; align-items:center; justify-content:center;
+  background:rgba(169,100,46,.14); color:var(--wood-dark); font-family:'Cairo'; font-weight:800; font-size:15px;
+}
+
+.law-box{
+  margin-top:26px; padding:26px 28px; border-radius:var(--radius);
+  background:linear-gradient(135deg, var(--chalk-1), var(--chalk-2)); color:#fff;
+  display:flex; align-items:center; gap:24px; flex-wrap:wrap;
+}
+.law-box .formula{
+  font-family:'Cairo'; font-weight:900; font-size:clamp(26px,4vw,40px);
+  background:rgba(255,255,255,.08); padding:10px 22px; border-radius:12px; border:1px solid rgba(255,255,255,.15);
+}
+.law-box p{margin:0; color:rgba(255,255,255,.82); font-size:14.5px; flex:1; min-width:220px;}
+
+/* ---------- MATERIALS / STEPS ---------- */
+.materials{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:14px; margin-bottom:34px;}
+.material-card{
+  padding:18px 14px; text-align:center; border-radius:12px;
+}
+.material-card .m-icon{
+  width:52px; height:52px; margin:0 auto 10px; border-radius:14px;
+  display:flex; align-items:center; justify-content:center;
+  background:rgba(35,122,92,.1);
+}
+.material-card span{font-size:13.5px; font-weight:600; color:var(--ink-soft); display:block;}
+
+.steps{counter-reset:step; display:flex; flex-direction:column; gap:0;}
+.step{
+  display:flex; gap:18px; padding:18px 4px; border-bottom:1px solid var(--line); align-items:flex-start;
+}
+.step:last-child{border-bottom:none;}
+.step-num{
+  counter-increment:step; flex:0 0 auto; width:36px; height:36px; border-radius:50%;
+  background:var(--signal); color:#fff; font-family:'Cairo'; font-weight:800;
+  display:flex; align-items:center; justify-content:center; font-size:14px;
+}
+.step-num::before{content:counter(step);}
+.step-text{font-size:15px; padding-top:5px;}
+.step-text b{color:var(--wood-dark);}
+
+/* ---------- LAB ---------- */
+.lab-shell{
+  border-radius:20px; overflow:hidden; background:var(--chalk-1);
+  box-shadow:var(--shadow); border:1px solid rgba(255,255,255,.05);
+}
+.lab-topbar{
+  display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;
+  padding:16px 22px; background:var(--chalk-2); color:#fff;
+}
+.lab-topbar h3{color:#fff; margin:0; font-size:16px; display:flex; gap:8px; align-items:center;}
+.dot-live{width:9px; height:9px; border-radius:50%; background:#4ADE80; box-shadow:0 0 0 4px rgba(74,222,128,.2); animation:pulse 1.8s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+.lab-hint{font-size:12.5px; color:rgba(255,255,255,.55);}
+
+.lab-canvas-wrap{position:relative; width:100%; aspect-ratio:16/10; background:radial-gradient(120% 100% at 50% 0%, #1b3226, #0b1610);}
+#labCanvas{width:100%; height:100%; display:block; touch-action:none;}
+.lab-readout{
+  position:absolute; bottom:14px; right:14px; left:14px;
+  display:flex; justify-content:space-between; align-items:flex-end; gap:10px; flex-wrap:wrap;
+  pointer-events:none;
+}
+.readout-card{
+  pointer-events:auto;
+  background:rgba(14,29,22,.72); backdrop-filter:blur(6px); border:1px solid rgba(255,255,255,.1);
+  border-radius:12px; padding:10px 16px; color:#fff;
+}
+.readout-card .label{font-size:11px; color:rgba(255,255,255,.55); font-weight:600;}
+.readout-card .value{font-family:'Cairo'; font-weight:800; font-size:22px; color:var(--signal-bright);}
+.readout-card .value small{font-size:13px; font-weight:600; color:rgba(255,255,255,.6);}
+
+.lab-controls{padding:22px; background:var(--chalk-1); color:#fff; display:grid; gap:20px;}
+.control-group h4{color:#fff; font-size:13.5px; font-weight:700; margin:0 0 10px; color:rgba(255,255,255,.7);}
+.ball-choices{display:flex; gap:10px; flex-wrap:wrap;}
+.ball-choice{
+  cursor:pointer; border:1.5px solid rgba(255,255,255,.15); background:rgba(255,255,255,.04);
+  border-radius:12px; padding:10px 14px; display:flex; align-items:center; gap:10px;
+  transition:.15s; user-select:none; min-width:130px;
+}
+.ball-choice:hover{border-color:var(--signal-bright);}
+.ball-choice.active{border-color:var(--signal-bright); background:rgba(47,174,131,.14);}
+.ball-choice input{display:none;}
+.swatch{width:20px; height:20px; border-radius:50%; flex:0 0 auto; box-shadow:inset -3px -3px 6px rgba(0,0,0,.35), 0 0 0 2px rgba(255,255,255,.15);}
+.ball-choice .bc-text{font-size:13px;}
+.ball-choice .bc-text b{display:block; font-family:'Cairo'; font-size:13.5px;}
+.ball-choice .bc-text span{color:rgba(255,255,255,.55); font-size:11.5px;}
+
+.height-choices{display:flex; gap:8px;}
+.height-btn{
+  flex:1; cursor:pointer; text-align:center; padding:10px 6px; border-radius:10px;
+  border:1.5px solid rgba(255,255,255,.15); background:rgba(255,255,255,.04); color:rgba(255,255,255,.75);
+  font-size:13px; font-weight:600; transition:.15s;
+}
+.height-btn.active{border-color:var(--wood); background:rgba(169,100,46,.22); color:#fff;}
+
+.lab-actions{display:flex; gap:10px; flex-wrap:wrap; align-items:center;}
+.btn{
+  font-family:'Cairo'; font-weight:700; font-size:14.5px; cursor:pointer; border:none;
+  padding:13px 26px; border-radius:12px; transition:.15s; min-height:46px;
+}
+.btn-primary{background:var(--signal-bright); color:#04120c;}
+.btn-primary:hover{transform:translateY(-1px); box-shadow:0 8px 18px -6px rgba(47,174,131,.6);}
+.btn-primary:disabled{opacity:.45; cursor:not-allowed; transform:none; box-shadow:none;}
+.btn-ghost{background:transparent; border:1.5px solid rgba(255,255,255,.25); color:#fff;}
+.btn-ghost:hover{border-color:#fff;}
+.lab-msg{font-size:13px; color:rgba(255,255,255,.6); flex:1; min-width:180px;}
+
+/* ---------- RESULTS TABLE ---------- */
+.results-wrap{padding:26px;}
+.results-top{display:flex; justify-content:space-between; align-items:center; gap:14px; flex-wrap:wrap; margin-bottom:16px;}
+table{width:100%; border-collapse:collapse; font-size:14.5px;}
+thead th{
+  font-family:'Cairo'; font-weight:800; text-align:center; background:var(--signal); color:#fff;
+  padding:12px 8px; font-size:13.5px;
+}
+thead th:first-child{border-radius:10px 0 0 0;}
+thead th:last-child{border-radius:0 10px 0 0;}
+tbody td{text-align:center; padding:12px 8px; border-bottom:1px solid var(--line);}
+tbody tr:nth-child(even){background:rgba(35,122,92,.04);}
+.empty-row td{color:var(--ink-soft); font-style:italic; padding:22px;}
+.badge-ball{
+  display:inline-flex; align-items:center; gap:6px; font-family:'Cairo'; font-weight:700; font-size:13px;
+}
+.badge-dot{width:11px; height:11px; border-radius:50%; box-shadow:0 0 0 2px rgba(0,0,0,.08);}
+
+/* ---------- REFLECTION ---------- */
+.q-list{display:flex; flex-direction:column; gap:18px;}
+.q-item{padding:20px 22px;}
+.q-item .q-label{
+  display:flex; gap:10px; align-items:flex-start; font-family:'Cairo'; font-weight:700; font-size:15px; margin-bottom:10px;
+}
+.q-badge{
+  flex:0 0 auto; width:26px; height:26px; border-radius:8px; background:var(--wood); color:#fff;
+  display:flex; align-items:center; justify-content:center; font-size:12.5px;
+}
+textarea{
+  width:100%; min-height:70px; resize:vertical; border:1px solid var(--line); border-radius:10px;
+  padding:12px 14px; font-family:'Tajawal'; font-size:14.5px; background:#fff; color:var(--ink);
+}
+textarea:focus{border-color:var(--signal-bright);}
+
+.reveal-wrap{margin-top:10px; text-align:center;}
+.reveal-box{
+  margin-top:18px; padding:24px 26px; border-radius:14px;
+  background:linear-gradient(135deg,var(--chalk-1),var(--chalk-2)); color:#fff;
+  display:none; text-align:right;
+}
+.reveal-box.show{display:block; animation:fadeUp .5s ease;}
+@keyframes fadeUp{from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);}}
+.reveal-box h4{color:var(--signal-bright); font-size:16px;}
+.reveal-box p{color:rgba(255,255,255,.85); font-size:14.5px; margin-bottom:.7em;}
+
+footer{padding:34px 0 50px; text-align:center; color:var(--ink-soft); font-size:13px;}
+
+@media (max-width:640px){
+  .hero{padding:44px 0 26px;}
+  section{padding:38px 0;}
+  .law-box{flex-direction:column; align-items:flex-start;}
+}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto;}
+  .dot-live{animation:none;}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-brand">القوة والكتلة · علوم سابع</div>
+    <div class="nav-links">
+      <a href="#lesson">الدرس</a>
+      <a href="#lab">المختبر</a>
+      <a href="#results">النتائج</a>
+      <a href="#reflect">الاستنتاج</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero wrap">
+  <div class="eyebrow">علوم وحياة · الوحدة: القوة والحركة · الصف السابع · فلسطين</div>
+  <h1>العلاقة بين <em>القوة</em> المؤثرة في جسم ما و<em>كتلته</em></h1>
+  <p class="hero-sub">
+    ادرس، جرّب، واستنتج بنفسك: هل تحتاج الأجسام الثقيلة إلى قوة أكبر لتتحرك بنفس طريقة الأجسام الخفيفة؟
+    نفّذ التجربة داخل مختبر افتراضي ثلاثي الأبعاد، وسجّل نتائجك، وتوصّل إلى القانون بنفسك.
+  </p>
+  <div class="hero-meta">
+    <div class="chip">⏱ <b>25</b> دقيقة تقريبًا</div>
+    <div class="chip">🧪 نشاط عملي تفاعلي</div>
+    <div class="chip">📊 جدول نتائج تلقائي</div>
+    <div class="chip">📱 يعمل على الجوال والحاسوب</div>
+  </div>
+</header>
+
+<!-- ===================== الدرس ===================== -->
+<section id="lesson" class="wrap">
+  <div class="section-head">
+    <div class="section-num">القسم الأول</div>
+    <h2>لنفهم الفكرة أولًا</h2>
+    <p>قبل أن ندخل المختبر، لنبنِ تصورًا واضحًا عن العلاقة بين القوة وكتلة الجسم.</p>
+  </div>
+
+  <div class="concept-grid">
+    <div class="concept-text card" style="padding:26px 28px;">
+      <p>
+        عندما تدفع عربة تسوّق فارغة، تتحرك بسهولة كبيرة باستجابة لدفعة بسيطة. أما إذا ملأتها بالبضائع حتى صارت ثقيلة،
+        فستحتاج إلى بذل <strong>قوة أكبر بكثير</strong> لتحريكها بنفس السرعة أو لإكسابها نفس مقدار التسارع.
+        هذا المثال البسيط يكشف عن علاقة أساسية في الفيزياء: كلما زادت <strong>كتلة الجسم</strong>، زادت
+        <strong>القوة اللازمة</strong> لتغيير حالته الحركية بمقدار معيّن.
+      </p>
+      <p>
+        ينطبق الأمر نفسه على سقوط الأجسام وحركتها على المستويات المائلة: فالكرة الأرضية تجذب كل جسم بقوة تُسمّى
+        <strong>وزن الجسم</strong>، وهذه القوة تتناسب طرديًا مع كتلته. لهذا السبب، عندما تنطلق كرات مختلفة الكتلة من نفس
+        الارتفاع على مستوٍ مائل وتصطدم بجسم ثابت، فإن الكرة الأثقل تدفعه مسافة أكبر من الكرة الأخف، لأنها أثّرت فيه
+        بقوة أكبر لحظة الاصطدام.
+      </p>
+      <div class="example-box">
+        <h3>أمثلة من الحياة اليومية</h3>
+        <ul class="example-list">
+          <li><div class="ex-icon">١</div> دفع دراجة هوائية أسهل بكثير من دفع سيارة معطّلة، رغم أن كليهما بحاجة لقوة تحرّكهما.</li>
+          <li><div class="ex-icon">٢</div> كرة بولينغ ثقيلة تُسقط قوارير أكثر من كرة تنس بنفس السرعة، لأنها تنقل قوة اصطدام أكبر.</li>
+          <li><div class="ex-icon">٣</div> رفع حقيبة مدرسية فارغة يحتاج قوة أقل من رفعها وهي ممتلئة بالكتب.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card" style="padding:26px 28px;">
+      <h3 style="font-size:17px;">فكرة أساسية</h3>
+      <p style="color:var(--ink-soft); font-size:14.5px;">
+        عند تسارع ثابت، فإن مقدار القوة المؤثرة يرتبط طرديًا بكتلة الجسم:
+      </p>
+      <div style="background:var(--paper); border:1px dashed var(--line); border-radius:12px; padding:16px; text-align:center; font-family:'Cairo'; font-weight:800; font-size:20px; color:var(--signal);">
+        القوة ∝ الكتلة
+      </div>
+      <p style="color:var(--ink-soft); font-size:13.5px; margin-top:14px;">
+        بمعنى: كلما زادت كتلة الجسم المتحرك، زادت القوة التي يؤثر بها على جسم آخر عند اصطدامه به بنفس الظروف.
+        سنتحقق من هذه الفكرة عمليًا في المختبر الافتراضي بالأسفل.
+      </p>
+    </div>
+  </div>
+
+</section>
+
+<!-- ===================== أدوات وخطوات ===================== -->
+<section id="lab-intro" class="wrap">
+  <div class="section-head">
+    <div class="section-num">القسم الثاني</div>
+    <h2>نشاط: العلاقة بين القوة المؤثرة في جسم ما وكتلته</h2>
+    <p>هذه هي التجربة نفسها الموجودة في كتابك، لكنك ستنفذها الآن داخل مختبر افتراضي واقعي.</p>
+  </div>
+
+  <div class="materials">
+    <div class="material-card card">
+      <div class="m-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#237A5C" stroke-width="2"/></svg></div>
+      <span>ثلاث كرات مختلفة الكتلة</span>
+    </div>
+    <div class="material-card card">
+      <div class="m-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><rect x="3" y="10" width="18" height="4" rx="1" stroke="#237A5C" stroke-width="2"/></svg></div>
+      <span>مسطرتان (سطح مائل)</span>
+    </div>
+    <div class="material-card card">
+      <div class="m-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><rect x="5" y="5" width="14" height="14" rx="2" stroke="#237A5C" stroke-width="2"/></svg></div>
+      <span>مكعب خشبي مناسب</span>
+    </div>
+    <div class="material-card card">
+      <div class="m-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M4 20 L20 6" stroke="#237A5C" stroke-width="2"/><path d="M4 20 L4 14 M4 20 L10 20" stroke="#237A5C" stroke-width="2"/></svg></div>
+      <span>مكعبات لتغيير الارتفاع</span>
+    </div>
+  </div>
+
+  <div class="card" style="padding:26px 28px;">
+    <h3 style="font-size:17px; margin-bottom:6px;">خطوات العمل</h3>
+    <div class="steps">
+      <div class="step"><div class="step-num"></div><div class="step-text">صنّف الكرات الثلاث حسب كتلها تصاعديًا، وحدّد <b>كرة 1</b> (الأخف)، <b>كرة 2</b>، ثم <b>كرة 3</b> (الأثقل).</div></div>
+      <div class="step"><div class="step-num"></div><div class="step-text">اجعل المسطرة سطحًا مائلًا باستخدام مكعبات ذات ارتفاع ثابت، ليكون التسارع نفسه في كل تجربة.</div></div>
+      <div class="step"><div class="step-num"></div><div class="step-text">ضع المكعب الخشبي عند نهاية الطرف السفلي للمسطرة، تمامًا في مسار الكرة.</div></div>
+      <div class="step"><div class="step-num"></div><div class="step-text">اختر إحدى الكرات، وضعها عند أعلى المستوى المائل.</div></div>
+      <div class="step"><div class="step-num"></div><div class="step-text">اترك الكرة لتنزلق حتى تصطدم بالمكعب الخشبي، وراقب ما يحدث له.</div></div>
+      <div class="step"><div class="step-num"></div><div class="step-text">قِس المسافة التي تحرّكها المكعب الخشبي، وسجّلها في الجدول.</div></div>
+      <div class="step"><div class="step-num"></div><div class="step-text">كرّر التجربة مع الكرتين الأخريين، مع إبقاء الارتفاع نفسه، وسجّل جميع النتائج.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== المختبر ثلاثي الأبعاد ===================== -->
+<section id="lab" class="wrap">
+  <div class="section-head">
+    <div class="section-num">القسم الثالث</div>
+    <h2>المختبر الافتراضي — نفّذ التجربة الآن</h2>
+    <p>اختر كرة، اختر الارتفاع، ثم اضغط "إسقاط الكرة" وراقب المسافة التي يتحركها المكعب الخشبي.</p>
+  </div>
+
+  <div class="lab-shell">
+    <div class="lab-topbar">
+      <h3><span class="dot-live"></span> مختبر تفاعلي ثلاثي الأبعاد</h3>
+      <span class="lab-hint">اسحب بإصبعك أو الفأرة لتدوير المشهد</span>
+    </div>
+
+    <div class="lab-canvas-wrap">
+      <canvas id="labCanvas"></canvas>
+      <div class="lab-readout">
+        <div class="readout-card">
+          <div class="label">آخر مسافة قِيست</div>
+          <div class="value" id="readoutDistance">— <small>سم</small></div>
+        </div>
+        <div class="readout-card">
+          <div class="label">عدد التجارب المسجّلة</div>
+          <div class="value" id="readoutCount">0</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lab-controls">
+      <div class="control-group">
+        <h4>١. اختر الكرة</h4>
+        <div class="ball-choices" id="ballChoices"></div>
+      </div>
+      <div class="control-group">
+        <h4>٢. اختر ارتفاع المستوى المائل</h4>
+        <div class="height-choices" id="heightChoices"></div>
+      </div>
+      <div class="lab-actions">
+        <button class="btn btn-primary" id="dropBtn">إسقاط الكرة</button>
+        <button class="btn btn-ghost" id="resetBtn">إعادة ضبط الجدول</button>
+        <span class="lab-msg" id="labMsg">جاهز لبدء التجربة الأولى.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== النتائج ===================== -->
+<section id="results" class="wrap">
+  <div class="section-head">
+    <div class="section-num">القسم الرابع</div>
+    <h2>رتّب النتائج التي حصلت عليها</h2>
+    <p>يُسجَّل كل اصطدام تلقائيًا هنا فور تنفيذه في المختبر أعلاه.</p>
+  </div>
+  <div class="card results-wrap">
+    <div class="results-top">
+      <strong>جدول القياسات</strong>
+      <span style="font-size:13px; color:var(--ink-soft);">نفّذ 3 تجارب على الأقل بنفس الارتفاع لمقارنة عادلة</span>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>رقم التجربة</th>
+          <th>الكرة</th>
+          <th>ارتفاع المستوى المائل</th>
+          <th>المسافة التي تحركها المكعب (سم)</th>
+        </tr>
+      </thead>
+      <tbody id="resultsBody">
+        <tr class="empty-row"><td colspan="4">لا توجد نتائج بعد — جرّب المختبر أعلاه.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ===================== الاستنتاج ===================== -->
+<section id="reflect" class="wrap">
+  <div class="section-head">
+    <div class="section-num">القسم الخامس</div>
+    <h2>أسئلة الاستنتاج</h2>
+    <p>أجب عن الأسئلة التالية بأسلوبك الخاص بناءً على ما لاحظته في المختبر.</p>
+  </div>
+
+  <div class="q-list">
+    <div class="q-item card">
+      <div class="q-label"><span class="q-badge">١</span> ما الذي غيّر الحالة الحركية للمكعب الخشبي من السكون إلى الحركة في كل حالة؟</div>
+      <textarea placeholder="اكتب إجابتك هنا..."></textarea>
+    </div>
+    <div class="q-item card">
+      <div class="q-label"><span class="q-badge">٢</span> ما مقدار القوة التي تأثر بها المكعب، وكيف ارتبطت بالمسافة التي تحركها على سطح الطاولة؟</div>
+      <textarea placeholder="اكتب إجابتك هنا..."></textarea>
+    </div>
+    <div class="q-item card">
+      <div class="q-label"><span class="q-badge">٣</span> ما العلاقة بين القوة المؤثرة في الكرة (الجسم المتحرك) وكتلتها؟</div>
+      <textarea placeholder="اكتب إجابتك هنا..."></textarea>
+    </div>
+    <div class="q-item card">
+      <div class="q-label"><span class="q-badge">٤</span> كيف يمكنك زيادة المسافة التي يتحركها مكعب الخشب؟ (فكّر في أكثر من طريقة)</div>
+      <textarea placeholder="اكتب إجابتك هنا..."></textarea>
+    </div>
+  </div>
+
+  <div class="reveal-wrap">
+    <button class="btn btn-primary" id="revealBtn" style="background:var(--signal); color:#fff;">إظهار الاستنتاج العلمي</button>
+    <div class="reveal-box" id="revealBox">
+      <h4>الاستنتاج</h4>
+      <p>ما غيّر حالة المكعب من السكون إلى الحركة هو القوة الناتجة عن اصطدام الكرة به.</p>
+      <p>عند إسقاط الكرات من الارتفاع نفسه، كانت الكرة الأثقل تدفع المكعب مسافة أكبر من الكرة الأخف. هذا يدل على أن
+      القوة التي أثّرت بها الكرة في المكعب <b>ازدادت بزيادة كتلة الكرة</b>، أي أن العلاقة بين القوة والكتلة علاقة
+      <b>طردية</b>: كلما زادت الكتلة عند سرعة اصطدام معيّنة، زادت القوة الناتجة، وزادت الإزاحة الحاصلة.</p>
+      <p>كما لاحظت عند تجربة ارتفاعات مختلفة، فإن زيادة ارتفاع الانطلاق تزيد من سرعة الكرة لحظة الاصطدام، وبالتالي
+      تزيد القوة أيضًا حتى مع الكتلة نفسها. لذلك، يمكن زيادة المسافة التي يتحركها المكعب إما بزيادة كتلة الكرة، أو
+      بزيادة ارتفاع المستوى المائل.</p>
+    </div>
+  </div>
+</section>
+
+<footer class="wrap">
+  درس تفاعلي وفق منهاج العلوم والحياة — الصف السابع — فلسطين
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+(function(){
+"use strict";
+
+/* ---------------- DATA ---------------- */
+var BALLS = [
+  {id:0, mass:20,  label:'كرة 1', sub:'خفيفة · 20غ', color:0xE07A6B, radius:0.16},
+  {id:1, mass:50,  label:'كرة 2', sub:'متوسطة · 50غ', color:0x7FB77E, radius:0.20},
+  {id:2, mass:100, label:'كرة 3', sub:'ثقيلة · 100غ', color:0x4A6FA5, radius:0.25}
+];
+var HEIGHTS = [
+  {id:0, label:'منخفض', factor:0.7, blocks:1},
+  {id:1, label:'متوسط', factor:1.0, blocks:2},
+  {id:2, label:'مرتفع', factor:1.3, blocks:3}
+];
+
+var selectedBall = 1;
+var selectedHeight = 1;
+var trialCount = 0;
+var isAnimating = false;
+var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------------- UI: ball & height pickers ---------------- */
+var ballChoicesEl = document.getElementById('ballChoices');
+BALLS.forEach(function(b){
+  var el = document.createElement('label');
+  el.className = 'ball-choice' + (b.id===selectedBall ? ' active' : '');
+  el.innerHTML = '<span class="swatch" style="background:#'+b.color.toString(16).padStart(6,'0')+'"></span>' +
+    '<span class="bc-text"><b>'+b.label+'</b><span>'+b.sub+'</span></span>' +
+    '<input type="radio" name="ball" value="'+b.id+'" '+(b.id===selectedBall?'checked':'')+'>';
+  el.addEventListener('click', function(){
+    if(isAnimating) return;
+    selectedBall = b.id;
+    Array.prototype.forEach.call(ballChoicesEl.children, function(c){c.classList.remove('active');});
+    el.classList.add('active');
+    updateBallVisibility();
+  });
+  ballChoicesEl.appendChild(el);
+});
+
+var heightChoicesEl = document.getElementById('heightChoices');
+HEIGHTS.forEach(function(h){
+  var el = document.createElement('div');
+  el.className = 'height-btn' + (h.id===selectedHeight ? ' active' : '');
+  el.textContent = h.label;
+  el.addEventListener('click', function(){
+    if(isAnimating) return;
+    selectedHeight = h.id;
+    Array.prototype.forEach.call(heightChoicesEl.children, function(c){c.classList.remove('active');});
+    el.classList.add('active');
+    setRampHeight(h.id, true);
+  });
+  heightChoicesEl.appendChild(el);
+});
+
+/* ---------------- THREE.JS SETUP ---------------- */
+var canvas = document.getElementById('labCanvas');
+var wrap = document.querySelector('.lab-canvas-wrap');
+var scene = new THREE.Scene();
+scene.background = new THREE.Color(0x0b1610);
+scene.fog = new THREE.Fog(0x0b1610, 6, 16);
+
+var camera = new THREE.PerspectiveCamera(42, 1, 0.1, 100);
+camera.position.set(2.7, 2.3, 4.6);
+
+var renderer = new THREE.WebGLRenderer({canvas:canvas, antialias:true, alpha:false});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio||1, 2));
+renderer.shadowMap.enabled = true;
+
+var controls = new THREE.OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.08;
+controls.minDistance = 3;
+controls.maxDistance = 9;
+controls.maxPolarAngle = Math.PI*0.49;
+controls.target.set(0.0, 0.35, 0);
+
+/* lights */
+scene.add(new THREE.AmbientLight(0xffffff, 0.55));
+var key = new THREE.DirectionalLight(0xfff3e0, 1.05);
+key.position.set(4, 6, 3);
+key.castShadow = true;
+key.shadow.mapSize.set(1024,1024);
+key.shadow.camera.left=-5; key.shadow.camera.right=5; key.shadow.camera.top=5; key.shadow.camera.bottom=-5;
+scene.add(key);
+var rim = new THREE.PointLight(0x2FAE83, 0.6, 10);
+rim.position.set(-3,2,-2);
+scene.add(rim);
+
+/* textures via canvas */
+function makeWoodTexture(base, dark){
+  var c = document.createElement('canvas'); c.width=256; c.height=256;
+  var ctx = c.getContext('2d');
+  ctx.fillStyle = base; ctx.fillRect(0,0,256,256);
+  for(var i=0;i<40;i++){
+    ctx.strokeStyle = 'rgba(0,0,0,'+(0.04+Math.random()*0.08)+')';
+    ctx.lineWidth = 1+Math.random()*2;
+    ctx.beginPath();
+    var y = Math.random()*256;
+    ctx.moveTo(0,y);
+    ctx.bezierCurveTo(80,y+(Math.random()*20-10),170,y+(Math.random()*20-10),256,y+(Math.random()*10-5));
+    ctx.stroke();
+  }
+  var tex = new THREE.CanvasTexture(c);
+  tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+  return tex;
+}
+function makeRulerTexture(lengthCm){
+  var c = document.createElement('canvas'); c.width=1024; c.height=140;
+  var ctx = c.getContext('2d');
+  ctx.fillStyle = '#EFE6CF'; ctx.fillRect(0,0,1024,140);
+  var pxPerCm = 1024/lengthCm;
+  ctx.strokeStyle = '#2A2A2A'; ctx.fillStyle='#2A2A2A';
+  ctx.lineWidth = 2;
+  ctx.font = '22px sans-serif';
+  ctx.textAlign = 'center';
+  for(var cm=0; cm<=lengthCm; cm++){
+    var x = cm*pxPerCm;
+    var h = (cm%10===0) ? 55 : (cm%5===0 ? 38 : 22);
+    ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,h); ctx.stroke();
+    if(cm%10===0){ ctx.fillText(String(cm), x, h+26); }
+  }
+  ctx.strokeStyle = '#C1443C'; ctx.lineWidth=3;
+  ctx.beginPath(); ctx.moveTo(0,138); ctx.lineTo(1024,138); ctx.stroke();
+  var tex = new THREE.CanvasTexture(c);
+  return tex;
+}
+
+var benchWood = makeWoodTexture('#8a5a34');
+benchWood.repeat.set(2,2);
+var rampWood = makeWoodTexture('#c99a5b');
+var cubeWood = makeWoodTexture('#7A431C');
+var rulerTex = makeRulerTexture(60);
+
+/* bench / table */
+var bench = new THREE.Mesh(
+  new THREE.BoxGeometry(5, 0.25, 3),
+  new THREE.MeshStandardMaterial({map:benchWood, roughness:0.85})
+);
+bench.position.set(0.05,-0.125,0);
+bench.receiveShadow = true;
+scene.add(bench);
+
+/* ramp support blocks (represent مكعبات الارتفاع) */
+var supportGroup = new THREE.Group();
+scene.add(supportGroup);
+
+/* ramp (inclined ruler) */
+var rampLength = 2.4, rampWidth = 0.5, rampThickness = 0.06;
+var rampGeo = new THREE.BoxGeometry(rampLength, rampThickness, rampWidth);
+var rampMat = new THREE.MeshStandardMaterial({map: rulerTex, roughness:0.7});
+var ramp = new THREE.Mesh(rampGeo, rampMat);
+ramp.castShadow = true; ramp.receiveShadow = true;
+scene.add(ramp);
+
+function rampTopPoint(){
+  var angle = window.__rampAngle;
+  var topLocal = new THREE.Vector3(rampLength/2 - 0.18, rampThickness/2, 0);
+  topLocal.applyAxisAngle(new THREE.Vector3(0,0,1), angle);
+  return topLocal.add(ramp.position);
+}
+function rampBottomPoint(){
+  var angle = window.__rampAngle;
+  var botLocal = new THREE.Vector3(-rampLength/2 + 0.05, rampThickness/2, 0);
+  botLocal.applyAxisAngle(new THREE.Vector3(0,0,1), angle);
+  return botLocal.add(ramp.position);
+}
+
+/* fixed pivot point: the LOW end of the ramp always rests here, right next to the cube,
+   no matter which height is selected - exactly like resting a real ruler against blocks
+   while its lower tip stays put on the table. */
+var BOTTOM_ANCHOR = new THREE.Vector3(-0.35, 0.03, 0);
+/* the cube slides away from the ramp in this direction after being hit */
+var SLIDE_DIR = -1;
+var CUBE_HALF = 0.16;
+var CUBE_GAP = 0.05;
+var TRACK_LENGTH = 1.05; // world units of the flat measuring ruler behind the cube
+
+/* wooden cube (target) - created first with a placeholder, positioned by layoutFromRamp() */
+var cube = new THREE.Mesh(
+  new THREE.BoxGeometry(CUBE_HALF*2, CUBE_HALF*2, CUBE_HALF*2),
+  new THREE.MeshStandardMaterial({map:cubeWood, roughness:0.8})
+);
+cube.castShadow = true;
+scene.add(cube);
+var CUBE_HOME = new THREE.Vector3();
+
+/* flat measuring ruler lying on the table directly behind the cube, in its sliding path */
+var rulerSideMat = new THREE.MeshStandardMaterial({color:0xE7EFE9, roughness:0.55});
+var rulerTexFlat = makeRulerTexture(Math.round(TRACK_LENGTH/0.028));
+var rulerTopMat = new THREE.MeshStandardMaterial({map:rulerTexFlat, roughness:0.6});
+var rulerGeo = new THREE.BoxGeometry(TRACK_LENGTH, 0.02, 0.16);
+var rulerStrip = new THREE.Mesh(rulerGeo, [rulerSideMat, rulerSideMat, rulerTopMat, rulerSideMat, rulerSideMat, rulerSideMat]);
+rulerStrip.castShadow = true; rulerStrip.receiveShadow = true;
+var rulerGroup = new THREE.Group();
+rulerGroup.add(rulerStrip);
+scene.add(rulerGroup);
+var RULER_ZERO_X = 0;
+
+/* measurement pin flag, marks how far the cube has travelled */
+var pin = new THREE.Mesh(
+  new THREE.ConeGeometry(0.045,0.15,12),
+  new THREE.MeshStandardMaterial({color:0xC1443C})
+);
+pin.rotation.x = Math.PI;
+pin.visible = false;
+scene.add(pin);
+
+function layoutFromRamp(){
+  var bottomWorld = rampBottomPoint();
+  // cube sits just past the ramp's low end, along the slide direction
+  CUBE_HOME.set(bottomWorld.x - SLIDE_DIR*(CUBE_GAP + CUBE_HALF), CUBE_HALF, bottomWorld.z);
+  if(typeof isAnimating === 'undefined' || !isAnimating){
+    cube.position.copy(CUBE_HOME);
+  }
+  // ruler's "0" mark sits right at the cube's leading edge, and it extends further
+  // in the slide direction - i.e. exactly behind the cube's path of travel
+  RULER_ZERO_X = CUBE_HOME.x + SLIDE_DIR*CUBE_HALF;
+  rulerGroup.position.set(RULER_ZERO_X + SLIDE_DIR*TRACK_LENGTH/2, 0.005, CUBE_HOME.z);
+  pin.visible = false;
+}
+
+function setRampHeight(hIndex){
+  var h = HEIGHTS[hIndex];
+  var blockH = 0.14;
+  var raisedY = h.blocks*blockH;
+  var angle = Math.asin(Math.min(raisedY/rampLength, 0.55));
+
+  // rotate the ramp so its low end lands exactly on the fixed anchor point
+  var localBottom = new THREE.Vector3(-rampLength/2 + 0.05, rampThickness/2, 0);
+  var rotatedBottom = localBottom.clone().applyAxisAngle(new THREE.Vector3(0,0,1), angle);
+  ramp.position.copy(BOTTOM_ANCHOR).sub(rotatedBottom);
+  ramp.rotation.z = angle;
+  window.__rampAngle = angle;
+
+  // support blocks stack up under the elevated (top) end of the ramp
+  var topWorld = rampTopPoint();
+  supportGroup.clear();
+  for(var i=0;i<h.blocks;i++){
+    var blk = new THREE.Mesh(
+      new THREE.BoxGeometry(0.36,blockH,0.36),
+      new THREE.MeshStandardMaterial({map:cubeWood, roughness:0.85})
+    );
+    blk.position.set(topWorld.x, blockH*i + blockH/2, topWorld.z);
+    blk.castShadow = true; blk.receiveShadow = true;
+    supportGroup.add(blk);
+  }
+
+  layoutFromRamp();
+}
+setRampHeight(selectedHeight);
+
+/* balls */
+var ballGroup = new THREE.Group();
+scene.add(ballGroup);
+var ballMeshes = {};
+BALLS.forEach(function(b){
+  var m = new THREE.Mesh(
+    new THREE.SphereGeometry(b.radius, 24, 24),
+    new THREE.MeshStandardMaterial({color:b.color, roughness:0.4, metalness:0.05})
+  );
+  m.castShadow = true;
+  ballGroup.add(m);
+  ballMeshes[b.id] = m;
+});
+function updateBallVisibility(){
+  BALLS.forEach(function(b){
+    ballMeshes[b.id].visible = true;
+    ballMeshes[b.id].position.copy(rampTopPoint()).add(new THREE.Vector3(0, BALLS[b.id].radius, 0));
+  });
+  BALLS.forEach(function(b){ if(b.id!==selectedBall) ballMeshes[b.id].visible = false; });
+}
+updateBallVisibility();
+
+/* ---------------- RESIZE ---------------- */
+function resize(){
+  var w = wrap.clientWidth, h = wrap.clientHeight;
+  renderer.setSize(w,h,false);
+  camera.aspect = w/h;
+  camera.updateProjectionMatrix();
+}
+window.addEventListener('resize', resize);
+resize();
+
+/* ---------------- ANIMATION ENGINE ---------------- */
+function easeInQuad(t){return t*t;}
+function easeOutCubic(t){return 1-Math.pow(1-t,3);}
+
+function calcDistanceCm(mass, heightFactor){
+  var base = mass * heightFactor * 0.2;
+  var noise = 0.95 + Math.random()*0.1;
+  return Math.round(base*noise*10)/10;
+}
+
+function dropBall(){
+  if(isAnimating) return;
+  isAnimating = true;
+  document.getElementById('dropBtn').disabled = true;
+  document.getElementById('labMsg').textContent = 'الكرة تنزلق على المستوى المائل...';
+
+  cube.position.copy(CUBE_HOME);
+  pin.visible = false;
+
+  var ball = ballMeshes[selectedBall];
+  var ballData = BALLS[selectedBall];
+  ball.visible = true;
+  var start = rampTopPoint().add(new THREE.Vector3(0, ballData.radius, 0));
+  var end = rampBottomPoint().add(new THREE.Vector3(0, ballData.radius, 0));
+  ball.position.copy(start);
+
+  var duration = reducedMotion ? 60 : 900;
+  var t0 = performance.now();
+  var travelDist = start.distanceTo(end);
+
+  function stepDrop(now){
+    var t = Math.min((now-t0)/duration, 1);
+    var e = easeInQuad(t);
+    ball.position.lerpVectors(start, end, e);
+    ball.rotation.z -= (travelDist/ballData.radius) * (e - (window.__lastE||0)) * 0.6;
+    window.__lastE = e;
+    if(t<1){ requestAnimationFrame(stepDrop); }
+    else { window.__lastE=0; collideAndSlide(); }
+  }
+  requestAnimationFrame(stepDrop);
+}
+
+function collideAndSlide(){
+  var heightData = HEIGHTS[selectedHeight];
+  var ballData = BALLS[selectedBall];
+  var distCm = calcDistanceCm(ballData.mass, heightData.factor);
+  var worldDist = distCm * 0.028; // cm -> world units
+
+  document.getElementById('labMsg').textContent = 'اصطدام! المكعب يتحرك الآن...';
+
+  var start = cube.position.clone();
+  var end = start.clone().add(new THREE.Vector3(worldDist*SLIDE_DIR, 0, 0));
+  var duration = reducedMotion ? 60 : 800;
+  var t0 = performance.now();
+
+  var ball = ballMeshes[selectedBall];
+  var ballRest = ball.position.clone().add(new THREE.Vector3(-SLIDE_DIR*0.05,0,0));
+
+  function stepSlide(now){
+    var t = Math.min((now-t0)/duration,1);
+    var e = easeOutCubic(t);
+    cube.position.lerpVectors(start,end,e);
+    cube.rotation.y = e*0.3*SLIDE_DIR;
+    ball.position.lerpVectors(ball.position, ballRest, 0.15);
+    if(t<1){ requestAnimationFrame(stepSlide); }
+    else{ finishTrial(distCm); }
+  }
+  requestAnimationFrame(stepSlide);
+
+  pin.position.set(end.x + SLIDE_DIR*CUBE_HALF, 0.45, end.z);
+  pin.visible = true;
+}
+
+function finishTrial(distCm){
+  isAnimating = false;
+  document.getElementById('dropBtn').disabled = false;
+  document.getElementById('labMsg').textContent = 'تم! جرّب كرة أو ارتفاعًا آخر، أو سجّل ملاحظاتك.';
+  trialCount++;
+
+  document.getElementById('readoutDistance').innerHTML = distCm.toFixed(1)+' <small>سم</small>';
+  document.getElementById('readoutCount').textContent = trialCount;
+
+  var ballData = BALLS[selectedBall];
+  var heightData = HEIGHTS[selectedHeight];
+  var tbody = document.getElementById('resultsBody');
+  var emptyRow = tbody.querySelector('.empty-row');
+  if(emptyRow) emptyRow.remove();
+
+  var tr = document.createElement('tr');
+  tr.innerHTML =
+    '<td>'+trialCount+'</td>'+
+    '<td><span class="badge-ball"><span class="badge-dot" style="background:#'+ballData.color.toString(16).padStart(6,'0')+'"></span>'+ballData.label+' ('+ballData.sub+')</span></td>'+
+    '<td>'+heightData.label+'</td>'+
+    '<td><b>'+distCm.toFixed(1)+'</b></td>';
+  tbody.appendChild(tr);
+
+  updateBallVisibility();
+}
+
+document.getElementById('dropBtn').addEventListener('click', dropBall);
+document.getElementById('resetBtn').addEventListener('click', function(){
+  trialCount = 0;
+  document.getElementById('readoutDistance').innerHTML = '— <small>سم</small>';
+  document.getElementById('readoutCount').textContent = '0';
+  var tbody = document.getElementById('resultsBody');
+  tbody.innerHTML = '<tr class="empty-row"><td colspan="4">لا توجد نتائج بعد — جرّب المختبر أعلاه.</td></tr>';
+  pin.visible = false;
+  cube.position.copy(CUBE_HOME);
+  document.getElementById('labMsg').textContent = 'تمت إعادة ضبط الجدول. جاهز لتجربة جديدة.';
+});
+
+document.getElementById('revealBtn').addEventListener('click', function(){
+  document.getElementById('revealBox').classList.add('show');
+});
+
+/* ---------------- RENDER LOOP ---------------- */
+function animate(){
+  requestAnimationFrame(animate);
+  controls.update();
+  renderer.render(scene, camera);
+}
+animate();
+
+})();
+</script>
+</body>
+</html>

@@ -425,7 +425,85 @@
       .stats-row { gap: 20px; }
       .stat-divider { display: none; }
     }
-  </style>
+  
+    /* ── Search Bar ── */
+    .search-wrap {
+      max-width: 620px;
+      margin: 28px auto 0;
+      position: relative;
+    }
+    .search-input {
+      width: 100%;
+      padding: 16px 52px 16px 22px;
+      border-radius: 50px;
+      border: 2px solid rgba(255,255,255,0.25);
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(10px);
+      color: #fff;
+      font-family: 'Tajawal', sans-serif;
+      font-size: 1.05rem;
+      outline: none;
+      box-sizing: border-box;
+      transition: border .25s, background .25s;
+      direction: rtl;
+    }
+    .search-input::placeholder { color: rgba(255,255,255,.6); }
+    .search-input:focus {
+      border-color: rgba(255,255,255,.7);
+      background: rgba(255,255,255,.18);
+    }
+    .search-icon {
+      position: absolute;
+      left: 18px; top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.2rem;
+      pointer-events: none;
+    }
+    .search-results {
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0; right: 0;
+      background: #1a1f3a;
+      border-radius: 18px;
+      box-shadow: 0 12px 40px rgba(0,0,0,.45);
+      max-height: 380px;
+      overflow-y: auto;
+      z-index: 999;
+      display: none;
+      border: 1px solid rgba(255,255,255,.1);
+    }
+    .search-results.open { display: block; }
+    .search-result-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 13px 18px;
+      cursor: pointer;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+      transition: background .15s;
+      text-decoration: none;
+      color: #fff;
+      direction: rtl;
+    }
+    .search-result-item:last-child { border-bottom: none; }
+    .search-result-item:hover { background: rgba(255,255,255,.1); }
+    .sri-grade {
+      font-size: .72rem;
+      background: rgba(255,255,255,.15);
+      border-radius: 20px;
+      padding: 3px 10px;
+      white-space: nowrap;
+      color: rgba(255,255,255,.8);
+    }
+    .sri-title { flex: 1; font-size: .95rem; font-weight: 600; }
+    .sri-num { font-size: .75rem; color: rgba(255,255,255,.5); white-space: nowrap; }
+    .search-no-result {
+      padding: 22px;
+      text-align: center;
+      color: rgba(255,255,255,.5);
+      font-size: .95rem;
+    }
+    </style>
 </head>
 <body>
 
@@ -444,7 +522,7 @@
       </div>
     </div>
     <div class="header-badge">
-      مديرية التربية والتعليم<br>طولكرم
+      <span style="font-size:1.15rem;font-weight:800;letter-spacing:0.5px;">مديرية التربية والتعليم</span><br><span style="font-size:1rem;font-weight:700;">طولكرم — مبحث العلوم</span>
     </div>
   </header>
 
@@ -458,7 +536,14 @@
     </div>
     <div class="hero-eyebrow">⚗️ منصة التعلم التفاعلي العلمي</div>
 
-    <h2>استكشف عالم العلوم<br>من خلال التجارب الافتراضية</h2>
+    
+    <div class="search-wrap" id="searchWrap">
+      <span class="search-icon">🔍</span>
+      <input class="search-input" id="searchInput" type="text"
+             placeholder="ابحث عن تجربة بالاسم أو الصف..." autocomplete="off">
+      <div class="search-results" id="searchResults"></div>
+    </div>
+    <h2 style="margin-top:48px;">استكشف عالم العلوم<br>من خلال التجارب الافتراضية</h2>
     <p class="hero-sub">
       منصة تعليمية متكاملة تُقدّم تجارب علمية افتراضية تفاعلية للطلاب،
       مُصمَّمة وفق المنهاج الفلسطيني لتعزيز الفهم العلمي العميق
@@ -615,7 +700,7 @@
     <div class="footer-divider"></div>
     <div class="footer-sub">
       من إعداد فريق صُنَّاع التميّز التربوي(قادة الإبداع)<br>
-      مديرية التربية والتعليم — طولكرم<br>
+      <span style="font-size:1.05rem;font-weight:700;color:rgba(240,248,255,0.75);">مديرية التربية والتعليم — طولكرم — مبحث العلوم</span><br>
       فلسطين 🇵🇸
     </div>
   </footer>
@@ -713,5 +798,52 @@ function draw() {
 draw();
 </script>
 
+
+<script>
+(function(){
+  const EXPS = [{"href": "grade5/skeletal_system.html", "num": "تجربة 1", "title": "الجهاز الهيكلي | علوم وحياة", "grade": "الصف الخامس", "emoji": "🌱"}, {"href": "grade5/activity3_water_purification.html", "num": "تجربة 2", "title": "نشاط (٣): فصل الشوائب من الماء – العلوم والحياة", "grade": "الصف الخامس", "emoji": "🌱"}, {"href": "grade5/simulate_cell.html", "num": "تجربة 3", "title": "أحاكي الخلية | العلوم والحياة", "grade": "الصف الخامس", "emoji": "🌱"}, {"href": "grade5/simulate_compound.html", "num": "تجربة 4", "title": "أُحاكي المُرَكَّب", "grade": "الصف الخامس", "emoji": "🌱"}, {"href": "grade5/separate_mixture_magnet.html", "num": "تجربة 5", "title": "أريد حَلّاً 🧲 فصل المخلوط بالمغناطيس", "grade": "الصف الخامس", "emoji": "🌱"}, {"href": "grade5/forms_of_energy.html", "num": "تجربة 6", "title": "أشكال الطاقة", "grade": "الصف الخامس", "emoji": "🌱"}, {"href": "grade5/play_with_dough_physical_change.html", "num": "تجربة 7", "title": "ألعب مع المعجون | التغيّر الطبيعي", "grade": "الصف الخامس", "emoji": "🌱"}, {"href": "grade5/salts_of_palestine.html", "num": "تجربة 8", "title": "أملاح بلادي — درس تفاعلي مع مختبر افتراضي", "grade": "الصف الخامس", "emoji": "🌱"}, {"href": "grade5/microscope_cell_discovery.html", "num": "تجربة 9", "title": "المجهر واكتشاف الخليّة | مختبر افتراضي", "grade": "الصف الخامس", "emoji": "🌱"}, {"href": "grade5/lightning_thunder.html", "num": "تجربة 10", "title": "البرق والرعد | مختبر افتراضي - العلوم والحياة، الصف الخامس", "grade": "الصف الخامس", "emoji": "🌱"}, {"href": "grade5/attraction_repulsion_charges.html", "num": "تجربة 11", "title": "التجاذب والتنافر | مختبر الشحنات الافتراضي", "grade": "الصف الخامس", "emoji": "🌱"}, {"href": "grade5/industrial_resources.html", "num": "تجربة 12", "title": "الثروات الصناعيّة — درس تفاعلي ومختبر افتراضي", "grade": "الصف الخامس", "emoji": "🌱"}, {"href": "grade5/natural_resources.html", "num": "تجربة 13", "title": "الثروات الطبيعية | العلوم والحياة", "grade": "الصف الخامس", "emoji": "🌱"}, {"href": "grade5/charging_contact_induction.html", "num": "تجربة 14", "title": "الشحن باللمس والحث (التأثير) | العلوم والحياة", "grade": "الصف الخامس", "emoji": "🌱"}, {"href": "grade5/lightning_static_electricity.html", "num": "تجربة 15", "title": "الصاعقة | ظواهر مرتبطة بالكهرباء الساكنة", "grade": "الصف الخامس", "emoji": "🌱"}, {"href": "grade5/play_with_energy.html", "num": "تجربة 16", "title": "ألعب مع الطاقة | مختبر افتراضي - علوم وحياة", "grade": "الصف الخامس", "emoji": "🌱"}, {"href": "grade5/activity8_element.html", "num": "تجربة 17", "title": "نشاط (٨): العُنصُر - علوم الصف الخامس", "grade": "الصف الخامس", "emoji": "🌱"}, {"href": "grade5/electroscope_lab.html", "num": "تجربة 18", "title": "الكشاف الكهربائي | مختبر تفاعلي - العلوم والحياة", "grade": "الصف الخامس", "emoji": "🌱"}, {"href": "grade5/salt_treasure_activity4.html", "num": "تجربة 19", "title": "الكنز المِلحيّ | نشاط (٤) — العلوم والحياة", "grade": "الصف الخامس", "emoji": "🌱"}, {"href": "grade5/pure_impure_matter.html", "num": "تجربة 20", "title": "المادة النقية والمادة غير النقية", "grade": "الصف الخامس", "emoji": "🌱"}, {"href": "grade5/electric_generator_energy.html", "num": "تجربة 21", "title": "المولّد الكهربائي — تحوّلات الطاقة", "grade": "الصف الخامس", "emoji": "🌱"}, {"href": "grade5/surface_water.html", "num": "تجربة 22", "title": "المياه السطحية | مختبر افتراضي", "grade": "الصف الخامس", "emoji": "🌱"}, {"href": "grade5/groundwater_palestine.html", "num": "تجربة 23", "title": "المياه الجوفيّة في فلسطين", "grade": "الصف الخامس", "emoji": "🌱"}, {"href": "grade5/oil_in_palestine.html", "num": "تجربة 24", "title": "النفط في بلادي — مختبر افتراضي", "grade": "الصف الخامس", "emoji": "🌱"}, {"href": "grade5/i_am_mixture.html", "num": "تجربة 25", "title": "أنا المخلوط - العلوم والحياة", "grade": "الصف الخامس", "emoji": "🌱"}, {"href": "grade5/energy_environment.html", "num": "تجربة 26", "title": "الطاقة والبيئة | مختبر افتراضي", "grade": "الصف الخامس", "emoji": "🌱"}, {"href": "grade5/types_of_rocks.html", "num": "تجربة 27", "title": "أنواع الصخور | مختبر افتراضي تفاعلي", "grade": "الصف الخامس", "emoji": "🌱"}, {"href": "grade5/other_energy_transformations.html", "num": "تجربة 28", "title": "تحوّلات أخرى للطاقة | مختبر افتراضي", "grade": "الصف الخامس", "emoji": "🌱"}, {"href": "grade5/light_energy_transformations.html", "num": "تجربة 29", "title": "تحوّلات الطاقة الضوئية | العلوم والحياة", "grade": "الصف الخامس", "emoji": "🌱"}, {"href": "grade5/energy_conservation.html", "num": "تجربة 30", "title": "ترشيد استهلاك الطاقة", "grade": "الصف الخامس", "emoji": "🌱"}, {"href": "grade5/classify_materials.html", "num": "تجربة 31", "title": "تصنيف المواد - العلوم والحياة", "grade": "الصف الخامس", "emoji": "🌱"}, {"href": "grade5/states_of_matter.html", "num": "تجربة 32", "title": "حالات المادّة | مختبر افتراضي تفاعلي", "grade": "الصف الخامس", "emoji": "🌱"}, {"href": "grade5/burn_magnesium_chemical_change.html", "num": "تجربة 33", "title": "حرق المغنيسيوم | تغيّر كيميائي", "grade": "الصف الخامس", "emoji": "🌱"}, {"href": "grade5/water_harvesting.html", "num": "تجربة 34", "title": "حصاد المياه — درس تفاعلي ومختبر افتراضي", "grade": "الصف الخامس", "emoji": "🌱"}, {"href": "grade5/rock_properties.html", "num": "تجربة 35", "title": "خصائص الصّخور | مختبر افتراضي", "grade": "الصف الخامس", "emoji": "🌱"}, {"href": "grade5/compound_properties.html", "num": "تجربة 36", "title": "خصائص المُرَكَّب | مختبر افتراضي - العلوم والحياة", "grade": "الصف الخامس", "emoji": "🌱"}, {"href": "grade5/energy_sources.html", "num": "تجربة 37", "title": "الطاقة ومصادرها | مختبر افتراضي", "grade": "الصف الخامس", "emoji": "🌱"}, {"href": "grade5/activity3_electric_charge.html", "num": "تجربة 38", "title": "نشاط ٣ • الشّحنة الكهربائيّة وأنواعها", "grade": "الصف الخامس", "emoji": "🌱"}, {"href": "grade5/how_oil_forms_3d.html", "num": "تجربة 39", "title": "كيف يتكوّن النفط؟ | مختبر افتراضي ثلاثي الأبعاد – علوم وحياة، الصف الخامس", "grade": "الصف الخامس", "emoji": "🌱"}, {"href": "grade5/distillation_lab.html", "num": "تجربة 40", "title": "التقطير — مختبر افتراضي", "grade": "الصف الخامس", "emoji": "🌱"}, {"href": "grade5/salt_dissolving_water.html", "num": "تجربة 41", "title": "ذوبان المِلح في الماء | مختبر افتراضي", "grade": "الصف الخامس", "emoji": "🌱"}, {"href": "grade5/sedimentary_rocks_formation.html", "num": "تجربة 42", "title": "شاهد على تاريخ الأرض — تكوّن الصخور الرسوبية", "grade": "الصف الخامس", "emoji": "🌱"}, {"href": "grade5/separation_funnel.html", "num": "تجربة 43", "title": "قِمعُ الفَصل — علوم وحياة", "grade": "الصف الخامس", "emoji": "🌱"}, {"href": "grade5/homogeneous_heterogeneous.html", "num": "تجربة 44", "title": "متجانس أم غير متجانس - العلوم والحياة", "grade": "الصف الخامس", "emoji": "🌱"}, {"href": "grade5/quarries_3d.html", "num": "تجربة 45", "title": "مَحاجِرُ بلادي | مختبر افتراضي ثلاثي الأبعاد", "grade": "الصف الخامس", "emoji": "🌱"}, {"href": "grade5/different_mixtures.html", "num": "تجربة 46", "title": "مخاليط مختلفة | العلوم والحياة", "grade": "الصف الخامس", "emoji": "🌱"}, {"href": "grade5/cell_discovery_journey.html", "num": "تجربة 47", "title": "رحلة اكتشاف الخليّة | العلوم والحياة", "grade": "الصف الخامس", "emoji": "🌱"}, {"href": "grade5/biological_organization_levels.html", "num": "تجربة 48", "title": "مستويات التنظيم الحيوي في جسم الكائنات الحية", "grade": "الصف الخامس", "emoji": "🌱"}, {"href": "grade5/electrical_energy_sources.html", "num": "تجربة 49", "title": "مصادر الطاقة الكهربائية", "grade": "الصف الخامس", "emoji": "🌱"}, {"href": "grade5/cell_components.html", "num": "تجربة 50", "title": "مكوّنات الخليّة", "grade": "الصف الخامس", "emoji": "🌱"}, {"href": "grade5/element_lesson.html", "num": "تجربة 51", "title": "درس العنصر – العلوم والحياة", "grade": "الصف الخامس", "emoji": "🌱"}, {"href": "grade5/activity1_matter.html", "num": "تجربة 52", "title": "نشاط (١): المادة - العلوم والحياة", "grade": "الصف الخامس", "emoji": "🌱"}, {"href": "grade7/groundwater_lab.html", "num": "تجربة 53", "title": "المياه الجوفيّة | مختبر افتراضي تفاعلي", "grade": "الصف الخامس", "emoji": "🌱"}, {"href": "grade6/leaf_photosynthesis_lab.html", "num": "تجربة 1", "title": "آلية عمل الورقة — مختبر البناء الضوئي التفاعلي", "grade": "الصف السادس", "emoji": "💧"}, {"href": "grade6/magnetism_electric_current.html", "num": "تجربة 2", "title": "التمغنط بالتيار الكهربائي | مختبر افتراضي", "grade": "الصف السادس", "emoji": "💧"}, {"href": "grade6/magnetism_induction.html", "num": "تجربة 3", "title": "التمغنط بالحث | مختبر افتراضي", "grade": "الصف السادس", "emoji": "💧"}, {"href": "grade6/magnetism_lab.html", "num": "تجربة 4", "title": "التَّمغنط | مختبر العلوم والحياة", "grade": "الصف السادس", "emoji": "💧"}, {"href": "grade6/electric_current_galvanic_cell.html", "num": "تجربة 5", "title": "التيار الكهربائي والخلية الجلفانية", "grade": "الصف السادس", "emoji": "💧"}, {"href": "grade6/blood_circulation.html", "num": "تجربة 6", "title": "رحلة الدم | الدورة الدموية الصغرى والكبرى", "grade": "الصف السادس", "emoji": "💧"}, {"href": "grade6/folds_faults_3d.html", "num": "تجربة 7", "title": "الطيّات والصدوع | مختبر افتراضي ثلاثي الأبعاد", "grade": "الصف السادس", "emoji": "💧"}, {"href": "grade6/electric_charge_transfer2.html", "num": "تجربة 8", "title": "انتقال الشحنات الكهربائيّة", "grade": "الصف السادس", "emoji": "💧"}, {"href": "grade6/earth_structure_3d.html", "num": "تجربة 9", "title": "بنية الأرض — الدرس الأول | مختبر افتراضي ثلاثي الأبعاد", "grade": "الصف السادس", "emoji": "💧"}, {"href": "grade6/vinegar_baking_soda.html", "num": "تجربة 10", "title": "تفاعل الخل مع بيكربونات الصوديوم | مختبر افتراضي", "grade": "الصف السادس", "emoji": "💧"}, {"href": "grade6/charging_by_friction.html", "num": "تجربة 11", "title": "درس التكهرب بالدَّلْك | العلوم والحياة", "grade": "الصف السادس", "emoji": "💧"}, {"href": "grade6/electrical_contact.html", "num": "تجربة 12", "title": "التّماس الكهربائيّ", "grade": "الصف السادس", "emoji": "💧"}, {"href": "grade6/circuit_connection_types.html", "num": "تجربة 13", "title": "طرق التوصيل في الدارات الكهربائية", "grade": "الصف السادس", "emoji": "💧"}, {"href": "grade6/bulb_connection_types.html", "num": "تجربة 14", "title": "طرق توصيل المصابيح الكهربائيّة", "grade": "الصف السادس", "emoji": "💧"}, {"href": "grade6/magnetizability_elements_3d.html", "num": "تجربة 15", "title": "قابلية التمغنط للعناصر | مختبر افتراضي ثلاثي الأبعاد", "grade": "الصف السادس", "emoji": "💧"}, {"href": "grade6/malleability_ductility.html", "num": "تجربة 16", "title": "قابلية العناصر للطرق والسحب والثني | مختبر افتراضي", "grade": "الصف السادس", "emoji": "💧"}, {"href": "grade6/how_kidney_works.html", "num": "تجربة 17", "title": "حارسة الجسم | كيف تعمل الكُلية", "grade": "الصف السادس", "emoji": "💧"}, {"href": "grade6/electric_charge_transfer.html", "num": "تجربة 18", "title": "انتقال الشحنات الكهربائية", "grade": "الصف السادس", "emoji": "💧"}, {"href": "grade6/photosynthesis_respiration_integration.html", "num": "تجربة 19", "title": "التكامل بين البناء الضوئي والتنفس في النبات", "grade": "الصف السادس", "emoji": "💧"}, {"href": "grade6/thermal_conductivity.html", "num": "تجربة 20", "title": "قابلية المواد للتوصيل الحراري", "grade": "الصف السادس", "emoji": "💧"}, {"href": "grade8/types_chemical_compounds.html", "num": "تجربة 1", "title": "أنواع المركبات الكيميائية | مختبر افتراضي", "grade": "الصف الثامن", "emoji": "🔭"}, {"href": "grade8/bioluminescence_lab.html", "num": "تجربة 2", "title": "إنتاج وميض — مختبر العلوم والحياة", "grade": "الصف الثامن", "emoji": "🔭"}, {"href": "grade8/cell_division_simulation.html", "num": "تجربة 3", "title": "محاكاة انقسام الخلايا", "grade": "الصف الثامن", "emoji": "🔭"}, {"href": "grade8/transverse_waves.html", "num": "تجربة 4", "title": "الأمواج المستعرضة - مختبر افتراضي تفاعلي", "grade": "الصف الثامن", "emoji": "🔭"}, {"href": "grade8/cell_membrane_diffusion.html", "num": "تجربة 5", "title": "الانتشار عبر الغشاء الخلوي — محاكاة تفاعلية", "grade": "الصف الثامن", "emoji": "🔭"}, {"href": "grade8/osmosis_property.html", "num": "تجربة 6", "title": "الخاصية الأسموزية", "grade": "الصف الثامن", "emoji": "🔭"}, {"href": "grade8/osmosis_red_blood_cell.html", "num": "تجربة 7", "title": "الخاصية الأسموزية – خلية الدم الحمراء", "grade": "الصف الثامن", "emoji": "🔭"}, {"href": "grade8/chemical_formula_dead_sea.html", "num": "تجربة 8", "title": "الصيغة الكيميائية | مختبر البحر الميّت الافتراضي", "grade": "الصف الثامن", "emoji": "🔭"}, {"href": "grade8/mechanical_energy_conservation_3d.html", "num": "تجربة 9", "title": "قانون حفظ الطاقة الميكانيكية | مختبر افتراضي ثلاثي الأبعاد", "grade": "الصف الثامن", "emoji": "🔭"}, {"href": "grade8/valence_electrons_lab.html", "num": "تجربة 10", "title": "إلكترونات التكافؤ | مختبر تفاعلي", "grade": "الصف الثامن", "emoji": "🔭"}, {"href": "grade8/dissecting_microscope.html", "num": "تجربة 11", "title": "المختبر الافتراضي | المجهر التشريحي", "grade": "الصف الثامن", "emoji": "🔭"}, {"href": "grade8/compound_microscope.html", "num": "تجربة 12", "title": "التعرّف إلى المِجهر المركّب | العلوم والحياة", "grade": "الصف الثامن", "emoji": "🔭"}, {"href": "grade8/sound_in_solids_liquids.html", "num": "تجربة 13", "title": "انتقال الصوت في المواد الصلبة والسائلة", "grade": "الصف الثامن", "emoji": "🔭"}, {"href": "grade8/dna_replication_simulation.html", "num": "تجربة 14", "title": "محاكاة تجربة تضاعف DNA", "grade": "الصف الثامن", "emoji": "🔭"}, {"href": "grade8/dna_simulation.html", "num": "تجربة 15", "title": "محاكاة DNA - معلومات واختبار", "grade": "الصف الثامن", "emoji": "🔭"}, {"href": "grade8/microscope_viscosity_simulation.html", "num": "تجربة 16", "title": "محاكاة متطورة لتجربة المجهر - تأثير اللزوجة", "grade": "الصف الثامن", "emoji": "🔭"}, {"href": "grade8/asexual_reproduction_cuttings.html", "num": "تجربة 17", "title": "التكاثر اللاجنسي: تحضير العُقل في المختبر", "grade": "الصف الثامن", "emoji": "🔭"}, {"href": "grade8/asexual_reproduction_cuttings.html", "num": "تجربة 18", "title": "التكاثر اللاجنسي: تحضير العُقل في المختبر", "grade": "الصف الثامن", "emoji": "🔭"}, {"href": "grade8/electron_distribution_3d.html", "num": "تجربة 19", "title": "التوزيع الإلكتروني للذرّة | مختبر افتراضي ثلاثي الأبعاد", "grade": "الصف الثامن", "emoji": "🔭"}, {"href": "grade8/bacteria_lab.html", "num": "تجربة 20", "title": "البكتيريا | مختبر افتراضي تفاعلي", "grade": "الصف الثامن", "emoji": "🔭"}, {"href": "grade8/signs_chemical_reaction.html", "num": "تجربة 21", "title": "دلالات حدوث التفاعل الكيميائي | حرارة تنتج وغاز يتصاعد", "grade": "الصف الثامن", "emoji": "🔭"}, {"href": "grade8/compound_microscope.html", "num": "تجربة 22", "title": "التعرّف إلى المِجهر المركّب | العلوم والحياة", "grade": "الصف الثامن", "emoji": "🔭"}, {"href": "grade8/periodic_table_atom_lab.html", "num": "تجربة 23", "title": "الجدول الدوري — مختبر الذرّة التفاعلي", "grade": "الصف الثامن", "emoji": "🔭"}, {"href": "grade8/potential_energy.html", "num": "تجربة 24", "title": "طاقة الوضع - العلوم والحياة", "grade": "الصف الثامن", "emoji": "🔭"}, {"href": "grade8/natural_frequency_resonance.html", "num": "تجربة 25", "title": "التردد الطبيعي والرنين — مختبر افتراضي تفاعلي", "grade": "الصف الثامن", "emoji": "🔭"}, {"href": "grade8/sound_transmission_vacuum.html", "num": "تجربة 26", "title": "انتقال الصوت في الفراغ | العلوم والحياة", "grade": "الصف الثامن", "emoji": "🔭"}, {"href": "grade8/water_transverse_wave.html", "num": "تجربة 27", "title": "الموجة المائية المستعرضة | العلوم والحياة", "grade": "الصف الثامن", "emoji": "🔭"}, {"href": "grade8/vibration_produces_sound.html", "num": "تجربة 28", "title": "الاهتزاز يولد صوتاً | العلوم والحياة", "grade": "الصف الثامن", "emoji": "🔭"}, {"href": "grade9/black_snake_reaction.html", "num": "تجربة 1", "title": "التفاعل الكيميائي | المختبر الافتراضي: الثعبان الأسود", "grade": "الصف التاسع", "emoji": "⚡"}, {"href": "grade9/galvanic_cell.html", "num": "تجربة 2", "title": "الخلية الكهروكيميائية الجلفانية", "grade": "الصف التاسع", "emoji": "⚡"}, {"href": "grade9/periodic_properties_elements.html", "num": "تجربة 3", "title": "الدورية في صفات العناصر | مختبر افتراضي", "grade": "الصف التاسع", "emoji": "⚡"}, {"href": "grade9/electroplating_lab.html", "num": "تجربة 4", "title": "الطلاء الكهربائي | المختبر الافتراضي التجريبي", "grade": "الصف التاسع", "emoji": "⚡"}, {"href": "grade9/factors_electrical_resistance.html", "num": "تجربة 5", "title": "العوامل التي تعتمد عليها المقاومة الكهربائية", "grade": "الصف التاسع", "emoji": "⚡"}, {"href": "grade9/electrical_power.html", "num": "تجربة 6", "title": "القدرة الكهربائية", "grade": "الصف التاسع", "emoji": "⚡"}, {"href": "grade9/types_of_sugars.html", "num": "تجربة 7", "title": "أنواع السكريات", "grade": "الصف التاسع", "emoji": "⚡"}, {"href": "grade9/decomposition_reactions.html", "num": "تجربة 8", "title": "تفاعلات التفكك | العلوم والحياة", "grade": "الصف التاسع", "emoji": "⚡"}, {"href": "grade9/neutralization_reactions.html", "num": "تجربة 9", "title": "تفاعلات التعادل — المختبر الافتراضي", "grade": "الصف التاسع", "emoji": "⚡"}, {"href": "grade9/parallel_resistors.html", "num": "تجربة 10", "title": "توصيل المقاومات على التوازي | مختبر افتراضي - العلوم والحياة، الصف التاسع", "grade": "الصف التاسع", "emoji": "⚡"}, {"href": "grade9/series_resistors.html", "num": "تجربة 11", "title": "توصيل المقاومات على التوالي | مختبر افتراضي", "grade": "الصف التاسع", "emoji": "⚡"}, {"href": "grade9/ionic_covalent_compounds.html", "num": "تجربة 12", "title": "خصائص المركبات الأيونية والتساهمية | المختبر الافتراضي", "grade": "الصف التاسع", "emoji": "⚡"}, {"href": "grade9/anemia_lab.html", "num": "تجربة 13", "title": "فقر الدم | مختبر افتراضي - العلوم والحياة، الصف التاسع", "grade": "الصف التاسع", "emoji": "⚡"}, {"href": "grade9/ohms_law.html", "num": "تجربة 14", "title": "قانون أوم - العلوم والحياة", "grade": "الصف التاسع", "emoji": "⚡"}, {"href": "grade9/measure_voltage.html", "num": "تجربة 15", "title": "قياس فرق الجهد — مختبر افتراضي | العلوم والحياة، الصف التاسع", "grade": "الصف التاسع", "emoji": "⚡"}, {"href": "grade9/measure_electric_current.html", "num": "تجربة 16", "title": "قياس شدّة التيار الكهربائي | العلوم والحياة", "grade": "الصف التاسع", "emoji": "⚡"}, {"href": "grade9/carbohydrates_sugars_lab.html", "num": "تجربة 17", "title": "الكربوهيدرات (السكّريات) — مختبر افتراضي تفاعلي", "grade": "الصف التاسع", "emoji": "⚡"}, {"href": "grade9/double_displacement_reactions.html", "num": "تجربة 18", "title": "تفاعلات الإحلال المزدوج | مختبر افتراضي", "grade": "الصف التاسع", "emoji": "⚡"}, {"href": "grade9/double_displacement_gas.html", "num": "تجربة 19", "title": "تفاعل إطلاق غاز | إحلال مزدوج - العلوم والحياة", "grade": "الصف التاسع", "emoji": "⚡"}, {"href": "grade9/chemical_activity_series.html", "num": "تجربة 20", "title": "سلسلة النشاط الكيميائي | مختبر افتراضي تفاعلي", "grade": "الصف التاسع", "emoji": "⚡"}, {"href": "grade9/digestion_small_intestine.html", "num": "تجربة 21", "title": "هضم الطعام في الاثني عشر والأمعاء الدقيقة", "grade": "الصف التاسع", "emoji": "⚡"}, {"href": "grade9/digestion_mouth.html", "num": "تجربة 22", "title": "هضم الطعام داخل الفم | العلوم والحياة", "grade": "الصف التاسع", "emoji": "⚡"}, {"href": "grade10/liquids_pressure_physics.html", "num": "تجربة 1", "title": "ضغط السوائل - مختبر افتراضي | فيزياء الصف العاشر", "grade": "الصف العاشر", "emoji": "🧬"}, {"href": "grade10/fluid_pressure_lab.html", "num": "تجربة 2", "title": "ضغط السائل | مختبر افتراضي تفاعلي", "grade": "الصف العاشر", "emoji": "🧬"}, {"href": "grade10/hydrometer_lab.html", "num": "تجربة 3", "title": "الهيدروميتر | مختبر افتراضي تفاعلي", "grade": "الصف العاشر", "emoji": "🧬"}, {"href": "grade10/fluid_pressure_lab2.html", "num": "تجربة 4", "title": "ضغط السائل | مختبر افتراضي تفاعلي", "grade": "الصف العاشر", "emoji": "🧬"}, {"href": "grade10/fluid_pressure.html", "num": "تجربة 5", "title": "ضغط السائل", "grade": "الصف العاشر", "emoji": "🧬"}, {"href": "grade10/pascal_law.html", "num": "تجربة 6", "title": "قاعدة باسكال", "grade": "الصف العاشر", "emoji": "🧬"}, {"href": "grade10/water_heating_curve.html", "num": "تجربة 7", "title": "منحنى تسخين الماء", "grade": "الصف العاشر", "emoji": "🧬"}, {"href": "grade10/micrometer_lab.html", "num": "تجربة 8", "title": "المختبر الافتراضي المدقق: الميكروميتر الهندسي", "grade": "الصف العاشر", "emoji": "🧬"}, {"href": "grade10/distance_displacement.html", "num": "تجربة 9", "title": "المسافة والإزاحة", "grade": "الصف العاشر", "emoji": "🧬"}, {"href": "grade10/acceleration.html", "num": "تجربة 10", "title": "التسارع", "grade": "الصف العاشر", "emoji": "🧬"}, {"href": "grade10/gravity_lab.html", "num": "تجربة 11", "title": "مختبر الجاذبية الأرضية", "grade": "الصف العاشر", "emoji": "🧬"}, {"href": "grade10/inertia.html", "num": "تجربة 12", "title": "القصور الذاتي - فيزياء الصف العاشر", "grade": "الصف العاشر", "emoji": "🧬"}, {"href": "grade10/newtons_second_law.html", "num": "تجربة 13", "title": "قانون نيوتن الثاني - العلاقة بين القوة والتسارع", "grade": "الصف العاشر", "emoji": "🧬"}, {"href": "grade10/newtons_third_law.html", "num": "تجربة 14", "title": "قانون نيوتن الثالث – قوة الفعل ورد الفعل | فيزياء الصف العاشر", "grade": "الصف العاشر", "emoji": "🧬"}, {"href": "grade10/archimedes_principle.html", "num": "تجربة 15", "title": "قاعدة أرشميدس — فيزياء الصف العاشر | فلسطين", "grade": "الصف العاشر", "emoji": "🧬"}];
+  const input   = document.getElementById('searchInput');
+  const results = document.getElementById('searchResults');
+
+  function normalize(s){
+    return s.replace(/[أإآا]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي')
+            .replace(/[ً-ٟ]/g,'').toLowerCase();
+  }
+
+  function render(q){
+    const nq = normalize(q.trim());
+    if(!nq){ results.classList.remove('open'); return; }
+    const matches = EXPS.filter(e =>
+      normalize(e.title).includes(nq) ||
+      normalize(e.grade).includes(nq) ||
+      e.num.includes(q)
+    ).slice(0, 12);
+
+    if(!matches.length){
+      results.innerHTML = '<div class="search-no-result">لا توجد نتائج للبحث</div>';
+    } else {
+      results.innerHTML = matches.map(e => `
+        <a class="search-result-item" href="${e.href}">
+          <span class="sri-grade">${e.emoji} ${e.grade}</span>
+          <span class="sri-title">${e.title}</span>
+          <span class="sri-num">${e.num}</span>
+        </a>`).join('');
+    }
+    results.classList.add('open');
+  }
+
+  input.addEventListener('input', e => render(e.target.value));
+
+  document.addEventListener('click', e => {
+    if(!document.getElementById('searchWrap').contains(e.target)){
+      results.classList.remove('open');
+    }
+  });
+
+  input.addEventListener('keydown', e => {
+    if(e.key === 'Escape') results.classList.remove('open');
+  });
+})();
+</script>
 </body>
 </html>
