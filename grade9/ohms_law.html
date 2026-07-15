@@ -1,0 +1,2025 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Type" content="text/html; charset="UTF-8">
+<title>قانون أوم</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #1a3a6b;
+    --secondary: #0d6e9a;
+    --accent: #f0a500;
+    --accent2: #e84545;
+    --green: #27ae60;
+    --bg: #0a0f1e;
+    --card: #111827;
+    --card2: #1a2235;
+    --text: #e8edf5;
+    --text2: #94a3b8;
+    --glow-blue: rgba(13,110,154,0.5);
+    --glow-amber: rgba(240,165,0,0.5);
+    --wire-color: #e84545;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Cairo', 'Tajawal', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    direction: rtl;
+  }
+
+  /* STARS BACKGROUND */
+  .stars {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none; z-index: 0;
+    background: radial-gradient(ellipse at bottom, #0d1b2a 0%, #0a0f1e 100%);
+  }
+  .stars::before {
+    content: '';
+    position: absolute; width: 100%; height: 100%;
+    background-image:
+      radial-gradient(1px 1px at 10% 20%, #fff 0%, transparent 100%),
+      radial-gradient(1px 1px at 30% 50%, #fff 0%, transparent 100%),
+      radial-gradient(1px 1px at 60% 10%, #fff 0%, transparent 100%),
+      radial-gradient(1px 1px at 80% 70%, #fff 0%, transparent 100%),
+      radial-gradient(1px 1px at 20% 80%, #fff 0%, transparent 100%),
+      radial-gradient(1px 1px at 90% 30%, #fff 0%, transparent 100%),
+      radial-gradient(1px 1px at 50% 60%, #fff 0%, transparent 100%),
+      radial-gradient(1px 1px at 70% 40%, #fff 0%, transparent 100%),
+      radial-gradient(1px 1px at 40% 90%, #fff 0%, transparent 100%),
+      radial-gradient(1px 1px at 15% 45%, #fff 0%, transparent 100%);
+    opacity: 0.4;
+  }
+
+  /* HEADER */
+  header {
+    position: relative; z-index: 10;
+    background: linear-gradient(135deg, #0d1b3e, #1a2f5e);
+    border-bottom: 2px solid var(--accent);
+    padding: 15px 20px;
+    text-align: center;
+    box-shadow: 0 4px 30px rgba(0,0,0,0.5);
+  }
+  .header-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--accent), #e07b00);
+    color: #0a0f1e;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 12px;
+    border-radius: 20px;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+  }
+  header h1 {
+    font-size: clamp(22px, 5vw, 38px);
+    font-weight: 900;
+    background: linear-gradient(135deg, #fff, var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 4px;
+  }
+  header p {
+    font-size: 13px;
+    color: var(--text2);
+  }
+
+  /* MAIN LAYOUT */
+  .main {
+    position: relative; z-index: 5;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 16px;
+  }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    background: var(--card);
+    padding: 8px;
+    border-radius: 16px;
+    border: 1px solid rgba(255,255,255,0.06);
+    flex-wrap: wrap;
+  }
+  .tab-btn {
+    flex: 1;
+    min-width: 100px;
+    padding: 10px 14px;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    color: var(--text2);
+    font-family: 'Cairo', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .tab-btn.active {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: #fff;
+    border-color: var(--secondary);
+    box-shadow: 0 4px 20px var(--glow-blue);
+  }
+  .tab-btn:hover:not(.active) {
+    background: rgba(255,255,255,0.05);
+    color: var(--text);
+  }
+  .tab-icon { font-size: 16px; }
+
+  /* SECTIONS */
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* CARDS */
+  .card {
+    background: var(--card);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    padding: 24px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute; top: 0; right: 0;
+    width: 4px; height: 100%;
+    background: linear-gradient(to bottom, var(--accent), var(--secondary));
+  }
+  .card-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* FORMULA BOX */
+  .formula-box {
+    background: linear-gradient(135deg, #0d1b3e, #152a50);
+    border: 2px solid var(--accent);
+    border-radius: 16px;
+    padding: 24px;
+    text-align: center;
+    margin: 20px 0;
+    box-shadow: 0 0 40px rgba(240,165,0,0.2);
+    position: relative;
+  }
+  .formula-box::after {
+    content: '';
+    position: absolute; inset: 0;
+    border-radius: 14px;
+    background: radial-gradient(ellipse at center, rgba(240,165,0,0.05), transparent);
+  }
+  .formula-main {
+    font-size: clamp(32px, 8vw, 56px);
+    font-weight: 900;
+    color: var(--accent);
+    letter-spacing: 4px;
+    text-shadow: 0 0 30px rgba(240,165,0,0.6);
+  }
+  .formula-sub {
+    font-size: 14px;
+    color: var(--text2);
+    margin-top: 10px;
+    line-height: 1.8;
+  }
+  .formula-vars {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+  .formula-var {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 8px 16px;
+    font-size: 13px;
+    text-align: center;
+  }
+  .formula-var span {
+    display: block;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  /* TRIANGLE */
+  .ohm-triangle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px auto;
+    width: fit-content;
+  }
+  .tri-top {
+    background: linear-gradient(135deg, var(--accent), #e07b00);
+    color: #000;
+    font-weight: 900;
+    font-size: 22px;
+    width: 80px; height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  .tri-top:hover { transform: scale(1.1); }
+  .tri-bottom {
+    display: flex;
+    gap: 0;
+  }
+  .tri-left, .tri-right {
+    width: 80px; height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 20px;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  .tri-left {
+    background: linear-gradient(135deg, var(--secondary), #0a4f75);
+    color: #fff;
+    clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
+  }
+  .tri-right {
+    background: linear-gradient(135deg, var(--accent2), #a01515);
+    color: #fff;
+    clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
+  }
+  .tri-left:hover, .tri-right:hover { transform: scale(1.1); }
+  .tri-labels {
+    display: flex;
+    gap: 0; text-align: center;
+  }
+  .tri-label { width: 80px; font-size: 11px; color: var(--text2); text-align: center; }
+
+  /* ===================== */
+  /* VIRTUAL LAB           */
+  /* ===================== */
+  .lab-container {
+    background: linear-gradient(160deg, #0a1628, #0d1f3c);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 24px;
+    padding: 20px;
+    margin-bottom: 24px;
+    box-shadow: inset 0 0 60px rgba(0,0,0,0.5);
+  }
+
+  .lab-title {
+    text-align: center;
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  .lab-title .dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: pulse 1.5s infinite;
+  }
+  @keyframes pulse {
+    0%,100% { opacity: 1; box-shadow: 0 0 0 0 rgba(39,174,96,0.4); }
+    50% { opacity: 0.8; box-shadow: 0 0 0 8px rgba(39,174,96,0); }
+  }
+
+  /* CIRCUIT SVG WRAPPER */
+  .circuit-wrapper {
+    position: relative;
+    background: linear-gradient(145deg, #0d1726, #091422);
+    border: 2px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  .circuit-wrapper::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 30% 50%, rgba(13,110,154,0.1), transparent 60%);
+    pointer-events: none;
+  }
+
+  #circuitCanvas {
+    width: 100%;
+    max-width: 700px;
+    display: block;
+    margin: 0 auto;
+    border-radius: 10px;
+  }
+
+  /* CONTROLS */
+  .controls-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  @media (max-width: 600px) {
+    .controls-grid { grid-template-columns: 1fr; }
+  }
+
+  .control-card {
+    background: var(--card2);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .control-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 3px;
+  }
+  .control-card.resistance::before { background: linear-gradient(to right, #e84545, #ff6b6b); }
+  .control-card.voltage::before { background: linear-gradient(to right, #f0a500, #ffd700); }
+
+  .control-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text2);
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .control-label .val {
+    font-size: 18px;
+    font-weight: 700;
+  }
+  .control-card.resistance .control-label .val { color: var(--accent2); }
+  .control-card.voltage .control-label .val { color: var(--accent); }
+
+  input[type=range] {
+    width: 100%;
+    -webkit-appearance: none;
+    height: 6px;
+    border-radius: 3px;
+    outline: none;
+    cursor: pointer;
+    margin: 8px 0;
+  }
+  .control-card.resistance input[type=range] {
+    background: linear-gradient(to right, var(--accent2) 0%, var(--accent2) var(--pct,50%), #2d3748 var(--pct,50%), #2d3748 100%);
+  }
+  .control-card.voltage input[type=range] {
+    background: linear-gradient(to right, var(--accent) 0%, var(--accent) var(--pct,50%), #2d3748 var(--pct,50%), #2d3748 100%);
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  }
+  .control-card.resistance input[type=range]::-webkit-slider-thumb { background: var(--accent2); }
+  .control-card.voltage input[type=range]::-webkit-slider-thumb { background: var(--accent); }
+
+  .resistance-visual {
+    display: flex;
+    gap: 4px;
+    margin-top: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .res-ring {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    border: 2px solid;
+    transition: all 0.3s;
+  }
+
+  /* METERS */
+  .meters-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  @media (max-width: 480px) {
+    .meters-row { grid-template-columns: 1fr; }
+  }
+
+  .meter {
+    background: #0a0e17;
+    border: 2px solid;
+    border-radius: 16px;
+    padding: 16px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .meter.ammeter { border-color: #e84545; }
+  .meter.voltmeter { border-color: var(--accent); }
+
+  .meter-type {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .meter.ammeter .meter-type { color: #e84545; }
+  .meter.voltmeter .meter-type { color: var(--accent); }
+
+  .meter-value {
+    font-size: clamp(24px, 6vw, 36px);
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 4px;
+    font-variant-numeric: tabular-nums;
+    transition: color 0.3s;
+  }
+  .meter.ammeter .meter-value { color: #ff6b6b; }
+  .meter.voltmeter .meter-value { color: #ffd700; }
+
+  .meter-unit { font-size: 14px; color: var(--text2); font-weight: 600; }
+
+  .meter-gauge {
+    width: 100%; height: 6px;
+    background: #1a2235;
+    border-radius: 3px;
+    margin-top: 10px;
+    overflow: hidden;
+  }
+  .meter-gauge-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.4s ease;
+  }
+  .meter.ammeter .meter-gauge-fill { background: linear-gradient(to right, #e84545, #ff9f9f); }
+  .meter.voltmeter .meter-gauge-fill { background: linear-gradient(to right, var(--accent), #ffd700); }
+
+  /* DERIVED VALUE */
+  .derived-card {
+    background: linear-gradient(135deg, #0d1f3c, #152a50);
+    border: 1px solid rgba(240,165,0,0.3);
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 20px rgba(240,165,0,0.1);
+  }
+  .derived-label { font-size: 13px; color: var(--text2); }
+  .derived-formula { font-size: 12px; color: var(--text2); margin-top: 4px; }
+  .derived-value {
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--accent);
+    text-align: center;
+  }
+  .derived-unit { font-size: 13px; color: var(--text2); font-weight: 600; text-align: center; }
+
+  /* RECORD TABLE */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 12px;
+    font-family: 'Cairo', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--secondary), var(--primary));
+    color: #fff;
+    box-shadow: 0 4px 20px var(--glow-blue);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px var(--glow-blue); }
+  .btn-success {
+    background: linear-gradient(135deg, #1a7a40, #27ae60);
+    color: #fff;
+    box-shadow: 0 4px 20px rgba(39,174,96,0.3);
+  }
+  .btn-danger {
+    background: linear-gradient(135deg, #7a1a1a, #e84545);
+    color: #fff;
+  }
+  .btn-amber {
+    background: linear-gradient(135deg, #c07800, var(--accent));
+    color: #000;
+  }
+
+  .actions-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  .results-table-wrapper {
+    overflow-x: auto;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  th {
+    background: linear-gradient(135deg, var(--primary), #0d1b3e);
+    color: var(--accent);
+    padding: 12px 14px;
+    text-align: center;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  td {
+    padding: 10px 14px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    transition: background 0.2s;
+    white-space: nowrap;
+  }
+  tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+  tr:hover td { background: rgba(13,110,154,0.1); }
+  .empty-row td { color: var(--text2); padding: 24px; font-size: 14px; }
+
+  /* GRAPH */
+  #graphCanvas {
+    width: 100%;
+    max-width: 640px;
+    display: block;
+    margin: 0 auto;
+    border-radius: 12px;
+    background: #080d16;
+  }
+
+  /* QUIZ */
+  .quiz-q {
+    background: var(--card2);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+  .quiz-q h3 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    color: #fff;
+    line-height: 1.6;
+  }
+  .quiz-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  @media (max-width: 480px) {
+    .quiz-options { grid-template-columns: 1fr; }
+  }
+  .quiz-opt {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 10px 14px;
+    cursor: pointer;
+    font-family: 'Cairo', sans-serif;
+    font-size: 13px;
+    color: var(--text);
+    text-align: right;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .quiz-opt:hover { background: rgba(13,110,154,0.2); border-color: var(--secondary); }
+  .quiz-opt.correct { background: rgba(39,174,96,0.2); border-color: var(--green); color: #7ee8a2; }
+  .quiz-opt.wrong { background: rgba(232,69,69,0.2); border-color: var(--accent2); color: #ff9f9f; }
+  .quiz-opt.disabled { pointer-events: none; }
+
+  .quiz-feedback {
+    margin-top: 10px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    display: none;
+  }
+  .quiz-feedback.correct { background: rgba(39,174,96,0.15); color: var(--green); display: block; }
+  .quiz-feedback.wrong { background: rgba(232,69,69,0.15); color: #ff8080; display: block; }
+
+  /* SCORE */
+  .score-display {
+    text-align: center;
+    padding: 20px;
+    display: none;
+  }
+  .score-number {
+    font-size: 64px;
+    font-weight: 900;
+    color: var(--accent);
+  }
+
+  /* TOOLTIPS / INFO BOXES */
+  .info-box {
+    background: rgba(13,110,154,0.1);
+    border: 1px solid rgba(13,110,154,0.3);
+    border-radius: 12px;
+    padding: 14px 16px;
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.8;
+    margin-bottom: 16px;
+  }
+  .info-box strong { color: var(--accent); }
+
+  /* SAFETY BOX */
+  .safety-box {
+    background: rgba(232,69,69,0.08);
+    border: 1px solid rgba(232,69,69,0.3);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+  }
+  .safety-box h4 { color: var(--accent2); font-size: 13px; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+  .safety-box ul { list-style: none; }
+  .safety-box ul li { font-size: 12px; color: var(--text2); padding: 4px 0; display: flex; align-items: flex-start; gap: 8px; line-height: 1.6; }
+  .safety-box ul li::before { content: '⚠️'; flex-shrink: 0; }
+
+  /* ANIMATION for electrons */
+  @keyframes flowRight {
+    from { stroke-dashoffset: 0; }
+    to { stroke-dashoffset: -40; }
+  }
+  @keyframes flowLeft {
+    from { stroke-dashoffset: 0; }
+    to { stroke-dashoffset: 40; }
+  }
+  .electron-flow-right { animation: flowRight 1s linear infinite; }
+  .electron-flow-left { animation: flowLeft 1s linear infinite; }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: #0a0f1e; }
+  ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 3px; }
+
+  /* RESPONSIVE */
+  @media (max-width: 480px) {
+    .card { padding: 16px; }
+    .lab-container { padding: 12px; }
+  }
+
+  /* STEP INDICATOR */
+  .steps-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .step-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--text2);
+  }
+  .step-num {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+  .step-num.done { background: var(--green); color: #fff; }
+  .step-num.active { background: var(--accent); color: #000; }
+  .step-num.pending { background: #1a2235; color: var(--text2); }
+  .step-arrow { color: var(--text2); font-size: 12px; }
+
+  /* EXPERIMENT COUNTER */
+  .exp-counter {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(240,165,0,0.1);
+    border: 1px solid rgba(240,165,0,0.2);
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 13px;
+    margin-bottom: 16px;
+  }
+  .exp-counter strong { color: var(--accent); }
+
+  /* NOTIFICATION */
+  .notif {
+    position: fixed;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-20px);
+    background: var(--green);
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 700;
+    z-index: 1000;
+    opacity: 0;
+    transition: all 0.4s;
+    pointer-events: none;
+    white-space: nowrap;
+    box-shadow: 0 8px 30px rgba(39,174,96,0.4);
+  }
+  .notif.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* CONCLUSION BOX */
+  .conclusion-card {
+    background: linear-gradient(135deg, #0d1f3c, #152a50);
+    border: 1px solid rgba(240,165,0,0.4);
+    border-radius: 16px;
+    padding: 20px;
+    margin-top: 16px;
+    display: none;
+  }
+  .conclusion-card.show { display: block; animation: fadeIn 0.5s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  .conclusion-card h3 { color: var(--accent); font-size: 16px; margin-bottom: 12px; }
+  .conclusion-card p { color: var(--text); font-size: 14px; line-height: 1.9; }
+
+
+  /* ═══ RESPONSIVE MOBILE & TABLET — AUTO-INJECTED ═══ */
+  @media (max-width: 768px) {
+    body { padding: 8px !important; font-size: 15px !important; overflow-x: hidden !important; }
+    .container, [class*="container"], [class*="wrapper"] { padding: 8px !important; max-width: 100% !important; }
+    canvas { width: 100% !important; height: auto !important; display: block !important; touch-action: none; max-width: 100% !important; }
+    svg { max-width: 100% !important; height: auto !important; }
+    h1 { font-size: clamp(18px, 5vw, 32px) !important; }
+    h2 { font-size: clamp(16px, 4vw, 26px) !important; }
+    h3 { font-size: clamp(14px, 3.5vw, 22px) !important; }
+    p, li, td, th, label, span { font-size: clamp(13px, 3.5vw, 16px) !important; }
+    [class*="grid"] { grid-template-columns: 1fr !important; }
+    [class*="flex"] { flex-wrap: wrap !important; }
+    input[type="range"] { width: 100% !important; min-height: 36px; }
+    input[type="number"], input[type="text"], select, textarea { 
+      font-size: 16px !important; width: 100% !important; box-sizing: border-box; padding: 8px !important;
+    }
+    button { min-height: 44px !important; font-size: 14px !important; touch-action: manipulation; padding: 10px 14px !important; }
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 13px !important; }
+    th, td { padding: 6px 4px !important; white-space: nowrap; }
+    [style*="display: grid"], [style*="display:grid"] { display: flex !important; flex-direction: column !important; }
+    .lab-window, [class*="lab-window"] { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+    header { padding: 12px !important; }
+    .controls, [class*="controls"] { flex-direction: column !important; gap: 8px !important; }
+  }
+  @media (max-width: 480px) {
+    body { padding: 4px !important; }
+    h1 { font-size: clamp(16px, 5vw, 24px) !important; }
+    button { width: 100% !important; }
+  }
+  /* ═══ END RESPONSIVE ═══ */
+</style>
+</head>
+<body>
+
+<style>
+.vlab-back-btn {
+  position: fixed; top: 10px; left: 10px; z-index: 99999;
+  background: rgba(10,22,40,0.93); border: 1px solid rgba(0,200,150,0.4);
+  border-radius: 22px; padding: 8px 16px;
+  display: inline-flex; align-items: center; gap: 7px;
+  color: #00C896; font-family: Tajawal, Cairo, Arial, sans-serif;
+  font-size: 13px; font-weight: 700; text-decoration: none;
+  backdrop-filter: blur(8px); box-shadow: 0 4px 18px rgba(0,0,0,0.3);
+  transition: background 0.2s;
+}
+.vlab-back-btn:hover { background: rgba(0,200,150,0.18); color: #00C896; }
+</style>
+
+<a href="../grade9.html" class="vlab-back-btn">&#8594; العودة للصف</a>
+
+
+<div class="stars"></div>
+
+<!-- NOTIFICATION -->
+<div class="notif" id="notif">✅ تم تسجيل القراءة بنجاح!</div>
+
+<header>
+  <div class="header-badge">🇵🇸 منهاج العلوم والحياة · الصف التاسع</div>
+  <h1>⚡ قانون أوم</h1>
+  <p>النشاط 2 — حساب المقاومة — مختبر افتراضي تفاعلي</p>
+</header>
+
+<div class="main">
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab('learn')" id="tab-learn">
+      <span class="tab-icon">📚</span> الشرح
+    </button>
+    <button class="tab-btn" onclick="showTab('lab')" id="tab-lab">
+      <span class="tab-icon">🔬</span> المختبر
+    </button>
+    <button class="tab-btn" onclick="showTab('graph')" id="tab-graph">
+      <span class="tab-icon">📈</span> الرسم البياني
+    </button>
+    <button class="tab-btn" onclick="showTab('conclude')" id="tab-conclude">
+      <span class="tab-icon">🧠</span> الاستنتاجات
+    </button>
+    <button class="tab-btn" onclick="showTab('quiz')" id="tab-quiz">
+      <span class="tab-icon">✏️</span> الاختبار
+    </button>
+  </div>
+
+  <!-- ==================== LEARN ==================== -->
+  <div class="section active" id="section-learn">
+
+    <div class="card">
+      <div class="card-title">🔍 ما هو قانون أوم؟</div>
+      <p style="font-size:14px;line-height:2;color:var(--text2);">
+        في عام 1827، اكتشف الفيزيائي الألماني <strong style="color:var(--accent)">جورج سيمون أوم</strong> علاقةً رياضيةً مهمةً 
+        تربط بين ثلاثة كميات كهربائية أساسية: <strong style="color:#ff6b6b">شدة التيار</strong> 
+        و<strong style="color:#ffd700">فرق الجهد</strong> و<strong style="color:#7ee8a2">المقاومة</strong>.
+        تنصّ هذه العلاقة على أن شدة التيار الكهربائي المتدفق خلال موصل تتناسب طردياً مع فرق الجهد 
+        بين طرفيه، وعكسياً مع مقاومته، عند ثبوت درجة الحرارة.
+      </p>
+    </div>
+
+    <!-- FORMULA BOX -->
+    <div class="formula-box">
+      <div style="font-size:13px;color:var(--text2);margin-bottom:8px;letter-spacing:2px;">▼ قانون أوم ▼</div>
+      <div class="formula-main">V = I × R</div>
+      <div class="formula-sub">
+        فرق الجهد = شدة التيار × المقاومة الكهربائية
+      </div>
+      <div class="formula-vars">
+        <div class="formula-var">
+          <span style="color:#ffd700">V</span>
+          فرق الجهد<br>
+          <small style="color:var(--text2)">الفولت (V)</small>
+        </div>
+        <div class="formula-var">
+          <span style="color:#ff6b6b">I</span>
+          شدة التيار<br>
+          <small style="color:var(--text2)">الأمبير (A)</small>
+        </div>
+        <div class="formula-var">
+          <span style="color:#7ee8a2">R</span>
+          المقاومة<br>
+          <small style="color:var(--text2)">الأوم (Ω)</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRIANGLE -->
+    <div class="card">
+      <div class="card-title">🔺 مثلث قانون أوم — انقر للاكتشاف</div>
+      <p style="font-size:12px;color:var(--text2);margin-bottom:16px;">
+        غطِّ الكمية التي تريد إيجادها بيدك في المثلث، وستجد العلاقة بين الكميتين الأخريين
+      </p>
+      <div style="display:flex;align-items:flex-start;gap:24px;flex-wrap:wrap;">
+        <div class="ohm-triangle">
+          <div class="tri-top" onclick="showTriInfo('V')" title="فرق الجهد">V</div>
+          <div class="tri-bottom">
+            <div class="tri-left" onclick="showTriInfo('I')" title="شدة التيار">I</div>
+            <div class="tri-right" onclick="showTriInfo('R')" title="المقاومة">R</div>
+          </div>
+          <div class="tri-labels">
+            <div class="tri-label">الأمبير</div>
+            <div class="tri-label">الأوم</div>
+          </div>
+          <div style="font-size:11px;color:var(--text2);text-align:center;margin-top:2px;width:160px;">الفولت ↑</div>
+        </div>
+        <div id="triInfo" style="flex:1;min-width:200px;font-size:14px;line-height:2;">
+          <div class="info-box">
+            👆 انقر على أي رمز في المثلث لرؤية معادلة إيجاده
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONCEPT CARDS -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:20px;">
+      <div class="card" style="border-right-color:var(--accent);">
+        <div class="card-title" style="color:var(--accent);font-size:15px;">⚡ فرق الجهد V</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.9;">
+          هو الفرق في الطاقة الكهربائية بين نقطتين في الدائرة.<br>
+          يُقاس بجهاز <strong style="color:var(--accent)">الفولتميتر</strong> ويُوصل <strong style="color:var(--accent)">على التوازي</strong>.<br>
+          وحدته: <strong style="color:#ffd700">الفولت (V)</strong>
+        </p>
+      </div>
+      <div class="card" style="border-right-color:#ff6b6b;">
+        <div class="card-title" style="color:#ff6b6b;font-size:15px;">🔴 شدة التيار I</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.9;">
+          هي كمية الشحنات الكهربائية التي تعبر مقطعاً في الثانية.<br>
+          يُقاس بجهاز <strong style="color:#ff6b6b">الأميتر</strong> ويُوصل <strong style="color:#ff6b6b">على التوالي</strong>.<br>
+          وحدته: <strong style="color:#ff8080">الأمبير (A)</strong>
+        </p>
+      </div>
+      <div class="card" style="border-right-color:#7ee8a2;">
+        <div class="card-title" style="color:#7ee8a2;font-size:15px;">🌀 المقاومة R</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.9;">
+          هي عرقلة الموصل لمرور التيار الكهربائي.<br>
+          تعتمد على طول الموصل ومادته ومساحة مقطعه.<br>
+          وحدتها: <strong style="color:#7ee8a2">الأوم (Ω)</strong>
+        </p>
+      </div>
+    </div>
+
+    <div class="safety-box">
+      <h4>⚠️ مبادئ السلامة</h4>
+      <ul>
+        <li>لا تلمس المقاومات أثناء مرور التيار الكهربائي خلالها</li>
+        <li>لا تستخدم مصدر فرق جهد شدّته أكثر من 0.5 أمبير أو فرق جهد أكثر من 12 فولت</li>
+        <li>افصل الدائرة الكهربائية فوراً إذا لاحظت ارتفاعاً في درجة حرارة أي مكوّن</li>
+      </ul>
+    </div>
+
+    <div style="text-align:center;">
+      <button class="btn btn-primary" onclick="showTab('lab')">
+        🔬 انتقل إلى المختبر الافتراضي ←
+      </button>
+    </div>
+
+  </div>
+
+  <!-- ==================== LAB ==================== -->
+  <div class="section" id="section-lab">
+
+    <div class="card">
+      <div class="card-title">🎯 هدف التجربة</div>
+      <p style="font-size:14px;color:var(--text2);line-height:1.9;">
+        فحص العلاقة بين <strong style="color:#ffd700">فرق الجهد</strong> و<strong style="color:#ff8080">شدة التيار الكهربائي</strong> المتدفق خلال مقاومة، وحساب قيمتها وفرق الجهد بين طرفيها.
+      </p>
+    </div>
+
+    <!-- STEPS -->
+    <div class="steps-row">
+      <div class="step-item">
+        <div class="step-num active" id="step1num">1</div>
+        <span>اختر مقاومة</span>
+      </div>
+      <div class="step-arrow">←</div>
+      <div class="step-item">
+        <div class="step-num pending" id="step2num">2</div>
+        <span>اضبط الجهد</span>
+      </div>
+      <div class="step-arrow">←</div>
+      <div class="step-item">
+        <div class="step-num pending" id="step3num">3</div>
+        <span>سجّل القراءة</span>
+      </div>
+      <div class="step-arrow">←</div>
+      <div class="step-item">
+        <div class="step-num pending" id="step4num">4</div>
+        <span>كرّر 4 مرات</span>
+      </div>
+    </div>
+
+    <!-- CIRCUIT -->
+    <div class="lab-container">
+      <div class="lab-title">
+        <div class="dot"></div>
+        الدائرة الكهربائية الافتراضية
+        <div class="dot"></div>
+      </div>
+
+      <div class="circuit-wrapper">
+        <canvas id="circuitCanvas" height="300"></canvas>
+      </div>
+
+      <!-- CONTROLS -->
+      <div class="controls-grid">
+        <div class="control-card resistance">
+          <div class="control-label">
+            <span>🌀 المقاومة</span>
+            <span class="val" id="rVal">10 Ω</span>
+          </div>
+          <input type="range" id="rSlider" min="5" max="50" step="5" value="10"
+            oninput="updateCircuit()" style="--pct:10%">
+          <div class="resistance-visual" id="resRings"></div>
+          <div style="font-size:11px;color:var(--text2);text-align:center;margin-top:4px;">
+            5 Ω ←————————→ 50 Ω
+          </div>
+        </div>
+        <div class="control-card voltage">
+          <div class="control-label">
+            <span>⚡ فرق الجهد</span>
+            <span class="val" id="vVal">2 V</span>
+          </div>
+          <input type="range" id="vSlider" min="1" max="12" step="1" value="2"
+            oninput="updateCircuit()" style="--pct:8.3%">
+          <div style="font-size:11px;color:var(--text2);text-align:center;margin-top:8px;">
+            1 V ←————————→ 12 V
+          </div>
+        </div>
+      </div>
+
+      <!-- METERS -->
+      <div class="meters-row">
+        <div class="meter ammeter">
+          <div class="meter-type">⚡ الأميتر</div>
+          <div class="meter-value" id="currentVal">0.200</div>
+          <div class="meter-unit">أمبير (A)</div>
+          <div class="meter-gauge">
+            <div class="meter-gauge-fill" id="currentGauge" style="width:10%"></div>
+          </div>
+          <div style="font-size:11px;color:var(--text2);margin-top:6px;">يُوصل على التوالي</div>
+        </div>
+        <div class="meter voltmeter">
+          <div class="meter-type">⚡ الفولتميتر</div>
+          <div class="meter-value" id="voltageVal">2.000</div>
+          <div class="meter-unit">فولت (V)</div>
+          <div class="meter-gauge">
+            <div class="meter-gauge-fill" id="voltageGauge" style="width:16.7%"></div>
+          </div>
+          <div style="font-size:11px;color:var(--text2);margin-top:6px;">يُوصل على التوازي</div>
+        </div>
+      </div>
+
+      <!-- DERIVED R -->
+      <div class="derived-card">
+        <div>
+          <div class="derived-label">🧮 المقاومة المحسوبة من قانون أوم</div>
+          <div class="derived-formula">R = V ÷ I</div>
+        </div>
+        <div>
+          <div class="derived-value" id="calcR">10.000</div>
+          <div class="derived-unit">أوم (Ω)</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RESISTOR SELECTION -->
+    <div class="card">
+      <div class="card-title">🌀 اختر المقاومة للتجربة</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button class="btn btn-primary" onclick="selectResistor(1)" id="res1btn">
+          المقاومة الأولى (متغيرة)
+        </button>
+        <button class="btn" style="background:var(--card2);border:1px solid rgba(255,255,255,0.1);color:var(--text);" 
+          onclick="selectResistor(2)" id="res2btn">
+          المقاومة الثانية (ثابتة)
+        </button>
+      </div>
+      <div id="activeResistor" style="margin-top:12px;font-size:13px;color:var(--text2);">
+        <span style="color:var(--accent)">●</span> المقاومة النشطة الآن: <strong style="color:var(--accent)">المقاومة الأولى</strong>
+        — اضبط الجهد وسجّل القراءة 4 مرات
+      </div>
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="exp-counter">
+      تسجيلات المقاومة الأولى: <strong id="r1count">0</strong>/4 &nbsp;|&nbsp; 
+      تسجيلات المقاومة الثانية: <strong id="r2count">0</strong>/4
+    </div>
+
+    <div class="actions-row">
+      <button class="btn btn-success" onclick="recordReading()">
+        📝 تسجيل القراءة
+      </button>
+      <button class="btn btn-danger" onclick="clearReadings()">
+        🗑️ مسح السجلات
+      </button>
+      <button class="btn btn-amber" onclick="autoFill()">
+        🤖 ملء تلقائي للتجربة
+      </button>
+    </div>
+
+    <!-- TABLE R1 -->
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-title">📊 جدول قراءات المقاومة الأولى</div>
+      <div class="results-table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>المحاولة</th>
+              <th>قراءة الأميتر (A)</th>
+              <th>قراءة الفولتميتر (V)</th>
+              <th>المقاومة المحسوبة (Ω)</th>
+            </tr>
+          </thead>
+          <tbody id="table1body">
+            <tr class="empty-row"><td colspan="4">⬆️ اضبط الجهد واضغط "تسجيل القراءة"</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TABLE R2 -->
+    <div class="card">
+      <div class="card-title">📊 جدول قراءات المقاومة الثانية</div>
+      <div class="results-table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>المحاولة</th>
+              <th>قراءة الأميتر (A)</th>
+              <th>قراءة الفولتميتر (V)</th>
+              <th>المقاومة المحسوبة (Ω)</th>
+            </tr>
+          </thead>
+          <tbody id="table2body">
+            <tr class="empty-row"><td colspan="4">🔀 بعد الانتهاء من المقاومة الأولى، انتقل للثانية</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:16px;">
+      <button class="btn btn-primary" onclick="showTab('graph')">
+        📈 عرض الرسم البياني ←
+      </button>
+    </div>
+
+  </div>
+
+  <!-- ==================== GRAPH ==================== -->
+  <div class="section" id="section-graph">
+
+    <div class="card">
+      <div class="card-title">📈 الرسم البياني — العلاقة بين V و I</div>
+      <p style="font-size:13px;color:var(--text2);margin-bottom:16px;">
+        يمثل المحور الأفقي (س) شدة التيار بالأمبير، والمحور الرأسي (ص) فرق الجهد بالفولت.
+        ميل الخط الناتج يساوي قيمة المقاومة.
+      </p>
+      <canvas id="graphCanvas" height="360"></canvas>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
+      <div class="card" style="text-align:center;">
+        <div style="font-size:12px;color:var(--text2);margin-bottom:8px;">ميل الخط R1</div>
+        <div id="slope1" style="font-size:28px;font-weight:900;color:#4fc3f7;">— Ω</div>
+        <div style="font-size:11px;color:var(--text2);">المقاومة الأولى</div>
+      </div>
+      <div class="card" style="text-align:center;">
+        <div style="font-size:12px;color:var(--text2);margin-bottom:8px;">ميل الخط R2</div>
+        <div id="slope2" style="font-size:28px;font-weight:900;color:#ff8a65;">— Ω</div>
+        <div style="font-size:11px;color:var(--text2);">المقاومة الثانية</div>
+      </div>
+    </div>
+
+    <div class="info-box">
+      💡 <strong>ماذا يمثل الخط المستقيم في الرسم البياني؟</strong><br>
+      الخط المستقيم الناتج يؤكد أن العلاقة بين فرق الجهد وشدة التيار هي علاقة <strong>طردية</strong> (خطية)، 
+      وهذا يعني أنه كلما زاد فرق الجهد، زادت شدة التيار بنفس النسبة. ميل هذا الخط يساوي قيمة المقاومة.
+    </div>
+
+    <div style="text-align:center;">
+      <button class="btn btn-amber" onclick="drawGraph()">🔄 تحديث الرسم</button>
+    </div>
+
+  </div>
+
+  <!-- ==================== CONCLUDE ==================== -->
+  <div class="section" id="section-conclude">
+
+    <div class="card">
+      <div class="card-title">🧠 التحليل والاستنتاجات</div>
+
+      <div class="info-box">
+        <strong>سؤال 1:</strong> ماذا حدث لقيمة شدة التيار مع زيادة فرق الجهد لكل مقاومة؟
+      </div>
+      <div style="margin-bottom:16px;">
+        <div style="font-size:13px;color:var(--text2);margin-bottom:8px;">اكتب إجابتك:</div>
+        <textarea id="ans1" style="width:100%;background:var(--card2);border:1px solid rgba(255,255,255,0.1);
+          border-radius:10px;color:var(--text);font-family:'Cairo',sans-serif;font-size:13px;
+          padding:12px;resize:vertical;min-height:80px;outline:none;line-height:1.8;"
+          placeholder="اكتب استنتاجك هنا..."></textarea>
+        <button class="btn btn-success" style="margin-top:8px;font-size:12px;padding:8px 16px;" 
+          onclick="checkAns(1)">✅ تحقق من الإجابة</button>
+        <div id="fb1" class="quiz-feedback"></div>
+      </div>
+
+      <div class="info-box">
+        <strong>سؤال 2:</strong> قارن بين قيمتي الميل للخطين في الرسم البياني — ماذا تلاحظ؟
+      </div>
+      <div style="margin-bottom:16px;">
+        <textarea id="ans2" style="width:100%;background:var(--card2);border:1px solid rgba(255,255,255,0.1);
+          border-radius:10px;color:var(--text);font-family:'Cairo',sans-serif;font-size:13px;
+          padding:12px;resize:vertical;min-height:80px;outline:none;line-height:1.8;"
+          placeholder="اكتب ملاحظتك هنا..."></textarea>
+        <button class="btn btn-success" style="margin-top:8px;font-size:12px;padding:8px 16px;"
+          onclick="checkAns(2)">✅ تحقق من الإجابة</button>
+        <div id="fb2" class="quiz-feedback"></div>
+      </div>
+
+      <div class="info-box">
+        <strong>سؤال 3:</strong> ماذا يمثل الخط المستقيم في الرسم البياني؟
+      </div>
+      <div style="margin-bottom:16px;">
+        <textarea id="ans3" style="width:100%;background:var(--card2);border:1px solid rgba(255,255,255,0.1);
+          border-radius:10px;color:var(--text);font-family:'Cairo',sans-serif;font-size:13px;
+          padding:12px;resize:vertical;min-height:80px;outline:none;line-height:1.8;"
+          placeholder="اكتب إجابتك هنا..."></textarea>
+        <button class="btn btn-success" style="margin-top:8px;font-size:12px;padding:8px 16px;"
+          onclick="checkAns(3)">✅ تحقق من الإجابة</button>
+        <div id="fb3" class="quiz-feedback"></div>
+      </div>
+    </div>
+
+    <!-- CONCLUSION CARD -->
+    <div id="conclusionCard" class="conclusion-card">
+      <h3>🏆 الاستنتاج العلمي — قانون أوم</h3>
+      <p>
+        توصّلنا من خلال التجربة إلى أن <strong style="color:var(--accent)">شدة التيار الكهربائي</strong> المتدفق خلال موصل 
+        تتناسب <strong style="color:var(--green)">تناسباً طردياً</strong> مع <strong style="color:#ffd700">فرق الجهد</strong> 
+        بين طرفيه، عند ثبوت درجة الحرارة والمقاومة.<br><br>
+        وبالتالي: <strong style="color:var(--accent);font-size:18px;">V = I × R</strong><br><br>
+        حيث إن ميل الخط في الرسم البياني (ص/س) يمثل <strong style="color:#7ee8a2">قيمة المقاومة بالأوم</strong>،
+        مما يعني أن المقاومة تبقى ثابتة مهما تغيّر فرق الجهد أو شدة التيار.
+      </p>
+    </div>
+
+    <div style="text-align:center;margin-top:20px;">
+      <button class="btn btn-amber" onclick="showConclusion()">🏆 إظهار الاستنتاج الكامل</button>
+    </div>
+
+  </div>
+
+  <!-- ==================== QUIZ ==================== -->
+  <div class="section" id="section-quiz">
+
+    <div class="card">
+      <div class="card-title">✏️ اختبر معلوماتك</div>
+
+      <!-- Q1 -->
+      <div class="quiz-q" id="q1">
+        <h3>1️⃣ ما العلاقة الرياضية الصحيحة التي تعبّر عن قانون أوم؟</h3>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="answer(1,'a')"><span>أ)</span> V = I + R</button>
+          <button class="quiz-opt" onclick="answer(1,'b')"><span>ب)</span> V = I × R</button>
+          <button class="quiz-opt" onclick="answer(1,'c')"><span>ج)</span> V = I ÷ R</button>
+          <button class="quiz-opt" onclick="answer(1,'d')"><span>د)</span> I = V × R</button>
+        </div>
+        <div id="fb_q1" class="quiz-feedback"></div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="quiz-q" id="q2">
+        <h3>2️⃣ إذا كانت المقاومة 20 أوم وشدة التيار 0.3 أمبير، فما فرق الجهد بين طرفي المقاومة؟</h3>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="answer(2,'a')"><span>أ)</span> 0.6 فولت</button>
+          <button class="quiz-opt" onclick="answer(2,'b')"><span>ب)</span> 60 فولت</button>
+          <button class="quiz-opt" onclick="answer(2,'c')"><span>ج)</span> 6 فولت</button>
+          <button class="quiz-opt" onclick="answer(2,'d')"><span>د)</span> 66 فولت</button>
+        </div>
+        <div id="fb_q2" class="quiz-feedback"></div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="quiz-q" id="q3">
+        <h3>3️⃣ كيف يُوصل الفولتميتر في الدائرة الكهربائية؟</h3>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="answer(3,'a')"><span>أ)</span> على التوالي</button>
+          <button class="quiz-opt" onclick="answer(3,'b')"><span>ب)</span> على التوازي</button>
+          <button class="quiz-opt" onclick="answer(3,'c')"><span>ج)</span> بأي طريقة</button>
+          <button class="quiz-opt" onclick="answer(3,'d')"><span>د)</span> لا يُوصل بالدائرة</button>
+        </div>
+        <div id="fb_q3" class="quiz-feedback"></div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="quiz-q" id="q4">
+        <h3>4️⃣ إذا تضاعف فرق الجهد وبقيت المقاومة ثابتة، ماذا يحدث لشدة التيار؟</h3>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="answer(4,'a')"><span>أ)</span> تتضاعف هي الأخرى</button>
+          <button class="quiz-opt" onclick="answer(4,'b')"><span>ب)</span> تنقص للنصف</button>
+          <button class="quiz-opt" onclick="answer(4,'c')"><span>ج)</span> تبقى ثابتة</button>
+          <button class="quiz-opt" onclick="answer(4,'d')"><span>د)</span> تصل إلى الصفر</button>
+        </div>
+        <div id="fb_q4" class="quiz-feedback"></div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="quiz-q" id="q5">
+        <h3>5️⃣ ما وحدة قياس المقاومة الكهربائية؟</h3>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="answer(5,'a')"><span>أ)</span> الفولت</button>
+          <button class="quiz-opt" onclick="answer(5,'b')"><span>ب)</span> الأمبير</button>
+          <button class="quiz-opt" onclick="answer(5,'c')"><span>ج)</span> الواط</button>
+          <button class="quiz-opt" onclick="answer(5,'d')"><span>د)</span> الأوم (Ω)</button>
+        </div>
+        <div id="fb_q5" class="quiz-feedback"></div>
+      </div>
+
+      <!-- Q6 -->
+      <div class="quiz-q" id="q6">
+        <h3>6️⃣ ما الجهاز الذي يُستخدم لقياس شدة التيار الكهربائي؟</h3>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="answer(6,'a')"><span>أ)</span> الفولتميتر</button>
+          <button class="quiz-opt" onclick="answer(6,'b')"><span>ب)</span> الأميتر</button>
+          <button class="quiz-opt" onclick="answer(6,'c')"><span>ج)</span> الأوميتر</button>
+          <button class="quiz-opt" onclick="answer(6,'d')"><span>د)</span> الغالفانوميتر</button>
+        </div>
+        <div id="fb_q6" class="quiz-feedback"></div>
+      </div>
+
+      <div class="score-display" id="scoreDisplay">
+        <div style="font-size:16px;color:var(--text2);margin-bottom:8px;">نتيجتك</div>
+        <div class="score-number" id="scoreNum">0/6</div>
+        <div id="scoreMsg" style="font-size:14px;color:var(--text2);margin-top:8px;"></div>
+        <button class="btn btn-primary" style="margin-top:16px;" onclick="resetQuiz()">🔄 إعادة الاختبار</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ============================================================
+// STATE
+// ============================================================
+let activeResistor = 1;
+let r1Fixed = 10;  // Ω — will follow slider
+let r2Fixed = 25;  // Ω — fixed for second resistor
+let readings1 = [];
+let readings2 = [];
+let quizAnswers = {};
+let quizScore = 0;
+
+// ============================================================
+// TAB NAVIGATION
+// ============================================================
+function showTab(tab) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('section-' + tab).classList.add('active');
+  document.getElementById('tab-' + tab).classList.add('active');
+  if (tab === 'graph') drawGraph();
+}
+
+// ============================================================
+// TRIANGLE INFO
+// ============================================================
+function showTriInfo(v) {
+  const infos = {
+    V: `<div class="info-box">
+      <strong style="color:#ffd700">إيجاد فرق الجهد V:</strong><br>
+      عند تغطية V في المثلث، نجد: <br>
+      <span style="font-size:22px;font-weight:900;color:#ffd700">V = I × R</span><br>
+      فرق الجهد = شدة التيار × المقاومة
+    </div>`,
+    I: `<div class="info-box">
+      <strong style="color:#ff8080">إيجاد شدة التيار I:</strong><br>
+      عند تغطية I في المثلث، نجد: <br>
+      <span style="font-size:22px;font-weight:900;color:#ff8080">I = V ÷ R</span><br>
+      شدة التيار = فرق الجهد ÷ المقاومة
+    </div>`,
+    R: `<div class="info-box">
+      <strong style="color:#7ee8a2">إيجاد المقاومة R:</strong><br>
+      عند تغطية R في المثلث، نجد: <br>
+      <span style="font-size:22px;font-weight:900;color:#7ee8a2">R = V ÷ I</span><br>
+      المقاومة = فرق الجهد ÷ شدة التيار
+    </div>`
+  };
+  document.getElementById('triInfo').innerHTML = infos[v];
+}
+
+// ============================================================
+// CIRCUIT UPDATE
+// ============================================================
+function updateCircuit() {
+  const rSlider = document.getElementById('rSlider');
+  const vSlider = document.getElementById('vSlider');
+  const R = activeResistor === 1 ? parseFloat(rSlider.value) : r2Fixed;
+  const V = parseFloat(vSlider.value);
+  const I = V / R;
+
+  // Update sliders style
+  const rPct = ((parseFloat(rSlider.value) - 5) / 45 * 100).toFixed(1);
+  const vPct = ((V - 1) / 11 * 100).toFixed(1);
+  rSlider.style.setProperty('--pct', rPct + '%');
+  vSlider.style.setProperty('--pct', vPct + '%');
+
+  // Display
+  document.getElementById('rVal').textContent = R + ' Ω';
+  document.getElementById('vVal').textContent = V + ' V';
+  document.getElementById('currentVal').textContent = I.toFixed(3);
+  document.getElementById('voltageVal').textContent = V.toFixed(3);
+  document.getElementById('calcR').textContent = R.toFixed(3);
+
+  // Gauges
+  document.getElementById('currentGauge').style.width = Math.min(I / 2.4 * 100, 100) + '%';
+  document.getElementById('voltageGauge').style.width = (V / 12 * 100) + '%';
+
+  // Resistance rings
+  const rings = document.getElementById('resRings');
+  rings.innerHTML = '';
+  const numRings = Math.round(R / 5);
+  const colors = ['#e84545','#ffd700','#7ee8a2','#4fc3f7','#cf77ff','#ff9f9f','#a5d6a7','#80cbc4','#ffcc80','#b39ddb'];
+  for (let i = 0; i < numRings; i++) {
+    const d = document.createElement('div');
+    d.className = 'res-ring';
+    d.style.borderColor = colors[i % colors.length];
+    d.style.background = colors[i % colors.length] + '22';
+    rings.appendChild(d);
+  }
+
+  drawCircuit(V, I, R);
+  updateSteps();
+}
+
+// ============================================================
+// DRAW CIRCUIT ON CANVAS
+// ============================================================
+function drawCircuit(V, I, R) {
+  const canvas = document.getElementById('circuitCanvas');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width = canvas.offsetWidth;
+  const H = 300;
+  canvas.height = H;
+
+  ctx.clearRect(0, 0, W, H);
+
+  // Background grid
+  ctx.strokeStyle = 'rgba(255,255,255,0.03)';
+  ctx.lineWidth = 1;
+  for (let x = 0; x < W; x += 30) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
+  for (let y = 0; y < H; y += 30) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
+
+  const mx = W / 2;
+  const pad = Math.min(W * 0.12, 60);
+  const top = 40, bot = H - 40;
+  const left = pad + 20, right = W - pad - 20;
+  const midY = H / 2;
+
+  // === WIRE ANIMATION ===
+  const t = Date.now() / 400;
+  const dashLen = 8, gapLen = 12;
+
+  function drawWire(x1, y1, x2, y2, dir='right') {
+    ctx.strokeStyle = '#e84545';
+    ctx.lineWidth = 3;
+    ctx.setLineDash([dashLen, gapLen]);
+    ctx.lineDashOffset = dir === 'right' ? -t * 10 % (dashLen + gapLen) : t * 10 % (dashLen + gapLen);
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  // Top wire left
+  drawWire(left, top, mx - 60, top, 'right');
+  // Top wire right
+  drawWire(mx + 60, top, right, top, 'right');
+  // Right wire down
+  drawWire(right, top, right, bot, 'left');
+  // Bottom wire
+  drawWire(right, bot, left, bot, 'left');
+  // Left wire up
+  drawWire(left, bot, left, top, 'right');
+
+  // === BATTERY (left) ===
+  const batX = left;
+  drawBattery(ctx, batX, midY, V);
+
+  // === AMMETER (top left) ===
+  drawAmmeter(ctx, mx - 90, top, I);
+
+  // === RESISTOR (top center) ===
+  drawResistor(ctx, mx, top, R, activeResistor);
+
+  // === VOLTMETER (right side) ===
+  drawVoltmeter(ctx, right + 20, midY, V);
+
+  // === LABELS ===
+  ctx.font = `bold ${Math.min(13, W * 0.025)}px Cairo, sans-serif`;
+  ctx.textAlign = 'center';
+  ctx.fillStyle = 'rgba(255,255,255,0.5)';
+  ctx.fillText('+', left + 12, top - 10);
+  ctx.fillText('−', left + 12, bot + 16);
+
+  requestAnimationFrame(() => drawCircuit(V, I, R));
+}
+
+function drawBattery(ctx, x, y, V) {
+  ctx.save();
+  // Body
+  const grad = ctx.createLinearGradient(x-14, y-30, x+14, y+30);
+  grad.addColorStop(0, '#2d5a1b');
+  grad.addColorStop(0.5, '#3a7a25');
+  grad.addColorStop(1, '#2d5a1b');
+  ctx.fillStyle = grad;
+  ctx.beginPath();
+  ctx.roundRect(x-14, y-30, 28, 60, 4);
+  ctx.fill();
+  ctx.strokeStyle = '#7cc65a';
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+
+  // Lines
+  for (let i = 0; i < 5; i++) {
+    ctx.strokeStyle = i % 2 === 0 ? '#7cc65a' : '#3a5a1b';
+    ctx.lineWidth = i % 2 === 0 ? 3 : 1.5;
+    const yy = y - 20 + i * 10;
+    ctx.beginPath(); ctx.moveTo(x-10, yy); ctx.lineTo(x+10, yy); ctx.stroke();
+  }
+
+  // Voltage label
+  ctx.fillStyle = '#fff';
+  ctx.font = 'bold 11px Cairo, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText(V + 'V', x, y + 48);
+  ctx.restore();
+}
+
+function drawAmmeter(ctx, x, y, I) {
+  ctx.save();
+  const r = 18;
+  // Glow
+  const glow = ctx.createRadialGradient(x, y, 0, x, y, r+10);
+  glow.addColorStop(0, 'rgba(232,69,69,0.3)');
+  glow.addColorStop(1, 'transparent');
+  ctx.fillStyle = glow;
+  ctx.beginPath(); ctx.arc(x, y, r+10, 0, Math.PI*2); ctx.fill();
+
+  // Circle
+  ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI*2);
+  ctx.fillStyle = '#1a0808';
+  ctx.fill();
+  ctx.strokeStyle = '#e84545';
+  ctx.lineWidth = 2.5; ctx.stroke();
+
+  ctx.fillStyle = '#ff8080';
+  ctx.font = 'bold 14px Cairo';
+  ctx.textAlign = 'center';
+  ctx.fillText('A', x, y + 5);
+  ctx.fillStyle = 'rgba(255,255,255,0.6)';
+  ctx.font = '10px Cairo';
+  ctx.fillText(I.toFixed(2)+'A', x, y + 32);
+  ctx.restore();
+}
+
+function drawResistor(ctx, x, y, R, rNum) {
+  ctx.save();
+  const w = 70, h = 24;
+  const rx = x - w/2, ry = y - h/2;
+
+  // Body
+  const grad = ctx.createLinearGradient(rx, ry, rx, ry+h);
+  grad.addColorStop(0, '#3a2a0a');
+  grad.addColorStop(0.5, '#6b4f1a');
+  grad.addColorStop(1, '#3a2a0a');
+  ctx.fillStyle = grad;
+  ctx.beginPath();
+  ctx.roundRect(rx, ry, w, h, 4);
+  ctx.fill();
+  ctx.strokeStyle = '#d4a017';
+  ctx.lineWidth = 1.5; ctx.stroke();
+
+  // Color bands
+  const bandColors = ['#e84545','#7ee8a2','#ffd700','#4fc3f7','#cf77ff'];
+  const numBands = Math.min(Math.round(R/5), 5);
+  for (let i = 0; i < numBands; i++) {
+    ctx.fillStyle = bandColors[i];
+    ctx.fillRect(rx + 8 + i * 11, ry, 7, h);
+  }
+
+  // Label
+  ctx.fillStyle = '#fff';
+  ctx.font = 'bold 11px Cairo';
+  ctx.textAlign = 'center';
+  ctx.fillText('R' + rNum + ' = ' + R + 'Ω', x, y - h/2 - 8);
+  ctx.restore();
+}
+
+function drawVoltmeter(ctx, x, y, V) {
+  ctx.save();
+  const r = 18;
+  const glow = ctx.createRadialGradient(x, y, 0, x, y, r+10);
+  glow.addColorStop(0, 'rgba(240,165,0,0.3)');
+  glow.addColorStop(1, 'transparent');
+  ctx.fillStyle = glow;
+  ctx.beginPath(); ctx.arc(x, y, r+10, 0, Math.PI*2); ctx.fill();
+
+  ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI*2);
+  ctx.fillStyle = '#1a1200';
+  ctx.fill();
+  ctx.strokeStyle = '#f0a500';
+  ctx.lineWidth = 2.5; ctx.stroke();
+
+  ctx.fillStyle = '#ffd700';
+  ctx.font = 'bold 13px Cairo';
+  ctx.textAlign = 'center';
+  ctx.fillText('V', x, y + 5);
+  ctx.fillStyle = 'rgba(255,255,255,0.6)';
+  ctx.font = '10px Cairo';
+  ctx.fillText(V.toFixed(1)+'V', x, y + 32);
+
+  // Dashed connection line to circuit
+  ctx.strokeStyle = 'rgba(240,165,0,0.4)';
+  ctx.lineWidth = 1.5;
+  ctx.setLineDash([4, 4]);
+  ctx.beginPath();
+  ctx.moveTo(x - r, y); ctx.lineTo(x - r - 20, y);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.restore();
+}
+
+// ============================================================
+// RESISTOR SELECTION
+// ============================================================
+function selectResistor(num) {
+  activeResistor = num;
+  document.getElementById('res1btn').className = num === 1 ? 'btn btn-primary' : 'btn';
+  document.getElementById('res2btn').className = num === 2 ? 'btn btn-primary' : 'btn';
+  if (num === 1) {
+    document.getElementById('res1btn').style = '';
+    document.getElementById('res2btn').style = 'background:var(--card2);border:1px solid rgba(255,255,255,0.1);color:var(--text);';
+  } else {
+    document.getElementById('res1btn').style = 'background:var(--card2);border:1px solid rgba(255,255,255,0.1);color:var(--text);';
+    document.getElementById('res2btn').style = '';
+    document.getElementById('rSlider').value = r2Fixed;
+    document.getElementById('rVal').textContent = r2Fixed + ' Ω';
+  }
+  document.getElementById('activeResistor').innerHTML =
+    `<span style="color:var(--accent)">●</span> المقاومة النشطة الآن: <strong style="color:var(--accent)">المقاومة ${num === 1 ? 'الأولى' : 'الثانية'}</strong>
+    — اضبط الجهد وسجّل القراءة 4 مرات`;
+  updateCircuit();
+}
+
+// ============================================================
+// RECORD READING
+// ============================================================
+function recordReading() {
+  const V = parseFloat(document.getElementById('vSlider').value);
+  const R = activeResistor === 1
+    ? parseFloat(document.getElementById('rSlider').value)
+    : r2Fixed;
+  const I = V / R;
+  const data = activeResistor === 1 ? readings1 : readings2;
+  const maxCount = 4;
+
+  if (data.length >= maxCount) {
+    showNotif('⚠️ لقد سجّلت 4 قراءات بالفعل لهذه المقاومة', false);
+    return;
+  }
+
+  // Check for duplicate V
+  if (data.some(d => d.V === V)) {
+    showNotif('⚠️ هذه القيمة مسجّلة، اضبط فرق جهد مختلف', false);
+    return;
+  }
+
+  data.push({ V, I, R, calcR: V / I });
+  updateTables();
+  showNotif('✅ تم تسجيل القراءة رقم ' + data.length + ' بنجاح!');
+  updateSteps();
+  updateCounts();
+}
+
+function updateCounts() {
+  document.getElementById('r1count').textContent = readings1.length;
+  document.getElementById('r2count').textContent = readings2.length;
+}
+
+function updateTables() {
+  updateTable('table1body', readings1);
+  updateTable('table2body', readings2);
+}
+
+function updateTable(id, data) {
+  const tbody = document.getElementById(id);
+  if (data.length === 0) {
+    tbody.innerHTML = `<tr class="empty-row"><td colspan="4">لا توجد قراءات مسجّلة بعد</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = data.map((d, i) => `
+    <tr>
+      <td style="font-weight:700;color:var(--accent)">${i + 1}</td>
+      <td style="color:#ff8080">${d.I.toFixed(3)}</td>
+      <td style="color:#ffd700">${d.V.toFixed(1)}</td>
+      <td style="color:#7ee8a2">${d.calcR.toFixed(2)}</td>
+    </tr>
+  `).join('');
+}
+
+// ============================================================
+// CLEAR
+// ============================================================
+function clearReadings() {
+  readings1 = []; readings2 = [];
+  updateTables();
+  updateCounts();
+  showNotif('🗑️ تم مسح جميع القراءات', false);
+}
+
+// ============================================================
+// AUTO FILL
+// ============================================================
+function autoFill() {
+  readings1 = [];
+  readings2 = [];
+  const r1 = 10;
+  const r2 = 25;
+  [2, 4, 6, 8].forEach(v => {
+    readings1.push({ V: v, I: v/r1, R: r1, calcR: r1 });
+  });
+  [2, 4, 6, 8].forEach(v => {
+    readings2.push({ V: v, I: v/r2, R: r2, calcR: r2 });
+  });
+  updateTables();
+  updateCounts();
+  showNotif('🤖 تم ملء التجربة تلقائياً بنجاح!');
+  updateSteps();
+}
+
+// ============================================================
+// STEPS INDICATOR
+// ============================================================
+function updateSteps() {
+  const s1 = document.getElementById('step1num');
+  const s2 = document.getElementById('step2num');
+  const s3 = document.getElementById('step3num');
+  const s4 = document.getElementById('step4num');
+  s1.className = 'step-num done';
+  s2.className = parseFloat(document.getElementById('vSlider').value) !== 1 ? 'step-num done' : 'step-num active';
+  const totalReadings = readings1.length + readings2.length;
+  s3.className = totalReadings > 0 ? 'step-num done' : 'step-num active';
+  s4.className = totalReadings >= 4 ? 'step-num done' : totalReadings > 0 ? 'step-num active' : 'step-num pending';
+}
+
+// ============================================================
+// NOTIFICATION
+// ============================================================
+function showNotif(msg, success = true) {
+  const n = document.getElementById('notif');
+  n.textContent = msg;
+  n.style.background = success ? 'var(--green)' : '#e84545';
+  n.classList.add('show');
+  setTimeout(() => n.classList.remove('show'), 2500);
+}
+
+// ============================================================
+// DRAW GRAPH
+// ============================================================
+function drawGraph() {
+  const canvas = document.getElementById('graphCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width = canvas.offsetWidth || 600;
+  const H = 360;
+  canvas.height = H;
+
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = '#080d16';
+  ctx.fillRect(0, 0, W, H);
+
+  const pad = { top: 30, right: 40, bottom: 50, left: 60 };
+  const plotW = W - pad.left - pad.right;
+  const plotH = H - pad.top - pad.bottom;
+
+  // Grid
+  ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+  ctx.lineWidth = 1;
+  for (let i = 0; i <= 5; i++) {
+    const x = pad.left + (plotW * i / 5);
+    ctx.beginPath(); ctx.moveTo(x, pad.top); ctx.lineTo(x, pad.top + plotH); ctx.stroke();
+    const y = pad.top + (plotH * i / 5);
+    ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(pad.left + plotW, y); ctx.stroke();
+  }
+
+  // Axes
+  ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(pad.left, pad.top); ctx.lineTo(pad.left, pad.top + plotH);
+  ctx.lineTo(pad.left + plotW, pad.top + plotH);
+  ctx.stroke();
+
+  // Axis labels
+  ctx.fillStyle = '#ffd700';
+  ctx.font = 'bold 12px Cairo, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('فرق الجهد V (فولت)', W / 2, H - 8);
+  ctx.save();
+  ctx.translate(14, H / 2);
+  ctx.rotate(-Math.PI / 2);
+  ctx.fillStyle = '#ff8080';
+  ctx.fillText('شدة التيار I (أمبير)', 0, 0);
+  ctx.restore();
+
+  const maxV = 12, maxI = 1.2;
+
+  function toX(v) { return pad.left + (v / maxV) * plotW; }
+  function toY(i) { return pad.top + plotH - (i / maxI) * plotH; }
+
+  // Tick marks
+  ctx.fillStyle = 'rgba(255,255,255,0.4)';
+  ctx.font = '10px Cairo, sans-serif';
+  for (let v = 0; v <= 12; v += 2) {
+    const x = toX(v);
+    ctx.fillStyle = 'rgba(255,255,255,0.4)';
+    ctx.fillRect(x, pad.top + plotH, 1, 5);
+    ctx.textAlign = 'center';
+    ctx.fillText(v, x, pad.top + plotH + 14);
+  }
+  for (let i = 0; i <= 1.2; i += 0.2) {
+    const y = toY(i);
+    ctx.fillStyle = 'rgba(255,255,255,0.4)';
+    ctx.fillRect(pad.left - 5, y, 5, 1);
+    ctx.textAlign = 'right';
+    ctx.fillText(i.toFixed(1), pad.left - 8, y + 4);
+  }
+
+  // Plot R1
+  if (readings1.length >= 2) {
+    const sorted = [...readings1].sort((a, b) => a.V - b.V);
+    ctx.strokeStyle = '#4fc3f7';
+    ctx.lineWidth = 2.5;
+    ctx.setLineDash([]);
+    ctx.beginPath();
+    ctx.moveTo(toX(0), toY(0));
+    sorted.forEach(d => ctx.lineTo(toX(d.V), toY(d.I)));
+    ctx.stroke();
+
+    // Points
+    sorted.forEach(d => {
+      ctx.fillStyle = '#4fc3f7';
+      ctx.beginPath();
+      ctx.arc(toX(d.V), toY(d.I), 5, 0, Math.PI * 2);
+      ctx.fill();
+    });
+    // Slope
+    const avgR = readings1.reduce((a, d) => a + d.calcR, 0) / readings1.length;
+    document.getElementById('slope1').textContent = avgR.toFixed(1) + ' Ω';
+  }
+
+  // Plot R2
+  if (readings2.length >= 2) {
+    const sorted = [...readings2].sort((a, b) => a.V - b.V);
+    ctx.strokeStyle = '#ff8a65';
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.moveTo(toX(0), toY(0));
+    sorted.forEach(d => ctx.lineTo(toX(d.V), toY(d.I)));
+    ctx.stroke();
+
+    sorted.forEach(d => {
+      ctx.fillStyle = '#ff8a65';
+      ctx.beginPath();
+      ctx.arc(toX(d.V), toY(d.I), 5, 0, Math.PI * 2);
+      ctx.fill();
+    });
+    const avgR = readings2.reduce((a, d) => a + d.calcR, 0) / readings2.length;
+    document.getElementById('slope2').textContent = avgR.toFixed(1) + ' Ω';
+  }
+
+  // Legend
+  ctx.font = '11px Cairo, sans-serif';
+  ctx.fillStyle = '#4fc3f7';
+  ctx.fillRect(pad.left + 10, pad.top + 10, 20, 3);
+  ctx.textAlign = 'right';
+  ctx.fillText('المقاومة الأولى', pad.left + 120, pad.top + 15);
+  ctx.fillStyle = '#ff8a65';
+  ctx.fillRect(pad.left + 10, pad.top + 26, 20, 3);
+  ctx.fillText('المقاومة الثانية', pad.left + 120, pad.top + 31);
+}
+
+// ============================================================
+// CONCLUSION
+// ============================================================
+function checkAns(num) {
+  const ans = document.getElementById('ans' + num).value.trim();
+  const fb = document.getElementById('fb' + num);
+  const correct_keywords = {
+    1: ['طردي', 'تزداد', 'تزيد', 'زادت', 'تتضاعف', 'تتناسب طرديا', 'تناسب طردي'],
+    2: ['مختلف', 'يختلف', 'تختلف', 'أكبر', 'أصغر', 'قيمة المقاومة', 'الميل'],
+    3: ['خط مستقيم', 'علاقة خطية', 'تناسب طردي', 'مستقيم', 'طردي', 'خطية']
+  };
+  const answers = correct_keywords[num];
+  const isCorrect = answers.some(kw => ans.includes(kw));
+  const correctAnswers = {
+    1: 'زادت شدة التيار بزيادة فرق الجهد، وهذا يدل على العلاقة الطردية بينهما.',
+    2: 'ميل الخط يختلف بين المقاومتين — المقاومة الأكبر تعطي خطاً أقل ميلاً، أي تيار أقل بنفس الجهد.',
+    3: 'الخط المستقيم يمثل العلاقة الطردية بين V و I، وميله يساوي قيمة المقاومة R بالأوم.'
+  };
+  if (ans.length < 5) {
+    fb.className = 'quiz-feedback wrong';
+    fb.textContent = '⚠️ الإجابة قصيرة جداً، حاول توضيح فكرتك أكثر.';
+    return;
+  }
+  fb.className = isCorrect ? 'quiz-feedback correct' : 'quiz-feedback wrong';
+  fb.textContent = isCorrect
+    ? '✅ إجابة ممتازة! ' + correctAnswers[num]
+    : '💡 الإجابة الصحيحة: ' + correctAnswers[num];
+}
+
+function showConclusion() {
+  document.getElementById('conclusionCard').classList.add('show');
+}
+
+// ============================================================
+// QUIZ
+// ============================================================
+const correctAnswers = { 1: 'b', 2: 'c', 3: 'b', 4: 'a', 5: 'd', 6: 'b' };
+const feedbacks = {
+  1: { correct: 'ممتاز! قانون أوم: V = I × R', wrong: 'الإجابة الصحيحة: ب) V = I × R' },
+  2: { correct: 'صحيح! V = I × R = 0.3 × 20 = 6 فولت', wrong: 'V = 0.3 × 20 = 6 فولت — الإجابة ج' },
+  3: { correct: 'صحيح! الفولتميتر يُوصل على التوازي مع المقاومة', wrong: 'الفولتميتر يُوصل دائماً على التوازي' },
+  4: { correct: 'ممتاز! I = V/R، إذا تضاعف V وبقي R ثابتاً فإن I يتضاعف', wrong: 'I = V/R — إذا تضاعف V تضاعف I أيضاً' },
+  5: { correct: 'صحيح! وحدة المقاومة هي الأوم (Ω)', wrong: 'وحدة المقاومة هي الأوم (Ω)' },
+  6: { correct: 'ممتاز! الأميتر يقيس شدة التيار ويوصل على التوالي', wrong: 'الأميتر هو جهاز قياس شدة التيار' }
+};
+
+function answer(qNum, opt) {
+  if (quizAnswers[qNum]) return;
+  quizAnswers[qNum] = opt;
+  const qDiv = document.getElementById('q' + qNum);
+  const opts = qDiv.querySelectorAll('.quiz-opt');
+  opts.forEach(o => o.classList.add('disabled'));
+  const isCorrect = opt === correctAnswers[qNum];
+  if (isCorrect) quizScore++;
+  const letters = ['a','b','c','d'];
+  opts.forEach((o, i) => {
+    if (letters[i] === correctAnswers[qNum]) o.classList.add('correct');
+    else if (letters[i] === opt && !isCorrect) o.classList.add('wrong');
+  });
+  const fb = document.getElementById('fb_q' + qNum);
+  fb.className = 'quiz-feedback ' + (isCorrect ? 'correct' : 'wrong');
+  fb.textContent = (isCorrect ? '✅ ' : '❌ ') + feedbacks[qNum][isCorrect ? 'correct' : 'wrong'];
+  if (Object.keys(quizAnswers).length === 6) showScore();
+}
+
+function showScore() {
+  const s = document.getElementById('scoreDisplay');
+  s.style.display = 'block';
+  document.getElementById('scoreNum').textContent = quizScore + '/6';
+  const msgs = ['حاول مرة أخرى 💪', 'جيد، راجع الدرس', 'جيد جداً!', 'ممتاز! 🎉', 'رائع جداً! ⭐', 'مثالي! 🏆', 'عبقري! 🥇'];
+  document.getElementById('scoreMsg').textContent = msgs[quizScore] || '';
+  document.getElementById('scoreNum').style.color = quizScore >= 5 ? 'var(--green)' : quizScore >= 3 ? 'var(--accent)' : 'var(--accent2)';
+}
+
+function resetQuiz() {
+  quizAnswers = {};
+  quizScore = 0;
+  document.getElementById('scoreDisplay').style.display = 'none';
+  for (let i = 1; i <= 6; i++) {
+    const qDiv = document.getElementById('q' + i);
+    qDiv.querySelectorAll('.quiz-opt').forEach(o => {
+      o.classList.remove('correct', 'wrong', 'disabled');
+    });
+    const fb = document.getElementById('fb_q' + i);
+    fb.className = 'quiz-feedback';
+    fb.textContent = '';
+  }
+}
+
+// ============================================================
+// INIT
+// ============================================================
+window.addEventListener('load', () => {
+  updateCircuit();
+  // Start animation loop
+  function animate() {
+    if (document.getElementById('section-lab').classList.contains('active')) {
+      const V = parseFloat(document.getElementById('vSlider').value);
+      const R = activeResistor === 1 ? parseFloat(document.getElementById('rSlider').value) : r2Fixed;
+      const I = V / R;
+      drawCircuit(V, I, R);
+    }
+    requestAnimationFrame(animate);
+  }
+  animate();
+});
+
+window.addEventListener('resize', () => {
+  drawGraph();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>الجدول الدوري — مختبر الذرّة التفاعلي</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg-deep:#080B18;
+  --bg-deep2:#0D1226;
+  --bg-panel:#131A34;
+  --bg-panel2:#1B2447;
+  --bg-panel3:#222D57;
+  --line:#2C3766;
+  --text-main:#EAF0FF;
+  --text-dim:#8FA0D1;
+  --text-dim2:#6579B0;
+  --accent-cyan:#48D6E8;
+  --accent-nucleus:#FF8A4C;
+  --accent-gold:#F4C452;
+  --accent-pink:#F45C9C;
+  --ok:#5FE0A0;
+  --bad:#FF6B6B;
+
+  --c-alkali:#F2A65A;
+  --c-alkaline:#8FD694;
+  --c-transition:#6FBEE8;
+  --c-post:#C9A0DC;
+  --c-metalloid:#E0C36B;
+  --c-nonmetal:#7FE0C0;
+  --c-halogen:#F5E06E;
+  --c-noble:#D98AF5;
+  --c-lanth:#F4A28C;
+  --c-actin:#E4867B;
+  --c-unknown:#4A5578;
+
+  --radius-s:10px;
+  --radius-m:16px;
+  --radius-l:26px;
+  --font-display:'Cairo', sans-serif;
+  --font-body:'Tajawal', sans-serif;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:
+    radial-gradient(ellipse 90% 60% at 50% -10%, #1A2555 0%, transparent 60%),
+    radial-gradient(ellipse 70% 50% at 90% 20%, #14204a 0%, transparent 55%),
+    var(--bg-deep);
+  color:var(--text-main);
+  font-family:var(--font-body);
+  line-height:1.85;
+  overflow-x:hidden;
+}
+::selection{ background:var(--accent-cyan); color:#08101f; }
+h1,h2,h3,h4{ font-family:var(--font-display); margin:0; }
+p{margin:0;}
+a{color:inherit;}
+.wrap{ max-width:1180px; margin:0 auto; padding:0 24px; }
+.eyebrow{
+  display:inline-flex; align-items:center; gap:8px;
+  font-family:var(--font-display); font-weight:700; font-size:.8rem;
+  color:var(--accent-cyan); letter-spacing:.5px;
+  background:rgba(72,214,232,.08); border:1px solid rgba(72,214,232,.3);
+  padding:6px 16px; border-radius:999px; margin-bottom:18px;
+}
+.section{ padding:90px 0; position:relative; }
+.section-head{ max-width:720px; margin-bottom:46px; }
+.section-head h2{ font-size:clamp(1.7rem,3.4vw,2.5rem); font-weight:800; margin-bottom:14px; }
+.section-head p{ color:var(--text-dim); font-size:1.05rem; }
+.card{
+  background:linear-gradient(160deg, var(--bg-panel2), var(--bg-panel));
+  border:1px solid var(--line);
+  border-radius:var(--radius-l);
+}
+
+/* ---------- Background starfield ---------- */
+#stars{ position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.65; }
+
+/* ---------- HERO ---------- */
+.hero{
+  min-height:100svh; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  text-align:center; position:relative; padding:110px 24px 60px; z-index:1;
+}
+.hero-stage{ perspective:1100px; width:min(320px,60vw); height:min(320px,60vw); margin-bottom:18px; position:relative; }
+.atom-3d{ width:100%; height:100%; position:relative; transform-style:preserve-3d; }
+.nucleus{
+  position:absolute; top:50%; left:50%; width:15%; aspect-ratio:1;
+  transform:translate(-50%,-50%);
+  background:radial-gradient(circle at 35% 30%, #FFD9A8, var(--accent-nucleus) 55%, #B54B1B 100%);
+  border-radius:50%;
+  box-shadow:0 0 30px 6px rgba(255,138,76,.65), 0 0 70px 20px rgba(255,138,76,.25);
+  animation:pulse 2.6s ease-in-out infinite;
+  z-index:5;
+}
+@keyframes pulse{ 0%,100%{ transform:translate(-50%,-50%) scale(1);} 50%{ transform:translate(-50%,-50%) scale(1.12);} }
+.shell{
+  position:absolute; top:50%; left:50%; border:1.5px solid rgba(72,214,232,.45);
+  border-radius:50%; transform-style:preserve-3d;
+  box-shadow:inset 0 0 18px rgba(72,214,232,.12);
+}
+.shell .spin{ position:absolute; inset:0; transform-style:preserve-3d; animation:spin linear infinite; }
+@keyframes spin{ from{ transform:rotate(0deg);} to{ transform:rotate(360deg);} }
+.electron{
+  position:absolute; top:50%; left:50%; width:9px; height:9px; border-radius:50%;
+  background:radial-gradient(circle at 35% 30%, #E9FFFE, var(--accent-cyan) 60%);
+  box-shadow:0 0 10px 3px rgba(72,214,232,.85);
+  margin:-4.5px;
+}
+.hero h1{ font-size:clamp(2.3rem,6vw,4rem); font-weight:900; letter-spacing:-.5px;
+  background:linear-gradient(90deg,#fff,var(--accent-cyan) 60%, var(--accent-gold));
+  -webkit-background-clip:text; background-clip:text; color:transparent; }
+.hero .sub{ color:var(--text-dim); font-size:clamp(1rem,2vw,1.25rem); max-width:620px; margin:16px auto 0; }
+.hero .meta{ margin-top:26px; display:flex; gap:10px; flex-wrap:wrap; justify-content:center; }
+.tag{ font-size:.82rem; font-weight:700; padding:7px 14px; border-radius:999px; border:1px solid var(--line); color:var(--text-dim); background:rgba(255,255,255,.02); }
+.scroll-cue{ margin-top:46px; color:var(--text-dim2); font-size:.85rem; display:flex; flex-direction:column; align-items:center; gap:6px; animation:bob 2s ease-in-out infinite; }
+@keyframes bob{ 0%,100%{transform:translateY(0);} 50%{transform:translateY(8px);} }
+.scroll-cue svg{ width:18px; }
+
+/* ---------- Intro / grid table ---------- */
+.intro-grid{ display:grid; grid-template-columns:1.05fr 1fr; gap:44px; align-items:center; }
+@media(max-width:900px){ .intro-grid{ grid-template-columns:1fr; } }
+.intro-grid h2{ margin-bottom:16px; }
+.intro-grid .lede{ font-size:1.1rem; color:var(--text-main); margin-bottom:16px; }
+.fact-list{ list-style:none; margin:22px 0 0; padding:0; display:grid; gap:12px; }
+.fact-list li{ display:flex; gap:12px; align-items:flex-start; color:var(--text-dim); font-size:.98rem; }
+.fact-list b{ color:var(--text-main); }
+.fact-num{ flex:0 0 auto; width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+  font-family:var(--font-display); font-weight:800; font-size:.85rem; background:var(--bg-panel3); color:var(--accent-gold); border:1px solid var(--line); }
+
+/* Periodic table */
+.pt-shell{ background:var(--bg-panel); border:1px solid var(--line); border-radius:var(--radius-m); padding:16px; overflow-x:auto; }
+.pt{
+  display:grid; grid-template-columns:repeat(18, minmax(38px,1fr)); gap:4px; width:max-content; min-width:100%;
+}
+.pt .cell{
+  aspect-ratio:1; border-radius:7px; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  cursor:pointer; font-family:var(--font-display); font-weight:800; font-size:.72rem; color:#0A0E1C;
+  position:relative; transition:transform .15s ease, box-shadow .15s ease; border:1px solid rgba(0,0,0,.15);
+}
+.pt .cell:hover{ transform:translateY(-3px) scale(1.06); box-shadow:0 8px 18px rgba(0,0,0,.4); z-index:2; }
+.pt .cell .z{ position:absolute; top:2px; right:4px; font-size:.52rem; font-weight:700; opacity:.75; }
+.pt .cell.dim{ opacity:.16; filter:grayscale(.6); }
+.pt .cell.highlight{ outline:2.5px solid #fff; outline-offset:1px; }
+.pt .spacer{ visibility:hidden; }
+.legend{ display:flex; flex-wrap:wrap; gap:10px 16px; margin-top:16px; }
+.legend span{ display:flex; align-items:center; gap:7px; font-size:.78rem; color:var(--text-dim); }
+.legend i{ width:13px; height:13px; border-radius:4px; display:inline-block; }
+
+.pt-controls{ display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px; }
+.pill-btn{
+  font-family:var(--font-body); font-weight:700; font-size:.85rem; color:var(--text-dim);
+  background:var(--bg-panel2); border:1px solid var(--line); padding:8px 16px; border-radius:999px; cursor:pointer;
+  transition:.15s;
+}
+.pill-btn:hover{ color:var(--text-main); border-color:var(--accent-cyan); }
+.pill-btn.active{ background:var(--accent-cyan); color:#08101f; border-color:var(--accent-cyan); }
+
+/* modal */
+.modal-bg{ position:fixed; inset:0; background:rgba(4,6,16,.72); backdrop-filter:blur(6px); z-index:80;
+  display:flex; align-items:center; justify-content:center; padding:20px; opacity:0; pointer-events:none; transition:.2s; }
+.modal-bg.show{ opacity:1; pointer-events:auto; }
+.modal{ background:linear-gradient(165deg,var(--bg-panel2),var(--bg-panel)); border:1px solid var(--line); border-radius:var(--radius-l);
+  max-width:560px; width:100%; padding:34px; position:relative; transform:translateY(14px) scale(.97); transition:.25s; max-height:88vh; overflow:auto; }
+.modal-bg.show .modal{ transform:translateY(0) scale(1); }
+.modal-close{ position:absolute; top:18px; left:18px; width:34px; height:34px; border-radius:50%; border:1px solid var(--line);
+  background:var(--bg-panel3); color:var(--text-dim); font-size:1.1rem; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+.modal-close:hover{ color:var(--text-main); }
+.modal-head{ display:flex; align-items:center; gap:16px; margin-bottom:18px; }
+.modal-sym{ width:64px; height:64px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-family:var(--font-display); font-weight:900; font-size:1.6rem; color:#0A0E1C; }
+.modal-stage{ perspective:900px; width:100%; height:200px; margin:12px auto 18px; }
+.modal-atom{ width:100%; height:100%; position:relative; transform-style:preserve-3d; }
+.stat-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-top:16px; }
+.stat{ background:var(--bg-panel3); border:1px solid var(--line); border-radius:10px; padding:10px 14px; }
+.stat .k{ font-size:.72rem; color:var(--text-dim2); font-weight:700; }
+.stat .v{ font-family:var(--font-display); font-weight:800; font-size:1.15rem; color:var(--accent-cyan); }
+.shells-line{ margin-top:14px; font-size:.9rem; color:var(--text-dim); }
+.shells-line b{ color:var(--accent-gold); }
+
+/* ---------- family cards ---------- */
+.fam-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:20px; }
+.fam-card{ padding:26px; position:relative; overflow:hidden; }
+.fam-card .fam-tag{ font-family:var(--font-display); font-weight:800; font-size:.72rem; letter-spacing:.4px; padding:4px 12px; border-radius:999px; display:inline-block; margin-bottom:14px; color:#0A0E1C; }
+.fam-card h3{ font-size:1.25rem; margin-bottom:8px; }
+.fam-card p{ color:var(--text-dim); font-size:.92rem; margin-bottom:14px; }
+.fam-elements{ display:flex; gap:8px; flex-wrap:wrap; }
+.mini-el{ width:38px; height:38px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-weight:800; font-family:var(--font-display); font-size:.72rem; color:#0A0E1C; }
+
+/* ---------- lab ---------- */
+.lab-panel{ display:grid; grid-template-columns:1fr 1.15fr; gap:0; overflow:hidden; }
+@media(max-width:900px){ .lab-panel{ grid-template-columns:1fr; } }
+.lab-left{ padding:36px; border-left:1px solid var(--line); }
+@media(max-width:900px){ .lab-left{ border-left:none; border-bottom:1px solid var(--line); } }
+.lab-right{ padding:36px; }
+.field{ margin-bottom:18px; }
+.field label{ display:block; font-size:.85rem; color:var(--text-dim); margin-bottom:8px; font-weight:700; }
+select, input[type=text]{
+  width:100%; background:var(--bg-panel3); border:1px solid var(--line); color:var(--text-main);
+  padding:12px 14px; border-radius:10px; font-family:var(--font-body); font-size:.98rem; font-weight:500;
+}
+select:focus, input[type=text]:focus{ outline:2px solid var(--accent-cyan); border-color:transparent; }
+.lab-stage-wrap{ perspective:1000px; width:100%; aspect-ratio:1/1; max-width:320px; margin:0 auto; }
+.btn{
+  font-family:var(--font-display); font-weight:800; font-size:.95rem; border:none; border-radius:12px;
+  padding:13px 24px; cursor:pointer; transition:.15s; display:inline-flex; align-items:center; gap:8px; justify-content:center;
+}
+.btn-primary{ background:linear-gradient(120deg,var(--accent-cyan),#2FB7CE); color:#06121a; }
+.btn-primary:hover{ filter:brightness(1.08); transform:translateY(-1px); }
+.btn-ghost{ background:transparent; border:1px solid var(--line); color:var(--text-dim); }
+.btn-ghost:hover{ color:var(--text-main); border-color:var(--accent-cyan); }
+.btn-block{ width:100%; }
+
+.quiz-box{ background:var(--bg-panel3); border:1px solid var(--line); border-radius:14px; padding:20px; margin-top:18px; }
+.quiz-box h4{ font-size:1rem; margin-bottom:14px; color:var(--accent-gold); }
+.quiz-row{ display:grid; grid-template-columns:1fr auto; gap:10px; align-items:center; margin-bottom:12px; }
+.quiz-row label{ font-size:.88rem; color:var(--text-dim); }
+.quiz-row input{ width:110px; }
+.q-feedback{ font-size:.86rem; margin-top:4px; min-height:18px; font-weight:700; }
+.q-feedback.ok{ color:var(--ok); }
+.q-feedback.bad{ color:var(--bad); }
+.conclusion{ margin-top:18px; padding:16px 18px; border-radius:12px; background:rgba(95,224,160,.08); border:1px solid rgba(95,224,160,.35); font-size:.92rem; color:var(--text-main); display:none; }
+.conclusion.show{ display:block; }
+.conclusion b{ color:var(--ok); }
+
+/* locate quiz */
+.locate-box{ display:flex; flex-direction:column; gap:14px; }
+.locate-q{ font-size:1.05rem; font-weight:700; color:var(--text-main); }
+.locate-choices{ display:grid; grid-template-columns:repeat(auto-fit,minmax(90px,1fr)); gap:10px; }
+.choice-btn{ background:var(--bg-panel3); border:1px solid var(--line); border-radius:10px; padding:12px; cursor:pointer;
+  font-family:var(--font-display); font-weight:800; color:var(--text-main); transition:.15s; }
+.choice-btn:hover{ border-color:var(--accent-cyan); }
+.choice-btn.correct{ background:rgba(95,224,160,.18); border-color:var(--ok); color:var(--ok); }
+.choice-btn.wrong{ background:rgba(255,107,107,.18); border-color:var(--bad); color:var(--bad); }
+.score-pill{ font-family:var(--font-display); font-weight:800; font-size:.85rem; color:var(--accent-gold); }
+
+/* ---------- game ---------- */
+.game-wrap{ padding:34px; }
+.game-top{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px; margin-bottom:22px; }
+.game-stats{ display:flex; gap:22px; flex-wrap:wrap; }
+.game-stat{ text-align:center; }
+.game-stat .k{ font-size:.72rem; color:var(--text-dim2); font-weight:700; }
+.game-stat .v{ font-family:var(--font-display); font-weight:900; font-size:1.4rem; color:var(--accent-cyan); }
+.timer-bar{ height:8px; border-radius:99px; background:var(--bg-panel3); overflow:hidden; margin-bottom:24px; }
+.timer-fill{ height:100%; background:linear-gradient(90deg,var(--accent-cyan),var(--accent-gold)); width:100%; transition:width 1s linear; }
+.tiles-row{ display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin-bottom:30px; min-height:74px; }
+.g-tile{ width:64px; height:64px; border-radius:12px; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  font-family:var(--font-display); font-weight:900; font-size:1rem; color:#0A0E1C; cursor:pointer; border:3px solid transparent;
+  transition:.15s; box-shadow:0 6px 14px rgba(0,0,0,.35); }
+.g-tile .zz{ font-size:.55rem; font-weight:700; opacity:.7; }
+.g-tile:hover{ transform:translateY(-3px); }
+.g-tile.selected{ border-color:#fff; transform:scale(1.08); }
+.g-tile.fly-out{ opacity:0; transform:scale(.3); }
+.bins-row{ display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:12px; }
+.bin{ border:2px dashed var(--line); border-radius:14px; padding:16px 10px; text-align:center; cursor:pointer; transition:.15s; background:var(--bg-panel3); }
+.bin:hover{ border-color:var(--accent-cyan); }
+.bin.flash-ok{ border-color:var(--ok); background:rgba(95,224,160,.15); }
+.bin.flash-bad{ border-color:var(--bad); background:rgba(255,107,107,.15); animation:shake .35s; }
+@keyframes shake{ 0%,100%{transform:translateX(0);} 25%{transform:translateX(-6px);} 75%{transform:translateX(6px);} }
+.bin .bname{ font-family:var(--font-display); font-weight:800; font-size:.85rem; margin-bottom:4px; }
+.bin .bsub{ font-size:.68rem; color:var(--text-dim2); }
+.game-end{ text-align:center; padding:20px; }
+.game-end h3{ font-size:1.6rem; margin-bottom:10px; color:var(--accent-gold); }
+.game-start-overlay{ text-align:center; padding:20px 10px; }
+.game-start-overlay p{ color:var(--text-dim); max-width:480px; margin:12px auto 22px; }
+
+footer{ text-align:center; padding:50px 24px 70px; color:var(--text-dim2); font-size:.85rem; position:relative; z-index:1; }
+footer b{ color:var(--text-dim); }
+
+@media(max-width:640px){
+  .section{ padding:60px 0; }
+  .card{ border-radius:18px; }
+  .lab-left, .lab-right, .game-wrap{ padding:22px; }
+  .modal{ padding:24px; }
+}
+.hidden{ display:none !important; }
+
+  /* ═══ RESPONSIVE MOBILE & TABLET — AUTO-INJECTED ═══ */
+  @media (max-width: 768px) {
+    body { padding: 8px !important; font-size: 15px !important; overflow-x: hidden !important; }
+    .container, [class*="container"], [class*="wrapper"] { padding: 8px !important; max-width: 100% !important; }
+    canvas { width: 100% !important; height: auto !important; display: block !important; touch-action: none; max-width: 100% !important; }
+    svg { max-width: 100% !important; height: auto !important; }
+    h1 { font-size: clamp(18px, 5vw, 32px) !important; }
+    h2 { font-size: clamp(16px, 4vw, 26px) !important; }
+    h3 { font-size: clamp(14px, 3.5vw, 22px) !important; }
+    p, li, td, th, label, span { font-size: clamp(13px, 3.5vw, 16px) !important; }
+    [class*="grid"] { grid-template-columns: 1fr !important; }
+    [class*="flex"] { flex-wrap: wrap !important; }
+    input[type="range"] { width: 100% !important; min-height: 36px; }
+    input[type="number"], input[type="text"], select, textarea { 
+      font-size: 16px !important; width: 100% !important; box-sizing: border-box; padding: 8px !important;
+    }
+    button { min-height: 44px !important; font-size: 14px !important; touch-action: manipulation; padding: 10px 14px !important; }
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 13px !important; }
+    th, td { padding: 6px 4px !important; white-space: nowrap; }
+    [style*="display: grid"], [style*="display:grid"] { display: flex !important; flex-direction: column !important; }
+    .lab-window, [class*="lab-window"] { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+    header { padding: 12px !important; }
+    .controls, [class*="controls"] { flex-direction: column !important; gap: 8px !important; }
+  }
+  @media (max-width: 480px) {
+    body { padding: 4px !important; }
+    h1 { font-size: clamp(16px, 5vw, 24px) !important; }
+    button { width: 100% !important; }
+  }
+  /* ═══ END RESPONSIVE ═══ */
+</style>
+</head>
+<body>
+
+<style>
+.vlab-back-btn {
+  position: fixed; top: 10px; left: 10px; z-index: 99999;
+  background: rgba(10,22,40,0.93); border: 1px solid rgba(0,200,150,0.4);
+  border-radius: 22px; padding: 8px 16px;
+  display: inline-flex; align-items: center; gap: 7px;
+  color: #00C896; font-family: Tajawal, Cairo, Arial, sans-serif;
+  font-size: 13px; font-weight: 700; text-decoration: none;
+  backdrop-filter: blur(8px); box-shadow: 0 4px 18px rgba(0,0,0,0.3);
+  transition: background 0.2s;
+}
+.vlab-back-btn:hover { background: rgba(0,200,150,0.18); color: #00C896; }
+</style>
+
+<a href="../grade8.html" class="vlab-back-btn">&#8594; العودة للصف</a>
+
+
+<svg id="stars"></svg>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="eyebrow">🧪 منهاج العلوم والحياة — الصف الثامن</div>
+  <div class="hero-stage">
+    <div class="atom-3d" id="heroAtom"></div>
+  </div>
+  <h1>الجدول الدوري للعناصر</h1>
+  <p class="sub">رحلة تفاعلية ثلاثية الأبعاد لاكتشاف كيف رتّب العلماء عناصر الكون، وكيف يخبرنا موقع العنصر في الجدول بكل أسراره الكيميائية.</p>
+  <div class="meta">
+    <span class="tag">الدورات والمجموعات</span>
+    <span class="tag">التوزيع الإلكتروني</span>
+    <span class="tag">العائلات الكيميائية</span>
+    <span class="tag">مختبر افتراضي</span>
+    <span class="tag">لعبة تصنيف</span>
+  </div>
+  <div class="scroll-cue">
+    <span>ابدأ الرحلة</span>
+    <svg viewBox="0 0 24 24" fill="none"><path d="M12 4v16m0 0-6-6m6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </div>
+</section>
+
+<!-- ============ INTRO + FULL TABLE ============ -->
+<section class="section" id="intro">
+  <div class="wrap">
+    <div class="intro-grid">
+      <div>
+        <div class="eyebrow">الفكرة الأساسية</div>
+        <h2>لماذا نرتّب العناصر في جدول؟</h2>
+        <p class="lede">نستخدم الجداول لترتيب المعلومات وتصنيفها؛ فبذلك نُسهّل على أنفسنا مراجعتها. رتّب العلماء العناصر الكيميائية في جدول يُسمّى <b>الجدول الدوري الحديث</b>، بحيث تتجمّع صفاتٌ مشتركةٌ بين العناصر المرتّبة في الصفّ نفسه، أو تلك المرتّبة في العمود نفسه.</p>
+        <ul class="fact-list">
+          <li><span class="fact-num">1</span><span><b>الصفّ الأفقي</b> يُسمّى <b>الدورة</b> — ويوجد في الجدول الدوري <b>7 دورات</b>.</span></li>
+          <li><span class="fact-num">2</span><span><b>العمود الرأسي</b> يُسمّى <b>المجموعة</b> — ويوجد في الجدول الدوري <b>18 مجموعة</b>.</span></li>
+          <li><span class="fact-num">3</span><span>رقم <b>الدورة</b> يساوي عدد <b>مستويات الطاقة (الأغلفة الإلكترونية)</b> المشغولة بإلكترونات في ذرّة العنصر.</span></li>
+          <li><span class="fact-num">4</span><span>رقم <b>المجموعة</b> (للعناصر الرئيسة) يرتبط بعدد <b>إلكترونات التكافؤ</b> في الغلاف الأخير.</span></li>
+        </ul>
+      </div>
+      <div>
+        <div class="pt-controls">
+          <button class="pill-btn active" data-mode="category">حسب العائلة</button>
+          <button class="pill-btn" data-mode="period">حسب الدورة</button>
+          <button class="pill-btn" data-mode="group">حسب المجموعة</button>
+        </div>
+        <div class="pt-shell"><div class="pt" id="ptGrid"></div></div>
+        <div class="legend" id="ptLegend"></div>
+        <p style="margin-top:12px;font-size:.82rem;color:var(--text-dim2)">👆 اضغط أي عنصر لعرض تركيبه الذرّي ثلاثي الأبعاد وبياناته.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PERIODS & GROUPS EXPLAINER ============ -->
+<section class="section" id="periods-groups" style="background:linear-gradient(180deg,transparent,rgba(19,26,52,.5),transparent)">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">الدورات والمجموعات</div>
+      <h2>كيف تُقرأ خريطة العناصر؟</h2>
+      <p>كل عنصر في الجدول الدوري له "عنوان" مكوّن من رقمين: رقم الدورة ورقم المجموعة. بمعرفة هذين الرقمين — أو بمعرفة التوزيع الإلكتروني للذرّة — يمكنك تحديد موقع أي عنصر بدقّة، والتنبؤ بخصائصه الكيميائية.</p>
+    </div>
+    <div class="fam-grid" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">
+      <div class="card" style="padding:26px">
+        <h3 style="margin-bottom:10px;font-size:1.15rem;color:var(--accent-cyan)">↔️ الدورة (الصف)</h3>
+        <p style="color:var(--text-dim);font-size:.94rem">تحمل عناصر الدورة نفسها عدد مستويات طاقة متساويًا، لكنها تختلف في عدد الإلكترونات التي تشغل المستوى الأخير، لذلك تختلف خصائصها الكيميائية ضمن الدورة نفسها.</p>
+      </div>
+      <div class="card" style="padding:26px">
+        <h3 style="margin-bottom:10px;font-size:1.15rem;color:var(--accent-gold)">↕️ المجموعة (العمود)</h3>
+        <p style="color:var(--text-dim);font-size:.94rem">تتشابه عناصر المجموعة نفسها في عدد إلكترونات التكافؤ (إلكترونات المستوى الأخير)، وبما أنّ الخصائص الكيميائية ترتبط بهذه الإلكترونات، فإن عناصر المجموعة الواحدة تتشابه في صفاتها الكيميائية.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAMILIES ============ -->
+<section class="section" id="families">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">العائلات الكيميائية</div>
+      <h2>مجموعات لها أسماء مميّزة</h2>
+      <p>بعض مجموعات الجدول الدوري لها أسماء شائعة تصف سلوكها الكيميائي، وليس رقمها فقط.</p>
+    </div>
+    <div class="fam-grid" id="famGrid"></div>
+  </div>
+</section>
+
+<!-- ============ VIRTUAL LAB ============ -->
+<section class="section" id="lab" style="background:linear-gradient(180deg,transparent,rgba(19,26,52,.6),transparent)">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">🧪 المختبر الافتراضي</div>
+      <h2>ابنِ الذرّة وحدّد موقعها في الجدول الدوري</h2>
+      <p>اختر عنصرًا، وراقب توزيع إلكتروناته على مستويات الطاقة بشكل ثلاثي الأبعاد، ثم أجب عن أسئلة النشاط لتتوصّل بنفسك إلى العلاقة بين التوزيع الإلكتروني وموقع العنصر في الجدول الدوري.</p>
+    </div>
+    <div class="card lab-panel">
+      <div class="lab-left">
+        <div class="field">
+          <label>اختر عنصرًا لدراسته</label>
+          <select id="labSelect"></select>
+        </div>
+        <div class="lab-stage-wrap"><div class="modal-atom" id="labAtom"></div></div>
+        <div style="text-align:center;margin-top:10px;font-family:var(--font-display);font-weight:800" id="labElName"></div>
+      </div>
+      <div class="lab-right">
+        <div class="quiz-box">
+          <h4>سجّل ملاحظاتك عن العنصر</h4>
+          <div class="quiz-row"><label>عدد مستويات الطاقة (رقم الدورة)</label><input type="text" id="qPeriod"></div>
+          <div class="quiz-row"><label>عدد إلكترونات التكافؤ</label><input type="text" id="qValence"></div>
+          <div class="quiz-row"><label>العدد الذرّي</label><input type="text" id="qAtomic"></div>
+          <div class="quiz-row"><label>رمز المجموعة (مثال: IA أو VIIA)</label><input type="text" id="qGroup"></div>
+          <div class="q-feedback" id="qFeedback"></div>
+          <button class="btn btn-primary btn-block" id="checkBtn" style="margin-top:8px">تحقّق من إجاباتي</button>
+        </div>
+        <div class="conclusion" id="conclusionBox"></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:26px;padding:30px" id="locateCard">
+      <h3 style="margin-bottom:6px;font-size:1.2rem">🔎 نشاط: حدّد العنصر من موقعه</h3>
+      <p style="color:var(--text-dim);font-size:.92rem;margin-bottom:18px">بمعرفة رقم الدورة ورقم المجموعة يمكنك تحديد اسم العنصر بدقّة. جرّب:</p>
+      <div class="locate-box">
+        <div class="locate-q" id="locateQ"></div>
+        <div class="locate-choices" id="locateChoices"></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px">
+          <span class="score-pill" id="locateScore">النتيجة: 0 / 0</span>
+          <button class="btn btn-ghost" id="locateNext">سؤال آخر →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GAME (activity 10) ============ -->
+<section class="section" id="game">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">🎮 نشاط (١٠) على شكل لعبة</div>
+      <h2>لعبة: صنّف العنصر إلى عائلته الصحيحة</h2>
+      <p>الجدول الدوري مصدرٌ للمعلومات — استخدم ما تعلّمته عن العائلات الكيميائية لتصنيف أكبر عدد من العناصر قبل نفاد الوقت!</p>
+    </div>
+    <div class="card game-wrap">
+
+      <div id="gameStart" class="game-start-overlay">
+        <div style="font-size:2.6rem">⚛️</div>
+        <h3 style="font-size:1.3rem;margin-top:10px">هل أنت مستعدّ؟</h3>
+        <p>ستظهر لك بطاقات عناصر واحدة تلو الأخرى، اضغط البطاقة ثم اضغط اسم العائلة الصحيحة لها. كل إجابة صحيحة = نقطة، وكل إجابة خاطئة تُفقدك نقطة. لديك <b style="color:var(--accent-gold)">60 ثانية</b>.</p>
+        <button class="btn btn-primary" id="startGameBtn">ابدأ اللعبة</button>
+      </div>
+
+      <div id="gamePlay" class="hidden">
+        <div class="game-top">
+          <div class="game-stats">
+            <div class="game-stat"><div class="k">النقاط</div><div class="v" id="gScore">0</div></div>
+            <div class="game-stat"><div class="k">الوقت</div><div class="v" id="gTime">60</div></div>
+            <div class="game-stat"><div class="k">الأفضل</div><div class="v" id="gBest">0</div></div>
+          </div>
+          <button class="btn btn-ghost" id="restartBtn">إعادة</button>
+        </div>
+        <div class="timer-bar"><div class="timer-fill" id="timerFill"></div></div>
+        <p style="text-align:center;color:var(--text-dim);font-size:.85rem;margin-bottom:8px">اختر بطاقة، ثم اضغط العائلة الصحيحة لها 👇</p>
+        <div class="tiles-row" id="tilesRow"></div>
+        <div class="bins-row" id="binsRow"></div>
+      </div>
+
+      <div id="gameEnd" class="game-end hidden">
+        <div style="font-size:2.6rem">🏆</div>
+        <h3 id="endTitle"></h3>
+        <p style="color:var(--text-dim)" id="endSub"></p>
+        <button class="btn btn-primary" id="playAgainBtn" style="margin-top:14px">العب مرّة أخرى</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <b>الجدول الدوري للعناصر</b> · مختبر تفاعلي مبني لمنهاج العلوم والحياة — الصف الثامن — فلسطين
+</footer>
+
+<!-- ============ MODAL ============ -->
+<div class="modal-bg" id="modalBg">
+  <div class="modal">
+    <button class="modal-close" id="modalClose">✕</button>
+    <div class="modal-head">
+      <div class="modal-sym" id="mSym"></div>
+      <div>
+        <h3 id="mName" style="font-size:1.3rem"></h3>
+        <p style="color:var(--text-dim);font-size:.85rem" id="mCat"></p>
+      </div>
+    </div>
+    <div class="modal-stage"><div class="modal-atom" id="mAtom"></div></div>
+    <div class="stat-grid">
+      <div class="stat"><div class="k">العدد الذرّي</div><div class="v" id="mZ"></div></div>
+      <div class="stat"><div class="k">الكتلة الذرّية</div><div class="v" id="mMass"></div></div>
+      <div class="stat"><div class="k">رقم الدورة</div><div class="v" id="mPeriod"></div></div>
+      <div class="stat"><div class="k">رقم المجموعة</div><div class="v" id="mGroup"></div></div>
+    </div>
+    <div class="shells-line" id="mShells"></div>
+  </div>
+</div>
+
+<script>
+/* ======================================================================
+   DATA
+====================================================================== */
+const CAT_COLOR = {
+  alkali:'var(--c-alkali)', alkaline:'var(--c-alkaline)', transition:'var(--c-transition)',
+  post:'var(--c-post)', metalloid:'var(--c-metalloid)', nonmetal:'var(--c-nonmetal)',
+  halogen:'var(--c-halogen)', noble:'var(--c-noble)', lanth:'var(--c-lanth)',
+  actin:'var(--c-actin)', unknown:'var(--c-unknown)'
+};
+const CAT_LABEL = {
+  alkali:'فلزّات قلوية', alkaline:'فلزّات قلوية ترابية', transition:'فلزّات انتقالية',
+  post:'فلزّات أخرى', metalloid:'أشباه فلزّات', nonmetal:'لافلزّات',
+  halogen:'هالوجينات', noble:'غازات نبيلة', lanth:'اللانثانيدات',
+  actin:'الأكتينيدات', unknown:'غير معروف'
+};
+const AR_NAME = {
+  H:'الهيدروجين',He:'الهيليوم',Li:'الليثيوم',Be:'البيريليوم',B:'البورون',C:'الكربون',N:'النيتروجين',
+  O:'الأكسجين',F:'الفلور',Ne:'النيون',Na:'الصوديوم',Mg:'المغنيسيوم',Al:'الألمنيوم',Si:'السيليكون',
+  P:'الفوسفور',S:'الكبريت',Cl:'الكلور',Ar:'الأرغون',K:'البوتاسيوم',Ca:'الكالسيوم',Sc:'السكانديوم',
+  Ti:'التيتانيوم',V:'الفاناديوم',Cr:'الكروم',Mn:'المنغنيز',Fe:'الحديد',Co:'الكوبالت',Ni:'النيكل',
+  Cu:'النحاس',Zn:'الزنك',Ga:'الغاليوم',Ge:'الجرمانيوم',As:'الزرنيخ',Se:'السيلينيوم',Br:'البروم',
+  Kr:'الكريبتون',Rb:'الروبيديوم',Sr:'السترونشيوم',Y:'الإتريوم',Zr:'الزركونيوم',Ag:'الفضّة',Cd:'الكادميوم',
+  In:'الإنديوم',Sn:'القصدير',Sb:'الأنتيمون',Te:'التيلوريوم',I:'اليود',Xe:'الزينون',Cs:'السيزيوم',
+  Ba:'الباريوم',Au:'الذهب',Hg:'الزئبق',Tl:'الثاليوم',Pb:'الرصاص',Bi:'البزموت',Po:'البولونيوم',
+  At:'الأستاتين',Rn:'الرادون',Fr:'الفرانسيوم',Ra:'الراديوم',La:'اللانثانيوم',W:'التنغستن',Pt:'البلاتين'
+};
+// shells known (K,L,M,N,O,P,Q) for the curated set used in lab/game
+const SHELLS = {
+  H:[1], He:[2], Li:[2,1], Be:[2,2], B:[2,3], C:[2,4], N:[2,5], O:[2,6], F:[2,7], Ne:[2,8],
+  Na:[2,8,1], Mg:[2,8,2], Al:[2,8,3], Si:[2,8,4], P:[2,8,5], S:[2,8,6], Cl:[2,8,7], Ar:[2,8,8],
+  K:[2,8,8,1], Ca:[2,8,8,2], Sc:[2,8,9,2], Ti:[2,8,10,2], Cr:[2,8,13,1], Fe:[2,8,14,2],
+  Cu:[2,8,18,1], Zn:[2,8,18,2], Br:[2,8,18,7], Kr:[2,8,18,8],
+  Rb:[2,8,18,8,1], Sr:[2,8,18,8,2], Ag:[2,8,18,18,1], I:[2,8,18,18,7], Xe:[2,8,18,18,8],
+  Cs:[2,8,18,18,8,1], Ba:[2,8,18,18,8,2], Au:[2,8,18,32,18,1], Pb:[2,8,18,32,18,4],
+  At:[2,8,18,32,18,7], Rn:[2,8,18,32,18,8], Fr:[2,8,18,32,18,8,1], Ra:[2,8,18,32,18,8,2]
+};
+
+// [Z, symbol, mass, period, group(1-18, 0 for f-block), category]
+const RAW = [
+[1,'H',1,1,1,'nonmetal'],[2,'He',4,1,18,'noble'],
+[3,'Li',7,2,1,'alkali'],[4,'Be',9,2,2,'alkaline'],[5,'B',11,2,13,'metalloid'],[6,'C',12,2,14,'nonmetal'],
+[7,'N',14,2,15,'nonmetal'],[8,'O',16,2,16,'nonmetal'],[9,'F',19,2,17,'halogen'],[10,'Ne',20,2,18,'noble'],
+[11,'Na',23,3,1,'alkali'],[12,'Mg',24,3,2,'alkaline'],[13,'Al',27,3,13,'post'],[14,'Si',28,3,14,'metalloid'],
+[15,'P',31,3,15,'nonmetal'],[16,'S',32,3,16,'nonmetal'],[17,'Cl',35,3,17,'halogen'],[18,'Ar',40,3,18,'noble'],
+[19,'K',39,4,1,'alkali'],[20,'Ca',40,4,2,'alkaline'],[21,'Sc',45,4,3,'transition'],[22,'Ti',48,4,4,'transition'],
+[23,'V',51,4,5,'transition'],[24,'Cr',52,4,6,'transition'],[25,'Mn',55,4,7,'transition'],[26,'Fe',56,4,8,'transition'],
+[27,'Co',59,4,9,'transition'],[28,'Ni',59,4,10,'transition'],[29,'Cu',64,4,11,'transition'],[30,'Zn',65,4,12,'transition'],
+[31,'Ga',70,4,13,'post'],[32,'Ge',73,4,14,'metalloid'],[33,'As',75,4,15,'metalloid'],[34,'Se',79,4,16,'nonmetal'],
+[35,'Br',80,4,17,'halogen'],[36,'Kr',84,4,18,'noble'],
+[37,'Rb',85,5,1,'alkali'],[38,'Sr',88,5,2,'alkaline'],[39,'Y',89,5,3,'transition'],[40,'Zr',91,5,4,'transition'],
+[41,'Nb',93,5,5,'transition'],[42,'Mo',96,5,6,'transition'],[43,'Tc',98,5,7,'transition'],[44,'Ru',101,5,8,'transition'],
+[45,'Rh',103,5,9,'transition'],[46,'Pd',106,5,10,'transition'],[47,'Ag',108,5,11,'transition'],[48,'Cd',112,5,12,'transition'],
+[49,'In',115,5,13,'post'],[50,'Sn',119,5,14,'post'],[51,'Sb',122,5,15,'metalloid'],[52,'Te',128,5,16,'metalloid'],
+[53,'I',127,5,17,'halogen'],[54,'Xe',131,5,18,'noble'],
+[55,'Cs',133,6,1,'alkali'],[56,'Ba',137,6,2,'alkaline'],[57,'La',139,6,0,'lanth'],
+[58,'Ce',140,8,0,'lanth'],[59,'Pr',141,8,0,'lanth'],[60,'Nd',144,8,0,'lanth'],[61,'Pm',145,8,0,'lanth'],
+[62,'Sm',150,8,0,'lanth'],[63,'Eu',152,8,0,'lanth'],[64,'Gd',157,8,0,'lanth'],[65,'Tb',159,8,0,'lanth'],
+[66,'Dy',163,8,0,'lanth'],[67,'Ho',165,8,0,'lanth'],[68,'Er',167,8,0,'lanth'],[69,'Tm',169,8,0,'lanth'],
+[70,'Yb',173,8,0,'lanth'],[71,'Lu',175,8,0,'lanth'],
+[72,'Hf',178,6,4,'transition'],[73,'Ta',181,6,5,'transition'],[74,'W',184,6,6,'transition'],[75,'Re',186,6,7,'transition'],
+[76,'Os',190,6,8,'transition'],[77,'Ir',192,6,9,'transition'],[78,'Pt',195,6,10,'transition'],[79,'Au',197,6,11,'transition'],
+[80,'Hg',201,6,12,'transition'],[81,'Tl',204,6,13,'post'],[82,'Pb',207,6,14,'post'],[83,'Bi',209,6,15,'post'],
+[84,'Po',209,6,16,'metalloid'],[85,'At',210,6,17,'halogen'],[86,'Rn',222,6,18,'noble'],
+[87,'Fr',223,7,1,'alkali'],[88,'Ra',226,7,2,'alkaline'],[89,'Ac',227,9,0,'actin'],
+[90,'Th',232,9,0,'actin'],[91,'Pa',231,9,0,'actin'],[92,'U',238,9,0,'actin'],[93,'Np',237,9,0,'actin'],
+[94,'Pu',244,9,0,'actin'],[95,'Am',243,9,0,'actin'],[96,'Cm',247,9,0,'actin'],[97,'Bk',247,9,0,'actin'],
+[98,'Cf',251,9,0,'actin'],[99,'Es',252,9,0,'actin'],[100,'Fm',257,9,0,'actin'],[101,'Md',258,9,0,'actin'],
+[102,'No',259,9,0,'actin'],[103,'Lr',262,9,0,'actin'],
+[104,'Rf',267,7,4,'transition'],[105,'Db',268,7,5,'transition'],[106,'Sg',271,7,6,'transition'],[107,'Bh',272,7,7,'transition'],
+[108,'Hs',270,7,8,'transition'],[109,'Mt',276,7,9,'transition'],[110,'Ds',281,7,10,'transition'],[111,'Rg',280,7,11,'transition'],
+[112,'Cn',285,7,12,'transition'],[113,'Nh',284,7,13,'post'],[114,'Fl',289,7,14,'post'],[115,'Mc',288,7,15,'post'],
+[116,'Lv',293,7,16,'post'],[117,'Ts',294,7,17,'halogen'],[118,'Og',294,7,18,'noble']
+];
+const ELEMENTS = RAW.map(r=>({ z:r[0], sym:r[1], mass:r[2], period:r[3], group:r[4], cat:r[5],
+  name: AR_NAME[r[1]] || r[1], shells: SHELLS[r[1]] || null }));
+const bySym = Object.fromEntries(ELEMENTS.map(e=>[e.sym,e]));
+
+function groupLabel(e){
+  if(e.group===0) return e.cat==='lanth' ? 'اللانثانيدات' : 'الأكتينيدات';
+  const roman=['','I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII','XIII','XIV','XV','XVI','XVII','XVIII'];
+  if(e.group>=1 && e.group<=2) return roman[e.group]+'A';
+  if(e.group>=13 && e.group<=18) return roman[e.group-10]+'A';
+  return roman[e.group]+'B';
+}
+function valenceOf(e){ return e.shells ? e.shells[e.shells.length-1] : null; }
+
+/* ======================================================================
+   BACKGROUND STARS
+====================================================================== */
+(function stars(){
+  const svg=document.getElementById('stars');
+  const w=window.innerWidth, h=document.body.scrollHeight;
+  svg.setAttribute('viewBox',`0 0 ${w} ${h}`);
+  let html='';
+  for(let i=0;i<140;i++){
+    const x=Math.random()*w, y=Math.random()*h, r=Math.random()*1.4+.3, o=Math.random()*.7+.15;
+    html+=`<circle cx="${x}" cy="${y}" r="${r}" fill="#fff" opacity="${o}"><animate attributeName="opacity" values="${o};${o*0.2};${o}" dur="${3+Math.random()*4}s" repeatCount="indefinite"/></circle>`;
+  }
+  svg.innerHTML=html;
+})();
+
+/* ======================================================================
+   3D ATOM BUILDER (used by hero, modal, lab)
+====================================================================== */
+function buildAtom(container, shells, opts={}){
+  container.innerHTML='';
+  const size = opts.size || container.clientWidth || 260;
+  const cx = size/2, cy = size/2;
+  const nucleus = document.createElement('div');
+  nucleus.className='nucleus';
+  container.appendChild(nucleus);
+  if(!shells || !shells.length) return;
+  const maxR = size*0.46;
+  shells.forEach((count, i)=>{
+    const radius = (maxR/shells.length) * (i+1);
+    const shellEl = document.createElement('div');
+    shellEl.className='shell';
+    shellEl.style.width = radius*2+'px';
+    shellEl.style.height = radius*2+'px';
+    shellEl.style.marginTop = -radius+'px';
+    shellEl.style.marginLeft = -radius+'px';
+    shellEl.style.transform = `rotateX(${68 - i*4}deg) rotateZ(${i*22}deg)`;
+    const spin = document.createElement('div');
+    spin.className='spin';
+    const dur = 6 + i*3 + (i%2?1.4:0);
+    spin.style.animationDuration = dur+'s';
+    spin.style.animationDirection = i%2? 'reverse':'normal';
+    for(let e=0;e<count;e++){
+      const ang = (360/count)*e;
+      const dot = document.createElement('div');
+      dot.className='electron';
+      dot.style.transform = `rotate(${ang}deg) translateX(${radius}px)`;
+      spin.appendChild(dot);
+    }
+    shellEl.appendChild(spin);
+    container.appendChild(shellEl);
+  });
+}
+// Hero atom: generic showcase (Na-like: 2,8,1) but relabelled purely decorative
+buildAtom(document.getElementById('heroAtom'), [2,8,3], {size:320});
+window.addEventListener('resize', ()=>buildAtom(document.getElementById('heroAtom'), [2,8,3], {size:document.getElementById('heroAtom').clientWidth}));
+
+/* ======================================================================
+   PERIODIC TABLE GRID
+====================================================================== */
+const ptGrid = document.getElementById('ptGrid');
+function renderTable(){
+  ptGrid.innerHTML='';
+  const rows = 10; // 7 periods + gap + 2 f-block
+  const grid = [];
+  ELEMENTS.forEach(e=>{
+    let r, c;
+    if(e.group===0){
+      r = e.period===8?8:9;
+      c = e.z - (e.period===8?58:90) + 4; // start col 4
+    } else {
+      r = e.period; c = e.group;
+    }
+    grid.push({e,r,c});
+  });
+  const cells = {};
+  grid.forEach(g=>cells[g.r+'_'+g.c]=g.e);
+  for(let r=1; r<=9; r++){
+    if(r===8){ // spacer row between period7 and f-block
+      for(let c=1;c<=18;c++){ const sp=document.createElement('div'); sp.className='spacer'; sp.style.gridRow=r; sp.style.gridColumn=c; ptGrid.appendChild(sp);} 
+      continue;
+    }
+    for(let c=1;c<=18;c++){
+      const key=r+'_'+c;
+      const wrapperRow = r>7? r : r; // rows 8,9 used for f-block visually placed after row 7 with gap via CSS row index shift
+    }
+  }
+  // simpler: iterate periods 1-7 directly by grid-row = period, then f-block rows 8 & 9 -> visually place as rows 9 &10 with blank row 8
+  ptGrid.innerHTML='';
+  ptGrid.style.gridTemplateRows = 'repeat(10, minmax(30px,1fr))';
+  for(let r=1;r<=7;r++){
+    for(let c=1;c<=18;c++){
+      const e = cells[r+'_'+c];
+      appendCell(e, r, c);
+    }
+  }
+  for(let c=1;c<=18;c++){ appendCell(null, 8, c, true); }
+  ELEMENTS.filter(e=>e.cat==='lanth').forEach(e=>{ appendCell(e, 9, e.z-58+4); });
+  ELEMENTS.filter(e=>e.cat==='actin').forEach(e=>{ appendCell(e, 10, e.z-90+4); });
+}
+function appendCell(e, r, c, spacer){
+  const div=document.createElement('div');
+  div.style.gridRow=r; div.style.gridColumn=c;
+  if(spacer || !e){ div.className='spacer'; ptGrid.appendChild(div); return; }
+  div.className='cell';
+  div.style.background=CAT_COLOR[e.cat];
+  div.dataset.sym=e.sym;
+  div.innerHTML = `<span class="z">${e.z}</span><span>${e.sym}</span>`;
+  div.addEventListener('click', ()=>openModal(e));
+  ptGrid.appendChild(div);
+}
+renderTable();
+
+// legend
+const legend = document.getElementById('ptLegend');
+Object.keys(CAT_LABEL).forEach(k=>{
+  if(k==='unknown') return;
+  const s=document.createElement('span');
+  s.innerHTML = `<i style="background:${CAT_COLOR[k]}"></i>${CAT_LABEL[k]}`;
+  legend.appendChild(s);
+});
+
+// mode toggle: category / period / group highlight
+document.querySelectorAll('.pt-controls .pill-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.pt-controls .pill-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const mode = btn.dataset.mode;
+    document.querySelectorAll('#ptGrid .cell').forEach(c=>c.classList.remove('dim'));
+    if(mode==='category') return;
+    // for period/group modes, just add a subtle instruction (hover-driven handled below)
+  });
+});
+ptGrid.addEventListener('mouseover', (ev)=>{
+  const cell = ev.target.closest('.cell');
+  const activeMode = document.querySelector('.pt-controls .pill-btn.active').dataset.mode;
+  if(!cell || activeMode==='category') return;
+  const e = bySym[cell.dataset.sym];
+  document.querySelectorAll('#ptGrid .cell').forEach(c=>{
+    const ce = bySym[c.dataset.sym];
+    const match = activeMode==='period' ? ce.period===e.period : ce.group===e.group && e.group!==0;
+    c.classList.toggle('dim', !match);
+  });
+});
+ptGrid.addEventListener('mouseleave', ()=>{
+  const activeMode = document.querySelector('.pt-controls .pill-btn.active').dataset.mode;
+  if(activeMode!=='category') document.querySelectorAll('#ptGrid .cell').forEach(c=>c.classList.remove('dim'));
+});
+
+/* ======================================================================
+   MODAL
+====================================================================== */
+const modalBg=document.getElementById('modalBg');
+function openModal(e){
+  document.getElementById('mSym').style.background=CAT_COLOR[e.cat];
+  document.getElementById('mSym').textContent=e.sym;
+  document.getElementById('mName').textContent = `${e.name} (${e.sym})`;
+  document.getElementById('mCat').textContent = CAT_LABEL[e.cat];
+  document.getElementById('mZ').textContent = e.z;
+  document.getElementById('mMass').textContent = e.mass;
+  document.getElementById('mPeriod').textContent = e.period<=7? e.period : '—';
+  document.getElementById('mGroup').textContent = groupLabel(e);
+  const shellsWrap = document.getElementById('mShells');
+  if(e.shells){
+    shellsWrap.innerHTML = `توزيع الإلكترونات على المستويات: <b>${e.shells.join(' — ')}</b> &nbsp;|&nbsp; إلكترونات التكافؤ: <b>${valenceOf(e)}</b>`;
+    buildAtom(document.getElementById('mAtom'), e.shells, {size:220});
+  } else {
+    shellsWrap.innerHTML = `التوزيع الإلكتروني التفصيلي لهذا العنصر خارج نطاق منهاج الصف الثامن.`;
+    buildAtom(document.getElementById('mAtom'), [], {size:220});
+  }
+  modalBg.classList.add('show');
+}
+document.getElementById('modalClose').addEventListener('click', ()=>modalBg.classList.remove('show'));
+modalBg.addEventListener('click', (e)=>{ if(e.target===modalBg) modalBg.classList.remove('show'); });
+
+/* ======================================================================
+   FAMILY CARDS
+====================================================================== */
+const FAMILIES = [
+  {cat:'alkali', title:'المجموعة الأولى (IA) — الفلزّات القلوية', ex:['Li','Na','K','Rb','Cs','Fr'],
+   desc:'تبدأ بعنصر الليثيوم Li وتنتهي بعنصر الفرانسيوم Fr. لكل عناصرها إلكترون تكافؤ واحد، لذلك تشترك في نشاط كيميائي مرتفع وسهولة التفاعل.'},
+  {cat:'alkaline', title:'المجموعة الثانية (IIA) — الفلزّات القلوية الترابية', ex:['Be','Mg','Ca','Sr','Ba','Ra'],
+   desc:'تبدأ بعنصر البيريليوم Be وتنتهي بعنصر الراديوم Ra. لكل عناصرها إلكترونا تكافؤ، وتوجد بكثرة في القشرة الأرضية على هيئة مركّبات.'},
+  {cat:'halogen', title:'المجموعة السابعة (VIIA) — الهالوجينات', ex:['F','Cl','Br','I','At'],
+   desc:'عناصر نشيطة كيميائيًا، لا توجد حرّة في الطبيعة بل على شكل مركّبات، وتتدرّج حالتها الفيزيائية من الغازية (F, Cl) إلى السائلة (Br) فالصلبة (I, At).'},
+  {cat:'noble', title:'المجموعة الثامنة عشرة (VIIIA) — الغازات النبيلة', ex:['He','Ne','Ar','Kr','Xe','Rn'],
+   desc:'تبدأ بالهيليوم وتنتهي بالرادون. مستوى طاقتها الأخير مكتمل بالإلكترونات، لذلك لا تتفاعل مع العناصر الأخرى في الظروف الطبيعية، وتوصف بأنها مستقرّة.'},
+  {cat:'transition', title:'الفلزّات الانتقالية (B)', ex:['Sc','Fe','Cu','Zn','Ag','Au'],
+   desc:'تقع في وسط الجدول الدوري بين المجموعتين IIA و IIIA، وتشمل معادن مألوفة كالحديد والنحاس والذهب والفضّة، وتستخدم في الصناعة بكثرة.'},
+];
+const famGrid=document.getElementById('famGrid');
+FAMILIES.forEach(f=>{
+  const card=document.createElement('div');
+  card.className='card fam-card';
+  card.innerHTML = `
+    <span class="fam-tag" style="background:${CAT_COLOR[f.cat]}">${CAT_LABEL[f.cat]}</span>
+    <h3>${f.title}</h3>
+    <p>${f.desc}</p>
+    <div class="fam-elements">${f.ex.map(s=>`<span class="mini-el" style="background:${CAT_COLOR[bySym[s].cat]}" title="${bySym[s].name}">${s}</span>`).join('')}</div>
+  `;
+  famGrid.appendChild(card);
+});
+
+/* ======================================================================
+   VIRTUAL LAB
+====================================================================== */
+const LAB_SET = ['Li','Be','Na','Mg','K','Ca','F','Cl','Br','I','He','Ne','Ar','Kr','Xe','Rb','Sr','Cs','Ba','Sc','Fe','Cu','Zn','B','C','N','O','S','Al','Si'];
+const labSelect=document.getElementById('labSelect');
+LAB_SET.forEach(sym=>{
+  const e=bySym[sym];
+  const opt=document.createElement('option');
+  opt.value=sym;
+  opt.textContent=`${e.name} (${sym}) — العدد الذرّي ${e.z}`;
+  labSelect.appendChild(opt);
+});
+let currentLabEl = null;
+function loadLabElement(sym){
+  currentLabEl = bySym[sym];
+  buildAtom(document.getElementById('labAtom'), currentLabEl.shells, {size:280});
+  document.getElementById('labElName').textContent = `${currentLabEl.name} — رمزه ${currentLabEl.sym}`;
+  ['qPeriod','qValence','qAtomic','qGroup'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('qFeedback').textContent='';
+  document.getElementById('conclusionBox').classList.remove('show');
+}
+labSelect.addEventListener('change', e=>loadLabElement(e.target.value));
+loadLabElement(LAB_SET[0]);
+
+document.getElementById('checkBtn').addEventListener('click', ()=>{
+  const e=currentLabEl;
+  const p = document.getElementById('qPeriod').value.trim();
+  const v = document.getElementById('qValence').value.trim();
+  const a = document.getElementById('qAtomic').value.trim();
+  const g = document.getElementById('qGroup').value.trim().toUpperCase().replace(/\s/g,'');
+  const correctP = String(e.shells.length);
+  const correctV = String(valenceOf(e));
+  const correctA = String(e.z);
+  const correctG = groupLabel(e).toUpperCase();
+  const ok = p===correctP && v===correctV && a===correctA && g===correctG;
+  const fb=document.getElementById('qFeedback');
+  if(ok){
+    fb.textContent='✔ ممتاز! جميع إجاباتك صحيحة.';
+    fb.className='q-feedback ok';
+  } else {
+    fb.textContent = `✘ راجع إجاباتك — الدورة: ${correctP} | التكافؤ: ${correctV} | العدد الذرّي: ${correctA} | المجموعة: ${correctG}`;
+    fb.className='q-feedback bad';
+  }
+  const box=document.getElementById('conclusionBox');
+  box.innerHTML = `<b>الاستنتاج:</b> عدد مستويات الطاقة المشغولة بالإلكترونات في ذرّة <b>${e.name}</b> يساوي <b>${correctP}</b>، وهو نفسه <b>رقم الدورة</b> التي يقع فيها العنصر. كما أنّ عدد إلكترونات التكافؤ (<b>${correctV}</b>) يرتبط مباشرة برقم المجموعة (<b>${correctG}</b>). هكذا: لتحديد موقع أي عنصر بدقّة في الجدول الدوري، يكفي معرفة توزيعه الإلكتروني!`;
+  box.classList.add('show');
+});
+
+/* ---------- locate quiz ---------- */
+const LOCATE_POOL = ['Li','Na','K','Be','Mg','Ca','F','Cl','Br','He','Ne','Ar','Kr'];
+let locateScore=0, locateTotal=0, locateAnswer=null;
+function newLocateQ(){
+  document.querySelectorAll('.choice-btn').forEach(b=>b.remove());
+  const sym = LOCATE_POOL[Math.floor(Math.random()*LOCATE_POOL.length)];
+  const e = bySym[sym];
+  locateAnswer = sym;
+  document.getElementById('locateQ').textContent = `عنصر يقع في الدورة ${e.shells.length} والمجموعة ${groupLabel(e)}، فما هو هذا العنصر؟`;
+  const choices = new Set([sym]);
+  while(choices.size<4){ choices.add(LOCATE_POOL[Math.floor(Math.random()*LOCATE_POOL.length)]); }
+  const arr = Array.from(choices).sort(()=>Math.random()-.5);
+  const wrap = document.getElementById('locateChoices');
+  wrap.innerHTML='';
+  arr.forEach(s=>{
+    const b=document.createElement('button');
+    b.className='choice-btn';
+    b.textContent = `${bySym[s].name} (${s})`;
+    b.addEventListener('click', ()=>{
+      document.querySelectorAll('.choice-btn').forEach(x=>x.disabled=true);
+      locateTotal++;
+      if(s===locateAnswer){ b.classList.add('correct'); locateScore++; }
+      else {
+        b.classList.add('wrong');
+        wrap.querySelectorAll('.choice-btn').forEach(x=>{ if(x.textContent.includes('('+locateAnswer+')')) x.classList.add('correct'); });
+      }
+      document.getElementById('locateScore').textContent = `النتيجة: ${locateScore} / ${locateTotal}`;
+    });
+    wrap.appendChild(b);
+  });
+}
+document.getElementById('locateNext').addEventListener('click', newLocateQ);
+newLocateQ();
+
+/* ======================================================================
+   GAME
+====================================================================== */
+const GAME_ELS = {
+  alkali:['Li','Na','K'],
+  alkaline:['Be','Mg','Ca'],
+  halogen:['F','Cl'],
+  noble:['He','Ne','Ar']
+};
+const BIN_LABELS = {
+  alkali:'قلوية', alkaline:'أرضية قلوية', halogen:'هالوجينات', noble:'غازات نبيلة'
+};
+let gState = {score:0, time:60, timerId:null, playing:false, selectedTile:null, best:0, pool:[]};
+
+function buildPool(){
+  gState.pool=[];
+  Object.entries(GAME_ELS).forEach(([cat,syms])=>{
+    syms.forEach(s=>gState.pool.push({sym:s,cat}));
+  });
+  gState.pool.sort(()=>Math.random()-.5);
+}
+function renderBins(){
+  const wrap=document.getElementById('binsRow');
+  wrap.innerHTML='';
+  Object.entries(BIN_LABELS).forEach(([cat,label])=>{
+    const b=document.createElement('div');
+    b.className='bin';
+    b.dataset.cat=cat;
+    b.innerHTML=`<div class="bname">${label}</div><div class="bsub">اضغط بعد اختيار البطاقة</div>`;
+    b.addEventListener('click', ()=>submitAnswer(cat,b));
+    wrap.appendChild(b);
+  });
+}
+function renderTiles(){
+  const wrap=document.getElementById('tilesRow');
+  wrap.innerHTML='';
+  const visible = gState.pool.slice(0,6);
+  visible.forEach(item=>{
+    const e=bySym[item.sym];
+    const t=document.createElement('div');
+    t.className='g-tile';
+    t.style.background=CAT_COLOR[e.cat];
+    t.dataset.sym=item.sym; t.dataset.cat=item.cat;
+    t.innerHTML=`<span class="zz">${e.z}</span><span>${item.sym}</span>`;
+    t.addEventListener('click', ()=>{
+      document.querySelectorAll('.g-tile').forEach(x=>x.classList.remove('selected'));
+      t.classList.add('selected');
+      gState.selectedTile=t;
+    });
+    wrap.appendChild(t);
+  });
+  if(!gState.pool.length) endGame();
+}
+function submitAnswer(cat, binEl){
+  if(!gState.playing || !gState.selectedTile) return;
+  const tile=gState.selectedTile;
+  const correct = tile.dataset.cat===cat;
+  if(correct){
+    gState.score++;
+    binEl.classList.add('flash-ok');
+    tile.classList.add('fly-out');
+  } else {
+    gState.score=Math.max(0,gState.score-1);
+    binEl.classList.add('flash-bad');
+  }
+  setTimeout(()=>binEl.classList.remove('flash-ok','flash-bad'),400);
+  document.getElementById('gScore').textContent=gState.score;
+  const idx = gState.pool.findIndex(p=>p.sym===tile.dataset.sym);
+  if(idx>-1) gState.pool.splice(idx,1);
+  gState.selectedTile=null;
+  renderTiles();
+}
+function startGame(){
+  gState.score=0; gState.time=60; gState.playing=true;
+  buildPool();
+  document.getElementById('gameStart').classList.add('hidden');
+  document.getElementById('gameEnd').classList.add('hidden');
+  document.getElementById('gamePlay').classList.remove('hidden');
+  document.getElementById('gScore').textContent='0';
+  document.getElementById('gTime').textContent='60';
+  document.getElementById('gBest').textContent=gState.best;
+  document.getElementById('timerFill').style.width='100%';
+  renderBins();
+  renderTiles();
+  clearInterval(gState.timerId);
+  gState.timerId=setInterval(()=>{
+    gState.time--;
+    document.getElementById('gTime').textContent=gState.time;
+    document.getElementById('timerFill').style.width=(gState.time/60*100)+'%';
+    if(gState.time<=0) endGame();
+  },1000);
+}
+function endGame(){
+  gState.playing=false;
+  clearInterval(gState.timerId);
+  gState.best = Math.max(gState.best, gState.score);
+  document.getElementById('gamePlay').classList.add('hidden');
+  document.getElementById('gameEnd').classList.remove('hidden');
+  const title=document.getElementById('endTitle');
+  const sub=document.getElementById('endSub');
+  title.textContent = `انتهت اللعبة! نقاطك: ${gState.score}`;
+  if(gState.score>=20) sub.textContent='إتقان رائع للعائلات الكيميائية! أنت خبير في الجدول الدوري 🏆';
+  else if(gState.score>=10) sub.textContent='أداء جيّد جدًا، راجع العائلات الكيميائية أعلاه لتحسين نتيجتك.';
+  else sub.textContent='حاول مرّة أخرى بعد مراجعة قسم "العائلات الكيميائية" في الأعلى.';
+}
+document.getElementById('startGameBtn').addEventListener('click', startGame);
+document.getElementById('restartBtn').addEventListener('click', startGame);
+document.getElementById('playAgainBtn').addEventListener('click', startGame);
+
+</script>
+</body>
+</html>

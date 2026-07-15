@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>التردد الطبيعي والرنين</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1c1a15;
+    --paper:#f3ecda;
+    --paper-2:#e9dfc4;
+    --wood:#7c4a2d;
+    --wood-dark:#5a341f;
+    --brass:#c8a13a;
+    --brass-light:#e3c873;
+    --petrol:#1d4d4f;
+    --petrol-light:#2f7274;
+    --vermilion:#c0492f;
+    --line: rgba(28,26,21,0.14);
+    --shadow-soft: 0 18px 40px rgba(28,26,21,0.18);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Tajawal', sans-serif;
+    line-height:1.85;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4,.display{
+    font-family:'Cairo', sans-serif;
+    margin:0;
+  }
+  a{color:inherit;}
+  img{max-width:100%;display:block;}
+  button{font-family:inherit;cursor:pointer;border:none;}
+
+  /* texture */
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    background-image: radial-gradient(circle at 1px 1px, rgba(28,26,21,0.06) 1px, transparent 0);
+    background-size: 22px 22px;
+    pointer-events:none;
+    z-index:0;
+  }
+
+  .wrap{max-width:1180px;margin:0 auto;padding:0 28px;position:relative;z-index:1;}
+
+  /* ===== NAV ===== */
+  nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(243,236,218,0.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{
+    max-width:1180px;margin:0 auto;padding:14px 28px;
+    display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  }
+  .brand{display:flex;align-items:center;gap:10px;font-family:'Cairo';font-weight:700;font-size:1.05rem;}
+  .brand .fork-mini{width:20px;height:30px;}
+  .nav-links{display:flex;gap:6px;flex-wrap:wrap;}
+  .nav-links a{
+    font-size:0.92rem;font-weight:500;padding:8px 14px;border-radius:999px;
+    text-decoration:none;color:var(--ink);transition:.2s;
+    border:1px solid transparent;
+  }
+  .nav-links a:hover{background:var(--petrol);color:var(--paper);border-color:var(--petrol);}
+
+  /* ===== HERO ===== */
+  .hero{
+    position:relative;
+    padding:88px 0 70px;
+    overflow:hidden;
+    background:
+      radial-gradient(ellipse at 80% -10%, rgba(200,161,58,0.22), transparent 55%),
+      radial-gradient(ellipse at -5% 110%, rgba(29,77,79,0.18), transparent 55%);
+  }
+  .hero-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:56px;align-items:center;}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:0.82rem;font-weight:700;letter-spacing:.04em;
+    color:var(--petrol);background:rgba(29,77,79,0.09);
+    padding:7px 14px;border-radius:999px;margin-bottom:18px;
+  }
+  .eyebrow span.dot{width:7px;height:7px;border-radius:50%;background:var(--vermilion);}
+  h1.title{font-size:clamp(2.1rem,4.2vw,3.4rem);font-weight:900;line-height:1.25;color:var(--ink);}
+  h1.title em{font-style:normal;color:var(--vermilion);}
+  .hero p.lead{font-size:1.12rem;color:#4a4437;max-width:55ch;margin-top:18px;}
+  .hero-meta{display:flex;gap:22px;margin-top:30px;flex-wrap:wrap;}
+  .meta-pill{
+    background:var(--paper-2);border:1px solid var(--line);padding:10px 16px;border-radius:14px;
+    font-size:0.86rem;font-weight:500;
+  }
+  .meta-pill b{display:block;font-family:'Cairo';font-weight:700;font-size:0.95rem;color:var(--wood-dark);}
+  .cta-row{display:flex;gap:14px;margin-top:34px;flex-wrap:wrap;}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:14px 26px;border-radius:14px;font-weight:700;font-size:1rem;
+    text-decoration:none;transition:.2s transform, .2s box-shadow;
+  }
+  .btn-primary{background:var(--petrol);color:var(--paper);box-shadow:0 10px 24px rgba(29,77,79,0.35);}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(29,77,79,0.42);}
+  .btn-ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line);}
+  .btn-ghost:hover{border-color:var(--ink);}
+
+  /* hero fork visual */
+  .hero-visual{position:relative;display:flex;justify-content:center;align-items:center;height:380px;}
+  .ring{
+    position:absolute;border-radius:50%;border:2px solid var(--petrol-light);
+    opacity:0;
+  }
+  .hero-visual .stage{position:relative;}
+  .fork-svg{width:170px;filter:drop-shadow(0 18px 18px rgba(28,26,21,0.25));}
+  .hero-hint{
+    position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);
+    font-size:0.8rem;color:#6b6354;background:var(--paper);padding:4px 12px;border-radius:999px;border:1px solid var(--line);
+    white-space:nowrap;
+  }
+
+  @keyframes ringOut{
+    0%{transform:scale(0.3);opacity:.55;}
+    100%{transform:scale(2.6);opacity:0;}
+  }
+  .ring.anim{animation:ringOut 1.6s ease-out infinite;}
+  .ring.r2{animation-delay:.5s;}
+  .ring.r3{animation-delay:1s;}
+
+  @keyframes forkShake{
+    0%,100%{transform:rotate(0deg);}
+    25%{transform:rotate(1.6deg);}
+    50%{transform:rotate(0deg);}
+    75%{transform:rotate(-1.6deg);}
+  }
+  .fork-svg.vibrate .tines{animation:forkShake .065s linear infinite;transform-origin: 50% 78%;}
+
+  /* ===== SECTION shells ===== */
+  section{padding:78px 0;position:relative;z-index:1;}
+  .section-head{max-width:680px;margin-bottom:44px;}
+  .kicker{
+    font-size:0.8rem;font-weight:700;color:var(--vermilion);letter-spacing:.06em;
+    display:flex;align-items:center;gap:10px;margin-bottom:10px;
+  }
+  .kicker::before{content:"";width:26px;height:2px;background:var(--vermilion);display:inline-block;}
+  h2.section-title{font-size:clamp(1.6rem,3vw,2.3rem);font-weight:800;}
+  .section-sub{color:#4a4437;margin-top:12px;font-size:1.02rem;}
+
+  /* ===== Concept cards ===== */
+  .concept-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+  .concept-card{
+    background:var(--paper-2);border:1px solid var(--line);border-radius:22px;
+    padding:30px 28px;position:relative;overflow:hidden;
+  }
+  .concept-card::after{
+    content:"";position:absolute;inset:0;border-radius:22px;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.4);pointer-events:none;
+  }
+  .concept-card .num{
+    font-family:'Cairo';font-weight:900;font-size:0.85rem;color:var(--brass);
+    background:var(--wood-dark);width:34px;height:34px;border-radius:10px;
+    display:flex;align-items:center;justify-content:center;margin-bottom:18px;
+  }
+  .concept-card h3{font-size:1.3rem;font-weight:800;margin-bottom:10px;}
+  .concept-card p{color:#4a4437;font-size:0.98rem;}
+  .concept-card .formula{
+    margin-top:16px;background:var(--paper);border:1px dashed var(--line);
+    border-radius:12px;padding:12px 16px;font-family:'Cairo';font-weight:700;
+    color:var(--petrol);direction:ltr;text-align:center;font-size:1.05rem;
+  }
+
+  /* ===== examples ===== */
+  .examples-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  .ex-card{
+    background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:24px;
+    transition:.2s transform;
+  }
+  .ex-card:hover{transform:translateY(-4px);}
+  .ex-icon{
+    width:46px;height:46px;border-radius:12px;background:var(--petrol);color:var(--paper);
+    display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:1.3rem;
+  }
+  .ex-card h4{font-size:1.05rem;font-weight:700;margin-bottom:8px;}
+  .ex-card p{font-size:0.92rem;color:#4a4437;}
+
+  /* ===== LAB ===== */
+  .lab-section{
+    background:linear-gradient(180deg, var(--wood-dark), #3e2515);
+    border-radius:34px;
+    color:var(--paper);
+    margin:0 0 90px;
+    padding:54px 0 60px;
+    position:relative;
+    overflow:hidden;
+  }
+  .lab-section::before{
+    content:"";position:absolute;inset:0;
+    background-image:repeating-linear-gradient(90deg, rgba(255,255,255,0.025) 0 2px, transparent 2px 38px);
+    pointer-events:none;
+  }
+  .lab-section .section-head .kicker{color:var(--brass-light);}
+  .lab-section .kicker::before{background:var(--brass-light);}
+  .lab-section h2.section-title{color:var(--paper);}
+  .lab-section .section-sub{color:#d8cdb4;}
+
+  .lab-card{
+    background:rgba(243,236,218,0.06);
+    border:1px solid rgba(243,236,218,0.18);
+    border-radius:26px;
+    padding:30px;
+    backdrop-filter:blur(4px);
+  }
+
+  .lab-controls{
+    display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-bottom:30px;
+  }
+  .chip-group{display:flex;gap:10px;flex-wrap:wrap;}
+  .chip{
+    padding:9px 16px;border-radius:999px;background:rgba(243,236,218,0.1);
+    border:1px solid rgba(243,236,218,0.25);font-size:0.88rem;font-weight:600;color:var(--paper);
+    transition:.2s;
+  }
+  .chip.active{background:var(--brass);color:var(--wood-dark);border-color:var(--brass);}
+
+  .bench{
+    position:relative;
+    background:
+      linear-gradient(180deg, #ad8550, #8a6238 55%, #6e4c2a);
+    border-radius:20px;
+    padding:50px 5%;
+    min-height:340px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:40px;
+    align-items:end;
+    box-shadow: inset 0 4px 18px rgba(0,0,0,0.35);
+  }
+  .station{
+    display:flex;flex-direction:column;align-items:center;gap:12px;position:relative;
+  }
+  .station .label{
+    font-family:'Cairo';font-weight:700;font-size:0.92rem;color:var(--paper);
+    background:rgba(0,0,0,0.28);padding:5px 14px;border-radius:999px;
+  }
+  .station .freq-tag{font-size:0.78rem;color:var(--brass-light);font-weight:600;direction:ltr;}
+  .fork-stand{width:140px;height:170px;position:relative;}
+  .fork-svg2{width:100%;filter:drop-shadow(0 14px 12px rgba(0,0,0,0.4));}
+  .fork-svg2.vibrate .tines{animation:forkShake .065s linear infinite;transform-origin:50% 78%;}
+  .box-res{
+    width:118px;height:64px;
+    background:linear-gradient(180deg,#8b5a2b,#5a341f);
+    border-radius:6px;
+    border:2px solid #3f2716;
+    box-shadow:0 10px 16px rgba(0,0,0,0.35), inset 0 2px 4px rgba(255,255,255,0.15);
+    position:relative;margin-top:-8px;
+  }
+  .box-res::before{
+    content:"";position:absolute;inset:8px 14px;
+    background:#2a1a0e;border-radius:3px;
+  }
+  .ring2{
+    position:absolute;top:6px;left:50%;transform:translateX(-50%);
+    border-radius:50%;border:2px solid rgba(227,200,115,0.8);opacity:0;
+  }
+  .ring2.anim{animation:ringOut2 1.4s ease-out infinite;}
+  .ring2.r2{animation-delay:.45s;}
+  @keyframes ringOut2{
+    0%{transform:translateX(-50%) scale(0.25);opacity:.6;}
+    100%{transform:translateX(-50%) scale(2.4);opacity:0;}
+  }
+  .hammer-btn{
+    margin-top:6px;
+    display:flex;align-items:center;gap:8px;
+    background:var(--brass);color:var(--wood-dark);
+    padding:11px 20px;border-radius:12px;font-weight:800;font-family:'Cairo';font-size:0.92rem;
+    box-shadow:0 8px 18px rgba(0,0,0,0.35);
+    transition:.15s;
+  }
+  .hammer-btn:hover{transform:translateY(-2px);}
+  .hammer-btn:active{transform:translateY(1px) scale(.98);}
+  .hammer-btn:disabled{opacity:.45;cursor:not-allowed;transform:none;}
+  .hammer-emoji{display:inline-block;}
+  .hammer-emoji.swing{animation:swing .35s ease-in-out;}
+  @keyframes swing{
+    0%{transform:rotate(0deg);}
+    35%{transform:rotate(-45deg);}
+    60%{transform:rotate(10deg);}
+    100%{transform:rotate(0deg);}
+  }
+
+  .status-line{
+    margin-top:26px;background:rgba(0,0,0,0.25);border-radius:14px;padding:16px 20px;
+    font-size:0.95rem;min-height:24px;color:var(--paper);
+    border:1px solid rgba(243,236,218,0.15);
+  }
+  .status-line b{color:var(--brass-light);}
+
+  .obs-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:22px;}
+  .obs-box{
+    background:rgba(243,236,218,0.07);border:1px solid rgba(243,236,218,0.18);
+    border-radius:14px;padding:16px 18px;
+  }
+  .obs-box h5{font-family:'Cairo';font-size:0.95rem;font-weight:700;margin-bottom:8px;color:var(--brass-light);}
+  .obs-box p{font-size:0.88rem;color:#e6dec8;margin:0;}
+
+  /* ===== conclusions / quiz ===== */
+  .conclusion-list{display:flex;flex-direction:column;gap:18px;}
+  .ccard{
+    background:var(--paper-2);border:1px solid var(--line);border-radius:18px;padding:22px 24px;
+    display:flex;gap:18px;align-items:flex-start;
+  }
+  .ccard .ic{
+    flex:0 0 auto;width:38px;height:38px;border-radius:10px;background:var(--vermilion);color:var(--paper);
+    display:flex;align-items:center;justify-content:center;font-weight:800;font-family:'Cairo';
+  }
+  .ccard .body{flex:1;}
+  .ccard p.q{font-weight:600;margin-bottom:10px;}
+  .blank-input{
+    width:100%;border:1px solid var(--line);border-radius:10px;padding:10px 14px;
+    font-family:'Tajawal';font-size:0.95rem;background:#fffefa;
+  }
+  .check-btn{
+    margin-top:10px;background:var(--petrol);color:var(--paper);padding:9px 18px;
+    border-radius:10px;font-weight:700;font-size:0.86rem;
+  }
+  .feedback{margin-top:10px;font-size:0.88rem;display:none;padding:10px 14px;border-radius:10px;}
+  .feedback.ok{display:block;background:rgba(29,77,79,0.12);color:var(--petrol);}
+  .feedback.no{display:block;background:rgba(192,73,47,0.12);color:var(--vermilion);}
+
+  footer{
+    padding:40px 0 60px;text-align:center;color:#6b6354;font-size:0.85rem;
+    border-top:1px solid var(--line);
+  }
+
+  @media (max-width:880px){
+    .hero-grid{grid-template-columns:1fr;}
+    .concept-grid{grid-template-columns:1fr;}
+    .examples-grid{grid-template-columns:1fr;}
+    .bench{grid-template-columns:1fr;justify-items:center;}
+    .obs-grid{grid-template-columns:1fr;}
+    .hero-visual{height:260px;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition:none !important;}
+  }
+
+  :focus-visible{outline:3px solid var(--vermilion);outline-offset:2px;}
+
+  /* ═══ RESPONSIVE MOBILE & TABLET — AUTO-INJECTED ═══ */
+  @media (max-width: 768px) {
+    body { padding: 8px !important; font-size: 15px !important; overflow-x: hidden !important; }
+    .container, [class*="container"], [class*="wrapper"] { padding: 8px !important; max-width: 100% !important; }
+    canvas { width: 100% !important; height: auto !important; display: block !important; touch-action: none; max-width: 100% !important; }
+    svg { max-width: 100% !important; height: auto !important; }
+    h1 { font-size: clamp(18px, 5vw, 32px) !important; }
+    h2 { font-size: clamp(16px, 4vw, 26px) !important; }
+    h3 { font-size: clamp(14px, 3.5vw, 22px) !important; }
+    p, li, td, th, label, span { font-size: clamp(13px, 3.5vw, 16px) !important; }
+    [class*="grid"] { grid-template-columns: 1fr !important; }
+    [class*="flex"] { flex-wrap: wrap !important; }
+    input[type="range"] { width: 100% !important; min-height: 36px; }
+    input[type="number"], input[type="text"], select, textarea { 
+      font-size: 16px !important; width: 100% !important; box-sizing: border-box; padding: 8px !important;
+    }
+    button { min-height: 44px !important; font-size: 14px !important; touch-action: manipulation; padding: 10px 14px !important; }
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 13px !important; }
+    th, td { padding: 6px 4px !important; white-space: nowrap; }
+    [style*="display: grid"], [style*="display:grid"] { display: flex !important; flex-direction: column !important; }
+    .lab-window, [class*="lab-window"] { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+    header { padding: 12px !important; }
+    .controls, [class*="controls"] { flex-direction: column !important; gap: 8px !important; }
+  }
+  @media (max-width: 480px) {
+    body { padding: 4px !important; }
+    h1 { font-size: clamp(16px, 5vw, 24px) !important; }
+    button { width: 100% !important; }
+  }
+  /* ═══ END RESPONSIVE ═══ */
+</style>
+</head>
+<body>
+
+<style>
+.vlab-back-btn {
+  position: fixed; top: 10px; left: 10px; z-index: 99999;
+  background: rgba(10,22,40,0.93); border: 1px solid rgba(0,200,150,0.4);
+  border-radius: 22px; padding: 8px 16px;
+  display: inline-flex; align-items: center; gap: 7px;
+  color: #00C896; font-family: Tajawal, Cairo, Arial, sans-serif;
+  font-size: 13px; font-weight: 700; text-decoration: none;
+  backdrop-filter: blur(8px); box-shadow: 0 4px 18px rgba(0,0,0,0.3);
+  transition: background 0.2s;
+}
+.vlab-back-btn:hover { background: rgba(0,200,150,0.18); color: #00C896; }
+</style>
+
+<a href="../grade8.html" class="vlab-back-btn">&#8594; العودة للصف</a>
+
+
+<nav>
+  <div class="nav-inner">
+    <div class="brand">
+      <svg class="fork-mini" viewBox="0 0 40 70" fill="none"><path d="M10 4 L10 38 M30 4 L30 38" stroke="#c8a13a" stroke-width="5" stroke-linecap="round"/><path d="M10 38 Q10 50 20 50 Q30 50 30 38" stroke="#c8a13a" stroke-width="5" fill="none" stroke-linecap="round"/><rect x="17" y="50" width="6" height="18" rx="2" fill="#c8a13a"/></svg>
+      مختبر الرنين الافتراضي
+    </div>
+    <div class="nav-links">
+      <a href="#concepts">المفاهيم</a>
+      <a href="#examples">أمثلة من حياتنا</a>
+      <a href="#lab">المختبر الافتراضي</a>
+      <a href="#conclusions">الاستنتاجات</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow"><span class="dot"></span> العلوم والحياة · الصف الثامن · فلسطين</div>
+      <h1 class="title">التردد الطبيعي <br> و<em>الرنين</em></h1>
+      <p class="lead">لكل جسمٍ تردُّدٌ خاص به يُسمّى التردد الطبيعي. وحين يهتزّ جسمٌ بمقدارٍ مساوٍ للتردد الطبيعي لجسمٍ آخر قريب منه، فإنّ الجسم الآخر يبدأ بالاهتزاز أيضاً — وهذا ما يُسمّى الرنين. جرّب الظاهرة بنفسك في المختبر أدناه.</p>
+      <div class="hero-meta">
+        <div class="meta-pill"><b>نشاط (٩)</b>التردد الطبيعي والرنين</div>
+        <div class="meta-pill"><b>الأدوات</b>شوكتان رنّانتان + صندوقا رنين</div>
+        <div class="meta-pill"><b>المدة</b>١٥ – ٢٠ دقيقة</div>
+      </div>
+      <div class="cta-row">
+        <a href="#lab" class="btn btn-primary">🔨 ابدأ التجربة الآن</a>
+        <a href="#concepts" class="btn btn-ghost">اقرأ الشرح أولاً</a>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="stage">
+        <div class="ring" style="width:200px;height:200px;"></div>
+        <div class="ring r2" style="width:200px;height:200px;"></div>
+        <div class="ring r3" style="width:200px;height:200px;"></div>
+        <svg id="heroFork" class="fork-svg" viewBox="0 0 120 220" fill="none">
+          <g class="tines">
+            <path d="M30 10 L30 130" stroke="#c8a13a" stroke-width="14" stroke-linecap="round"/>
+            <path d="M90 10 L90 130" stroke="#c8a13a" stroke-width="14" stroke-linecap="round"/>
+            <path d="M30 130 Q30 160 60 160 Q90 160 90 130" stroke="#c8a13a" stroke-width="14" fill="none" stroke-linecap="round"/>
+          </g>
+          <rect x="50" y="160" width="20" height="55" rx="4" fill="#9c7a2b"/>
+        </svg>
+        <div class="hero-hint">اضغط لتشغيل الشوكة 👆</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ===== CONCEPTS ===== -->
+  <section id="concepts">
+    <div class="section-head">
+      <div class="kicker">المفاهيم الأساسية</div>
+      <h2 class="section-title">قبل أن نجرّب… ماذا نعني بهذه المصطلحات؟</h2>
+      <p class="section-sub">كلّ جسم في الكون له طريقته الخاصة في الاهتزاز. فهم هذه الفكرة هو مفتاح تفسير الرنين.</p>
+    </div>
+    <div class="concept-grid">
+      <div class="concept-card">
+        <div class="num">١</div>
+        <h3>التردد الطبيعي</h3>
+        <p>هو التردد الذي يهتزّ به الجسم اهتزازاً حرّاً دون أيّ تأثير خارجي مستمر، ويعتمد على خصائص الجسم نفسه: شكله، وكتلته، ومادته. لكلّ جسم تردّدٌ طبيعي خاص به — تماماً كبصمة الإصبع.</p>
+        <div class="formula">f<sub>طبيعي</sub> ⟵ خاصيّة ذاتية للجسم</div>
+      </div>
+      <div class="concept-card">
+        <div class="num">٢</div>
+        <h3>الرنين</h3>
+        <p>يحدث الرنين عندما يهتزّ جسمٌ بفعل قوة دورية مصدرها جسمٌ آخر يهتزّ بنفس تردده الطبيعي تماماً. عندئذٍ يبدأ الجسم الأول بالاهتزاز بأقصى سعة ممكنة، حتى دون ملامسة مباشرة بين الجسمين.</p>
+        <div class="formula">f<sub>المصدر</sub> = f<sub>الطبيعي للمستقبل</sub> ⟵ رنين</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== EXAMPLES ===== -->
+  <section id="examples">
+    <div class="section-head">
+      <div class="kicker">من واقع حياتنا</div>
+      <h2 class="section-title">الرنين ليس ظاهرة مختبرية فقط</h2>
+      <p class="section-sub">استند إلى ما تتعلّمه في المختبر لتفسّر هذه المواقف اليومية.</p>
+    </div>
+    <div class="examples-grid">
+      <div class="ex-card">
+        <div class="ex-icon">🪖</div>
+        <h4>الجنود ومنع السير المنتظم</h4>
+        <p>يُمنع قائد الجنود جنوده من السير بخطىً منتظمة فوق الجسور؛ لأنّ الخطى المتزامنة قد تُحدث قوة دورية تُطابق التردد الطبيعي للجسر فيهتزّ بعنف.</p>
+      </div>
+      <div class="ex-card">
+        <div class="ex-icon">🥂</div>
+        <h4>كسر الزجاج بالصوت</h4>
+        <p>بعض الانفجارات الصوتية القوية تُصدر تردداً يُطابق التردد الطبيعي لزجاج النوافذ، فتهتزّ بشدة حتى تتحدّث خارج المنزل وتُكسَر.</p>
+      </div>
+      <div class="ex-card">
+        <div class="ex-icon">🎸</div>
+        <h4>الآلات الموسيقية</h4>
+        <p>صندوق الرنين في الآلات الوترية (كالعود والغيتار) يضخّم الصوت لأنّ الهواء بداخله يرنّ مع تردد الوتر المهتزّ.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== LAB ===== -->
+  <section id="lab" class="lab-section">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="kicker">نشاط (٩) — تنفيذ عملي</div>
+        <h2 class="section-title">المختبر الافتراضي: التردد الطبيعي والرنين</h2>
+        <p class="section-sub">اضرب الشوكة الرنّانة الأولى بالمطرقة، وراقب وتسمّع ماذا يحدث للشوكة الثانية الموضوعة على مسافة قريبة منها.</p>
+      </div>
+
+      <div class="lab-card">
+        <div class="lab-controls">
+          <span style="font-weight:700;font-family:'Cairo';font-size:0.92rem;">اختر الشوكة الثانية:</span>
+          <div class="chip-group">
+            <button class="chip active" id="chipSame" type="button">شوكة مطابقة (٤٤٠ هرتز)</button>
+            <button class="chip" id="chipDiff" type="button">شوكة مختلفة (٥٢٣ هرتز)</button>
+          </div>
+        </div>
+
+        <div class="bench">
+          <div class="station">
+            <span class="label">الشوكة (أ) — المصدر</span>
+            <span class="freq-tag">440 Hz</span>
+            <div class="fork-stand">
+              <div class="ring2" style="width:80px;height:80px;"></div>
+              <div class="ring2 r2" style="width:80px;height:80px;"></div>
+              <svg id="forkA" class="fork-svg2" viewBox="0 0 120 220" fill="none">
+                <g class="tines">
+                  <path d="M30 10 L30 130" stroke="#e3c873" stroke-width="14" stroke-linecap="round"/>
+                  <path d="M90 10 L90 130" stroke="#e3c873" stroke-width="14" stroke-linecap="round"/>
+                  <path d="M30 130 Q30 160 60 160 Q90 160 90 130" stroke="#e3c873" stroke-width="14" fill="none" stroke-linecap="round"/>
+                </g>
+                <rect x="50" y="160" width="20" height="55" rx="4" fill="#a9852f"/>
+              </svg>
+            </div>
+            <div class="box-res"></div>
+            <button class="hammer-btn" id="strikeBtn" type="button"><span class="hammer-emoji" id="hammerIcon">🔨</span> اضرب الشوكة (أ)</button>
+          </div>
+
+          <div class="station">
+            <span class="label" id="labelB">الشوكة (ب) — المستقبِلة</span>
+            <span class="freq-tag" id="freqB">440 Hz</span>
+            <div class="fork-stand">
+              <div class="ring2" id="ring2b" style="width:80px;height:80px;"></div>
+              <div class="ring2 r2" id="ring2b2" style="width:80px;height:80px;"></div>
+              <svg id="forkB" class="fork-svg2" viewBox="0 0 120 220" fill="none">
+                <g class="tines">
+                  <path d="M30 10 L30 130" stroke="#e3c873" stroke-width="14" stroke-linecap="round"/>
+                  <path d="M90 10 L90 130" stroke="#e3c873" stroke-width="14" stroke-linecap="round"/>
+                  <path d="M30 130 Q30 160 60 160 Q90 160 90 130" stroke="#e3c873" stroke-width="14" fill="none" stroke-linecap="round"/>
+                </g>
+                <rect x="50" y="160" width="20" height="55" rx="4" fill="#a9852f"/>
+              </svg>
+            </div>
+            <div class="box-res"></div>
+          </div>
+        </div>
+
+        <div class="status-line" id="statusLine">حالة التجربة: جاهز للبدء. اختر نوع الشوكة الثانية ثم اضرب الشوكة (أ).</div>
+
+        <div class="obs-grid">
+          <div class="obs-box">
+            <h5>🔊 ماذا أسمع؟</h5>
+            <p id="obsSound">بانتظار الضربة الأولى…</p>
+          </div>
+          <div class="obs-box">
+            <h5>📈 ماذا ألاحظ بصرياً؟</h5>
+            <p id="obsVisual">لم تهتزّ أي شوكة بعد.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CONCLUSIONS ===== -->
+  <section id="conclusions">
+    <div class="section-head">
+      <div class="kicker">بناءً على ما لاحظته</div>
+      <h2 class="section-title">دوّن استنتاجاتك</h2>
+      <p class="section-sub">أكمل الفراغات بعد تنفيذ التجربة، ثم اضغط "تحقّق" لمقارنة إجابتك.</p>
+    </div>
+    <div class="conclusion-list">
+
+      <div class="ccard">
+        <div class="ic">١</div>
+        <div class="body">
+          <p class="q">عند ضرب الشوكة (أ) واستخدام الشوكة المطابقة (ب)، ماذا حدث للشوكة (ب)؟ ولماذا حدث ذلك؟ (اكتب كلمة "اهتزّت" أو ما يدل عليها)</p>
+          <input class="blank-input" id="q1" placeholder="اكتب إجابتك هنا...">
+          <button class="check-btn" data-target="q1" data-answer="اهتزت,اهتز,رنين,اهتزاز">تحقّق من الإجابة</button>
+          <div class="feedback" id="fb-q1"></div>
+        </div>
+      </div>
+
+      <div class="ccard">
+        <div class="ic">٢</div>
+        <div class="body">
+          <p class="q">عند استبدال الشوكة (ب) بالشوكة ذات التردد المختلف (٥٢٣ هرتز)، هل اهتزّت بعد ضرب الشوكة (أ)؟ (نعم / لا)</p>
+          <input class="blank-input" id="q2" placeholder="نعم أو لا">
+          <button class="check-btn" data-target="q2" data-answer="لا,لم تهتز,لم تهتزّ">تحقّق من الإجابة</button>
+          <div class="feedback" id="fb-q2"></div>
+        </div>
+      </div>
+
+      <div class="ccard">
+        <div class="ic">٣</div>
+        <div class="body">
+          <p class="q">إذاً، يحدث الرنين عندما يكون تردد الجسم المهتزّ (المصدر) ____ لتردد الجسم الآخر الطبيعي.</p>
+          <input class="blank-input" id="q3" placeholder="أكمل الجملة">
+          <button class="check-btn" data-target="q3" data-answer="مساويا,مساوي,مساوياً,يساوي,نفس,مطابق">تحقّق من الإجابة</button>
+          <div class="feedback" id="fb-q3"></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  مختبر افتراضي تفاعلي — مادة العلوم والحياة، الصف الثامن، فلسطين · صُمم لدعم الفهم العملي لظاهرة الرنين
+</footer>
+
+<script>
+let audioCtx = null;
+function getCtx(){
+  if(!audioCtx){ audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+  if(audioCtx.state === 'suspended'){ audioCtx.resume(); }
+  return audioCtx;
+}
+
+// synthesize a tuning-fork style strike: sine wave with fast attack + slow exponential decay,
+// slight inharmonic partial for realism
+function playFork(freq, startDelay, peakGain, duration){
+  const ctx = getCtx();
+  const now = ctx.currentTime + (startDelay||0);
+  const master = ctx.createGain();
+  master.gain.setValueAtTime(0.0001, now);
+  master.connect(ctx.destination);
+
+  function tone(f, gainMul, detune){
+    const osc = ctx.createOscillator();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(f, now);
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0.0001, now);
+    g.gain.exponentialRampToValueAtTime(peakGain*gainMul, now+0.012);
+    g.gain.exponentialRampToValueAtTime(0.0001, now+duration);
+    osc.connect(g); g.connect(master);
+    osc.start(now);
+    osc.stop(now+duration+0.05);
+  }
+  tone(freq, 1, 0);
+  tone(freq*2.0, 0.18, 0); // gentle overtone for metallic timbre
+  master.gain.setValueAtTime(1, now);
+}
+
+const heroFork = document.getElementById('heroFork');
+const hero = heroFork.parentElement.parentElement;
+heroFork.style.cursor = 'pointer';
+heroFork.addEventListener('click', ()=>{
+  playFork(440, 0, 0.22, 2.4);
+  heroFork.classList.add('vibrate');
+  hero.querySelectorAll('.ring').forEach(r=>{ r.classList.remove('anim'); void r.offsetWidth; r.classList.add('anim'); });
+  setTimeout(()=>heroFork.classList.remove('vibrate'), 1300);
+});
+
+// Lab logic
+const chipSame = document.getElementById('chipSame');
+const chipDiff = document.getElementById('chipDiff');
+const labelB = document.getElementById('labelB');
+const freqB = document.getElementById('freqB');
+const strikeBtn = document.getElementById('strikeBtn');
+const hammerIcon = document.getElementById('hammerIcon');
+const forkA = document.getElementById('forkA');
+const forkB = document.getElementById('forkB');
+const ring2b = document.getElementById('ring2b');
+const ring2b2 = document.getElementById('ring2b2');
+const statusLine = document.getElementById('statusLine');
+const obsSound = document.getElementById('obsSound');
+const obsVisual = document.getElementById('obsVisual');
+
+let secondMatches = true;
+
+function setMode(matches){
+  secondMatches = matches;
+  chipSame.classList.toggle('active', matches);
+  chipDiff.classList.toggle('active', !matches);
+  if(matches){
+    labelB.textContent = 'الشوكة (ب) — المستقبِلة';
+    freqB.textContent = '440 Hz';
+  } else {
+    labelB.textContent = 'الشوكة (ج) — مختلفة التردد';
+    freqB.textContent = '523 Hz';
+  }
+  statusLine.innerHTML = 'حالة التجربة: <b>جاهز</b>. اضرب الشوكة (أ) لمراقبة ما يحدث.';
+  obsSound.textContent = 'بانتظار الضربة الأولى…';
+  obsVisual.textContent = 'لم تهتزّ أي شوكة بعد.';
+  forkA.classList.remove('vibrate');
+  forkB.classList.remove('vibrate');
+}
+chipSame.addEventListener('click', ()=>setMode(true));
+chipDiff.addEventListener('click', ()=>setMode(false));
+
+strikeBtn.addEventListener('click', ()=>{
+  if(strikeBtn.disabled) return;
+  strikeBtn.disabled = true;
+  hammerIcon.classList.remove('swing'); void hammerIcon.offsetWidth; hammerIcon.classList.add('swing');
+
+  // strike fork A
+  playFork(440, 0.1, 0.24, 2.2);
+  forkA.classList.add('vibrate');
+  const ring2bRefresh = ()=>{ [ring2b, ring2b2].forEach(()=>{}); };
+  document.querySelectorAll('.fork-stand .ring2').forEach((r,i)=>{
+    if(i<2){ r.classList.remove('anim'); void r.offsetWidth; r.classList.add('anim'); }
+  });
+
+  obsSound.textContent = 'سمعنا نغمة واضحة صادرة عن الشوكة (أ) فور ضربها.';
+  obsVisual.textContent = 'الشوكة (أ) بدأت بالاهتزاز السريع وصندوق الرنين يضخّم صوتها.';
+  statusLine.innerHTML = 'حالة التجربة: <b>تم ضرب الشوكة (أ)</b> — جارٍ مراقبة الشوكة الثانية…';
+
+  setTimeout(()=>{
+    if(secondMatches){
+      playFork(440, 0, 0.10, 2.0); // sympathetic, quieter
+      forkB.classList.add('vibrate');
+      ring2b.classList.add('anim'); ring2b2.classList.add('anim');
+      obsSound.textContent = 'بعد لحظات، سمعنا صوتاً خافتاً صادراً عن الشوكة (ب) أيضاً — رغم أننا لم نلمسها!';
+      obsVisual.textContent = 'الشوكة (ب) بدأت تهتزّ تلقائياً، لأنّ ترددها الطبيعي (440Hz) يطابق تردد الشوكة (أ) تماماً. هذا هو الرنين.';
+      statusLine.innerHTML = 'حالة التجربة: <b>حدث الرنين! ✅</b> الشوكة المطابقة اهتزّت من تلقاء نفسها.';
+    } else {
+      obsSound.textContent = 'لم نسمع أيّ صوت إضافي من الشوكة الثانية — بقيت صامتة تماماً.';
+      obsVisual.textContent = 'الشوكة (ج) لم تهتزّ، لأنّ ترددها الطبيعي (523Hz) يختلف عن تردد الشوكة (أ) (440Hz)، فلم يحدث رنين.';
+      statusLine.innerHTML = 'حالة التجربة: <b>لا يوجد رنين ❌</b> اختلاف التردد منع الشوكة الثانية من الاهتزاز.';
+    }
+  }, 550);
+
+  setTimeout(()=>{
+    forkA.classList.remove('vibrate');
+    forkB.classList.remove('vibrate');
+    strikeBtn.disabled = false;
+  }, 2300);
+});
+
+// quiz checking
+document.querySelectorAll('.check-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const targetId = btn.getAttribute('data-target');
+    const answers = btn.getAttribute('data-answer').split(',').map(s=>s.trim());
+    const input = document.getElementById(targetId);
+    const fb = document.getElementById('fb-'+targetId);
+    const val = (input.value||'').trim();
+    const normalized = val.replace(/[أإآ]/g,'ا').replace(/ى/g,'ي').replace(/ة/g,'ه');
+    const isCorrect = answers.some(a=>{
+      const an = a.replace(/[أإآ]/g,'ا').replace(/ى/g,'ي').replace(/ة/g,'ه');
+      return normalized.includes(an) || an.includes(normalized);
+    });
+    fb.className = 'feedback ' + (isCorrect ? 'ok' : 'no');
+    fb.textContent = isCorrect
+      ? '✅ إجابة صحيحة! هذا بالضبط ما لاحظناه في المختبر.'
+      : '🤔 راجع ملاحظاتك من المختبر أعلاه وحاول مرّة أخرى.';
+  });
+});
+
+setMode(true);
+</script>
+</body>
+</html>

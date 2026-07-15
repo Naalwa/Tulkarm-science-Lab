@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>ترشيد استهلاك الطاقة | الصف الخامس - العلوم والحياة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700;800;900&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-deep:#0d2528;
+    --bg-panel:#123a3f;
+    --bg-panel-2:#175055;
+    --bg-panel-3:#0f3236;
+    --gold:#f4b942;
+    --gold-dim:#c99427;
+    --green:#5fbf8f;
+    --green-dim:#3d8462;
+    --red:#e2574c;
+    --red-dim:#a83e36;
+    --paper:#f5f1e4;
+    --paper-dim:#cfc9b4;
+    --ink:#0a1e21;
+    --line:rgba(245,241,228,0.14);
+    --shadow-deep: 0 20px 40px rgba(0,0,0,0.45);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(circle at 15% 0%, #1a4448 0%, transparent 45%),
+      radial-gradient(circle at 90% 10%, #163d40 0%, transparent 40%),
+      var(--bg-deep);
+    color:var(--paper);
+    font-family:'Tajawal', sans-serif;
+    line-height:1.8;
+    min-height:100vh;
+  }
+  h1,h2,h3,.display{ font-family:'Cairo', sans-serif; }
+  a{color:inherit;}
+  .wrap{max-width:1100px; margin:0 auto; padding:0 20px;}
+
+  /* ===== Top bar with live energy meter ===== */
+  .topbar{
+    position:sticky; top:0; z-index:50;
+    background:rgba(10,26,29,0.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .topbar-inner{
+    max-width:1100px; margin:0 auto; padding:10px 20px;
+    display:flex; align-items:center; justify-content:space-between; gap:14px;
+    flex-wrap:wrap;
+  }
+  .brand{display:flex; align-items:center; gap:10px; font-family:'Cairo'; font-weight:800; font-size:15px;}
+  .brand-dot{width:10px;height:10px;border-radius:50%;background:var(--gold); box-shadow:0 0 10px var(--gold);}
+  .nav-links{display:flex; gap:16px; font-size:13px; flex-wrap:wrap;}
+  .nav-links a{opacity:.8; text-decoration:none; border-bottom:1px dashed transparent; padding-bottom:2px;}
+  .nav-links a:hover{opacity:1; border-color:var(--gold); color:var(--gold);}
+
+  .meter-mini{display:flex; align-items:center; gap:8px;}
+  .meter-mini-track{width:120px; height:10px; border-radius:6px; background:rgba(255,255,255,0.1); overflow:hidden; border:1px solid var(--line);}
+  .meter-mini-fill{height:100%; width:0%; background:linear-gradient(90deg,var(--red),var(--gold),var(--green)); transition:width .6s ease;}
+  .meter-mini-label{font-size:12px; font-family:'Cairo'; font-weight:700; color:var(--gold); min-width:38px;}
+
+  /* ===== HERO ===== */
+  .hero{
+    padding:64px 20px 40px;
+    text-align:center;
+    position:relative;
+  }
+  .eyebrow{
+    display:inline-block; font-family:'Cairo'; font-weight:700; font-size:13px;
+    letter-spacing:.5px; color:var(--gold); background:rgba(244,185,66,0.1);
+    border:1px solid rgba(244,185,66,0.35); padding:6px 16px; border-radius:20px; margin-bottom:18px;
+  }
+  h1.title{font-size:clamp(30px,6vw,52px); font-weight:900; margin:0 0 14px; color:var(--paper);}
+  h1.title span{color:var(--gold);}
+  .subtitle{max-width:640px; margin:0 auto 30px; color:var(--paper-dim); font-size:16px;}
+
+  /* Gauge (signature element) */
+  .gauge-wrap{display:flex; justify-content:center; margin:20px 0 8px;}
+  .gauge{position:relative; width:230px; height:135px;}
+  .gauge svg{width:100%; height:100%; display:block; filter:drop-shadow(0 10px 18px rgba(0,0,0,0.4));}
+  .gauge-needle{
+    position:absolute; bottom:8px; left:50%; width:4px; height:88px;
+    background:linear-gradient(to top, var(--gold), #fff8e6);
+    transform-origin:bottom center; transform:translateX(-50%) rotate(-90deg);
+    border-radius:4px; transition:transform 1s cubic-bezier(.4,1.6,.4,1);
+    box-shadow:0 0 8px rgba(244,185,66,0.8);
+  }
+  .gauge-pivot{position:absolute; bottom:2px; left:50%; width:16px; height:16px; background:var(--paper); border-radius:50%; transform:translateX(-50%); border:3px solid var(--ink);}
+  .gauge-label{text-align:center; margin-top:6px; font-family:'Cairo'; font-weight:800; font-size:14px; color:var(--paper-dim);}
+  .gauge-label b{color:var(--gold); font-size:20px;}
+
+  /* ===== Sections ===== */
+  section{padding:56px 20px;}
+  .section-head{max-width:720px; margin:0 auto 34px; text-align:center;}
+  .section-tag{font-family:'Cairo'; font-weight:800; font-size:12px; color:var(--green); letter-spacing:1px;}
+  .section-title{font-size:clamp(22px,4vw,32px); font-weight:800; margin:8px 0 12px;}
+  .section-desc{color:var(--paper-dim); font-size:15px;}
+
+  .panel{
+    background:linear-gradient(160deg,var(--bg-panel), var(--bg-panel-3));
+    border:1px solid var(--line);
+    border-radius:18px;
+    box-shadow:var(--shadow-deep), inset 0 1px 0 rgba(255,255,255,0.04);
+    padding:26px;
+  }
+
+  /* ===== Sorting game ===== */
+  .bins{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:22px;}
+  @media(max-width:640px){.bins{grid-template-columns:1fr;}}
+  .bin{
+    border-radius:16px; padding:16px; min-height:150px;
+    border:2px dashed var(--line);
+    background:rgba(0,0,0,0.15);
+    transition:border-color .2s, transform .2s;
+  }
+  .bin.ren{border-color:rgba(95,191,143,0.4);}
+  .bin.non{border-color:rgba(226,87,76,0.4);}
+  .bin h4{margin:0 0 10px; font-family:'Cairo'; display:flex; align-items:center; gap:8px;}
+  .bin .chips{display:flex; flex-wrap:wrap; gap:8px; min-height:30px;}
+
+  .pool{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin:20px 0;}
+  .chip{
+    font-family:'Tajawal'; font-weight:700; font-size:14px;
+    background:var(--bg-panel-2); border:1px solid var(--line); color:var(--paper);
+    padding:10px 16px; border-radius:12px; cursor:pointer; user-select:none;
+    transition:transform .15s, box-shadow .15s, background .2s;
+    box-shadow:0 4px 0 rgba(0,0,0,0.25);
+  }
+  .chip:hover{transform:translateY(-2px);}
+  .chip.selected{background:var(--gold); color:var(--ink); box-shadow:0 4px 0 var(--gold-dim);}
+  .chip.correct{background:var(--green); color:var(--ink); box-shadow:0 4px 0 var(--green-dim); cursor:default;}
+  .chip.wrong{background:var(--red); color:#fff; box-shadow:0 4px 0 var(--red-dim); animation:shake .3s;}
+  @keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-4px);}75%{transform:translateX(4px);}}
+  .hint{text-align:center; font-size:13px; color:var(--paper-dim); margin-top:14px;}
+
+  /* ===== Comparison cards (أيهما أختار) ===== */
+  .compare-grid{display:grid; gap:22px;}
+  .compare-item{
+    perspective:1000px;
+  }
+  .compare-title{font-family:'Cairo'; font-weight:700; font-size:16px; margin-bottom:14px; display:flex; gap:8px; align-items:center;}
+  .compare-title .num{
+    width:26px; height:26px; border-radius:50%; background:var(--gold); color:var(--ink);
+    display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:800; flex-shrink:0;
+  }
+  .options{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  @media(max-width:560px){.options{grid-template-columns:1fr;}}
+  .option{
+    background:var(--bg-panel-2);
+    border:2px solid var(--line);
+    border-radius:16px;
+    padding:20px 14px;
+    text-align:center;
+    cursor:pointer;
+    transform-style:preserve-3d;
+    transition:transform .25s ease, border-color .25s, box-shadow .25s;
+    box-shadow:0 10px 0 rgba(0,0,0,0.25);
+  }
+  .option:hover{transform:translateY(-4px) rotateX(4deg);}
+  .option .icon{font-size:40px; margin-bottom:10px; display:block;}
+  .option .txt{font-weight:700; font-size:14px;}
+  .option.chosen-correct{border-color:var(--green); background:rgba(95,191,143,0.18); box-shadow:0 10px 0 var(--green-dim);}
+  .option.chosen-wrong{border-color:var(--red); background:rgba(226,87,76,0.18); box-shadow:0 10px 0 var(--red-dim);}
+  .option.disabled{cursor:default; opacity:.7;}
+  .feedback{
+    margin-top:12px; font-size:13.5px; padding:10px 14px; border-radius:10px;
+    background:rgba(0,0,0,0.2); display:none; border-right:3px solid var(--gold);
+  }
+  .feedback.show{display:block;}
+
+  /* ===== Virtual lab ===== */
+  .lab-tabs{display:flex; gap:10px; margin-bottom:24px; flex-wrap:wrap; justify-content:center;}
+  .lab-tab{
+    font-family:'Cairo'; font-weight:700; font-size:13px; padding:10px 20px; border-radius:30px;
+    background:var(--bg-panel-2); border:1px solid var(--line); cursor:pointer; transition:.2s;
+  }
+  .lab-tab.active{background:var(--gold); color:var(--ink);}
+  .lab-panel{display:none;}
+  .lab-panel.active{display:block;}
+
+  .pots{display:grid; grid-template-columns:1fr 1fr; gap:24px; margin:20px 0;}
+  @media(max-width:640px){.pots{grid-template-columns:1fr;}}
+  .pot-box{background:var(--bg-panel-2); border-radius:16px; padding:20px; text-align:center; border:1px solid var(--line);}
+  .pot-stage{
+    position:relative; height:150px; display:flex; align-items:flex-end; justify-content:center; margin-bottom:14px;
+    perspective:600px;
+  }
+  .pot{
+    width:90px; height:70px; background:linear-gradient(160deg,#c98a4b,#8a5a2d);
+    border-radius:0 0 18px 18px; position:relative; box-shadow:0 8px 14px rgba(0,0,0,0.4);
+    transform-style:preserve-3d;
+  }
+  .pot::before{content:""; position:absolute; top:-10px; right:-6px; left:-6px; height:14px; background:linear-gradient(160deg,#d69a5c,#9a6633); border-radius:8px;}
+  .lid{
+    position:absolute; top:-22px; right:-10px; left:-10px; height:16px;
+    background:linear-gradient(160deg,#e9c88f,#b6864a); border-radius:10px 10px 4px 4px;
+    box-shadow:0 4px 6px rgba(0,0,0,0.3);
+    transition:transform .6s ease, opacity .4s;
+  }
+  .lid.off{transform:translateY(-46px) rotate(-18deg); opacity:.55;}
+  .steam{position:absolute; top:-40px; left:50%; transform:translateX(-50%); font-size:22px; opacity:0; transition:opacity .3s;}
+  .steam.on{opacity:1; animation:rise 1.4s infinite ease-in-out;}
+  @keyframes rise{0%{transform:translate(-50%,0); opacity:.2;}50%{transform:translate(-50%,-14px); opacity:1;}100%{transform:translate(-50%,-28px); opacity:0;}}
+  .therm{margin-top:8px;}
+  .therm-track{height:12px; border-radius:8px; background:rgba(0,0,0,0.3); overflow:hidden; border:1px solid var(--line);}
+  .therm-fill{height:100%; width:8%; background:linear-gradient(90deg,#4aa3e0,var(--red)); transition:width .3s linear;}
+  .stat-row{display:flex; justify-content:space-between; font-size:12.5px; margin-top:10px; color:var(--paper-dim);}
+  .stat-row b{color:var(--paper); font-family:'Cairo';}
+
+  .btn{
+    font-family:'Cairo'; font-weight:800; font-size:14px; color:var(--ink);
+    background:linear-gradient(160deg,#ffd873,var(--gold)); border:none; border-radius:12px;
+    padding:13px 26px; cursor:pointer; box-shadow:0 6px 0 var(--gold-dim); transition:transform .12s;
+  }
+  .btn:hover{transform:translateY(-2px);}
+  .btn:active{transform:translateY(2px); box-shadow:0 2px 0 var(--gold-dim);}
+  .btn:disabled{opacity:.5; cursor:not-allowed; transform:none;}
+  .btn-row{text-align:center; margin:18px 0;}
+  .btn.secondary{background:var(--bg-panel-2); color:var(--paper); box-shadow:0 6px 0 rgba(0,0,0,0.35);}
+
+  .lab-result{
+    margin-top:18px; background:rgba(0,0,0,0.22); border-radius:14px; padding:18px; display:none;
+    border-right:4px solid var(--green);
+  }
+  .lab-result.show{display:block;}
+
+  .quiz-options{display:flex; flex-direction:column; gap:10px; margin-top:14px;}
+  .quiz-opt{
+    text-align:right; padding:12px 16px; border-radius:12px; background:var(--bg-panel-2);
+    border:1px solid var(--line); cursor:pointer; font-size:14px; transition:.2s;
+  }
+  .quiz-opt:hover{border-color:var(--gold);}
+  .quiz-opt.correct{background:rgba(95,191,143,0.25); border-color:var(--green);}
+  .quiz-opt.wrong{background:rgba(226,87,76,0.25); border-color:var(--red);}
+
+  /* Bulb lab */
+  .bulb-controls{display:flex; align-items:center; gap:14px; justify-content:center; flex-wrap:wrap; margin:18px 0;}
+  input[type=range]{width:220px; accent-color:var(--gold);}
+  .bulbs-compare{display:grid; grid-template-columns:1fr 1fr; gap:20px;}
+  @media(max-width:640px){.bulbs-compare{grid-template-columns:1fr;}}
+  .bulb-card{background:var(--bg-panel-2); border-radius:16px; padding:18px; text-align:center; border:1px solid var(--line);}
+  .bulb-icon{font-size:42px; display:block; margin-bottom:8px;}
+  .bar-track{height:120px; width:36px; margin:14px auto 0; background:rgba(0,0,0,0.3); border-radius:8px; display:flex; align-items:flex-end; overflow:hidden; border:1px solid var(--line);}
+  .bar-fill{width:100%; background:linear-gradient(180deg,var(--gold),var(--red)); transition:height .4s ease;}
+  .bulb-card.led .bar-fill{background:linear-gradient(180deg,#9be8c4,var(--green));}
+  .bulb-numbers{margin-top:12px; font-size:13px; color:var(--paper-dim);}
+  .bulb-numbers b{color:var(--paper); font-family:'Cairo';}
+  .savings-banner{margin-top:18px; text-align:center; background:rgba(95,191,143,0.15); border:1px solid var(--green-dim); border-radius:12px; padding:14px; font-family:'Cairo'; font-weight:700;}
+
+  /* Definition box */
+  .define-box{max-width:720px; margin:0 auto;}
+  textarea{
+    width:100%; min-height:110px; border-radius:14px; border:1px solid var(--line);
+    background:var(--bg-panel-3); color:var(--paper); font-family:'Tajawal'; font-size:15px;
+    padding:16px; resize:vertical;
+  }
+  textarea:focus{outline:2px solid var(--gold);}
+  .official-def{
+    margin-top:18px; background:rgba(244,185,66,0.1); border:1px solid rgba(244,185,66,0.4);
+    border-radius:14px; padding:18px; display:none;
+  }
+  .official-def.show{display:block;}
+
+  footer{text-align:center; padding:40px 20px; color:var(--paper-dim); font-size:13px; border-top:1px solid var(--line); margin-top:20px;}
+
+  ::selection{background:var(--gold); color:var(--ink);}
+
+  /* ══ RESPONSIVE MOBILE & TABLET ══ */
+  @media (max-width: 768px) {
+    body { padding: 8px !important; font-size: 15px !important; overflow-x: hidden !important; }
+    .container, [class*="container"], [class*="wrapper"] { padding: 8px !important; max-width: 100% !important; }
+    canvas { width: 100% !important; height: auto !important; display: block !important; touch-action: none; max-width: 100% !important; }
+    svg { max-width: 100% !important; height: auto !important; }
+    h1 { font-size: clamp(18px,5vw,32px) !important; }
+    h2 { font-size: clamp(15px,4vw,26px) !important; }
+    h3 { font-size: clamp(13px,3.5vw,20px) !important; }
+    [class*="grid"] { grid-template-columns: 1fr !important; }
+    [class*="flex"] { flex-wrap: wrap !important; }
+    input[type="range"] { width: 100% !important; min-height: 36px; }
+    input[type="number"], input[type="text"], select, textarea {
+      font-size: 16px !important; width: 100% !important; box-sizing: border-box; padding: 8px !important; }
+    button { min-height: 44px !important; font-size: 14px !important; touch-action: manipulation; padding: 10px 14px !important; }
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 13px !important; }
+    th, td { padding: 6px 4px !important; }
+    header { padding: 10px 12px !important; }
+    .controls, [class*="controls"] { flex-direction: column !important; gap: 8px !important; }
+    .lab-window, [class*="lab-window"] { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+  }
+  @media (max-width: 480px) {
+    body { padding: 4px !important; }
+    button { width: 100% !important; }
+  }
+  /* ══ END RESPONSIVE ══ */
+</style>
+</head>
+<body>
+<style>
+.vlab-back{position:fixed;top:10px;left:10px;z-index:99999;
+background:rgba(10,22,40,0.93);border:1px solid rgba(0,200,150,0.4);
+border-radius:22px;padding:8px 16px;display:inline-flex;align-items:center;gap:7px;
+color:#00C896;font-family:Tajawal,Cairo,Arial,sans-serif;font-size:13px;font-weight:700;
+text-decoration:none;backdrop-filter:blur(8px);box-shadow:0 4px 18px rgba(0,0,0,0.3);
+transition:background 0.2s;}
+.vlab-back:hover{background:rgba(0,200,150,0.18);}
+</style>
+<a href="../grade5.html" class="vlab-back">&#8594; العودة للصف</a>
+
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand"><span class="brand-dot"></span> ترشيد استهلاك الطاقة</div>
+    <div class="nav-links">
+      <a href="#sort">أنواع الطاقة</a>
+      <a href="#choose">أيّهما أختار؟</a>
+      <a href="#lab">المختبر الافتراضي</a>
+      <a href="#define">تعريفي الخاص</a>
+    </div>
+    <div class="meter-mini">
+      <span style="font-size:12px;color:var(--paper-dim);">طاقة موفَّرة</span>
+      <div class="meter-mini-track"><div class="meter-mini-fill" id="miniFill"></div></div>
+      <span class="meter-mini-label" id="miniLabel">0%</span>
+    </div>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="eyebrow">العلوم والحياة · الصف الخامس · فلسطين</div>
+  <h1 class="title">ترشيد استهلاك <span>الطاقة</span></h1>
+  <p class="subtitle">رحلة تفاعلية نكتشف فيها الفرق بين الطاقة المتجددة وغير المتجددة، وننفّذ تجارب افتراضية حقيقية لنتعلّم كيف نوفّر الطاقة كل يوم.</p>
+
+  <div class="gauge-wrap">
+    <div class="gauge">
+      <svg viewBox="0 0 200 120">
+        <path d="M15,110 A85,85 0 0,1 185,110" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="16" stroke-linecap="round"/>
+        <path d="M15,110 A85,85 0 0,1 185,110" fill="none" stroke="url(#g1)" stroke-width="16" stroke-linecap="round" stroke-dasharray="267" id="gaugeArc" stroke-dashoffset="267"/>
+        <defs>
+          <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#e2574c"/>
+            <stop offset="50%" stop-color="#f4b942"/>
+            <stop offset="100%" stop-color="#5fbf8f"/>
+          </linearGradient>
+        </defs>
+      </svg>
+      <div class="gauge-needle" id="needle"></div>
+      <div class="gauge-pivot"></div>
+    </div>
+  </div>
+  <div class="gauge-label">عدّاد التوفير: <b id="gaugeText">0%</b></div>
+</header>
+
+<!-- ================= SORTING GAME ================= -->
+<section id="sort">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-tag">النشاط الأول</div>
+      <h2 class="section-title">صنّف مصادر الطاقة</h2>
+      <p class="section-desc">اضغط على البطاقة، ثم اضغط على الصندوق المناسب: هل هي طاقة متجدّدة (لا تنفد) أم غير متجدّدة (قابلة للنفاد وتُسبّب تلوّثًا)؟</p>
+    </div>
+    <div class="panel">
+      <div class="pool" id="pool"></div>
+      <div class="bins">
+        <div class="bin ren" data-type="ren"><h4>🌞 طاقة متجدّدة</h4><div class="chips" id="binRen"></div></div>
+        <div class="bin non" data-type="non"><h4>🛢️ طاقة غير متجدّدة</h4><div class="chips" id="binNon"></div></div>
+      </div>
+      <p class="hint" id="sortHint">اختر بطاقة من الأعلى أولًا 👆</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CHOOSE ================= -->
+<section id="choose">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-tag">النشاط الثاني</div>
+      <h2 class="section-title">أيّهما أختار؟</h2>
+      <p class="section-desc">في كل موقف، اختر السلوك الذي يوفّر الطاقة ويقلّل الهدر.</p>
+    </div>
+    <div class="compare-grid" id="compareGrid"></div>
+  </div>
+</section>
+
+<!-- ================= VIRTUAL LAB ================= -->
+<section id="lab">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-tag">النشاط الثالث</div>
+      <h2 class="section-title">المختبر الافتراضي</h2>
+      <p class="section-desc">نفّذ التجربتين بنفسك وسجّل النتائج لتصل إلى الاستنتاج.</p>
+    </div>
+
+    <div class="lab-tabs">
+      <div class="lab-tab active" data-tab="pot">🍲 تجربة الغطاء أثناء الطهي</div>
+      <div class="lab-tab" data-tab="bulb">💡 تجربة المصابيح</div>
+    </div>
+
+    <!-- POT EXPERIMENT -->
+    <div class="lab-panel active panel" id="tab-pot">
+      <div class="pots">
+        <div class="pot-box">
+          <h3 style="margin-top:0;font-family:'Cairo';font-size:15px;">قدر (١) بدون غطاء</h3>
+          <div class="pot-stage">
+            <div class="steam" id="steamA">💨</div>
+            <div class="pot" id="potA"><div class="lid off" id="lidA"></div></div>
+          </div>
+          <div class="therm"><div class="therm-track"><div class="therm-fill" id="fillA"></div></div></div>
+          <div class="stat-row"><span>الحرارة</span><b id="tempA">25°</b></div>
+          <div class="stat-row"><span>الزمن المستغرق</span><b id="timeA">0 ث</b></div>
+          <div class="stat-row"><span>الطاقة المستهلكة</span><b id="energyA">0.00 كيلوواط.ساعة</b></div>
+        </div>
+        <div class="pot-box">
+          <h3 style="margin-top:0;font-family:'Cairo';font-size:15px;">قدر (٢) بغطاء</h3>
+          <div class="pot-stage">
+            <div class="steam" id="steamB">💨</div>
+            <div class="pot" id="potB"><div class="lid" id="lidB"></div></div>
+          </div>
+          <div class="therm"><div class="therm-track"><div class="therm-fill" id="fillB"></div></div></div>
+          <div class="stat-row"><span>الحرارة</span><b id="tempB">25°</b></div>
+          <div class="stat-row"><span>الزمن المستغرق</span><b id="timeB">0 ث</b></div>
+          <div class="stat-row"><span>الطاقة المستهلكة</span><b id="energyB">0.00 كيلوواط.ساعة</b></div>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn" id="startPot">🔥 ابدأ التسخين في القدرين معًا</button>
+        <button class="btn secondary" id="resetPot" style="margin-right:8px;">إعادة</button>
+      </div>
+
+      <div class="lab-result" id="potResult">
+        <p><b style="font-family:'Cairo';">النتيجة:</b> غليان القدر <b>المغطّى</b> أسرع، لأن الغطاء يمنع تسرّب البخار الساخن، فتصل الحرارة إلى ١٠٠° بوقت أقل وطاقة أقل.</p>
+        <p style="margin-top:14px; font-family:'Cairo'; font-weight:700;">إذًا، ما الاستنتاج الصحيح؟</p>
+        <div class="quiz-options" id="potQuiz">
+          <div class="quiz-opt" data-correct="false">تغطية القدر لا علاقة له باستهلاك الطاقة</div>
+          <div class="quiz-opt" data-correct="true">تغطية القدر أثناء الطهي تُقلّل زمن الغليان وتُوفّر الطاقة</div>
+          <div class="quiz-opt" data-correct="false">القدر بدون غطاء أوفر للطاقة لأنه يسخن ببطء</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BULB EXPERIMENT -->
+    <div class="lab-panel panel" id="tab-bulb">
+      <div class="bulb-controls">
+        <span style="font-family:'Cairo';font-weight:700;font-size:14px;">عدد ساعات الاستخدام يوميًا:</span>
+        <input type="range" min="1" max="12" value="4" id="hoursRange">
+        <span id="hoursLabel" style="font-family:'Cairo';font-weight:800;color:var(--gold);">٤ ساعات</span>
+      </div>
+      <div class="bulbs-compare">
+        <div class="bulb-card">
+          <span class="bulb-icon">💡</span>
+          <div class="txt" style="font-weight:700;">مصباح عادي متوهّج (٦٠ واط)</div>
+          <div class="bar-track"><div class="bar-fill" id="barIncand" style="height:0%;"></div></div>
+          <div class="bulb-numbers">استهلاك يومي: <b id="incDay">-</b><br>استهلاك شهري: <b id="incMonth">-</b><br>الكلفة الشهرية: <b id="incCost">-</b></div>
+        </div>
+        <div class="bulb-card led">
+          <span class="bulb-icon">🔆</span>
+          <div class="txt" style="font-weight:700;">مصباح موفّر LED (١٢ واط)</div>
+          <div class="bar-track"><div class="bar-fill" id="barLed" style="height:0%;"></div></div>
+          <div class="bulb-numbers">استهلاك يومي: <b id="ledDay">-</b><br>استهلاك شهري: <b id="ledMonth">-</b><br>الكلفة الشهرية: <b id="ledCost">-</b></div>
+        </div>
+      </div>
+      <div class="savings-banner" id="savingsBanner"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= DEFINE ================= -->
+<section id="define">
+  <div class="wrap define-box">
+    <div class="section-head">
+      <div class="section-tag">الخلاصة</div>
+      <h2 class="section-title">اكتب بلغتي تعريفًا لترشيد استهلاك الطاقة</h2>
+      <p class="section-desc">استعن بما تعلّمته في الأنشطة السابقة.</p>
+    </div>
+    <div class="panel">
+      <textarea id="myDefinition" placeholder="اكتب تعريفك هنا... مثال: ترشيد استهلاك الطاقة يعني..."></textarea>
+      <div class="btn-row"><button class="btn" id="checkDef">✅ تحقّق من إجابتي</button></div>
+      <p id="defFeedback" style="text-align:center; font-size:14px; min-height:20px;"></p>
+      <div class="official-def" id="officialDef">
+        <b style="font-family:'Cairo';">التعريف العلمي:</b> ترشيد استهلاك الطاقة هو مجموعة الإجراءات والسلوكيات التي نتّبعها لتقليل كمية الطاقة المُستخدَمة دون التأثير على حاجاتنا الأساسية، وذلك للمحافظة على مصادر الطاقة غير المتجدّدة من النفاد، وللحدّ من التلوّث البيئي الناتج عن استهلاكها.
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  صفحة تعليمية تفاعلية · مادة العلوم والحياة · الصف الخامس · منهاج فلسطين
+</footer>
+
+<script>
+/* ================= SCORE / GAUGE ================= */
+const MAX_SCORE = 6 + 5 + 1 + 1 + 1; // sorting + comparisons + pot quiz + bulb explored + definition
+let score = 0;
+let bulbExplored = false;
+
+function updateGauge(){
+  const pct = Math.min(100, Math.round((score / MAX_SCORE) * 100));
+  document.getElementById('miniFill').style.width = pct + '%';
+  document.getElementById('miniLabel').textContent = pct + '%';
+  document.getElementById('gaugeText').textContent = pct + '%';
+  const angle = -90 + (pct/100)*180;
+  document.getElementById('needle').style.transform = `translateX(-50%) rotate(${angle}deg)`;
+  const arc = document.getElementById('gaugeArc');
+  const offset = 267 - (267 * pct/100);
+  arc.style.strokeDashoffset = offset;
+}
+function addScore(n){ score += n; updateGauge(); }
+updateGauge();
+
+/* ================= SORTING GAME ================= */
+const items = [
+  {id:1, text:'☀️ الشمس', type:'ren'},
+  {id:2, text:'🌬️ الرياح', type:'ren'},
+  {id:3, text:'🌊 المياه الجارية', type:'ren'},
+  {id:4, text:'⛏️ الفحم الحجري', type:'non'},
+  {id:5, text:'🛢️ النفط', type:'non'},
+  {id:6, text:'🔥 الغاز الطبيعي', type:'non'},
+];
+let selectedChip = null;
+const pool = document.getElementById('pool');
+items.sort(()=>Math.random()-0.5).forEach(it=>{
+  const chip = document.createElement('div');
+  chip.className='chip'; chip.textContent=it.text; chip.dataset.id=it.id; chip.dataset.type=it.type;
+  chip.addEventListener('click', ()=>{
+    if(chip.classList.contains('correct')) return;
+    document.querySelectorAll('.chip.selected').forEach(c=>c.classList.remove('selected'));
+    selectedChip = chip;
+    chip.classList.add('selected');
+    document.getElementById('sortHint').textContent = 'الآن اضغط على الصندوق المناسب لهذه البطاقة 👇';
+  });
+  pool.appendChild(chip);
+});
+document.querySelectorAll('.bin').forEach(bin=>{
+  bin.addEventListener('click', ()=>{
+    if(!selectedChip) { document.getElementById('sortHint').textContent = 'اختر بطاقة أولًا 👆'; return; }
+    const correct = selectedChip.dataset.type === bin.dataset.type;
+    const target = bin.dataset.type === 'ren' ? document.getElementById('binRen') : document.getElementById('binNon');
+    if(correct){
+      selectedChip.classList.remove('selected');
+      selectedChip.classList.add('correct');
+      target.appendChild(selectedChip);
+      addScore(1);
+      document.getElementById('sortHint').textContent = 'أحسنت! اختر البطاقة التالية 👍';
+    } else {
+      selectedChip.classList.add('wrong');
+      setTimeout(()=>selectedChip.classList.remove('wrong'), 350);
+      document.getElementById('sortHint').textContent = 'حاول مرة أخرى، فكّر: هل هذا المصدر ينفد أم متجدّد؟';
+    }
+    selectedChip = null;
+  });
+});
+
+/* ================= COMPARISON CARDS ================= */
+const comparisons = [
+  { title:'الطهي على الموقد', a:{icon:'🍲', txt:'قدر بدون غطاء', correct:false, why:'بدون غطاء يتسرّب البخار والحرارة، فيستغرق الغليان وقتًا وطاقة أكبر.'},
+                               b:{icon:'🥘', txt:'قدر مُغطّى', correct:true, why:'الغطاء يحبس الحرارة والبخار، فيغلي الماء أسرع ويوفّر الطاقة.'} },
+  { title:'الإضاءة المنزلية', a:{icon:'💡', txt:'مصباح عادي (متوهّج)', correct:false, why:'يستهلك طاقة كبيرة ويُصدر معظمها كحرارة مهدورة.'},
+                               b:{icon:'🔆', txt:'مصباح موفّر (LED)', correct:true, why:'يعطي نفس الإضاءة تقريبًا باستهلاك أقل بكثير للطاقة.'} },
+  { title:'تسخين المياه', a:{icon:'🔌', txt:'سخّان كهربائي', correct:false, why:'يعتمد كليًا على الكهرباء غير المتجدّدة غالبًا.'},
+                           b:{icon:'☀️', txt:'سخّان شمسي', correct:true, why:'يستخدم طاقة الشمس المتجدّدة والمجانية لتسخين الماء.'} },
+  { title:'التنقّل اليومي', a:{icon:'🚗', txt:'سيارة خاصة لشخص واحد', correct:false, why:'تستهلك وقودًا ومساحة طريق أكبر لكل راكب.'},
+                             b:{icon:'🚌', txt:'حافلة نقل عام', correct:true, why:'تنقل عددًا أكبر من الركّاب بكمية وقود أقل للفرد الواحد.'} },
+  { title:'الإضاءة أثناء النهار', a:{icon:'💡', txt:'إشعال المصباح رغم وجود ضوء الشمس', correct:false, why:'هدر لطاقة كهربائية لا حاجة لها.'},
+                                   b:{icon:'🪟', txt:'الاستفادة من ضوء الشمس الطبيعي', correct:true, why:'إضاءة مجانية ومتجدّدة دون أي استهلاك كهرباء.'} },
+];
+const grid = document.getElementById('compareGrid');
+comparisons.forEach((c, idx)=>{
+  const wrap = document.createElement('div');
+  wrap.className='compare-item';
+  wrap.innerHTML = `
+    <div class="compare-title"><span class="num">${idx+1}</span> ${c.title}</div>
+    <div class="options">
+      <div class="option" data-correct="${c.a.correct}" data-why="${c.a.why}"><span class="icon">${c.a.icon}</span><span class="txt">${c.a.txt}</span></div>
+      <div class="option" data-correct="${c.b.correct}" data-why="${c.b.why}"><span class="icon">${c.b.icon}</span><span class="txt">${c.b.txt}</span></div>
+    </div>
+    <div class="feedback"></div>
+  `;
+  grid.appendChild(wrap);
+  const opts = wrap.querySelectorAll('.option');
+  const fb = wrap.querySelector('.feedback');
+  let answered = false;
+  opts.forEach(opt=>{
+    opt.addEventListener('click', ()=>{
+      if(answered) return;
+      answered = true;
+      const isCorrect = opt.dataset.correct === 'true';
+      opt.classList.add(isCorrect ? 'chosen-correct' : 'chosen-wrong');
+      opts.forEach(o=>o.classList.add('disabled'));
+      if(isCorrect){
+        fb.textContent = '✅ صحيح! ' + opt.dataset.why;
+        addScore(1);
+      } else {
+        const correctOpt = [...opts].find(o=>o.dataset.correct==='true');
+        correctOpt.classList.add('chosen-correct');
+        fb.textContent = '❌ ليس الأفضل. ' + correctOpt.dataset.why;
+      }
+      fb.classList.add('show');
+    });
+  });
+});
+
+/* ================= LAB TABS ================= */
+document.querySelectorAll('.lab-tab').forEach(tab=>{
+  tab.addEventListener('click', ()=>{
+    document.querySelectorAll('.lab-tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.lab-panel').forEach(p=>p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('tab-'+tab.dataset.tab).classList.add('active');
+  });
+});
+
+/* ================= POT EXPERIMENT ================= */
+let potRunning = false;
+let potInterval = null;
+document.getElementById('startPot').addEventListener('click', runPotExperiment);
+document.getElementById('resetPot').addEventListener('click', resetPot);
+
+function resetPot(){
+  clearInterval(potInterval);
+  potRunning = false;
+  ['A','B'].forEach(k=>{
+    document.getElementById('fill'+k).style.width='8%';
+    document.getElementById('temp'+k).textContent='25°';
+    document.getElementById('time'+k).textContent='0 ث';
+    document.getElementById('energy'+k).textContent='0.00 كيلوواط.ساعة';
+    document.getElementById('steam'+k).classList.remove('on');
+  });
+  document.getElementById('potResult').classList.remove('show');
+  document.getElementById('startPot').disabled = false;
+}
+
+function runPotExperiment(){
+  if(potRunning) return;
+  resetPot();
+  potRunning = true;
+  document.getElementById('startPot').disabled = true;
+  // simulate: pot without lid takes 14 steps to reach boil, with lid takes 8 steps
+  const durA = 14, durB = 8; // "seconds" of simulation
+  const POWER_KW = 1.2; // stove power assumption
+  let t = 0;
+  let doneA=false, doneB=false;
+  document.getElementById('steamA').classList.add('on');
+  document.getElementById('steamB').classList.add('on');
+  potInterval = setInterval(()=>{
+    t += 1;
+    if(!doneA){
+      const tempA = Math.min(100, 25 + (t/durA)*75);
+      document.getElementById('fillA').style.width = tempA + '%';
+      document.getElementById('tempA').textContent = Math.round(tempA)+'°';
+      document.getElementById('timeA').textContent = t+' ث';
+      document.getElementById('energyA').textContent = (POWER_KW * t/3600*60).toFixed(2)+' كيلوواط.ساعة';
+      if(tempA>=100){ doneA=true; document.getElementById('steamA').classList.remove('on'); }
+    }
+    if(!doneB){
+      const tempB = Math.min(100, 25 + (t/durB)*75);
+      document.getElementById('fillB').style.width = tempB + '%';
+      document.getElementById('tempB').textContent = Math.round(tempB)+'°';
+      document.getElementById('timeB').textContent = t+' ث';
+      document.getElementById('energyB').textContent = (POWER_KW * t/3600*60).toFixed(2)+' كيلوواط.ساعة';
+      if(tempB>=100){ doneB=true; document.getElementById('lidB'); document.getElementById('steamB').classList.remove('on'); }
+    }
+    if(doneA && doneB){
+      clearInterval(potInterval);
+      potRunning = false;
+      document.getElementById('potResult').classList.add('show');
+      document.getElementById('startPot').disabled = false;
+    }
+  }, 220);
+}
+
+document.querySelectorAll('#potQuiz .quiz-opt').forEach(opt=>{
+  opt.addEventListener('click', ()=>{
+    if(opt.parentElement.dataset.answered) return;
+    opt.parentElement.dataset.answered = 'true';
+    const isCorrect = opt.dataset.correct === 'true';
+    document.querySelectorAll('#potQuiz .quiz-opt').forEach(o=>{
+      if(o.dataset.correct==='true') o.classList.add('correct');
+    });
+    if(!isCorrect) opt.classList.add('wrong');
+    if(isCorrect) addScore(1);
+  });
+});
+
+/* ================= BULB EXPERIMENT ================= */
+const hoursRange = document.getElementById('hoursRange');
+hoursRange.addEventListener('input', updateBulb);
+function toArabicNum(n){ return n.toString().replace(/[0-9]/g, d=>'٠١٢٣٤٥٦٧٨٩'[d]); }
+function updateBulb(){
+  if(!bulbExplored){ bulbExplored = true; addScore(1); }
+  const hours = parseInt(hoursRange.value);
+  document.getElementById('hoursLabel').textContent = toArabicNum(hours) + ' ساعات';
+  const PRICE = 0.65; // شيكل / كيلوواط.ساعة (تقديري)
+  const inc = {watt:60}, led = {watt:12};
+  const incDay = inc.watt*hours/1000, incMonth = incDay*30, incCost = incMonth*PRICE;
+  const ledDay = led.watt*hours/1000, ledMonth = ledDay*30, ledCost = ledMonth*PRICE;
+  document.getElementById('incDay').textContent = incDay.toFixed(2)+' ك.و.س';
+  document.getElementById('incMonth').textContent = incMonth.toFixed(1)+' ك.و.س';
+  document.getElementById('incCost').textContent = incCost.toFixed(1)+' ₪';
+  document.getElementById('ledDay').textContent = ledDay.toFixed(2)+' ك.و.س';
+  document.getElementById('ledMonth').textContent = ledMonth.toFixed(1)+' ك.و.س';
+  document.getElementById('ledCost').textContent = ledCost.toFixed(1)+' ₪';
+  const maxH = 60*12/1000*30;
+  document.getElementById('barIncand').style.height = (incMonth/maxH*100)+'%';
+  document.getElementById('barLed').style.height = (ledMonth/maxH*100)+'%';
+  const saved = incCost - ledCost;
+  document.getElementById('savingsBanner').textContent =
+    `💰 باستخدام المصباح الموفّر بدلًا من العادي، توفّر حوالي ${saved.toFixed(1)} شيكل شهريًا لكل مصباح!`;
+}
+updateBulb();
+
+/* ================= DEFINITION CHECK ================= */
+document.getElementById('checkDef').addEventListener('click', ()=>{
+  const val = document.getElementById('myDefinition').value.trim();
+  const fb = document.getElementById('defFeedback');
+  const keywords = ['طاق','وفر','قلل','تقليل','هدر','حافظ'];
+  if(val.length < 8){
+    fb.textContent = 'اكتب جملة أطول قليلًا لتوضّح فكرتك 🙂';
+    fb.style.color = 'var(--gold)';
+  } else if(keywords.some(k=>val.includes(k))){
+    fb.textContent = 'رائع! تعريفك يتضمّن الفكرة الأساسية 👏';
+    fb.style.color = 'var(--green)';
+    addScore(1);
+  } else {
+    fb.textContent = 'فكرة جيدة، قارن إجابتك الآن بالتعريف العلمي أدناه.';
+    fb.style.color = 'var(--paper-dim)';
+  }
+  document.getElementById('officialDef').classList.add('show');
+});
+</script>
+</body>
+</html>

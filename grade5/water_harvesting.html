@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta http-equiv="Content-Language" content="ar">
+<title>حصاد المياه — درس تفاعلي ومختبر افتراضي | الصف الخامس</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700;800;900&family=Almarai:wght@400;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sand:#F5EFDD;
+  --sand-deep:#EAE0C4;
+  --ink:#20281F;
+  --ink-soft:#5C6357;
+  --water-deep:#0E3F55;
+  --water:#186E90;
+  --water-mid:#2B93B8;
+  --water-light:#8FD3E8;
+  --gold:#E3A93A;
+  --gold-deep:#B9812A;
+  --clay:#B9633A;
+  --clay-deep:#8C4A2A;
+  --stone:#8C8577;
+  --stone-light:#C7C0AC;
+  --leaf:#4C7A52;
+  --alert:#C1443B;
+  --paper:#FBF8EF;
+  --shadow: 0 18px 40px -20px rgba(14,63,85,.45);
+  font-size:16px;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--sand);
+  color:var(--ink);
+  font-family:'Almarai','IBM Plex Sans Arabic',sans-serif;
+  line-height:1.85;
+  overflow-x:hidden;
+}
+h1,h2,h3,.display{
+  font-family:'Cairo','IBM Plex Sans Arabic',sans-serif;
+  font-weight:800;
+  margin:0;
+}
+.eyebrow{
+  font-family:'IBM Plex Sans Arabic',sans-serif;
+  font-size:.8rem;
+  letter-spacing:.04em;
+  color:var(--water);
+  font-weight:600;
+  display:flex;align-items:center;gap:.5rem;
+}
+.eyebrow::before{content:"";width:22px;height:2px;background:var(--gold);display:inline-block;}
+a{color:inherit;}
+img{max-width:100%;}
+::selection{background:var(--water-light);color:var(--water-deep);}
+
+/* ---------- layout helpers ---------- */
+.wrap{max-width:1180px;margin:0 auto;padding:0 clamp(1.1rem,4vw,2.5rem);}
+section{padding:clamp(3rem,7vw,5.5rem) 0;}
+.btn{
+  font-family:'Cairo',sans-serif;font-weight:700;font-size:.95rem;
+  border:none;border-radius:100px;padding:.85rem 1.7rem;cursor:pointer;
+  display:inline-flex;align-items:center;gap:.5rem;
+  transition:transform .15s ease, box-shadow .15s ease, background .2s ease;
+}
+.btn:active{transform:translateY(1px) scale(.98);}
+.btn-primary{background:var(--water);color:#fff;box-shadow:0 10px 24px -10px rgba(24,110,144,.6);}
+.btn-primary:hover{background:var(--water-deep);}
+.btn-gold{background:var(--gold);color:#3a2a08;box-shadow:0 10px 24px -10px rgba(227,169,58,.6);}
+.btn-gold:hover{background:var(--gold-deep);color:#fff;}
+.btn-ghost{background:#fff;color:var(--water-deep);border:1.5px solid var(--sand-deep);}
+.btn-ghost:hover{border-color:var(--water);}
+.btn:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible, .tab:focus-visible{
+  outline:3px solid var(--gold); outline-offset:2px;
+}
+.pill{display:inline-block;background:var(--sand-deep);color:var(--ink-soft);border-radius:100px;padding:.25rem .8rem;font-size:.78rem;font-weight:600;}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important;}
+}
+
+/* ================= HEADER ================= */
+header{
+  position:sticky;top:0;z-index:50;
+  background:rgba(245,239,221,.86);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--sand-deep);
+}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:.85rem 0;}
+.brand{display:flex;align-items:center;gap:.6rem;font-family:'Cairo';font-weight:800;font-size:1.15rem;color:var(--water-deep);}
+.brand-mark{width:34px;height:34px;border-radius:9px;background:linear-gradient(160deg,var(--water-mid),var(--water-deep));position:relative;flex:none;}
+.brand-mark::after{content:"";position:absolute;inset:8px;border-radius:5px 5px 12px 12px;background:var(--water-light);opacity:.9;}
+.navlinks{display:flex;gap:.4rem;font-family:'Cairo';font-weight:700;font-size:.9rem;}
+.navlinks a{padding:.5rem .9rem;border-radius:100px;color:var(--ink-soft);text-decoration:none;transition:background .15s, color .15s;}
+.navlinks a:hover{background:var(--sand-deep);color:var(--ink);}
+@media(max-width:720px){.navlinks{display:none;}}
+
+/* ================= HERO ================= */
+.hero{position:relative;padding-top:clamp(2.5rem,6vw,4rem);}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:2.5rem;align-items:center;}
+@media(max-width:900px){.hero-grid{grid-template-columns:1fr;}}
+.hero h1{font-size:clamp(2.1rem,4.6vw,3.3rem);line-height:1.18;color:var(--water-deep);margin:.6rem 0 1rem;}
+.hero h1 span{color:var(--clay);}
+.hero p.lead{font-size:1.05rem;color:var(--ink-soft);max-width:46ch;}
+.hero-cta{display:flex;gap:.7rem;margin-top:1.6rem;flex-wrap:wrap;}
+.source-note{
+  margin-top:1.6rem;padding:.9rem 1.1rem;background:var(--paper);border-radius:14px;
+  border:1px solid var(--sand-deep);font-size:.85rem;color:var(--ink-soft);
+}
+.source-note b{color:var(--water-deep);}
+
+/* --- 3D scene shared component --- */
+.scene-shell{
+  perspective:1400px;perspective-origin:50% 30%;
+  border-radius:22px;
+  background:linear-gradient(180deg,#CFEAF4 0%, #E9F4EC 55%, #DCD2AE 100%);
+  box-shadow:var(--shadow);
+  position:relative;overflow:hidden;
+  aspect-ratio:1/0.82;
+  touch-action:none;
+  cursor:grab;
+}
+.scene-shell:active{cursor:grabbing;}
+.scene-hint{
+  position:absolute;bottom:.6rem;right:50%;transform:translateX(50%);
+  font-size:.72rem;color:var(--water-deep);background:rgba(255,255,255,.75);
+  padding:.3rem .7rem;border-radius:100px;font-family:'IBM Plex Sans Arabic';z-index:9;
+  pointer-events:none;display:flex;gap:.4rem;align-items:center;
+}
+.stage{
+  position:absolute;inset:0;
+  transform-style:preserve-3d;
+  transform:rotateX(58deg) rotateZ(-38deg) translateY(6%);
+  transition:transform .05s linear;
+}
+.cuboid{position:absolute;transform-style:preserve-3d;}
+.cuboid .f{position:absolute;}
+.cuboid .f-top{transform:rotateX(90deg) translateZ(calc(var(--h)/2));width:var(--w);height:var(--d);top:calc((var(--h) - var(--d))/2);}
+.cuboid .f-bottom{transform:rotateX(-90deg) translateZ(calc(var(--h)/2));width:var(--w);height:var(--d);top:calc((var(--h) - var(--d))/2);filter:brightness(.7);}
+.cuboid .f-front{transform:translateZ(calc(var(--d)/2));width:var(--w);height:var(--h);}
+.cuboid .f-back{transform:rotateY(180deg) translateZ(calc(var(--d)/2));width:var(--w);height:var(--h);}
+.cuboid .f-right{transform:rotateY(90deg) translateZ(calc(var(--w)/2));width:var(--d);height:var(--h);left:calc((var(--w) - var(--d))/2);filter:brightness(.86);}
+.cuboid .f-left{transform:rotateY(-90deg) translateZ(calc(var(--w)/2));width:var(--d);height:var(--h);left:calc((var(--w) - var(--d))/2);filter:brightness(.72);}
+
+.ground{--w:520px;--h:26px;--d:380px;left:50%;top:50%;margin-right:-260px;margin-top:-190px;}
+.ground .f{background:#CBB27C;border:1px solid #b79c63;}
+.ground .f-top{background:linear-gradient(135deg,#D8C28C,#C5AC76);}
+
+.dam{--w:230px;--h:90px;--d:34px;}
+.dam .f{background:var(--stone);border:1px solid #6f6a5c;}
+.dam .f-top{background:var(--stone-light);}
+.dam .f-front{background:linear-gradient(180deg,#9c9484,var(--stone));}
+
+.water-block{--w:210px;--h:10px;--d:130px;}
+.water-block .f{background:var(--water-mid);border:1px solid var(--water-deep);opacity:.92;}
+.water-block .f-top{background:linear-gradient(135deg,var(--water-light),var(--water-mid));}
+
+.greenhouse{--w:150px;--h:60px;--d:120px;}
+.greenhouse .f{background:rgba(255,255,255,.28);border:1px solid rgba(255,255,255,.6);backdrop-filter:blur(1px);}
+.greenhouse .f-top{background:linear-gradient(135deg,rgba(255,255,255,.55),rgba(190,225,235,.35));}
+
+.house{--w:96px;--h:70px;--d:96px;}
+.house .f{background:#E7DAB8;border:1px solid #cbb98d;}
+.house .f-front{background:linear-gradient(180deg,#f1e6c8,#e2d3ab);}
+.roof{--w:110px;--h:34px;--d:110px;}
+.roof .f{background:var(--clay);border:1px solid var(--clay-deep);}
+.roof .f-top{background:linear-gradient(135deg,#d17c4f,var(--clay));}
+
+.well{--w:56px;--h:46px;--d:56px;}
+.well .f{background:var(--stone);border:1px solid #6f6a5c;}
+.well .f-top{background:#3a3730;}
+.well-water{--w:38px;--h:6px;--d:38px;}
+.well-water .f-top{background:var(--water-mid);}
+.well-water .f{background:var(--water-deep);}
+
+.tank{--w:40px;--h:110px;--d:40px;}
+.tank .f{background:#7fa9b8;border:1px solid #5c8695;border-radius:6px;}
+.tank .f-top{background:#a9cdd8;}
+.fill{position:absolute;bottom:0;right:0;left:0;background:linear-gradient(180deg,var(--water-light),var(--water-mid));transition:height .5s ease;}
+
+.cloud{position:absolute;background:#fff;border-radius:100px;filter:blur(.5px);opacity:.92;box-shadow:0 10px 18px -8px rgba(0,0,0,.12);}
+.sun{position:absolute;width:70px;height:70px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fff2c9,var(--gold));box-shadow:0 0 40px 6px rgba(227,169,58,.55);transition:opacity .6s ease, transform .6s ease;}
+.rain{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .5s ease;}
+.rain.on{opacity:1;}
+.drop{position:absolute;width:2px;height:16px;background:linear-gradient(180deg,transparent,var(--water));border-radius:2px;animation:fall linear infinite;}
+@keyframes fall{from{transform:translateY(-40px);}to{transform:translateY(340px);}}
+.crack{position:absolute;opacity:0;transition:opacity .6s ease;}
+.badge3d{
+  position:absolute;top:14px;right:14px;z-index:9;background:rgba(14,63,85,.85);color:#fff;
+  font-family:'IBM Plex Sans Arabic';font-size:.72rem;padding:.35rem .7rem;border-radius:100px;
+  display:flex;align-items:center;gap:.35rem;
+}
+
+/* ================= SECTION HEADS ================= */
+.section-head{max-width:640px;margin-bottom:2.4rem;}
+.section-head h2{font-size:clamp(1.5rem,3vw,2.1rem);color:var(--water-deep);margin-top:.5rem;}
+.section-head p{color:var(--ink-soft);}
+
+/* ================= PROBLEM / STORY ================= */
+.story-card{
+  background:var(--paper);border:1px solid var(--sand-deep);border-radius:22px;
+  padding:clamp(1.4rem,3vw,2.2rem);box-shadow:var(--shadow);
+}
+.story-card p{font-size:1.05rem;}
+.story-card p b{color:var(--clay-deep);}
+
+/* ================= DEFINITION ================= */
+.definition{
+  display:grid;grid-template-columns:auto 1fr;gap:1.2rem;align-items:flex-start;
+  background:linear-gradient(135deg,var(--water-deep),var(--water));
+  color:#fff;border-radius:22px;padding:clamp(1.4rem,3vw,2rem);box-shadow:var(--shadow);
+}
+.definition .icon{width:52px;height:52px;border-radius:14px;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex:none;}
+.definition h3{font-size:1.25rem;margin-bottom:.4rem;}
+.definition p{color:rgba(255,255,255,.92);margin:0;}
+
+/* ================= METHOD CARDS ================= */
+.methods{display:grid;grid-template-columns:repeat(3,1fr);gap:1.3rem;margin-top:2rem;}
+@media(max-width:900px){.methods{grid-template-columns:1fr;}}
+.method-card{
+  perspective:1200px;height:280px;
+}
+.method-inner{
+  position:relative;width:100%;height:100%;transform-style:preserve-3d;
+  transition:transform .7s cubic-bezier(.2,.8,.2,1);
+}
+.method-card.flip .method-inner{transform:rotateY(180deg);}
+.method-face{
+  position:absolute;inset:0;backface-visibility:hidden;border-radius:20px;
+  padding:1.4rem;display:flex;flex-direction:column;box-shadow:var(--shadow);
+}
+.method-front{background:var(--paper);border:1px solid var(--sand-deep);align-items:center;text-align:center;justify-content:center;gap:.7rem;cursor:pointer;}
+.method-icon{width:64px;height:64px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:2rem;}
+.method-back{background:var(--water-deep);color:#fff;transform:rotateY(180deg);justify-content:center;}
+.method-back h4{font-family:'Cairo';font-weight:800;margin-bottom:.5rem;font-size:1.05rem;}
+.method-back p{font-size:.92rem;color:rgba(255,255,255,.9);margin:0;}
+.method-front .tag{font-family:'Cairo';font-weight:700;font-size:1.05rem;color:var(--water-deep);}
+.method-front .tap{font-size:.75rem;color:var(--ink-soft);}
+
+/* ================= FOG NOTE ================= */
+.fog-note{
+  margin-top:2rem;background:var(--sand-deep);border-radius:20px;padding:1.4rem 1.6rem;
+  display:flex;gap:1rem;align-items:flex-start;
+}
+.fog-note .icon{font-size:1.6rem;flex:none;}
+
+/* ================= LAB ================= */
+.lab-section{background:linear-gradient(180deg,var(--sand) 0%, #EFE6C8 100%);border-radius:32px;margin:0 -0.2rem;}
+.lab-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start;}
+@media(max-width:980px){.lab-grid{grid-template-columns:1fr;}}
+.lab-panel{background:var(--paper);border:1px solid var(--sand-deep);border-radius:22px;padding:1.5rem;box-shadow:var(--shadow);}
+.lab-panel h3{font-size:1.05rem;color:var(--water-deep);margin-bottom:.9rem;}
+.control-row{margin-bottom:1.2rem;}
+.control-row label{display:flex;justify-content:space-between;font-weight:700;font-size:.88rem;color:var(--ink-soft);margin-bottom:.4rem;}
+.control-row label b{color:var(--water-deep);}
+.method-choice{display:flex;gap:.5rem;flex-wrap:wrap;}
+.tab{
+  flex:1;min-width:90px;text-align:center;padding:.6rem .5rem;border-radius:14px;border:1.5px solid var(--sand-deep);
+  background:#fff;cursor:pointer;font-family:'Cairo';font-weight:700;font-size:.85rem;color:var(--ink-soft);
+  transition:all .15s ease;
+}
+.tab.active{background:var(--water);color:#fff;border-color:var(--water);}
+input[type=range]{width:100%;accent-color:var(--water);}
+.run-row{display:flex;gap:.6rem;margin-top:1.3rem;flex-wrap:wrap;}
+.readout{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem;}
+.stat{background:var(--sand-deep);border-radius:14px;padding:.6rem .9rem;flex:1;min-width:120px;text-align:center;}
+.stat .n{font-family:'Cairo';font-weight:800;font-size:1.35rem;color:var(--water-deep);display:block;}
+.stat .l{font-size:.72rem;color:var(--ink-soft);}
+.stat.alert .n{color:var(--alert);}
+
+.chart-wrap{margin-top:1rem;}
+.chart-legend{display:flex;gap:1rem;font-size:.78rem;color:var(--ink-soft);margin-bottom:.4rem;}
+.chart-legend span{display:flex;align-items:center;gap:.35rem;}
+.dot{width:10px;height:10px;border-radius:3px;display:inline-block;}
+
+.conclusion-box{
+  margin-top:1.4rem;background:linear-gradient(135deg,var(--leaf),#3a5f3f);color:#fff;border-radius:16px;padding:1.1rem 1.3rem;
+  font-size:.92rem;display:none;
+}
+.conclusion-box.show{display:block;}
+.conclusion-box b{display:block;font-family:'Cairo';margin-bottom:.3rem;}
+
+/* ================= WORKSHEET ================= */
+.worksheet{background:var(--paper);border:1px solid var(--sand-deep);border-radius:22px;padding:clamp(1.3rem,3vw,2.2rem);box-shadow:var(--shadow);}
+.q-item{border-top:1px dashed var(--sand-deep);padding:1.4rem 0;}
+.q-item:first-child{border-top:none;padding-top:.3rem;}
+.q-item .qh{display:flex;gap:.8rem;align-items:flex-start;}
+.qnum{
+  width:32px;height:32px;border-radius:10px;background:var(--water);color:#fff;flex:none;
+  display:flex;align-items:center;justify-content:center;font-family:'Cairo';font-weight:800;font-size:.95rem;
+}
+.qtext{font-weight:700;font-size:1rem;padding-top:.35rem;}
+textarea{
+  width:100%;margin-top:.7rem;border:1.5px solid var(--sand-deep);border-radius:14px;padding:.8rem 1rem;
+  font-family:'Almarai';font-size:.95rem;resize:vertical;min-height:64px;background:#fff;color:var(--ink);
+}
+textarea:focus{border-color:var(--water);outline:none;}
+.q-actions{display:flex;gap:.6rem;margin-top:.6rem;}
+.mini-btn{
+  font-family:'IBM Plex Sans Arabic';font-size:.78rem;font-weight:600;padding:.4rem .9rem;border-radius:100px;
+  border:1.5px solid var(--sand-deep);background:#fff;color:var(--ink-soft);cursor:pointer;
+}
+.mini-btn:hover{border-color:var(--water);color:var(--water-deep);}
+.hint-box{display:none;margin-top:.6rem;background:var(--sand-deep);border-radius:12px;padding:.8rem 1rem;font-size:.88rem;color:var(--ink-soft);}
+.hint-box.show{display:block;}
+.model-box{display:none;margin-top:.6rem;background:#EAF4E8;border:1px solid #cfe6ca;border-radius:12px;padding:.8rem 1rem;font-size:.88rem;color:#2f4a32;}
+.model-box.show{display:block;}
+
+/* ================= FOOTER ================= */
+footer{background:var(--water-deep);color:rgba(255,255,255,.85);padding:2.4rem 0;margin-top:3rem;}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;font-size:.85rem;}
+footer b{color:#fff;}
+
+  /* ══ RESPONSIVE MOBILE & TABLET ══ */
+  @media (max-width: 768px) {
+    body { padding: 8px !important; font-size: 15px !important; overflow-x: hidden !important; }
+    .container, [class*="container"], [class*="wrapper"] { padding: 8px !important; max-width: 100% !important; }
+    canvas { width: 100% !important; height: auto !important; display: block !important; touch-action: none; max-width: 100% !important; }
+    svg { max-width: 100% !important; height: auto !important; }
+    h1 { font-size: clamp(18px,5vw,32px) !important; }
+    h2 { font-size: clamp(15px,4vw,26px) !important; }
+    h3 { font-size: clamp(13px,3.5vw,20px) !important; }
+    [class*="grid"] { grid-template-columns: 1fr !important; }
+    [class*="flex"] { flex-wrap: wrap !important; }
+    input[type="range"] { width: 100% !important; min-height: 36px; }
+    input[type="number"], input[type="text"], select, textarea {
+      font-size: 16px !important; width: 100% !important; box-sizing: border-box; padding: 8px !important; }
+    button { min-height: 44px !important; font-size: 14px !important; touch-action: manipulation; padding: 10px 14px !important; }
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 13px !important; }
+    th, td { padding: 6px 4px !important; }
+    header { padding: 10px 12px !important; }
+    .controls, [class*="controls"] { flex-direction: column !important; gap: 8px !important; }
+    .lab-window, [class*="lab-window"] { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+  }
+  @media (max-width: 480px) {
+    body { padding: 4px !important; }
+    button { width: 100% !important; }
+  }
+  /* ══ END RESPONSIVE ══ */
+</style>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+<style>
+.vlab-back{position:fixed;top:10px;left:10px;z-index:99999;
+background:rgba(10,22,40,0.93);border:1px solid rgba(0,200,150,0.4);
+border-radius:22px;padding:8px 16px;display:inline-flex;align-items:center;gap:7px;
+color:#00C896;font-family:Tajawal,Cairo,Arial,sans-serif;font-size:13px;font-weight:700;
+text-decoration:none;backdrop-filter:blur(8px);box-shadow:0 4px 18px rgba(0,0,0,0.3);
+transition:background 0.2s;}
+.vlab-back:hover{background:rgba(0,200,150,0.18);}
+</style>
+<a href="../grade5.html" class="vlab-back">&#8594; العودة للصف</a>
+
+
+<header>
+  <div class="wrap nav">
+    <div class="brand"><span class="brand-mark"></span> حصاد المياه</div>
+    <nav class="navlinks">
+      <a href="#problem">المشكلة</a>
+      <a href="#definition">التعريف</a>
+      <a href="#methods">الطرق</a>
+      <a href="#lab">المختبر الافتراضي</a>
+      <a href="#worksheet">ورقة العمل</a>
+    </nav>
+    <span class="pill">العلوم والحياة · الصف الخامس</span>
+  </div>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">نشاط (٢) — وحدة الماء</div>
+      <h1>كل صيف عطش… وكل شتاء <span>نعمة تُهدر</span> إن لم نحصدها</h1>
+      <p class="lead">يعاني المجتمع الفلسطيني كل عام من أزمة مائية تجعل العطش عنوانًا لفصل الصيف، بسبب تحكّم الاحتلال بغالبية الموارد المائية. تعرّف في هذا الدرس كيف يتغلّب المزارعون على هذه المشكلة عبر مشاريع حصاد المياه، ثم جرّب بنفسك في المختبر الافتراضي ثلاثي الأبعاد.</p>
+      <div class="hero-cta">
+        <button class="btn btn-primary" onclick="document.getElementById('lab').scrollIntoView({behavior:'smooth'})">🧪 ابدأ التجربة الافتراضية</button>
+        <button class="btn btn-ghost" onclick="document.getElementById('problem').scrollIntoView({behavior:'smooth'})">📖 اقرأ الدرس أولاً</button>
+      </div>
+      <div class="source-note">💧 <b>حصاد المياه:</b> عملية تجميع مياه الأمطار والسيول من أسطح المنازل أو المسطّحات الصخرية أو الترابية، وتخزينها في آبار الجمع أو برك خاصة أو خلف السدود، قبل أن تصل إلى الآبار الجوفية — لتوفير الاحتياجات المائية في المنازل والزراعة والصناعة.</div>
+    </div>
+    <div>
+      <div class="scene-shell" id="heroScene">
+        <div class="badge3d">🖱️ اسحب لتدوير المشهد</div>
+        <div class="sun" id="heroSun" style="top:8%;left:10%;"></div>
+        <div class="cloud" style="width:90px;height:32px;top:12%;right:14%;"></div>
+        <div class="cloud" style="width:60px;height:22px;top:20%;right:30%;"></div>
+        <div class="rain" id="heroRain"></div>
+        <div class="stage" id="heroStage">
+          <div class="cuboid ground"><div class="f f-top"></div><div class="f f-front"></div><div class="f f-right"></div><div class="f f-bottom"></div></div>
+          <!-- dam -->
+          <div class="cuboid dam" style="left:50%;top:50%;margin-right:-330px;margin-top:-60px;"><div class="f f-top"></div><div class="f f-front"></div><div class="f f-right"></div><div class="f f-left"></div></div>
+          <div class="cuboid water-block" id="heroDamWater" style="left:50%;top:50%;margin-right:-315px;margin-top:-30px;"><div class="f f-top"></div><div class="f f-front"></div><div class="f f-right"></div></div>
+          <!-- greenhouse pond -->
+          <div class="cuboid greenhouse" style="left:50%;top:50%;margin-right:-40px;margin-top:10px;"><div class="f f-top"></div><div class="f f-front"></div><div class="f f-right"></div><div class="f f-left"></div></div>
+          <div class="cuboid water-block" id="heroPondWater" style="left:50%;top:50%;margin-right:-30px;margin-top:34px;--w:130px;--d:100px;"><div class="f f-top"></div><div class="f f-front"></div><div class="f f-right"></div></div>
+          <!-- house + well -->
+          <div class="cuboid house" style="left:50%;top:50%;margin-right:180px;margin-top:-100px;"><div class="f f-front"></div><div class="f f-right"></div><div class="f f-left"></div></div>
+          <div class="cuboid roof" style="left:50%;top:50%;margin-right:177px;margin-top:-140px;"><div class="f f-top"></div><div class="f f-front"></div><div class="f f-right"></div><div class="f f-left"></div></div>
+          <div class="cuboid well" style="left:50%;top:50%;margin-right:200px;margin-top:60px;"><div class="f f-top"></div><div class="f f-front"></div><div class="f f-right"></div><div class="f f-left"></div></div>
+          <div class="cuboid well-water" id="heroWellWater" style="left:50%;top:50%;margin-right:191px;margin-top:52px;"><div class="f f-top"></div><div class="f f-front"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PROBLEM ================= -->
+<section id="problem">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">أقرأ النص وأفهم</div>
+      <h2>لماذا يلجأ المزارعون إلى حصاد المياه؟</h2>
+    </div>
+    <div class="story-card">
+      <p>يعاني <b>المجتمع الفلسطيني</b> في كل عام من أزمة مائية تجعل <b>العطش عنوانًا لفصل الصيف</b>، وذلك في ظل تحكّم الاحتلال بغالبية الموارد المائية في فلسطين. لجأ المزارعون الفلسطينيون للتغلّب على هذه المشكلة إلى <b>إنشاء مشاريع حصاد المياه شتاءً</b>، مثل: سدّ العوجا، والبِرَك المغطّاة داخل البيوت البلاستيكية، والآبار التقليدية التي تُجمع فيها مياه الأمطار من أسطح المنازل.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= DEFINITION ================= -->
+<section id="definition" style="padding-top:0;">
+  <div class="wrap">
+    <div class="definition">
+      <div class="icon">💡</div>
+      <div>
+        <h3>معلومة مفيدة: ما المقصود بحصاد المياه؟</h3>
+        <p>عملية تجميع مياه الأمطار والسيول من أسطح المنازل أو المسطّحات الصخرية أو الترابية، وتخزينها في آبار الجمع أو برك خاصة، أو خلف السدود، قبل أن تصل إلى الآبار الجوفية؛ وذلك لتوفير الاحتياجات المائية في المنازل، والزراعة، والصناعة.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= METHODS ================= -->
+<section id="methods">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">ثلاث طرق شائعة في فلسطين</div>
+      <h2>اضغط على كل بطاقة لتتعرّف عليها</h2>
+      <p>كل طريقة تُناسب مكانًا مختلفًا: الوادي، البيت البلاستيكي، أو سطح المنزل.</p>
+    </div>
+    <div class="methods">
+      <div class="method-card" onclick="this.classList.toggle('flip')">
+        <div class="method-inner">
+          <div class="method-face method-front">
+            <div class="method-icon" style="background:#DCE7EA;">🏞️</div>
+            <div class="tag">سدّ (مثل سدّ العوجا)</div>
+            <div class="tap">اضغط لقراءة المزيد</div>
+          </div>
+          <div class="method-face method-back">
+            <h4>السدّ</h4>
+            <p>جدار يُبنى عبر مجرى وادٍ لحجز مياه الأمطار والسيول خلفه، فتتجمّع بحيرة مياه كبيرة تُستخدم للزراعة، وتغذّي الآبار الجوفية المجاورة تدريجيًا.</p>
+          </div>
+        </div>
+      </div>
+      <div class="method-card" onclick="this.classList.toggle('flip')">
+        <div class="method-inner">
+          <div class="method-face method-front">
+            <div class="method-icon" style="background:#E4EFE0;">🌿</div>
+            <div class="tag">بِركة داخل بيت بلاستيكي</div>
+            <div class="tap">اضغط لقراءة المزيد</div>
+          </div>
+          <div class="method-face method-back">
+            <h4>البِركة</h4>
+            <p>حفرة مبطّنة بغطاء بلاستيكي يمنع تسرّب الماء، تُقام غالبًا داخل البيوت البلاستيكية الزراعية، فتجمع مياه الأمطار وتحميها من التبخّر لاستخدامها في ري المحاصيل صيفًا.</p>
+          </div>
+        </div>
+      </div>
+      <div class="method-card" onclick="this.classList.toggle('flip')">
+        <div class="method-inner">
+          <div class="method-face method-front">
+            <div class="method-icon" style="background:#EFE6D6;">🪣</div>
+            <div class="tag">بئر جمع تقليدي</div>
+            <div class="tap">اضغط لقراءة المزيد</div>
+          </div>
+          <div class="method-face method-back">
+            <h4>البئر</h4>
+            <p>حفرة مبنيّة بالحجارة تحت سطح منزل مزوّد بميازيب، تنقل مياه الأمطار من السطح إلى داخل البئر لتخزينها واستخدامها لاحقًا في الشرب والزراعة المنزلية.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="fog-note">
+      <div class="icon">☁️</div>
+      <div><b style="font-family:'Cairo';color:var(--water-deep);">معلومة إضافية — حصاد الضباب</b><br>
+      في بعض البلدان، تُجمع قطرات الماء من الضباب باستخدام شبكة من النايلون تُنصب في مسار الرياح الضبابية، فتتكاثف قطرات الماء عليها وتُجمع في أماكن خاصة — طريقة أخرى مبتكرة لحصاد المياه لم تعتمد على المطر مباشرة.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= LAB ================= -->
+<section id="lab" class="lab-section">
+  <div class="wrap" style="padding:3.2rem 0;">
+    <div class="section-head">
+      <div class="eyebrow">المختبر الافتراضي — ثلاثي الأبعاد</div>
+      <h2>جرّب بنفسك: هل يفرق حصاد المياه فعلًا؟</h2>
+      <p>اختر نظام الحصاد، ثم شغّل محاكاة سنة كاملة، وقارن كمية العجز المائي في المنزل <b>بوجود</b> حصاد المياه <b>وبدونه</b>. النتائج ستساعدك على الإجابة عن ورقة العمل أدناه.</p>
+    </div>
+
+    <div class="lab-grid">
+      <!-- controls + scene -->
+      <div>
+        <div class="scene-shell" id="labScene" style="margin-bottom:1.4rem;">
+          <div class="badge3d">🖱️ اسحب لتدوير المشهد</div>
+          <div class="sun" id="labSun" style="top:8%;left:10%;"></div>
+          <div class="cloud" style="width:90px;height:32px;top:12%;right:14%;"></div>
+          <div class="cloud" style="width:60px;height:22px;top:20%;right:30%;"></div>
+          <div class="rain" id="labRain"></div>
+          <div class="stage" id="labStage">
+            <div class="cuboid ground"><div class="f f-top"></div><div class="f f-front"></div><div class="f f-right"></div><div class="f f-bottom"></div></div>
+
+            <div class="cuboid dam" id="structDam" style="left:50%;top:50%;margin-right:-330px;margin-top:-60px;"><div class="f f-top"></div><div class="f f-front"></div><div class="f f-right"></div><div class="f f-left"></div></div>
+            <div class="cuboid water-block" id="labDamWater" style="left:50%;top:50%;margin-right:-315px;margin-top:-30px;--h:2px;"><div class="f f-top"></div><div class="f f-front"></div><div class="f f-right"></div></div>
+
+            <div class="cuboid greenhouse" id="structPond" style="left:50%;top:50%;margin-right:-40px;margin-top:10px;"><div class="f f-top"></div><div class="f f-front"></div><div class="f f-right"></div><div class="f f-left"></div></div>
+            <div class="cuboid water-block" id="labPondWater" style="left:50%;top:50%;margin-right:-30px;margin-top:34px;--w:130px;--d:100px;--h:2px;"><div class="f f-top"></div><div class="f f-front"></div><div class="f f-right"></div></div>
+
+            <div class="cuboid house" style="left:50%;top:50%;margin-right:180px;margin-top:-100px;"><div class="f f-front"></div><div class="f f-right"></div><div class="f f-left"></div></div>
+            <div class="cuboid roof" style="left:50%;top:50%;margin-right:177px;margin-top:-140px;"><div class="f f-top"></div><div class="f f-front"></div><div class="f f-right"></div><div class="f f-left"></div></div>
+            <div class="cuboid well" id="structWell" style="left:50%;top:50%;margin-right:200px;margin-top:60px;"><div class="f f-top"></div><div class="f f-front"></div><div class="f f-right"></div><div class="f f-left"></div></div>
+            <div class="cuboid well-water" id="labWellWater" style="left:50%;top:50%;margin-right:191px;margin-top:52px;--h:1px;"><div class="f f-top"></div><div class="f f-front"></div></div>
+
+            <div class="cuboid tank" id="structTank" style="left:50%;top:50%;margin-right:-190px;margin-top:-90px;">
+              <div class="f f-front"><div class="fill" id="tankFillFront" style="height:0%;"></div></div>
+              <div class="f f-right"><div class="fill" id="tankFillRight" style="height:0%;"></div></div>
+              <div class="f f-left"><div class="fill" id="tankFillLeft" style="height:0%;"></div></div>
+              <div class="f f-top"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lab-panel">
+          <h3>١. اختر نظام حصاد المياه</h3>
+          <div class="method-choice" id="methodTabs">
+            <div class="tab active" data-method="dam">سدّ 🏞️</div>
+            <div class="tab" data-method="pond">بِركة 🌿</div>
+            <div class="tab" data-method="well">بئر 🪣</div>
+            <div class="tab" data-method="none">بدون حصاد ❌</div>
+          </div>
+          <div class="run-row">
+            <button class="btn btn-primary" id="runBtn">▶️ شغّل محاكاة السنة</button>
+            <button class="btn btn-ghost" id="resetBtn">↺ إعادة ضبط</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- results -->
+      <div class="lab-panel">
+        <h3>٢. نتائج المحاكاة (١٢ شهرًا)</h3>
+        <div class="chart-legend">
+          <span><i class="dot" style="background:var(--water-mid);"></i> شهر متوفّر فيه ماء كافٍ</span>
+          <span><i class="dot" style="background:var(--alert);"></i> شهر عجز مائي (شحّ)</span>
+        </div>
+        <div class="chart-wrap">
+          <svg id="chart" viewBox="0 0 480 170" style="width:100%;height:auto;"></svg>
+        </div>
+        <div class="readout" id="readout">
+          <div class="stat"><span class="n" id="statCollected">٠</span><span class="l">لترات مُحصَّلة من المطر</span></div>
+          <div class="stat alert"><span class="n" id="statShortage">٠</span><span class="l">أشهر عجز مائي</span></div>
+          <div class="stat"><span class="n" id="statPct">٠٪</span><span class="l">تراجُع أشهر العجز مقارنة بدون حصاد</span></div>
+        </div>
+        <div class="conclusion-box" id="conclusionBox">
+          <b>📌 الاستنتاج التلقائي من تجربتك</b>
+          <span id="conclusionText"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= WORKSHEET ================= -->
+<section id="worksheet">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">ملف الإنجاز — نشاط (٢)</div>
+      <h2>والآن أجيب: بعد قراءة الدرس وتجربة المختبر</h2>
+      <p>استعن بنتائج المحاكاة أعلاه، ويمكنك الضغط على "تلميح" أو "إجابة نموذجية" عند الحاجة.</p>
+    </div>
+    <div class="worksheet" id="worksheetList"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>صمّم لمنهاج <b>العلوم والحياة — الصف الخامس، فلسطين</b> · درس حصاد المياه</div>
+    <div>يعمل من الحاسوب والهاتف 📱💻 — بدون اتصال إضافي بعد التحميل</div>
+  </div>
+</footer>
+
+<script>
+/* ============ Utility: Arabic-Indic digits ============ */
+function ar(n){ return String(n).replace(/[0-9]/g, d => "٠١٢٣٤٥٦٧٨٩"[d]); }
+
+/* ============ Rain / weather decoration on load ============ */
+function buildRain(container){
+  container.innerHTML = "";
+  for(let i=0;i<26;i++){
+    const d = document.createElement("div");
+    d.className = "drop";
+    d.style.right = (Math.random()*100)+"%";
+    d.style.top = (-Math.random()*100)+"px";
+    d.style.animationDuration = (0.5+Math.random()*0.5)+"s";
+    d.style.animationDelay = (Math.random()*1)+"s";
+    container.appendChild(d);
+  }
+}
+buildRain(document.getElementById("heroRain"));
+buildRain(document.getElementById("labRain"));
+
+/* toggle rain gently for hero as ambient motion */
+let heroRainOn = true;
+document.getElementById("heroRain").classList.add("on");
+setInterval(()=>{
+  heroRainOn = !heroRainOn;
+  document.getElementById("heroRain").classList.toggle("on", heroRainOn);
+  document.getElementById("heroSun").style.opacity = heroRainOn ? "0.35" : "1";
+}, 4200);
+
+/* ============ Drag-to-rotate for both 3D scenes ============ */
+function enableDrag(shell, stage, baseX, baseZ){
+  let dragging=false, lastX=0, lastY=0, rotZ=baseZ, rotX=baseX;
+  function apply(){ stage.style.transform = `rotateX(${rotX}deg) rotateZ(${rotZ}deg) translateY(6%)`; }
+  function start(x,y){ dragging=true; lastX=x; lastY=y; shell.style.cursor="grabbing"; }
+  function move(x,y){
+    if(!dragging) return;
+    const dx = x-lastX, dy = y-lastY;
+    rotZ += dx*0.25;
+    rotX = Math.min(74, Math.max(40, rotX - dy*0.15));
+    lastX=x; lastY=y;
+    apply();
+  }
+  function end(){ dragging=false; shell.style.cursor="grab"; }
+  shell.addEventListener("pointerdown", e=>{ start(e.clientX,e.clientY); shell.setPointerCapture(e.pointerId); });
+  shell.addEventListener("pointermove", e=> move(e.clientX,e.clientY));
+  shell.addEventListener("pointerup", end);
+  shell.addEventListener("pointerleave", end);
+  apply();
+}
+enableDrag(document.getElementById("heroScene"), document.getElementById("heroStage"), 58, -38);
+enableDrag(document.getElementById("labScene"), document.getElementById("labStage"), 58, -38);
+
+/* subtle idle animation for hero water blocks (decorative) */
+["heroDamWater","heroPondWater","heroWellWater"].forEach((id,i)=>{
+  const el = document.getElementById(id);
+  let t=0;
+  setInterval(()=>{ t+=0.15; el.style.opacity = 0.85 + Math.sin(t+i)*0.1; }, 200);
+});
+
+/* ============================================================
+   VIRTUAL LAB SIMULATION
+   ============================================================ */
+const months = ["تشرين1","تشرين2","كانون1","كانون2","شباط","آذار","نيسان","أيار","حزيران","تموز","آب","أيلول"];
+// approximate average monthly rainfall (mm) for a highland Palestinian town, for classroom illustration
+const rainfallMM = [15, 65, 105, 115, 90, 55, 18, 3, 0, 0, 0, 2];
+// piped/municipal supply available each month under normal restrictions (liters, household+small plot)
+const pipedSupply = [3000,3000,3000,3000,3000,2600,1800,1200,900,900,1000,1600];
+const monthlyNeed = 3000; // liters needed per month for household + small garden
+
+const methodConfig = {
+  dam:  { label:"سدّ", catchmentM2: 4000, efficiency:0.35, capacity: 60000, structure:["structDam"] },
+  pond: { label:"بِركة داخل بيت بلاستيكي", catchmentM2: 500, efficiency:0.7, capacity: 12000, structure:["structPond"] },
+  well: { label:"بئر جمع من سطح المنزل", catchmentM2: 100, efficiency:0.8, capacity: 6000, structure:["structWell","structTank"] },
+  none: { label:"بدون حصاد مياه", catchmentM2: 0, efficiency:0, capacity: 0, structure:[] }
+};
+
+let currentMethod = "dam";
+let simRunning = false;
+
+document.querySelectorAll("#methodTabs .tab").forEach(tab=>{
+  tab.addEventListener("click", ()=>{
+    if(simRunning) return;
+    document.querySelectorAll("#methodTabs .tab").forEach(t=>t.classList.remove("active"));
+    tab.classList.add("active");
+    currentMethod = tab.dataset.method;
+    highlightStructure();
+  });
+});
+
+function highlightStructure(){
+  ["structDam","structPond","structWell","structTank"].forEach(id=>{
+    document.getElementById(id).style.filter = "grayscale(60%) opacity(.55)";
+  });
+  methodConfig[currentMethod].structure.forEach(id=>{
+    document.getElementById(id).style.filter = "none";
+  });
+}
+highlightStructure();
+
+function simulateYear(method){
+  const cfg = methodConfig[method];
+  let storage = 0;
+  const results = [];
+  let collectedTotal = 0;
+  for(let m=0;m<12;m++){
+    const collected = method==="none" ? 0 : Math.round(rainfallMM[m]*cfg.catchmentM2*cfg.efficiency);
+    collectedTotal += collected;
+    storage = Math.min(cfg.capacity, storage + collected);
+    let available = pipedSupply[m] + storage;
+    let shortage = available < monthlyNeed;
+    if(!shortage){
+      // draw the deficit from storage only if piped alone insufficient
+      const neededFromStorage = Math.max(0, monthlyNeed - pipedSupply[m]);
+      storage = Math.max(0, storage - neededFromStorage);
+    }
+    results.push({month:months[m], collected, storage, shortage});
+  }
+  return {results, collectedTotal};
+}
+
+let lastWithout = null, lastWith = null;
+
+function drawChart(withData, withoutData){
+  const svg = document.getElementById("chart");
+  svg.innerHTML = "";
+  const w = 480, h = 170, padBottom = 26, barW = 14, gap = 24;
+  const maxVal = monthlyNeed*1.1;
+  months.forEach((m, i)=>{
+    const x0 = 20 + i*gap;
+    // without-harvest bar (background, muted)
+    const dWithout = withoutData.results[i];
+    const availableWithout = Math.min(pipedSupply[i], monthlyNeed);
+    const hWithoutBar = (availableWithout/maxVal)*(h-padBottom-10);
+    const rectW = document.createElementNS("http://www.w3.org/2000/svg","rect");
+    rectW.setAttribute("x", x0);
+    rectW.setAttribute("y", h-padBottom-hWithoutBar);
+    rectW.setAttribute("width", barW*0.55);
+    rectW.setAttribute("height", hWithoutBar);
+    rectW.setAttribute("fill", dWithout.shortage ? "#e8a6a0" : "#b9d7e2");
+    svg.appendChild(rectW);
+
+    // with-harvest bar
+    const dWith = withData.results[i];
+    const availableWith = Math.min(monthlyNeed, pipedSupply[i]+dWith.storage+dWith.collected*0); // representative height
+    const effectiveAvail = dWith.shortage ? Math.min(pipedSupply[i]+ (i>0?withData.results[i-1].storage:0), monthlyNeed) : monthlyNeed;
+    const hWithBar = (Math.min(effectiveAvail,monthlyNeed)/maxVal)*(h-padBottom-10);
+    const rect = document.createElementNS("http://www.w3.org/2000/svg","rect");
+    rect.setAttribute("x", x0+barW*0.6);
+    rect.setAttribute("y", h-padBottom-hWithBar);
+    rect.setAttribute("width", barW*0.55);
+    rect.setAttribute("height", hWithBar);
+    rect.setAttribute("fill", dWith.shortage ? "#C1443B" : "#2B93B8");
+    svg.appendChild(rect);
+
+    const label = document.createElementNS("http://www.w3.org/2000/svg","text");
+    label.setAttribute("x", x0+barW*0.5);
+    label.setAttribute("y", h-8);
+    label.setAttribute("font-size","7.2");
+    label.setAttribute("text-anchor","middle");
+    label.setAttribute("fill","#5C6357");
+    label.textContent = m.replace(/[٠-٩]/g,'');
+    svg.appendChild(label);
+  });
+}
+
+function animateTank(pct){
+  ["tankFillFront","tankFillRight","tankFillLeft"].forEach(id=>{
+    document.getElementById(id).style.height = pct+"%";
+  });
+}
+function animateWater(id, pct, maxH){
+  const el = document.getElementById(id);
+  el.style.setProperty("--h", Math.max(1,(pct/100)*maxH)+"px");
+}
+
+const runBtn = document.getElementById("runBtn");
+const resetBtn = document.getElementById("resetBtn");
+
+runBtn.addEventListener("click", ()=>{
+  if(simRunning) return;
+  simRunning = true;
+  runBtn.disabled = true;
+  runBtn.textContent = "⏳ جارٍ تشغيل السنة...";
+  document.getElementById("conclusionBox").classList.remove("show");
+
+  const withoutData = simulateYear("none");
+  const withData = simulateYear(currentMethod);
+  lastWithout = withoutData; lastWith = withData;
+
+  let month = 0;
+  const rainEl = document.getElementById("labRain");
+  const sunEl = document.getElementById("labSun");
+  const chartPartial = {results:[], collectedTotal:0};
+
+  const timer = setInterval(()=>{
+    const isRainMonth = rainfallMM[month] > 10;
+    rainEl.classList.toggle("on", isRainMonth && currentMethod!=="none");
+    sunEl.style.opacity = isRainMonth ? "0.3" : "1";
+
+    const d = withData.results[month];
+    const pct = methodConfig[currentMethod].capacity ? Math.round((d.storage/methodConfig[currentMethod].capacity)*100) : 0;
+    if(currentMethod==="dam") animateWater("labDamWater", pct, 10);
+    if(currentMethod==="pond") animateWater("labPondWater", pct, 10);
+    if(currentMethod==="well"){ animateWater("labWellWater", pct, 6); animateTank(pct); }
+
+    chartPartial.results.push(d);
+    chartPartial.collectedTotal += d.collected;
+    drawChart({results:withData.results.slice(0,month+1).concat(Array(11-month).fill({shortage:false,storage:0,collected:0}))},
+              {results:withoutData.results.slice(0,month+1).concat(Array(11-month).fill({shortage:false}))});
+
+    month++;
+    if(month>=12){
+      clearInterval(timer);
+      drawChart(withData, withoutData);
+      finishRun(withData, withoutData);
+      simRunning = false;
+      runBtn.disabled = false;
+      runBtn.textContent = "▶️ شغّل محاكاة السنة";
+      rainEl.classList.remove("on");
+      sunEl.style.opacity = "1";
+    }
+  }, 260);
+});
+
+resetBtn.addEventListener("click", ()=>{
+  if(simRunning) return;
+  animateTank(0); animateWater("labDamWater",0,10); animateWater("labPondWater",0,10); animateWater("labWellWater",0,6);
+  document.getElementById("chart").innerHTML = "";
+  document.getElementById("statCollected").textContent = "٠";
+  document.getElementById("statShortage").textContent = "٠";
+  document.getElementById("statPct").textContent = "٠٪";
+  document.getElementById("conclusionBox").classList.remove("show");
+});
+
+function finishRun(withData, withoutData){
+  const shortageWith = withData.results.filter(r=>r.shortage).length;
+  const shortageWithout = withoutData.results.filter(r=>r.shortage).length;
+  const pctImprove = shortageWithout===0 ? 0 : Math.round((1-(shortageWith/shortageWithout))*100);
+
+  document.getElementById("statCollected").textContent = ar(withData.collectedTotal.toLocaleString());
+  document.getElementById("statShortage").textContent = ar(shortageWith);
+  document.getElementById("statPct").textContent = ar(Math.max(0,pctImprove))+"٪";
+
+  const box = document.getElementById("conclusionBox");
+  const label = methodConfig[currentMethod].label;
+  let text;
+  if(currentMethod==="none"){
+    text = `بدون أي حصاد للمياه، سجّل المنزل ${ar(shortageWithout)} أشهر عجز مائي، غالبًا في فصل الصيف حين ينقطع المطر ويقلّ الإمداد. هذا يفسّر لماذا يشعر الفلسطينيون بالعطش تحديدًا في الصيف.`;
+  } else {
+    text = `باستخدام "${label}"، انخفض عدد أشهر العجز المائي من ${ar(shortageWithout)} (بدون حصاد) إلى ${ar(shortageWith)} فقط، بعد تجميع نحو ${ar(withData.collectedTotal.toLocaleString())} لترًا من مياه الأمطار في فصل الشتاء واستخدامها خلال أشهر الجفاف. هذا يثبت أن حصاد المياه يقلّل أزمة العطش الصيفية.`;
+  }
+  document.getElementById("conclusionText").textContent = text;
+  box.classList.add("show");
+}
+
+/* ============================================================
+   WORKSHEET (auto-built from data so content stays consistent)
+   ============================================================ */
+const questions = [
+  {
+    q: "ما المشكلة التي تواجه المزارع الفلسطيني؟",
+    hint: "فكّر في فصل الصيف، وفي من يتحكّم بمعظم مصادر المياه في فلسطين.",
+    model: "يعاني المزارع الفلسطيني من أزمة مائية متكرّرة كل صيف (نقص شديد في المياه)، بسبب تحكّم الاحتلال بغالبية الموارد المائية في فلسطين."
+  },
+  {
+    q: "كيف تغلّب المزارع الفلسطيني على هذه المشكلة؟",
+    hint: "راجع الصور الثلاث في بداية الدرس، وشغّل المختبر الافتراضي لتلاحظ الأثر.",
+    model: "لجأ المزارعون إلى إنشاء مشاريع حصاد المياه في فصل الشتاء، مثل بناء السدود (كسدّ العوجا)، وإقامة البِرَك داخل البيوت البلاستيكية، وحفر الآبار التقليدية لتجميع مياه الأمطار من أسطح المنازل."
+  },
+  {
+    q: "نُطلق على هذه المشاريع «حصاد المياه»، ما المقصود بحصاد المياه؟",
+    hint: "عد إلى صندوق «معلومة مفيدة» في أعلى الصفحة وأعد صياغته بأسلوبك.",
+    model: "حصاد المياه هو عملية تجميع مياه الأمطار والسيول من أسطح المنازل أو المسطّحات الصخرية أو الترابية، وتخزينها في آبار أو برك خاصة أو خلف السدود، لتوفير الاحتياجات المائية للمنازل والزراعة والصناعة."
+  },
+  {
+    q: "أقترح طرقًا أخرى لحصاد المياه.",
+    hint: "تذكّر معلومة «حصاد الضباب» في الدرس — وفكّر في وسائل أخرى تنقل الماء من مكان إلى مكان تخزينه.",
+    model: "من الطرق الأخرى: حصاد الضباب باستخدام شبكات نايلون تجمع قطرات الماء المتكاثفة، وتركيب مواسير (ميازيب) على أسطح المنازل لتوجيه مياه الأمطار إلى خزانات أرضية أو علوية، وحفر خنادق صغيرة في الحقول الزراعية لتبطئ جريان المياه وتزيد تسربها إلى التربة."
+  },
+  {
+    q: "ما أهمية حصاد المياه في فلسطين؟",
+    hint: "قارن بين عدد أشهر «العجز المائي» بوجود الحصاد وبدونه في نتائج المختبر.",
+    model: "يقلّل حصاد المياه من أزمة العطش في الصيف، ويوفّر مصدرًا إضافيًا للمياه لا يتحكّم به الاحتلال، ويدعم الزراعة والصناعة والاستخدام المنزلي، ويخفّف الاعتماد الكامل على المصادر المائية المقيَّدة، كما تثبت نتائج محاكاة المختبر أعلاه."
+  }
+];
+
+const wsList = document.getElementById("worksheetList");
+questions.forEach((item, idx)=>{
+  const div = document.createElement("div");
+  div.className = "q-item";
+  div.innerHTML = `
+    <div class="qh">
+      <div class="qnum">${ar(idx+1)}</div>
+      <div class="qtext">${item.q}</div>
+    </div>
+    <textarea placeholder="اكتب إجابتك هنا..." aria-label="إجابة السؤال ${ar(idx+1)}"></textarea>
+    <div class="q-actions">
+      <button class="mini-btn" data-act="hint">💭 تلميح</button>
+      <button class="mini-btn" data-act="model">✅ إجابة نموذجية</button>
+    </div>
+    <div class="hint-box">${item.hint}</div>
+    <div class="model-box">${item.model}</div>
+  `;
+  div.querySelector('[data-act="hint"]').addEventListener("click", ()=>{
+    div.querySelector(".hint-box").classList.toggle("show");
+  });
+  div.querySelector('[data-act="model"]').addEventListener("click", ()=>{
+    div.querySelector(".model-box").classList.toggle("show");
+  });
+  wsList.appendChild(div);
+});
+</script>
+</body>
+</html>

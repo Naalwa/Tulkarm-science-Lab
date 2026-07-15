@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<meta http-equiv="Content-Language" content="ar">
+<title>الإخراج في النباتات | مختبر افتراضي - الصف السابع</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lalezar&family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-deep:#0e1f18;
+    --bg-panel:#152a20;
+    --bg-panel-2:#1c3327;
+    --glass:rgba(142,202,230,0.16);
+    --glass-edge:rgba(214,236,242,0.65);
+    --leaf:#4c9a5b;
+    --leaf-dark:#2f6b3d;
+    --leaf-light:#8fc99c;
+    --copper:#b5651d;
+    --vitriol:#2a6f97;
+    --vitriol-light:#7ec3e0;
+    --cream:#eef2ea;
+    --cream-dim:#c9d3c6;
+    --soil:#4a3123;
+    --terracotta:#a15c38;
+    --coral:#c0392b;
+    --gold:#d9a441;
+    font-size:16px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg-deep);
+    color:var(--cream);
+    font-family:'Cairo', sans-serif;
+    line-height:1.9;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--vitriol-light); color:#0e1f18;}
+
+  h1,h2,h3,.display{
+    font-family:'Lalezar', 'Cairo', sans-serif;
+    font-weight:400;
+    letter-spacing:0.5px;
+  }
+
+  .eyebrow{
+    font-size:0.8rem;
+    letter-spacing:3px;
+    color:var(--gold);
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:14px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:34px; height:2px;
+    background:var(--gold);
+    display:inline-block;
+  }
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(14,31,24,0.88);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid rgba(207,232,240,0.12);
+    padding:14px 6vw;
+    display:flex; align-items:center; justify-content:space-between;
+    gap:12px; flex-wrap:wrap;
+  }
+  .brand{display:flex; align-items:center; gap:10px; font-family:'Lalezar'; font-size:1.3rem; color:var(--leaf-light);}
+  .brand span{color:var(--cream-dim); font-family:'Cairo'; font-size:0.75rem; font-weight:600;}
+  .nav-actions{display:flex; gap:10px; align-items:center;}
+  .btn{
+    border:none; cursor:pointer; font-family:'Cairo'; font-weight:700;
+    border-radius:999px; padding:11px 22px; font-size:0.92rem;
+    transition:transform .15s ease, box-shadow .15s ease, background .2s ease;
+    display:inline-flex; align-items:center; gap:8px;
+  }
+  .btn:active{transform:scale(0.96);}
+  .btn-primary{background:var(--leaf); color:#0e1f18; box-shadow:0 6px 18px rgba(76,154,91,0.35);}
+  .btn-primary:hover{background:var(--leaf-light);}
+  .btn-ghost{background:transparent; color:var(--cream); border:1.5px solid rgba(238,242,234,0.35);}
+  .btn-ghost:hover{border-color:var(--gold); color:var(--gold);}
+  .btn:disabled{opacity:0.35; cursor:not-allowed; transform:none;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    min-height:62vh;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center;
+    padding:9vh 6vw 7vh;
+    position:relative;
+    background:
+      radial-gradient(ellipse at 80% 10%, rgba(76,154,91,0.18), transparent 55%),
+      radial-gradient(ellipse at 10% 90%, rgba(42,111,151,0.15), transparent 55%);
+  }
+  .hero-text{max-width:760px; display:flex; flex-direction:column; align-items:center;}
+  .hero-text .eyebrow{margin-bottom:20px;}
+  .hero-text h1{
+    font-size:clamp(2.6rem, 5vw, 4.2rem);
+    color:var(--cream);
+    line-height:1.25;
+  }
+  .hero-text h1 em{
+    font-style:normal;
+    color:var(--leaf-light);
+    text-shadow:0 0 30px rgba(76,154,91,0.4);
+  }
+  .hero-text p{
+    margin-top:22px; max-width:560px;
+    color:var(--cream-dim); font-size:1.08rem;
+  }
+  .hero-meta{
+    margin-top:30px; display:flex; gap:14px; flex-wrap:wrap; justify-content:center;
+  }
+  .pill{
+    background:var(--bg-panel-2); border:1px solid rgba(217,164,65,0.35);
+    color:var(--gold); padding:8px 16px; border-radius:999px; font-size:0.85rem; font-weight:700;
+  }
+  .hero-cta{margin-top:34px; display:flex; gap:14px; flex-wrap:wrap; justify-content:center;}
+
+  /* Signature 3D bell jar (used inside the lab) */
+  .stage{
+    perspective:1400px;
+    display:flex; align-items:center; justify-content:center;
+    min-height:420px;
+  }
+  .jar-rig{
+    position:relative;
+    transform-style:preserve-3d;
+    transform:rotateX(8deg) rotateY(-14deg);
+    animation:float 7s ease-in-out infinite;
+    width:280px;
+  }
+  @keyframes float{
+    0%,100%{transform:rotateX(8deg) rotateY(-14deg) translateY(0px);}
+    50%{transform:rotateX(6deg) rotateY(-10deg) translateY(-14px);}
+  }
+  .plate{
+    width:230px; height:26px; margin:0 auto;
+    background:linear-gradient(180deg, #cfd8d3, #9aa89f);
+    border-radius:50%;
+    box-shadow:0 18px 40px rgba(0,0,0,0.55);
+  }
+  .dome{
+    width:220px; height:290px; margin:-250px auto 0;
+    border-radius:110px 110px 30px 30px / 150px 150px 20px 20px;
+    background:
+      linear-gradient(120deg, rgba(255,255,255,0.35), rgba(255,255,255,0.02) 40%),
+      linear-gradient(200deg, var(--glass), rgba(142,202,230,0.05));
+    border:2px solid var(--glass-edge);
+    box-shadow:
+      inset -20px -10px 40px rgba(255,255,255,0.15),
+      inset 20px 30px 60px rgba(20,60,80,0.25),
+      0 20px 50px rgba(0,0,0,0.4);
+    position:relative;
+    overflow:hidden;
+  }
+  .dome-knob{
+    width:14px; height:22px; background:#cfd8d3; border-radius:6px;
+    position:absolute; top:6px; left:50%; transform:translateX(-50%);
+  }
+  .pot{
+    width:100px; height:70px; margin:0 auto;
+    background:linear-gradient(160deg, var(--terracotta), var(--soil));
+    border-radius:8px 8px 30px 30px;
+    position:absolute; bottom:14px; left:50%; transform:translateX(-50%);
+    box-shadow:0 6px 14px rgba(0,0,0,0.3);
+  }
+  .foil{
+    position:absolute; bottom:78px; left:50%; transform:translateX(-50%);
+    width:112px; height:16px; border-radius:50%;
+    background:linear-gradient(120deg,#d9dfe3,#9aa4ab,#eef2f4);
+    box-shadow:0 2px 6px rgba(0,0,0,0.35);
+    opacity:0; transition:opacity .5s ease;
+    z-index:3;
+  }
+  .foil.on{opacity:1;}
+  .stem{
+    position:absolute; bottom:80px; left:50%; transform:translateX(-50%);
+    width:6px; height:110px; background:linear-gradient(180deg, var(--leaf-dark), var(--leaf));
+    border-radius:6px;
+  }
+  .leaf-el{
+    position:absolute; width:46px; height:26px; background:var(--leaf);
+    border-radius:0 100% 0 100%;
+  }
+  .l1{bottom:150px; left:34%; transform:rotate(-20deg);}
+  .l2{bottom:170px; right:32%; transform:rotate(20deg) scaleX(-1);}
+  .l3{bottom:190px; left:38%; transform:rotate(-10deg) scale(0.85);}
+  .l4{bottom:130px; right:36%; transform:rotate(15deg) scaleX(-1) scale(0.8);}
+  .dish{
+    position:absolute; bottom:22px; right:16%;
+    width:42px; height:15px; border-radius:50%;
+    background:#c9d0d3; box-shadow:0 3px 6px rgba(0,0,0,0.35);
+    display:flex; align-items:center; justify-content:center;
+    opacity:0; transform:scale(0.6); transition:opacity .4s ease, transform .4s ease;
+    z-index:2;
+  }
+  .dish.on{opacity:1; transform:scale(1);}
+  .powder{
+    width:32px; height:9px; border-radius:50%;
+    background:#f2efe6;
+    box-shadow:inset 0 1px 2px rgba(0,0,0,0.15);
+    transition:background 1s linear;
+  }
+  .powder.reacting{ }
+  .droplet{
+    position:absolute; width:6px; height:6px; border-radius:50%;
+    background:radial-gradient(circle at 30% 30%, #fff, rgba(255,255,255,0.2));
+    opacity:0; transition:opacity .6s ease;
+  }
+
+  /* ---------- SECTIONS ---------- */
+  section{padding:8vh 6vw;}
+  .section-head{max-width:760px; margin-bottom:50px;}
+  .section-head h2{font-size:clamp(1.8rem,3.2vw,2.6rem); color:var(--cream);}
+  .section-head p{color:var(--cream-dim); margin-top:14px; font-size:1.02rem;}
+
+  .card-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:24px;}
+  .card{
+    background:var(--bg-panel); border:1px solid rgba(238,242,234,0.08);
+    border-radius:18px; padding:28px 24px;
+    transition:transform .2s ease, border-color .2s ease;
+  }
+  .card:hover{transform:translateY(-6px); border-color:rgba(76,154,91,0.5);}
+  .card .icon{
+    width:52px; height:52px; border-radius:14px;
+    display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(150deg, var(--leaf), var(--leaf-dark));
+    font-size:1.5rem; margin-bottom:18px;
+  }
+  .card h3{font-size:1.25rem; color:var(--gold); margin-bottom:10px; font-weight:400;}
+  .card p{color:var(--cream-dim); font-size:0.96rem;}
+
+  .why-strip{
+    display:flex; gap:18px; overflow-x:auto; padding-bottom:10px;
+  }
+  .why-strip .chip{
+    flex:0 0 auto; min-width:220px;
+    background:var(--bg-panel-2); border-radius:14px; padding:18px 20px;
+    border-inline-start:4px solid var(--coral);
+  }
+  .why-strip .chip b{color:var(--cream); display:block; margin-bottom:6px; font-size:1rem;}
+  .why-strip .chip span{color:var(--cream-dim); font-size:0.9rem;}
+
+  /* ---------- LAB ---------- */
+  .lab-wrap{
+    background:linear-gradient(180deg, var(--bg-panel), var(--bg-deep));
+    border-radius:28px; border:1px solid rgba(238,242,234,0.08);
+    padding:5vh 5vw; position:relative; overflow:hidden;
+  }
+  .lab-grid{
+    display:grid; grid-template-columns:1fr 1.15fr; gap:50px; align-items:start;
+  }
+  .materials{
+    background:var(--bg-panel-2); border-radius:16px; padding:22px;
+    margin-bottom:26px;
+  }
+  .materials h3{color:var(--gold); font-size:1.1rem; font-weight:700; margin-bottom:12px;}
+  .materials ul{list-style:none; display:flex; flex-wrap:wrap; gap:8px;}
+  .materials li{
+    background:rgba(238,242,234,0.06); padding:6px 14px; border-radius:999px;
+    font-size:0.85rem; color:var(--cream-dim); border:1px solid rgba(238,242,234,0.1);
+    display:inline-flex; align-items:center; gap:8px;
+  }
+  .swatch{
+    width:13px; height:13px; border-radius:4px; display:inline-block;
+    border:1px solid rgba(255,255,255,0.35); flex:0 0 auto;
+  }
+
+  .steps{display:flex; flex-direction:column; gap:14px;}
+  .step{
+    background:var(--bg-panel-2); border-radius:14px; padding:18px 20px;
+    border-inline-start:4px solid rgba(238,242,234,0.15);
+    opacity:0.5; transition:opacity .3s ease, border-color .3s ease;
+    position:relative;
+  }
+  .step.active{opacity:1; border-inline-start-color:var(--gold);}
+  .step.done{opacity:0.85; border-inline-start-color:var(--leaf);}
+  .step .num{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:26px; height:26px; border-radius:50%; background:rgba(238,242,234,0.1);
+    font-size:0.85rem; font-weight:700; margin-inline-end:10px;
+  }
+  .step.done .num{background:var(--leaf); color:#0e1f18;}
+  .step.active .num{background:var(--gold); color:#0e1f18;}
+  .step p{display:inline; color:var(--cream-dim); font-size:0.98rem;}
+  .step-btn{margin-top:12px;}
+
+  .stage-lab{
+    position:sticky; top:100px;
+    display:flex; flex-direction:column; align-items:center; gap:18px;
+  }
+
+  .lab-visual{position:relative; padding:0 128px; margin:8px 0 4px;}
+  .tag-badge{
+    position:absolute; font-size:0.72rem; font-weight:700;
+    background:rgba(14,31,24,0.94); color:var(--cream);
+    padding:5px 12px; border-radius:999px; border:1px solid rgba(238,242,234,0.25);
+    white-space:nowrap; z-index:6;
+  }
+  .tag-dome{top:14px; right:6px;}
+  .tag-dish{bottom:44px; right:0;}
+  .tag-foil{bottom:118px; left:0;}
+  .tag-soil{bottom:10px; left:6px;}
+  .soil-top{
+    position:absolute; bottom:56px; left:50%; transform:translateX(-50%);
+    width:84px; height:18px; border-radius:50%;
+    background:radial-gradient(circle at 35% 35%, #6b4a34, #3a2517);
+    box-shadow:inset 0 2px 4px rgba(0,0,0,0.5);
+  }
+  @media (max-width:760px){
+    .lab-visual{padding:0; display:flex; flex-direction:column; align-items:center; gap:8px;}
+    .tag-badge{position:static; margin:2px;}
+  }
+
+  .status-panel{
+    width:100%; max-width:340px; background:var(--bg-panel-2);
+    border-radius:16px; padding:18px 20px; border:1px solid rgba(238,242,234,0.08);
+  }
+  .status-panel h4{color:var(--gold); font-size:0.95rem; margin-bottom:10px; font-weight:700;}
+  .status-row{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:8px 0; border-bottom:1px dashed rgba(238,242,234,0.12); font-size:0.85rem;
+  }
+  .status-row:last-child{border-bottom:none;}
+  .status-row span{color:var(--cream-dim);}
+  .status-row strong{color:var(--cream); display:flex; align-items:center; gap:7px; font-weight:700;}
+  .color-dot{
+    width:12px; height:12px; border-radius:50%; display:inline-block;
+    border:1px solid rgba(255,255,255,0.35); background:#f2efe6; transition:background .4s ease;
+  }
+
+  .timer-wrap{width:100%; max-width:260px; text-align:center;}
+  .timer-bar{
+    width:100%; height:10px; border-radius:999px; background:rgba(238,242,234,0.1);
+    overflow:hidden; margin-top:10px;
+  }
+  .timer-fill{height:100%; width:0%; background:linear-gradient(90deg, var(--vitriol), var(--vitriol-light)); transition:width .1s linear;}
+  .timer-label{font-size:0.85rem; color:var(--cream-dim); margin-top:6px;}
+
+  .observe-box{
+    width:100%; max-width:420px; background:var(--bg-panel-2);
+    border-radius:16px; padding:20px; margin-top:8px;
+  }
+  .observe-box h4{color:var(--gold); font-size:1rem; margin-bottom:10px; font-weight:700;}
+  textarea{
+    width:100%; min-height:90px; border-radius:10px; border:1px solid rgba(238,242,234,0.15);
+    background:rgba(14,31,24,0.6); color:var(--cream); padding:12px; font-family:'Cairo';
+    font-size:0.95rem; resize:vertical;
+  }
+  textarea:focus{outline:2px solid var(--leaf); border-color:transparent;}
+  .reveal{
+    margin-top:14px; background:rgba(76,154,91,0.1); border:1px solid rgba(76,154,91,0.35);
+    border-radius:10px; padding:14px; font-size:0.92rem; color:var(--cream-dim);
+    display:none;
+  }
+  .reveal.show{display:block;}
+
+  /* ---------- QUIZ ---------- */
+  .quiz-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:22px;}
+  .quiz-card{
+    background:var(--bg-panel); border:1px solid rgba(238,242,234,0.08);
+    border-radius:16px; padding:22px 24px; transition:border-color .2s ease;
+  }
+  .quiz-card.correct{border-color:var(--leaf);}
+  .quiz-card.wrong{border-color:var(--coral);}
+  .quiz-q{color:var(--cream); font-size:1.02rem; font-weight:700; margin-bottom:14px;}
+  .quiz-options{display:flex; flex-direction:column; gap:9px;}
+  .quiz-options label{
+    display:flex; align-items:flex-start; gap:10px; cursor:pointer;
+    background:var(--bg-panel-2); border-radius:10px; padding:10px 14px;
+    font-size:0.92rem; color:var(--cream-dim); border:1px solid transparent;
+    transition:border-color .2s ease, background .2s ease;
+  }
+  .quiz-options label:hover{border-color:rgba(217,164,65,0.4);}
+  .quiz-options input{margin-top:4px; accent-color:var(--leaf);}
+  .quiz-feedback{
+    margin-top:14px; font-size:0.88rem; padding:10px 12px; border-radius:10px;
+    display:none; line-height:1.7;
+  }
+  .quiz-feedback.show{display:block;}
+  .quiz-card.correct .quiz-feedback{display:block; background:rgba(76,154,91,0.12); color:var(--leaf-light); border:1px solid rgba(76,154,91,0.35);}
+  .quiz-card.wrong .quiz-feedback{display:block; background:rgba(192,57,43,0.12); color:#e6a39c; border:1px solid rgba(192,57,43,0.35);}
+  .quiz-score{
+    margin-top:30px; text-align:center; font-size:1.15rem; font-weight:700;
+    color:var(--gold); display:none;
+  }
+  .quiz-score.show{display:block;}
+  @media (max-width:760px){ .quiz-grid{grid-template-columns:1fr;} }
+
+  /* ---------- CONCLUSION ---------- */
+  .conclusion{
+    background:var(--bg-panel); border-radius:24px; padding:6vh 6vw;
+    border:1px solid rgba(217,164,65,0.2);
+  }
+  .conclusion p{font-size:1.08rem; color:var(--cream-dim); max-width:900px;}
+  .conclusion p + p{margin-top:16px;}
+  .conclusion strong{color:var(--leaf-light);}
+
+  footer{
+    text-align:center; padding:6vh 6vw 4vh; color:var(--cream-dim); font-size:0.85rem;
+  }
+
+  @media (max-width:900px){
+    .eyebrow{justify-content:center;}
+    .card-grid{grid-template-columns:1fr;}
+    .lab-grid{grid-template-columns:1fr;}
+    .stage-lab{position:static;}
+    nav{padding:12px 5vw;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .jar-rig{animation:none;}
+    *{transition-duration:0.01ms !important; animation-duration:0.01ms !important;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="brand">🌿 الإخراج في النباتات <span>| العلوم والحياة - الصف السابع - فلسطين</span></div>
+  <div class="nav-actions">
+    <button class="btn btn-ghost" id="ttsBtn">🔊 استمع للدرس</button>
+    <a href="#lab" class="btn btn-primary">ابدأ المختبر</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-text">
+    <div class="eyebrow">الوحدة الثانية · الإخراج عند الكائنات الحية</div>
+    <h1>كيف تتخلّص <em>النبتة</em> من فضلاتها؟</h1>
+    <p>
+      النباتات كائنات حية تقوم بعمليات حيوية تنتج عنها فضلات، لكنها لا تملك أجهزة إخراج معقدة كما الحيوان.
+      في هذا الدرس التفاعلي ستكتشف طرق تخلّص النبات من فضلاته، وستنفّذ بنفسك تجربة نشاط (٤) داخل مختبر افتراضي ثلاثي الأبعاد.
+    </p>
+    <div class="hero-meta">
+      <span class="pill">⏱ ١٥ دقيقة تجربة</span>
+      <span class="pill">🧪 كبريتات نحاس لامائية</span>
+      <span class="pill">🪴 ناقوس زجاجي</span>
+    </div>
+    <div class="hero-cta">
+      <a href="#lab" class="btn btn-primary">🔬 جرّب المختبر الافتراضي</a>
+      <a href="#explain" class="btn btn-ghost">📖 اقرأ الشرح أولاً</a>
+    </div>
+  </div>
+</header>
+
+<!-- EXPLAIN -->
+<section id="explain">
+  <div class="section-head">
+    <div class="eyebrow">لماذا لا يحتاج النبات لأجهزة إخراج؟</div>
+    <h2>ثلاثة أسباب تفسّر بساطة الإخراج عند النبات</h2>
+    <p>على عكس الحيوان الذي يملك كلى ورئتين وجلدًا للتخلص من الفضلات بسرعة، تسير الأمور عند النبات بوتيرة أهدأ بكثير.</p>
+  </div>
+  <div class="why-strip">
+    <div class="chip"><b>١. كمية الفضلات قليلة</b><span>النبات ينتج فضلات أقل بكثير مقارنة بالحيوان بسبب بطء عملياته الحيوية.</span></div>
+    <div class="chip"><b>٢. تجمّع الفضلات ببطء</b><span>الفضلات تتجمع تدريجيًا على مدى فترة طويلة، ما يمنح النبات وقتًا للتخلص منها دون أعضاء متخصصة.</span></div>
+    <div class="chip"><b>٣. إعادة استخدام النواتج</b><span>يستخدم النبات كثيرًا من نواتج فضلاته في عمليات حيوية أخرى داخل خلاياه، فلا تذهب هدرًا بالكامل.</span></div>
+  </div>
+</section>
+
+<!-- METHODS -->
+<section id="methods">
+  <div class="section-head">
+    <div class="eyebrow">طرق التخلّص من الفضلات</div>
+    <h2>أربع طرق يعتمدها النبات للتخلص من فضلاته</h2>
+    <p>تتنوع طرق تخلص النبات من فضلاته بحسب نوع الفضلة ومكان تكوّنها داخل الجسم النباتي.</p>
+  </div>
+  <div class="card-grid">
+    <div class="card">
+      <div class="icon">🍂</div>
+      <h3>سقوط الأوراق</h3>
+      <p>تتجمع بعض الفضلات في أنسجة الأوراق طوال حياتها، فيتخلص منها النبات بسقوط الأوراق نفسها في نهاية موسمها.</p>
+    </div>
+    <div class="card">
+      <div class="icon">💨</div>
+      <h3>التخلص من الغازات</h3>
+      <p>يتخلص النبات من الغازات غير المرغوب فيها، مثل الأكسجين الفائض أو ثاني أكسيد الكربون، عن طريق الثغور الموجودة في الأوراق.</p>
+    </div>
+    <div class="card">
+      <div class="icon">🫙</div>
+      <h3>التخزين في فجوات الخلايا</h3>
+      <p>تُخزَّن بعض الفضلات الصلبة أو السائلة، كالراتنجات والصموغ والبلورات، في فجوات خاصة داخل الخلايا طيلة حياة النبات.</p>
+    </div>
+  </div>
+</section>
+
+<!-- LAB -->
+<section id="lab">
+  <div class="section-head">
+    <div class="eyebrow">نشاط (٤) — مختبر افتراضي ثلاثي الأبعاد</div>
+    <h2>الإخراج في النباتات: تجربة كبريتات النحاس</h2>
+    <p>نفّذ التجربة خطوة بخطوة، وراقب كيف تتغيّر كبريتات النحاس اللامائية داخل الناقوس الزجاجي، ثم سجّل استنتاجك.</p>
+  </div>
+
+  <div class="lab-wrap">
+    <div class="materials">
+      <h3>المواد والأدوات</h3>
+      <ul>
+        <li><span class="swatch" style="background:linear-gradient(160deg,#8ecae6,#cfe8f0)"></span>🔔 ناقوس زجاجي</li>
+        <li><span class="swatch" style="background:linear-gradient(160deg,#a15c38,#4a3123)"></span>🪴 نبتة في وعاء وتربة</li>
+        <li><span class="swatch" style="background:#c7cdd1"></span>📄 ورق معتم يغطي التربة</li>
+        <li><span class="swatch" style="background:#e8ecee"></span>🪟 لوح زجاجي</li>
+        <li><span class="swatch" style="background:#f2efe6; border-color:#b9c2bb;"></span>🧂 كبريتات نحاس لامائية (بيضاء)</li>
+        <li><span class="swatch" style="background:#61a5c2"></span>💧 ماء</li>
+      </ul>
+    </div>
+
+    <div class="lab-grid">
+      <div class="steps">
+        <div class="step active" data-step="1">
+          <span class="num">١</span>
+          <p>غلّف تربة الوعاء تمامًا بالورق المعتم بعد ريّ النبتة بالماء.</p>
+          <div><button class="btn btn-primary step-btn" data-action="1">لفّ التربة بالورق المعتم</button></div>
+        </div>
+        <div class="step" data-step="2">
+          <span class="num">٢</span>
+          <p>ضع بجانب النبتة كمية من كبريتات النحاس اللامائية (مسحوق أبيض).</p>
+          <div><button class="btn btn-primary step-btn" data-action="2" disabled>وضع كبريتات النحاس</button></div>
+        </div>
+        <div class="step" data-step="3">
+          <span class="num">٣</span>
+          <p>غطِّ النبتة والمسحوق بالناقوس الزجاجي.</p>
+          <div><button class="btn btn-primary step-btn" data-action="3" disabled>تغطية الناقوس الزجاجي</button></div>
+        </div>
+        <div class="step" data-step="4">
+          <span class="num">٤</span>
+          <p>انتظر ١٥ دقيقة وراقب العيّنة، ثم سجّل التغيرات التي شاهدتها.</p>
+          <div><button class="btn btn-primary step-btn" data-action="4" disabled>بدء المراقبة (١٥ دقيقة)</button></div>
+        </div>
+      </div>
+
+      <div class="stage-lab">
+        <div class="lab-visual">
+          <div class="jar-rig" id="labRig" style="animation:none; transform:rotateX(6deg) rotateY(-10deg);">
+            <div class="dome" id="labDome">
+              <div class="dome-knob"></div>
+              <div class="stem"></div>
+              <div class="leaf-el l3"></div>
+              <div class="leaf-el l1"></div>
+              <div class="leaf-el l2"></div>
+              <div class="leaf-el l4"></div>
+              <div class="dish" id="labDish"><div class="powder" id="labPowder"></div></div>
+              <div class="foil" id="labFoil"></div>
+              <div class="pot"><div class="soil-top" id="labSoil"></div></div>
+            </div>
+            <div class="plate"></div>
+          </div>
+          <span class="tag-badge tag-dome">🔔 الناقوس الزجاجي</span>
+          <span class="tag-badge tag-dish">🧂 كبريتات نحاس لامائية</span>
+          <span class="tag-badge tag-foil">⬜ ورق معتم</span>
+          <span class="tag-badge tag-soil">🟤 وعاء + تربة</span>
+        </div>
+
+        <div class="timer-wrap">
+          <div class="timer-label" id="timerLabel">بانتظار بدء التجربة…</div>
+          <div class="timer-bar"><div class="timer-fill" id="timerFill"></div></div>
+        </div>
+
+        <div class="status-panel">
+          <h4>📊 لوحة النتائج المباشرة</h4>
+          <div class="status-row"><span>حالة التربة</span><strong id="statSoil">غير مغطاة</strong></div>
+          <div class="status-row"><span>حالة الناقوس</span><strong id="statDome">مفتوح</strong></div>
+          <div class="status-row"><span>لون كبريتات النحاس</span><strong id="statColor"><span class="color-dot" id="colorDot"></span>أبيض</strong></div>
+          <div class="status-row"><span>قطرات الماء المتكاثفة</span><strong id="statDroplets">0</strong></div>
+          <div class="status-row"><span>الزمن المنقضي</span><strong id="statTime">0 / ١٥ دقيقة</strong></div>
+        </div>
+
+        <div class="observe-box">
+          <h4>٤. ما التغيّر الذي حدث على كبريتات النحاس؟ فسّر إجابتك.</h4>
+          <textarea id="answerBox" placeholder="اكتب ملاحظاتك واستنتاجك هنا…" disabled></textarea>
+          <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
+            <button class="btn btn-primary" id="checkBtn" disabled>تحقق من إجابتي</button>
+            <button class="btn btn-ghost" id="resetBtn">إعادة التجربة من البداية</button>
+          </div>
+          <div class="reveal" id="revealBox">
+            <strong>الإجابة النموذجية:</strong> تحوّلت كبريتات النحاس اللامائية (البيضاء) إلى اللون الأزرق، وظهرت قطرات ماء على الجدار الداخلي للناقوس.
+            هذا يدل على أن النبات تخلّص من الماء الزائد على شكل بخار ماء عبر ثغور أوراقه (عملية النّتح)، فامتصته كبريتات النحاس وتحوّلت
+            كيميائيًا من الشكل اللامائي إلى الشكل المميّه <em>(CuSO₄·5H₂O)</em> الأزرق اللون. هذا يثبت أن الماء الزائد هو أحد أشكال فضلات النبات.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz">
+  <div class="section-head">
+    <div class="eyebrow">أسئلة على التجربة</div>
+    <h2>تأكّد من فهمك لنشاط (٤)</h2>
+    <p>أجب عن الأسئلة التالية بالاعتماد على ما لاحظته في المختبر الافتراضي، ثم اضغط "تحقق من إجاباتي".</p>
+  </div>
+
+  <div class="quiz-grid" id="quizGrid">
+    <div class="quiz-card" data-answer="b">
+      <div class="quiz-q">١. ما وظيفة الورق المعتم الذي غُلّفت به التربة؟</div>
+      <div class="quiz-options">
+        <label><input type="radio" name="q1" value="a"> تسريع نمو النبات</label>
+        <label><input type="radio" name="q1" value="b"> منع بخار الماء المتصاعد من التربة مباشرة، حتى يكون البخار داخل الناقوس ناتجًا عن النبات فقط</label>
+        <label><input type="radio" name="q1" value="c"> حماية الجذور من الضوء</label>
+        <label><input type="radio" name="q1" value="d"> زيادة كمية الماء في التربة</label>
+      </div>
+      <div class="quiz-feedback">الإجابة الصحيحة: (ب) — لولا الورق المعتم لاختلط بخار الماء المتصاعد من التربة ببخار الماء الناتج عن النبات، فلا نستطيع الجزم أن مصدره النبات وحده.</div>
+    </div>
+
+    <div class="quiz-card" data-answer="b">
+      <div class="quiz-q">٢. لماذا استُخدمت كبريتات النحاس اللامائية تحديدًا في هذه التجربة؟</div>
+      <div class="quiz-options">
+        <label><input type="radio" name="q2" value="a"> لأنها تتفاعل مع الأكسجين</label>
+        <label><input type="radio" name="q2" value="b"> لأن لونها يتغيّر من الأبيض إلى الأزرق عند امتصاصها بخار الماء، فتكشف عن وجوده</label>
+        <label><input type="radio" name="q2" value="c"> لأنها تمنع عملية النتح</label>
+        <label><input type="radio" name="q2" value="d"> لأنها مادة غذائية يحتاجها النبات</label>
+      </div>
+      <div class="quiz-feedback">الإجابة الصحيحة: (ب) — تحوّل كبريتات النحاس اللامائية من الأبيض إلى الأزرق هو مؤشر كيميائي بسيط وواضح على وجود بخار ماء.</div>
+    </div>
+
+    <div class="quiz-card" data-answer="c">
+      <div class="quiz-q">٣. ما مصدر قطرات الماء التي تكاثفت على جدار الناقوس الداخلي؟</div>
+      <div class="quiz-options">
+        <label><input type="radio" name="q3" value="a"> من التربة مباشرة</label>
+        <label><input type="radio" name="q3" value="b"> من الهواء الخارجي المحيط بالناقوس</label>
+        <label><input type="radio" name="q3" value="c"> من نتح النبات عبر ثغور أوراقه</label>
+        <label><input type="radio" name="q3" value="d"> من الناقوس الزجاجي نفسه</label>
+      </div>
+      <div class="quiz-feedback">الإجابة الصحيحة: (ج) — بما أن التربة مغطاة بالورق المعتم والناقوس مغلق تمامًا، فإن المصدر الوحيد الممكن لبخار الماء هو نتح النبات.</div>
+    </div>
+
+    <div class="quiz-card" data-answer="b">
+      <div class="quiz-q">٤. ما الاستنتاج العام الذي تدعمه نتيجة هذه التجربة؟</div>
+      <div class="quiz-options">
+        <label><input type="radio" name="q4" value="a"> النبات لا يفرز أي فضلات إطلاقًا</label>
+        <label><input type="radio" name="q4" value="b"> النبات يتخلص من الماء الزائد عن حاجته كشكل من أشكال الإخراج، عن طريق النتح</label>
+        <label><input type="radio" name="q4" value="c"> النبات يحتاج إلى كلية صغيرة داخل جذوره</label>
+        <label><input type="radio" name="q4" value="d"> الناقوس الزجاجي هو من ينتج الماء</label>
+      </div>
+      <div class="quiz-feedback">الإجابة الصحيحة: (ب) — التجربة تثبت أن الماء الزائد أحد فضلات النبات، ويتخلص منه عبر ثغور أوراقه دون الحاجة إلى جهاز إخراج متخصص.</div>
+    </div>
+  </div>
+
+  <div style="text-align:center; margin-top:30px;">
+    <button class="btn btn-primary" id="quizCheckBtn">✅ تحقق من إجاباتي</button>
+  </div>
+  <div class="quiz-score" id="quizScore"></div>
+</section>
+
+<!-- CONCLUSION -->
+<section id="conclusion">
+  <div class="section-head">
+    <div class="eyebrow">الاستنتاج العام</div>
+    <h2>خلاصة الدرس</h2>
+  </div>
+  <div class="conclusion">
+    <p>
+      لا تحتاج النباتات إلى أجهزة إخراجية كما الحيوان؛ لأنّ كمية فضلاتها <strong>قليلة</strong> وتتجمّع
+      <strong>ببطء</strong>، كما تستخدم نواتج بعض العمليات الحيوية في عمليات حيوية أخرى.
+    </p>
+    <p>
+      تتخلّص النباتات من فضلاتها بطرق مختلفة منها: <strong>تجمّع الفضلات في الأوراق ثم التخلص منها بسقوط الأوراق</strong>،
+      و<strong>التخلص من الغازات غير المرغوب فيها عن طريق الثغور</strong>، و<strong>تخزين الفضلات في فجوات خاصة في الخلايا طيلة حياتها</strong>.
+    </p>
+  </div>
+</section>
+
+<footer>
+  صُمّم هذا الدرس التفاعلي وفق منهاج العلوم والحياة — الصف السابع — فلسطين · جميع المحتويات تعليمية.
+</footer>
+
+<script>
+// ---------- Text to Speech ----------
+const ttsBtn = document.getElementById('ttsBtn');
+let speaking = false;
+const lessonText = `الإخراج في النباتات. لا تحتاج النباتات إلى أجهزة إخراجية كما الحيوان، لأن كمية فضلاتها قليلة وتتجمع ببطء، وتستخدم نواتج بعض العمليات الحيوية في عمليات حيوية أخرى.
+تتخلص النباتات من فضلاتها بطرق مختلفة منها: تجمع الفضلات في الأوراق ثم التخلص منها بسقوط الأوراق، والتخلص من الغازات غير المرغوب فيها عن طريق الثغور، وتخزين الفضلات في فجوات خاصة في الخلايا طيلة حياتها.`;
+
+ttsBtn.addEventListener('click', () => {
+  if (!('speechSynthesis' in window)) {
+    alert('المتصفح لا يدعم خاصية القراءة الصوتية.');
+    return;
+  }
+  if (speaking) {
+    window.speechSynthesis.cancel();
+    speaking = false;
+    ttsBtn.textContent = '🔊 استمع للدرس';
+    return;
+  }
+  const utter = new SpeechSynthesisUtterance(lessonText);
+  utter.lang = 'ar-SA';
+  utter.rate = 0.95;
+  utter.onend = () => { speaking = false; ttsBtn.textContent = '🔊 استمع للدرس'; };
+  window.speechSynthesis.speak(utter);
+  speaking = true;
+  ttsBtn.textContent = '⏸ إيقاف القراءة';
+});
+
+// ---------- Lab state machine ----------
+const steps = document.querySelectorAll('.step');
+const buttons = document.querySelectorAll('.step-btn');
+const labFoil = document.getElementById('labFoil');
+const labDish = document.getElementById('labDish');
+const labPowder = document.getElementById('labPowder');
+const labDome = document.getElementById('labDome');
+const timerFill = document.getElementById('timerFill');
+const timerLabel = document.getElementById('timerLabel');
+const answerBox = document.getElementById('answerBox');
+const checkBtn = document.getElementById('checkBtn');
+const revealBox = document.getElementById('revealBox');
+const resetBtn = document.getElementById('resetBtn');
+const statSoil = document.getElementById('statSoil');
+const statDome = document.getElementById('statDome');
+const statColor = document.getElementById('statColor');
+const colorDot = document.getElementById('colorDot');
+const statDroplets = document.getElementById('statDroplets');
+const statTime = document.getElementById('statTime');
+
+let droplets = [];
+
+function setStepUI(n){
+  steps.forEach(s => {
+    const num = parseInt(s.dataset.step, 10);
+    s.classList.remove('active','done');
+    if (num < n) s.classList.add('done');
+    if (num === n) s.classList.add('active');
+  });
+  buttons.forEach(b => {
+    const num = parseInt(b.dataset.action, 10);
+    b.disabled = num !== n;
+  });
+}
+setStepUI(1);
+
+document.querySelector('[data-action="1"]').addEventListener('click', () => {
+  labFoil.classList.add('on');
+  statSoil.textContent = 'مغطاة بالورق المعتم ✅';
+  setStepUI(2);
+});
+
+document.querySelector('[data-action="2"]').addEventListener('click', () => {
+  labDish.classList.add('on');
+  statColor.lastChild.textContent = ' أبيض (تم وضع الكبريتات)';
+  setStepUI(3);
+});
+
+document.querySelector('[data-action="3"]').addEventListener('click', (e) => {
+  labDome.style.boxShadow = 'inset -20px -10px 40px rgba(255,255,255,0.15), inset 20px 30px 60px rgba(20,60,80,0.25), 0 30px 60px rgba(0,0,0,0.5)';
+  e.target.closest('.step').querySelector('p').insertAdjacentHTML('beforeend', ' <em style="color:#8fc99c">(تم إغلاق الجهاز)</em>');
+  statDome.textContent = 'مغلق بإحكام 🔒';
+  setStepUI(4);
+});
+
+document.querySelector('[data-action="4"]').addEventListener('click', (e) => {
+  e.target.disabled = true;
+  e.target.textContent = 'جارٍ الرصد…';
+  runTimer();
+});
+
+function spawnDroplet(){
+  const d = document.createElement('div');
+  d.className = 'droplet';
+  const top = 15 + Math.random() * 55;
+  const left = 15 + Math.random() * 70;
+  d.style.top = top + '%';
+  d.style.left = left + '%';
+  labDome.appendChild(d);
+  requestAnimationFrame(() => { d.style.opacity = 0.85; });
+  droplets.push(d);
+  statDroplets.textContent = droplets.length;
+}
+
+function runTimer(){
+  const totalMs = 18000; // 18 real seconds represent 15 minutes
+  const start = Date.now();
+  timerLabel.textContent = 'جارٍ رصد التغيرات… (٠ / ١٥ دقيقة)';
+
+  const interval = setInterval(() => {
+    const elapsed = Date.now() - start;
+    const pct = Math.min(100, (elapsed / totalMs) * 100);
+    timerFill.style.width = pct + '%';
+    const simulatedMinutes = Math.round((pct/100) * 15);
+    timerLabel.textContent = `جارٍ رصد التغيرات… (${simulatedMinutes} / ١٥ دقيقة)`;
+    statTime.textContent = `${simulatedMinutes} / ١٥ دقيقة`;
+
+    if (pct > 15 && droplets.length === 0) spawnDroplet();
+    if (pct > 35 && droplets.length === 1) spawnDroplet();
+    if (pct > 55 && droplets.length === 2) spawnDroplet();
+    if (pct > 75 && droplets.length === 3) spawnDroplet();
+
+    if (pct > 20){
+      const blend = Math.min(1, (pct-20)/70);
+      const r = Math.round(242 - blend*(242-58));
+      const g = Math.round(239 - blend*(239-124));
+      const b = Math.round(230 - blend*(230-165));
+      const rgb = `rgb(${r},${g},${b})`;
+      labPowder.style.background = rgb;
+      colorDot.style.background = rgb;
+      if (blend < 0.3) statColor.lastChild.textContent = ' أبيض... تبدأ ملاحظة رطوبة';
+      else if (blend < 0.8) statColor.lastChild.textContent = ' يتحوّل تدريجيًا إلى الأزرق';
+      else statColor.lastChild.textContent = ' أزرق (CuSO₄·5H₂O)';
+    }
+
+    if (pct >= 100){
+      clearInterval(interval);
+      timerLabel.textContent = '✅ انتهت مدة المراقبة — سجّل ملاحظاتك';
+      statColor.lastChild.textContent = ' أزرق فاتح (CuSO₄·5H₂O)';
+      answerBox.disabled = false;
+      answerBox.focus();
+      checkBtn.disabled = false;
+    }
+  }, 100);
+}
+
+checkBtn.addEventListener('click', () => {
+  revealBox.classList.add('show');
+  revealBox.scrollIntoView({behavior:'smooth', block:'nearest'});
+});
+
+resetBtn.addEventListener('click', () => {
+  labFoil.classList.remove('on');
+  labDish.classList.remove('on');
+  labPowder.style.background = '#f2efe6';
+  labDome.style.boxShadow = '';
+  droplets.forEach(d => d.remove());
+  droplets = [];
+  timerFill.style.width = '0%';
+  timerLabel.textContent = 'بانتظار بدء التجربة…';
+  statSoil.textContent = 'غير مغطاة';
+  statDome.textContent = 'مفتوح';
+  statColor.lastChild.textContent = ' أبيض';
+  colorDot.style.background = '#f2efe6';
+  statDroplets.textContent = '0';
+  statTime.textContent = '0 / ١٥ دقيقة';
+  answerBox.value = '';
+  answerBox.disabled = true;
+  checkBtn.disabled = true;
+  revealBox.classList.remove('show');
+  buttons.forEach(b => { b.disabled = true; b.textContent = b.textContent.replace('جارٍ الرصد…', 'بدء المراقبة (١٥ دقيقة)'); });
+  document.querySelector('[data-action="1"]').disabled = false;
+  document.querySelector('[data-action="4"]').textContent = 'بدء المراقبة (١٥ دقيقة)';
+  setStepUI(1);
+});
+
+// ---------- Quiz grading ----------
+const quizCheckBtn = document.getElementById('quizCheckBtn');
+const quizScore = document.getElementById('quizScore');
+
+quizCheckBtn.addEventListener('click', () => {
+  const cards = document.querySelectorAll('#quizGrid .quiz-card');
+  let answeredAll = true;
+  let correctCount = 0;
+
+  cards.forEach(card => {
+    const correctVal = card.dataset.answer;
+    const name = card.querySelector('input').name;
+    const selected = card.querySelector(`input[name="${name}"]:checked`);
+    const feedback = card.querySelector('.quiz-feedback');
+    card.classList.remove('correct','wrong');
+    feedback.classList.remove('show');
+
+    if (!selected){
+      answeredAll = false;
+      return;
+    }
+    feedback.classList.add('show');
+    if (selected.value === correctVal){
+      card.classList.add('correct');
+      correctCount++;
+    } else {
+      card.classList.add('wrong');
+    }
+  });
+
+  if (!answeredAll){
+    quizScore.textContent = '⚠️ يرجى الإجابة عن جميع الأسئلة أولًا.';
+    quizScore.style.color = 'var(--coral)';
+    quizScore.classList.add('show');
+    return;
+  }
+
+  quizScore.style.color = 'var(--gold)';
+  quizScore.textContent = `نتيجتك: ${correctCount} من ${cards.length} إجابات صحيحة 🎉`;
+  quizScore.classList.add('show');
+});
+</script>
+</body>
+</html>

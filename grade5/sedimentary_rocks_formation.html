@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta http-equiv="Content-Language" content="ar">
+<title>شاهد على تاريخ الأرض — تكوّن الصخور الرسوبية</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@400..700&family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sand:#E3B565;
+    --sand-dark:#C89642;
+    --soil:#6E4B2A;
+    --soil-dark:#523419;
+    --water:#79c3d9;
+    --parchment:#F3E9D6;
+    --card:#FBF4E5;
+    --ink:#2B1D12;
+    --ink-soft:#5b4a37;
+    --clay:#B5451B;
+    --clay-dark:#8f3414;
+    --line:#d9c7a3;
+    --ok:#3f7d4a;
+    --shadow: 0 18px 40px -18px rgba(43,29,18,.45);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1200px 600px at 20% -10%, #fbf0da 0%, transparent 60%),
+      linear-gradient(180deg,#F6EEDC 0%, #F0E3C6 40%, #EADCB8 100%);
+    color:var(--ink);
+    font-family:'Tajawal', sans-serif;
+    line-height:1.9;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.kufi{font-family:'Reem Kufi', sans-serif;}
+  img,svg{max-width:100%;}
+  a{color:inherit;}
+
+  /* ---------- top nav ---------- */
+  .navbar{
+    position:sticky; top:0; z-index:50;
+    display:flex; gap:8px; align-items:center; justify-content:center;
+    flex-wrap:wrap;
+    padding:10px 14px;
+    background:rgba(243,233,214,.9);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .navbar .brand{
+    font-family:'Reem Kufi',sans-serif; font-size:15px; color:var(--clay-dark);
+    margin-inline-end:auto; display:flex; align-items:center; gap:8px;
+  }
+  .navbar .brand .dot{width:10px;height:10px;border-radius:50%;background:var(--clay);display:inline-block;}
+  .navlink{
+    font-size:13.5px; padding:7px 14px; border-radius:999px; text-decoration:none;
+    color:var(--ink-soft); border:1px solid transparent; white-space:nowrap;
+  }
+  .navlink:hover{border-color:var(--line); background:#fff8ea;}
+
+  /* ---------- hero ---------- */
+  .hero{
+    position:relative; overflow:hidden;
+    padding:64px 20px 90px;
+    text-align:center;
+    border-bottom:1px solid var(--line);
+  }
+  .strata-bg{
+    position:absolute; inset:0; z-index:0; opacity:.9;
+  }
+  .hero-inner{position:relative; z-index:2; max-width:820px; margin:0 auto;}
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:13px; letter-spacing:.5px; color:var(--clay-dark);
+    background:#fff8ea; border:1px solid var(--line); padding:6px 16px; border-radius:999px;
+    margin-bottom:22px;
+  }
+  .hero h1{
+    font-size:clamp(30px,6vw,54px);
+    margin:0 0 10px;
+    color:var(--ink);
+    text-shadow: 2px 2px 0 rgba(255,255,255,.35);
+  }
+  .hero p.lead{
+    font-size:clamp(15px,2.2vw,19px);
+    color:var(--ink-soft);
+    max-width:600px; margin:0 auto 30px;
+  }
+  .hero .badges{display:flex; gap:10px; justify-content:center; flex-wrap:wrap;}
+  .badge{
+    background:var(--card); border:1px solid var(--line); border-radius:12px;
+    padding:8px 16px; font-size:12.5px; color:var(--ink-soft); box-shadow:var(--shadow);
+  }
+
+  section{max-width:1080px; margin:0 auto; padding:70px 20px;}
+  .section-head{text-align:center; max-width:680px; margin:0 auto 40px;}
+  .section-head .num{
+    font-family:'Reem Kufi',sans-serif; color:var(--clay); font-size:14px;
+    letter-spacing:2px;
+  }
+  .section-head h2{font-size:clamp(24px,4vw,36px); margin:8px 0 10px;}
+  .section-head p{color:var(--ink-soft); font-size:15px;}
+
+  /* ---------- concept intro ---------- */
+  .concept-grid{
+    display:grid; grid-template-columns: 1.05fr .95fr; gap:34px; align-items:center;
+  }
+  .concept-card{
+    background:var(--card); border:1px solid var(--line); border-radius:20px;
+    padding:28px 26px; box-shadow:var(--shadow);
+  }
+  .concept-card h3{margin-top:0; font-size:20px;}
+  .concept-card p{color:var(--ink-soft); font-size:15px;}
+  .fossil-note{
+    margin-top:16px; padding:14px 16px; border-radius:14px;
+    background:linear-gradient(180deg,#fff8ea,#f6e9c8); border:1px dashed var(--clay);
+    font-size:13.5px; color:var(--ink);
+  }
+
+  /* rock jar illustration (static, decorative) */
+  .jar-illust{display:flex; justify-content:center;}
+
+  /* ---------- process stages (flip cards) ---------- */
+  .stages{
+    display:grid; grid-template-columns:repeat(5,1fr); gap:16px; margin-top:10px;
+  }
+  .stage{ perspective:1200px; height:190px; cursor:pointer; }
+  .stage-inner{
+    position:relative; width:100%; height:100%; transition:transform .7s cubic-bezier(.4,.2,.2,1);
+    transform-style:preserve-3d;
+  }
+  .stage.flipped .stage-inner{transform:rotateY(180deg);}
+  .stage-face{
+    position:absolute; inset:0; border-radius:16px; backface-visibility:hidden;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; padding:14px; box-shadow:var(--shadow); border:1px solid var(--line);
+  }
+  .stage-front{
+    background:linear-gradient(160deg,#FBF4E5,#EFDFB9);
+  }
+  .stage-front .icon{font-size:34px; margin-bottom:8px;}
+  .stage-front .idx{
+    position:absolute; top:10px; inset-inline-start:12px; font-family:'Reem Kufi',sans-serif;
+    color:var(--clay); font-size:12px;
+  }
+  .stage-front h4{margin:0; font-size:15px;}
+  .stage-back{
+    background:linear-gradient(160deg,var(--clay),var(--clay-dark));
+    color:#fff8ea; transform:rotateY(180deg); font-size:12.8px;
+  }
+  .stage-hint{
+    text-align:center; font-size:12px; color:var(--ink-soft); margin-top:10px;
+  }
+
+  /* ---------- lab section ---------- */
+  .lab-section{
+    background:
+      radial-gradient(900px 400px at 80% 0%, #fff3d9 0%, transparent 55%);
+    border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+  }
+  .lab-intro{
+    background:var(--card); border:1px solid var(--line); border-radius:18px;
+    padding:20px 22px; box-shadow:var(--shadow); margin-bottom:34px; font-size:14.5px; color:var(--ink-soft);
+  }
+  .lab-intro b{color:var(--ink);}
+
+  .stepper{
+    display:flex; gap:6px; justify-content:center; flex-wrap:wrap; margin-bottom:34px;
+  }
+  .step-dot{
+    display:flex; align-items:center; gap:8px; padding:8px 14px; border-radius:999px;
+    background:#fff8ea; border:1px solid var(--line); font-size:12.5px; color:var(--ink-soft);
+    transition:.3s;
+  }
+  .step-dot .n{
+    width:20px; height:20px; border-radius:50%; background:var(--line); color:#fff;
+    display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700;
+    flex:none;
+  }
+  .step-dot.active{background:var(--clay); color:#fff8ea; border-color:var(--clay-dark);}
+  .step-dot.active .n{background:#fff8ea; color:var(--clay-dark);}
+  .step-dot.done{background:#e9f2e9; border-color:#bcdcc0; color:var(--ok);}
+  .step-dot.done .n{background:var(--ok); color:#fff;}
+
+  .lab-grid{
+    display:grid; grid-template-columns: 380px 1fr; gap:36px; align-items:start;
+  }
+  .cup-stage{
+    perspective:1300px; display:flex; flex-direction:column; align-items:center;
+  }
+  .cup-wrap{
+    transform:rotateX(6deg); transform-style:preserve-3d;
+    filter:drop-shadow(0 30px 24px rgba(43,29,18,.35));
+  }
+  .ground-shadow{
+    width:210px; height:26px; margin-top:-10px; border-radius:50%;
+    background:radial-gradient(closest-side, rgba(43,29,18,.35), transparent 75%);
+  }
+  .drop{
+    position:absolute; width:6px; height:9px; border-radius:50% 50% 50% 0;
+    background:var(--water); opacity:0; transform:rotate(45deg);
+  }
+  .drop.run{animation:fall 900ms ease-in forwards;}
+  @keyframes fall{
+    0%{opacity:1; transform:translateY(0) rotate(45deg);}
+    85%{opacity:1;}
+    100%{opacity:0; transform:translateY(46px) rotate(45deg);}
+  }
+
+  .panel{
+    background:var(--card); border:1px solid var(--line); border-radius:20px;
+    padding:26px 26px 22px; box-shadow:var(--shadow);
+  }
+  .panel h3{margin:0 0 6px; font-size:19px;}
+  .panel .instr{color:var(--ink-soft); font-size:14px; margin-bottom:16px;}
+  .btn-row{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:16px;}
+  .btn{
+    font-family:'Tajawal',sans-serif; font-weight:700; font-size:14px;
+    padding:11px 20px; border-radius:12px; border:none; cursor:pointer;
+    background:linear-gradient(180deg,var(--clay),var(--clay-dark)); color:#fff8ea;
+    box-shadow:0 8px 18px -8px rgba(181,69,27,.6);
+    transition:transform .15s ease, filter .15s ease;
+  }
+  .btn:hover{filter:brightness(1.06);}
+  .btn:active{transform:translateY(1px) scale(.98);}
+  .btn:disabled{
+    background:#d8cbaa; color:#8a7a5c; box-shadow:none; cursor:not-allowed;
+  }
+  .btn.secondary{
+    background:#fff; border:1px solid var(--line); color:var(--ink);
+    box-shadow:none;
+  }
+  .btn.small{padding:8px 14px; font-size:12.5px; border-radius:10px;}
+
+  textarea.obs{
+    width:100%; min-height:74px; resize:vertical; font-family:'Tajawal',sans-serif;
+    font-size:14px; padding:12px 14px; border-radius:12px; border:1px solid var(--line);
+    background:#fffdf6; color:var(--ink); outline:none;
+  }
+  textarea.obs:focus{border-color:var(--clay);}
+  label.obs-label{
+    display:block; font-size:12.5px; color:var(--clay-dark); font-weight:700; margin:14px 0 6px;
+  }
+
+  .step-block{display:none;}
+  .step-block.show{display:block; animation:fadeUp .5s ease both;}
+  @keyframes fadeUp{from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);}}
+
+  .legend{display:flex; gap:14px; flex-wrap:wrap; margin-top:18px; font-size:12.5px; color:var(--ink-soft);}
+  .legend span{display:inline-flex; align-items:center; gap:6px;}
+  .swatch{width:13px; height:13px; border-radius:4px; display:inline-block; border:1px solid rgba(0,0,0,.15);}
+
+  /* ---------- conclusion / comparison ---------- */
+  .compare{
+    display:grid; grid-template-columns:1fr auto 1fr; gap:22px; align-items:center;
+  }
+  .compare-card{
+    background:var(--card); border:1px solid var(--line); border-radius:18px;
+    padding:22px; text-align:center; box-shadow:var(--shadow);
+  }
+  .compare-card h4{margin:10px 0 6px;}
+  .compare-card p{font-size:13.5px; color:var(--ink-soft);}
+  .vs{
+    font-family:'Reem Kufi',sans-serif; color:var(--clay); font-size:22px;
+    display:flex; flex-direction:column; align-items:center; gap:4px;
+  }
+  .vs small{font-family:'Tajawal',sans-serif; font-size:11px; color:var(--ink-soft);}
+
+  .final-q{
+    margin-top:40px; background:linear-gradient(160deg,#fff8ea,#f2e2bb);
+    border:1px solid var(--line); border-radius:20px; padding:28px; box-shadow:var(--shadow);
+  }
+  .final-q h3{margin-top:0;}
+  .final-q .reveal{
+    margin-top:14px; font-size:13.5px; color:var(--ink-soft);
+  }
+  .final-q details{
+    margin-top:10px; background:#fffdf6; border:1px dashed var(--clay); border-radius:12px; padding:10px 14px;
+  }
+  .final-q summary{cursor:pointer; font-weight:700; color:var(--clay-dark); font-size:13.5px;}
+  .final-q details p{margin:10px 0 2px; font-size:13.5px; color:var(--ink-soft);}
+
+  .actions-bar{display:flex; gap:10px; justify-content:center; margin-top:30px; flex-wrap:wrap;}
+
+  footer{
+    text-align:center; padding:34px 20px 50px; color:var(--ink-soft); font-size:12.5px;
+  }
+
+  @media (max-width:880px){
+    .concept-grid, .lab-grid, .compare{grid-template-columns:1fr;}
+    .compare .vs{flex-direction:row;}
+    .stages{grid-template-columns:repeat(2,1fr);}
+    .navbar .brand{margin-inline-end:0; width:100%; justify-content:center;}
+  }
+  @media (max-width:520px){
+    .stages{grid-template-columns:1fr 1fr;}
+    section{padding:50px 14px;}
+  }
+
+  @media print{
+    .navbar, .btn, .stepper, .hero .badges, .stages, .lab-intro, .actions-bar{display:none !important;}
+    body{background:#fff;}
+    section{padding:10px 0;}
+    textarea.obs{border:1px solid #999; background:#fff;}
+  }
+
+  /* ══ RESPONSIVE MOBILE & TABLET ══ */
+  @media (max-width: 768px) {
+    body { padding: 8px !important; font-size: 15px !important; overflow-x: hidden !important; }
+    .container, [class*="container"], [class*="wrapper"] { padding: 8px !important; max-width: 100% !important; }
+    canvas { width: 100% !important; height: auto !important; display: block !important; touch-action: none; max-width: 100% !important; }
+    svg { max-width: 100% !important; height: auto !important; }
+    h1 { font-size: clamp(18px,5vw,32px) !important; }
+    h2 { font-size: clamp(15px,4vw,26px) !important; }
+    h3 { font-size: clamp(13px,3.5vw,20px) !important; }
+    [class*="grid"] { grid-template-columns: 1fr !important; }
+    [class*="flex"] { flex-wrap: wrap !important; }
+    input[type="range"] { width: 100% !important; min-height: 36px; }
+    input[type="number"], input[type="text"], select, textarea {
+      font-size: 16px !important; width: 100% !important; box-sizing: border-box; padding: 8px !important; }
+    button { min-height: 44px !important; font-size: 14px !important; touch-action: manipulation; padding: 10px 14px !important; }
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 13px !important; }
+    th, td { padding: 6px 4px !important; }
+    header { padding: 10px 12px !important; }
+    .controls, [class*="controls"] { flex-direction: column !important; gap: 8px !important; }
+    .lab-window, [class*="lab-window"] { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+  }
+  @media (max-width: 480px) {
+    body { padding: 4px !important; }
+    button { width: 100% !important; }
+  }
+  /* ══ END RESPONSIVE ══ */
+</style>
+</head>
+<body>
+<style>
+.vlab-back{position:fixed;top:10px;left:10px;z-index:99999;
+background:rgba(10,22,40,0.93);border:1px solid rgba(0,200,150,0.4);
+border-radius:22px;padding:8px 16px;display:inline-flex;align-items:center;gap:7px;
+color:#00C896;font-family:Tajawal,Cairo,Arial,sans-serif;font-size:13px;font-weight:700;
+text-decoration:none;backdrop-filter:blur(8px);box-shadow:0 4px 18px rgba(0,0,0,0.3);
+transition:background 0.2s;}
+.vlab-back:hover{background:rgba(0,200,150,0.18);}
+</style>
+<a href="../grade5.html" class="vlab-back">&#8594; العودة للصف</a>
+
+
+<div class="navbar">
+  <div class="brand"><span class="dot"></span> شاهد على تاريخ الأرض</div>
+  <a class="navlink" href="#intro">الدرس</a>
+  <a class="navlink" href="#lab">المختبر الافتراضي</a>
+  <a class="navlink" href="#conclude">الاستنتاج</a>
+</div>
+
+<!-- ======================= HERO ======================= -->
+<header class="hero">
+  <svg class="strata-bg" viewBox="0 0 1200 420" preserveAspectRatio="none" aria-hidden="true">
+    <defs>
+      <linearGradient id="skyfade" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#F6EEDC"/>
+        <stop offset="1" stop-color="#EADCB8" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <rect width="1200" height="420" fill="url(#skyfade)"/>
+    <path d="M0,300 Q300,270 600,300 T1200,290 V420 H0 Z" fill="#E3B565" opacity=".55"/>
+    <path d="M0,335 Q300,315 600,340 T1200,330 V420 H0 Z" fill="#6E4B2A" opacity=".5"/>
+    <path d="M0,370 Q300,355 600,375 T1200,365 V420 H0 Z" fill="#C89642" opacity=".55"/>
+    <path d="M0,395 Q300,388 600,398 T1200,392 V420 H0 Z" fill="#523419" opacity=".55"/>
+  </svg>
+  <div class="hero-inner">
+    <span class="eyebrow">🪨 العلوم والحياة — الصف الخامس — نشاط (٨)</span>
+    <h1 class="kufi">شاهد على تاريخ الأرض</h1>
+    <p class="lead">
+      كل طبقة في الصخر الرسوبي هي صفحة من دفتر الأرض القديم. في هذا الدرس ستتعرّف كيف تتكوّن
+      الصخور الرسوبية عبر ملايين السنين، ثمّ ستنفّذ التجربة بنفسك داخل مختبر افتراضي تفاعلي.
+    </p>
+    <div class="badges">
+      <span class="badge">⏱️ ٢٠ دقيقة</span>
+      <span class="badge">🧪 مختبر افتراضي تفاعلي</span>
+      <span class="badge">📓 دفتر ملاحظات رقمي</span>
+    </div>
+  </div>
+</header>
+
+<!-- ======================= INTRO / CONCEPT ======================= -->
+<section id="intro">
+  <div class="section-head">
+    <div class="num kufi">الجزء الأوّل</div>
+    <h2>كيف تتكوّن الصخور الرسوبية؟</h2>
+    <p>قبل أن ندخل المختبر، لنفهم القصّة الطبيعية التي تحدث في الأنهار والبحيرات والبحار.</p>
+  </div>
+
+  <div class="concept-grid">
+    <div class="concept-card">
+      <h3 class="kufi">صخرة تُبنى من طبقات</h3>
+      <p>
+        تبدأ القصّة بصخور قديمة تتفتّت إلى حبيبات صغيرة (رمل، طين، حصى). تحمل الرياح والأنهار
+        هذه الحبيبات وتنقلها مسافات طويلة، حتى تفقد قدرتها على الحمل فتترسّب الحبيبات فوق
+        بعضها البعض في قاع الأنهار أو البحيرات أو البحار، طبقة فوق طبقة.
+      </p>
+      <p>
+        مع مرور الزمن، تتراكم طبقات جديدة فوق القديمة فتضغط عليها، وتترسّب بين الحبيبات موادّ
+        معدنية تعمل كمادّة لاصقة تُسمّى <b>المادّة اللاحمة</b>، فتتماسك الحبيبات معًا وتتحوّل
+        الطبقات المتراكمة إلى <b>صخرة رسوبية</b> صلبة.
+      </p>
+      <div class="fossil-note">
+        💡 لماذا نسمّيها "شاهدًا على التاريخ"؟ لأنّ الطبقة الأقدم تكون دائمًا في الأسفل،
+        والأحدث في الأعلى. وأحيانًا تحبس هذه الطبقات بقايا كائنات قديمة (مستحاثات) تروي لنا
+        قصّة الحياة على الأرض منذ ملايين السنين.
+      </div>
+    </div>
+
+    <div class="jar-illust">
+      <svg viewBox="0 0 260 300" width="260">
+        <defs>
+          <linearGradient id="glassShine" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#fff" stop-opacity=".55"/>
+            <stop offset=".18" stop-color="#fff" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <ellipse cx="130" cy="270" rx="80" ry="14" fill="#00000022"/>
+        <path d="M45,40 L215,40 L185,255 L75,255 Z" fill="#fdf7ea" stroke="#d9c7a3" stroke-width="3"/>
+        <clipPath id="jarclip"><path d="M45,40 L215,40 L185,255 L75,255 Z"/></clipPath>
+        <g clip-path="url(#jarclip)">
+          <rect x="40" y="205" width="180" height="60" fill="#523419"/>
+          <rect x="40" y="165" width="180" height="45" fill="#E3B565"/>
+          <rect x="40" y="120" width="180" height="50" fill="#6E4B2A"/>
+          <rect x="40" y="85" width="180" height="40" fill="#C89642"/>
+          <rect x="40" y="40" width="180" height="50" fill="#8fd3e6" opacity=".55"/>
+        </g>
+        <path d="M45,40 L215,40 L185,255 L75,255 Z" fill="url(#glassShine)"/>
+        <ellipse cx="130" cy="40" rx="85" ry="10" fill="#fffef9" stroke="#d9c7a3" stroke-width="2" opacity=".9"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="section-head" style="margin-top:64px;">
+    <div class="num kufi">مراحل التكوّن</div>
+    <h2>رحلة الحبيبة من الجبل إلى الصخرة</h2>
+    <p>اضغط على كلّ بطاقة لتعرف ماذا يحدث في هذه المرحلة.</p>
+  </div>
+
+  <div class="stages" id="stages">
+    <div class="stage">
+      <div class="stage-inner">
+        <div class="stage-face stage-front"><span class="idx">١</span><div class="icon">⛰️</div><h4>التجوية</h4></div>
+        <div class="stage-face stage-back">تتفتّت الصخور الكبيرة إلى حبيبات صغيرة بفعل الماء والرياح وتغيّر الحرارة.</div>
+      </div>
+    </div>
+    <div class="stage">
+      <div class="stage-inner">
+        <div class="stage-face stage-front"><span class="idx">٢</span><div class="icon">🌬️</div><h4>النقل</h4></div>
+        <div class="stage-face stage-back">تحمل الرياح والأنهار والجليد حبيبات الفتات لمسافات طويلة.</div>
+      </div>
+    </div>
+    <div class="stage">
+      <div class="stage-inner">
+        <div class="stage-face stage-front"><span class="idx">٣</span><div class="icon">🌊</div><h4>الترسيب</h4></div>
+        <div class="stage-face stage-back">تستقرّ الحبيبات وتتراكم في طبقات عند قاع الأنهار والبحيرات والبحار.</div>
+      </div>
+    </div>
+    <div class="stage">
+      <div class="stage-inner">
+        <div class="stage-face stage-front"><span class="idx">٤</span><div class="icon">⬇️</div><h4>الضغط</h4></div>
+        <div class="stage-face stage-back">تتراكم طبقات جديدة فوق القديمة، فتضغط عليها وتُقلّل المسافات بين الحبيبات.</div>
+      </div>
+    </div>
+    <div class="stage">
+      <div class="stage-inner">
+        <div class="stage-face stage-front"><span class="idx">٥</span><div class="icon">🧱</div><h4>التماسك</h4></div>
+        <div class="stage-face stage-back">تلتصق الحبيبات معًا بموادّ لاحمة معدنية فتتكوّن صخرة رسوبية صلبة.</div>
+      </div>
+    </div>
+  </div>
+  <p class="stage-hint">👆 انقر على البطاقة لقلبها وقراءة الشرح</p>
+</section>
+
+<!-- ======================= VIRTUAL LAB ======================= -->
+<section id="lab" class="lab-section">
+  <div class="section-head">
+    <div class="num kufi">الجزء الثاني</div>
+    <h2>المختبر الافتراضي — نفّذ التجربة بنفسك</h2>
+    <p>اتّبع الخطوات بالترتيب داخل الكأس، وسجّل ملاحظاتك في كلّ مرحلة كما تفعل في المختبر الحقيقي.</p>
+  </div>
+
+  <div class="lab-intro">
+    🧪 <b>الأدوات:</b> كأس بلاستيكي شفّاف، ماء، رمل أصفر، تراب. ستقوم الآن ببناء الطبقات
+    داخل الكأس افتراضيًا، ثمّ تراقب ماذا يحدث بعد تصريف الماء وترك الكأس ليجفّ.
+  </div>
+
+  <div class="stepper" id="stepper"></div>
+
+  <div class="lab-grid">
+    <div class="cup-stage">
+      <div class="cup-wrap" id="cupWrap">
+        <svg id="cupSvg" viewBox="0 0 300 420" width="300" style="overflow:visible;">
+          <defs>
+            <clipPath id="cupClip">
+              <path d="M46,40 L254,40 L226,378 L74,378 Z"/>
+            </clipPath>
+            <linearGradient id="glassStripe" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stop-color="#fff" stop-opacity=".5"/>
+              <stop offset=".16" stop-color="#fff" stop-opacity="0"/>
+              <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+
+          <!-- ground shadow -->
+          <ellipse cx="150" cy="392" rx="95" ry="14" fill="#2b1d1230"/>
+
+          <!-- cup back wall -->
+          <path d="M46,40 L254,40 L226,378 L74,378 Z" fill="#fdf7ea" stroke="#d9c7a3" stroke-width="3"/>
+
+          <!-- fill contents, clipped to cup shape -->
+          <g clip-path="url(#cupClip)" id="fillGroup">
+            <rect id="layer-sand1" x="30" y="378" width="240" height="0" fill="#E3B565" style="transition:y .8s ease, height .8s ease;"/>
+            <rect id="layer-soil1" x="30" y="378" width="240" height="0" fill="#6E4B2A" style="transition:y .8s ease, height .8s ease;"/>
+            <rect id="layer-sand2" x="30" y="378" width="240" height="0" fill="#C89642" style="transition:y .8s ease, height .8s ease;"/>
+            <rect id="layer-soil2" x="30" y="378" width="240" height="0" fill="#523419" style="transition:y .8s ease, height .8s ease;"/>
+            <rect id="layer-water" x="30" y="378" width="240" height="0" fill="#79c3d9" opacity=".55" style="transition:y .8s ease, height .8s ease;"/>
+          </g>
+
+          <!-- glass shine overlay -->
+          <path d="M46,40 L254,40 L226,378 L74,378 Z" fill="url(#glassStripe)"/>
+          <ellipse cx="150" cy="40" rx="104" ry="11" fill="#fffef9" stroke="#d9c7a3" stroke-width="2" opacity=".95"/>
+          <ellipse cx="150" cy="378" rx="76" ry="9" fill="none" stroke="#d9c7a3" stroke-width="2" opacity=".6"/>
+
+          <!-- hole marker -->
+          <circle id="holeMark" cx="78" cy="368" r="0" fill="#3b2a1e"/>
+
+          <!-- drips -->
+          <g id="drips"></g>
+
+          <!-- sun / clock for fast-forward -->
+          <g id="ffIcon" opacity="0" style="transition:opacity .4s;">
+            <circle cx="150" cy="10" r="0"/>
+          </g>
+        </svg>
+
+        <!-- extracted core sample (hidden until final step) -->
+        <svg id="coreSvg" viewBox="0 0 300 380" width="300" style="display:none; margin-top:-10px;">
+          <ellipse cx="150" cy="358" rx="95" ry="14" fill="#2b1d1230"/>
+          <g id="coreLayers">
+            <rect x="95" y="0" width="110" height="0" fill="#523419"/>
+            <rect x="95" y="0" width="110" height="0" fill="#C89642"/>
+            <rect x="95" y="0" width="110" height="0" fill="#6E4B2A"/>
+            <rect x="95" y="0" width="110" height="0" fill="#E3B565"/>
+          </g>
+          <rect id="coreOutline" x="95" y="0" width="110" height="0" fill="none" stroke="#8a7a5c" stroke-width="2" rx="6"/>
+          <g id="coreLabels" font-family="Tajawal" font-size="12" fill="#5b4a37"></g>
+        </svg>
+      </div>
+      <div class="ground-shadow" style="display:none;"></div>
+
+      <div class="legend">
+        <span><span class="swatch" style="background:#79c3d9;"></span>ماء</span>
+        <span><span class="swatch" style="background:#E3B565;"></span>رمل أصفر</span>
+        <span><span class="swatch" style="background:#6E4B2A;"></span>تراب</span>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3 class="kufi">١. املأ الكأس بالماء</h3>
+      <div class="step-block show" data-step="0">
+        <p class="instr">ابدأ بإحضار كأس بلاستيكي شفّاف، واملأه حتى ثلثه تقريبًا بالماء.</p>
+        <div class="btn-row"><button class="btn" onclick="fillWater()">💧 املأ الكأس بالماء</button></div>
+      </div>
+
+      <div class="step-block" data-step="1">
+        <h3 class="kufi" style="margin-top:22px;">٢. أضف الرمل الأصفر تدريجيًا</h3>
+        <p class="instr">أضف الرمل الأصفر بالتدريج إلى الماء، وراقب ماذا يحدث له.</p>
+        <div class="btn-row"><button class="btn" onclick="addLayer('sand1')">🟨 أضف الرمل الأصفر</button></div>
+        <label class="obs-label">١. سجّل ملاحظاتي: ماذا حدث لحبيبات الرمل عندما أضفتها إلى الماء؟</label>
+        <textarea class="obs" id="obs1" placeholder="مثال: غاصت حبيبات الرمل إلى قاع الكأس لأنها أثقل من الماء..."></textarea>
+      </div>
+
+      <div class="step-block" data-step="2">
+        <h3 class="kufi" style="margin-top:22px;">٣. أضف طبقات التراب والرمل بالتناوب</h3>
+        <p class="instr">أضف الطبقات بالترتيب التالي: تراب، ثمّ رمل أصفر، ثمّ تراب مرّة أخرى.</p>
+        <div class="btn-row">
+          <button class="btn" id="btnSoil1" onclick="addLayer('soil1')">🟫 أضف التراب</button>
+          <button class="btn" id="btnSand2" onclick="addLayer('sand2')" disabled>🟨 أضف الرمل مرّة أخرى</button>
+          <button class="btn" id="btnSoil2" onclick="addLayer('soil2')" disabled>🟫 أضف التراب مرّة أخرى</button>
+        </div>
+        <label class="obs-label">٢. سجّل ملاحظاتي: كيف رتّبت الطبقات نفسها داخل الكأس؟</label>
+        <textarea class="obs" id="obs2" placeholder="مثال: تكوّنت طبقات واضحة فوق بعضها بنفس ترتيب إضافتها..."></textarea>
+      </div>
+
+      <div class="step-block" data-step="3">
+        <h3 class="kufi" style="margin-top:22px;">٤. أحدِث ثقبًا صغيرًا في أسفل الكأس</h3>
+        <p class="instr">استخدم أداة رفيعة لإحداث ثقب صغير في أسفل جدار الكأس، تمهيدًا لتصريف الماء الزائد.</p>
+        <div class="btn-row"><button class="btn" onclick="makeHole()">📍 أحدِث الثقب</button></div>
+      </div>
+
+      <div class="step-block" data-step="4">
+        <h3 class="kufi" style="margin-top:22px;">٥. صرّف الماء الزائد</h3>
+        <p class="instr">أمِل الكأس قليلًا فوق الثقب حتى يخرج الماء الزائد من فوق الطبقة العليا.</p>
+        <div class="btn-row"><button class="btn" onclick="drainWater()">🕳️ صرّف الماء الزائد</button></div>
+        <label class="obs-label">٣. سجّل ملاحظاتي: ماذا حدث لمنسوب الماء داخل الكأس؟</label>
+        <textarea class="obs" id="obs3" placeholder="مثال: انخفض منسوب الماء وبقيت الطبقات رطبة ومتماسكة قليلًا..."></textarea>
+      </div>
+
+      <div class="step-block" data-step="5">
+        <h3 class="kufi" style="margin-top:22px;">٦. اترك الكأس ليجفّ، ثمّ أخرِج الناتج</h3>
+        <p class="instr">اترك الكأس جانبًا عدّة ساعات حتى تجفّ مكوّناته (استخدم زرّ تسريع الزمن)، ثمّ اقلبه بلطف لإخراج الناتج.</p>
+        <div class="btn-row">
+          <button class="btn" id="btnFF" onclick="fastForward()">⏩ تسريع الزمن (عدّة ساعات)</button>
+          <button class="btn" id="btnOpen" onclick="openMold()" disabled>📤 افتح القالب وأخرِج الصخرة</button>
+        </div>
+        <label class="obs-label">٤. صف الناتج: كيف أصبح شكل الطبقات بعد أن جفّت وأُخرِجت من الكأس؟</label>
+        <textarea class="obs" id="obs4" placeholder="مثال: خرجت المكوّنات على شكل عمود متماسك من طبقات ملوّنة متتالية، يشبه الصخرة..."></textarea>
+      </div>
+
+      <div class="btn-row" style="margin-top:18px;">
+        <button class="btn secondary small" onclick="resetLab()">↺ إعادة التجربة من البداية</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= CONCLUSION ======================= -->
+<section id="conclude">
+  <div class="section-head">
+    <div class="num kufi">الجزء الثالث</div>
+    <h2>الاستنتاج</h2>
+    <p>قارن بين ما حدث داخل كأسك وبين ما يحدث في الطبيعة على مدى ملايين السنين.</p>
+  </div>
+
+  <div class="compare">
+    <div class="compare-card">
+      <div style="font-size:34px;">🏞️</div>
+      <h4 class="kufi">في الطبيعة</h4>
+      <p>تترسّب طبقات من الرمل والطين في قاع الأنهار والبحار، فتضغط الطبقات الحديثة على القديمة
+        وتتماسك بموادّ لاحمة عبر ملايين السنين لتكوّن صخرة رسوبية.</p>
+    </div>
+    <div class="vs">⇄<small>وجه الشبه</small></div>
+    <div class="compare-card">
+      <div style="font-size:34px;">🥤</div>
+      <h4 class="kufi">داخل الكأس</h4>
+      <p>ترسّبت طبقات الرمل والتراب فوق بعضها داخل الماء، ثمّ صُرِّف الماء الزائد وتركت لتجفّ
+        وتتماسك، فخرجت على هيئة عمود من الطبقات المتتالية.</p>
+    </div>
+  </div>
+
+  <div class="final-q">
+    <h3 class="kufi">٦. سؤال التفكير</h3>
+    <p>ما وجه الشبه بين تكوّن الصخور الرسوبية في الطبيعة وبين ما حدث في الكأس؟</p>
+    <textarea class="obs" id="obs5" placeholder="اكتب إجابتك هنا بأسلوبك الخاص..."></textarea>
+    <div class="reveal">
+      <details>
+        <summary>💡 اطّلع على فكرة مساعدة بعد أن تكتب إجابتك</summary>
+        <p>في الحالتين تتراكم الموادّ في طبقات، الأقدم في الأسفل والأحدث في الأعلى (كما التراب
+          والرمل في كأسك). وفي الحالتين يحدث ضغط وتصريف للماء يؤدّي إلى تماسك الحبيبات معًا
+          وتكوين جسم صلب من طبقات — الفرق الوحيد هو الزمن: في الكأس ساعات قليلة، وفي الطبيعة
+          ملايين السنين!</p>
+      </details>
+    </div>
+  </div>
+
+  <div class="actions-bar">
+    <button class="btn" onclick="window.print()">🖨️ اطبع إجاباتي</button>
+    <a class="btn secondary" href="#lab">⬆️ العودة إلى المختبر</a>
+  </div>
+</section>
+
+<footer>
+  نشاط (٨): شاهد على تاريخ الأرض — مبني وفق منهاج العلوم والحياة، الصف الخامس، فلسطين 🇵🇸
+</footer>
+
+<script>
+// ===== Stage flip cards =====
+document.querySelectorAll('.stage').forEach(s=>{
+  s.addEventListener('click', ()=> s.classList.toggle('flipped'));
+});
+
+// ===== Stepper UI =====
+const stepLabels = ['الماء','الرمل','الطبقات','الثقب','التصريف','الناتج'];
+const stepperEl = document.getElementById('stepper');
+function renderStepper(current){
+  stepperEl.innerHTML = '';
+  stepLabels.forEach((label,i)=>{
+    const d = document.createElement('div');
+    d.className = 'step-dot' + (i===current?' active':'') + (i<current?' done':'');
+    d.innerHTML = `<span class="n">${i<current?'✓':(i+1)}</span> ${label}`;
+    stepperEl.appendChild(d);
+  });
+}
+renderStepper(0);
+
+function showStep(n){
+  document.querySelectorAll('.step-block').forEach(b=>{
+    b.classList.toggle('show', parseInt(b.dataset.step)===n);
+  });
+  renderStepper(n);
+}
+
+// ===== Cup geometry =====
+const CUP_BOTTOM = 378;
+const solidLayers = ['sand1','soil1','sand2','soil2'];
+let solidHeight = 0;      // cumulative height of solid stack
+let waterHeight = 0;      // current water layer height
+const LAYER_H = 42;
+const WATER_INIT = 96;
+
+function setRect(id, y, h){
+  const el = document.getElementById('layer-'+id);
+  el.style.y = y + 'px';
+  el.style.height = Math.max(h,0) + 'px';
+}
+
+function redrawWater(){
+  setRect('water', CUP_BOTTOM - solidHeight - waterHeight, waterHeight);
+}
+
+function fillWater(){
+  waterHeight = WATER_INIT;
+  redrawWater();
+  showStep(1);
+}
+
+function addLayer(name){
+  const el = document.getElementById('layer-'+name);
+  el.style.y = (CUP_BOTTOM - solidHeight - LAYER_H) + 'px';
+  el.style.height = LAYER_H + 'px';
+  solidHeight += LAYER_H;
+  redrawWater();
+
+  if(name==='sand1'){
+    showStep(2);
+  } else if(name==='soil1'){
+    document.getElementById('btnSoil1').disabled = true;
+    document.getElementById('btnSand2').disabled = false;
+  } else if(name==='sand2'){
+    document.getElementById('btnSand2').disabled = true;
+    document.getElementById('btnSoil2').disabled = false;
+  } else if(name==='soil2'){
+    document.getElementById('btnSoil2').disabled = true;
+    setTimeout(()=>showStep(3), 500);
+  }
+}
+
+function makeHole(){
+  document.getElementById('holeMark').setAttribute('r','5');
+  showStep(4);
+}
+
+function spawnDrip(){
+  const svg = document.getElementById('drips');
+  const drop = document.createElementNS('http://www.w3.org/2000/svg','path');
+  drop.setAttribute('d','M78,372 q4,6 0,10 q-4,-4 0,-10 z');
+  drop.setAttribute('fill','#79c3d9');
+  drop.style.opacity = '1';
+  drop.style.transition = 'transform 900ms ease-in, opacity 900ms ease-in';
+  svg.appendChild(drop);
+  requestAnimationFrame(()=>{
+    drop.style.transform = 'translateY(40px)';
+    drop.style.opacity = '0';
+  });
+  setTimeout(()=> drop.remove(), 950);
+}
+
+function drainWater(){
+  let dripCount = 0;
+  const dripTimer = setInterval(()=>{
+    spawnDrip();
+    dripCount++;
+    if(dripCount>=6) clearInterval(dripTimer);
+  }, 220);
+
+  waterHeight = 18;
+  redrawWater();
+  setTimeout(()=> showStep(5), 900);
+}
+
+function fastForward(){
+  const btn = document.getElementById('btnFF');
+  btn.disabled = true;
+  btn.textContent = '⏳ يمرّ الوقت...';
+  let ticks = 0;
+  const t = setInterval(()=>{
+    ticks++;
+    document.getElementById('cupWrap').style.transform = `rotateX(6deg) scale(${1+ (ticks%2?0.01:-0.01)})`;
+    if(ticks>=6){
+      clearInterval(t);
+      document.getElementById('cupWrap').style.transform = 'rotateX(6deg)';
+      waterHeight = 0;
+      redrawWater();
+      btn.textContent = '☀️ جفّت المكوّنات';
+      document.getElementById('btnOpen').disabled = false;
+    }
+  }, 260);
+}
+
+function openMold(){
+  const cupSvg = document.getElementById('cupSvg');
+  const coreSvg = document.getElementById('coreSvg');
+  cupSvg.style.transition = 'opacity .6s ease, transform .6s ease';
+  cupSvg.style.opacity = '0';
+  cupSvg.style.transform = 'translateY(14px) scale(.97)';
+
+  setTimeout(()=>{
+    cupSvg.style.display = 'none';
+    coreSvg.style.display = 'block';
+    buildCore();
+  }, 550);
+}
+
+function buildCore(){
+  const order = [
+    {id:'soil2', color:'#523419', label:'تراب (الأحدث)'},
+    {id:'sand2', color:'#C89642', label:'رمل أصفر'},
+    {id:'soil1', color:'#6E4B2A', label:'تراب'},
+    {id:'sand1', color:'#E3B565', label:'رمل أصفر (الأقدم)'}
+  ];
+  const h = 62;
+  const total = h*order.length;
+  const topY = 340 - total;
+  const rects = document.querySelectorAll('#coreLayers rect');
+  order.forEach((layer,i)=>{
+    const r = rects[i];
+    r.setAttribute('fill', layer.color);
+    r.setAttribute('y', topY + i*h);
+    r.setAttribute('height', 0);
+    setTimeout(()=>{
+      r.style.transition = 'height .5s ease';
+      r.setAttribute('height', h);
+    }, 120*i);
+  });
+  const outline = document.getElementById('coreOutline');
+  outline.setAttribute('y', topY);
+  outline.setAttribute('height', total);
+
+  const labels = document.getElementById('coreLabels');
+  labels.innerHTML = '';
+  order.forEach((layer,i)=>{
+    const y = topY + i*h + h/2 + 4;
+    const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+    line.setAttribute('x1', 205); line.setAttribute('x2', 225);
+    line.setAttribute('y1', y-4); line.setAttribute('y2', y-4);
+    line.setAttribute('stroke', '#8a7a5c');
+    labels.appendChild(line);
+    const t = document.createElementNS('http://www.w3.org/2000/svg','text');
+    t.setAttribute('x', 230); t.setAttribute('y', y);
+    t.textContent = layer.label;
+    labels.appendChild(t);
+  });
+}
+
+function resetLab(){
+  solidLayers.forEach(id=> setRect(id,378,0));
+  setRect('water',378,0);
+  solidHeight = 0; waterHeight = 0;
+  document.getElementById('holeMark').setAttribute('r','0');
+  document.getElementById('drips').innerHTML = '';
+
+  const cupSvg = document.getElementById('cupSvg');
+  const coreSvg = document.getElementById('coreSvg');
+  cupSvg.style.display = 'block';
+  cupSvg.style.opacity = '1';
+  cupSvg.style.transform = 'none';
+  coreSvg.style.display = 'none';
+
+  ['btnSoil1'].forEach(id=> document.getElementById(id).disabled=false);
+  ['btnSand2','btnSoil2','btnOpen'].forEach(id=> document.getElementById(id).disabled=true);
+  const ffBtn = document.getElementById('btnFF');
+  ffBtn.disabled=false; ffBtn.textContent = '⏩ تسريع الزمن (عدّة ساعات)';
+
+  showStep(0);
+}
+</script>
+</body>
+</html>

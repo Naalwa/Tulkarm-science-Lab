@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>طرق التوصيل في الدارات الكهربائية | الصف السادس</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --night:#0c1622;
+  --night-2:#10233a;
+  --copper:#e8a94c;
+  --copper-2:#f4c878;
+  --teal:#2bb3a3;
+  --cream:#f4efe4;
+  --cream-dim:#cfc7b3;
+  --wire-red:#d1495b;
+  --wire-blue:#3f7fd4;
+  --glow:#ffd479;
+  --radius:18px;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:
+    radial-gradient(1200px 800px at 15% -10%, #16304d 0%, transparent 60%),
+    radial-gradient(900px 700px at 110% 10%, #1a3550 0%, transparent 55%),
+    var(--night);
+  color:var(--cream);
+  font-family:'Tajawal', sans-serif;
+  line-height:1.85;
+  overflow-x:hidden;
+}
+h1,h2,h3,.display{font-family:'Cairo', sans-serif;}
+::selection{background:var(--copper); color:#1a1208;}
+
+/* ---------- circuit-pattern background lines ---------- */
+.bg-circuit{
+  position:fixed; inset:0; z-index:-1; opacity:.10; pointer-events:none;
+  background-image:
+    linear-gradient(var(--copper) 1px, transparent 1px),
+    linear-gradient(90deg, var(--copper) 1px, transparent 1px);
+  background-size:46px 46px;
+}
+
+/* ---------- HERO ---------- */
+.hero{
+  padding:54px 20px 70px;
+  max-width:1100px; margin:0 auto;
+  position:relative;
+}
+.eyebrow{
+  display:inline-flex; align-items:center; gap:10px;
+  font-size:.85rem; letter-spacing:.06em; color:var(--teal);
+  background:rgba(43,179,163,.1); border:1px solid rgba(43,179,163,.35);
+  padding:6px 16px; border-radius:999px; margin-bottom:22px;
+}
+.eyebrow span.dot{width:7px;height:7px;border-radius:50%;background:var(--teal); box-shadow:0 0 8px var(--teal);}
+.hero h1{
+  font-size:clamp(2rem, 5vw, 3.4rem);
+  font-weight:900; margin:0 0 14px;
+  background:linear-gradient(90deg, var(--cream), var(--copper-2) 60%, var(--copper));
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.hero p.lead{
+  color:var(--cream-dim); font-size:1.12rem; max-width:680px; margin:0 0 30px;
+}
+.hero-meta{display:flex; flex-wrap:wrap; gap:14px; margin-bottom:46px;}
+.chip{
+  background:var(--night-2); border:1px solid #1f3a56; padding:8px 16px;
+  border-radius:12px; font-size:.92rem; color:var(--cream-dim);
+}
+.chip b{color:var(--copper-2); font-weight:700;}
+
+/* ---------- mini illustrative scene in hero (3d battery+bulb) ---------- */
+.hero-scene{
+  height:230px; perspective:900px; display:flex; align-items:center; justify-content:center;
+  margin-top:10px;
+}
+.scene-wrap{transform-style:preserve-3d; transform:rotateX(18deg) rotateY(-18deg); display:flex; align-items:flex-end; gap:60px;}
+.mini-batt{width:46px; height:94px; border-radius:8px; transform-style:preserve-3d; position:relative;
+  background:linear-gradient(180deg,#3a3a3a,#161616);
+  box-shadow:0 22px 40px -10px rgba(0,0,0,.6), inset 0 0 0 2px #000;
+}
+.mini-batt::before{content:'+'; position:absolute; top:-26px; left:50%; transform:translateX(-50%); font-size:1.4rem; color:var(--copper-2); font-weight:900;}
+.mini-batt::after{content:''; position:absolute; bottom:0; right:0; left:0; height:32px; background:linear-gradient(180deg,var(--copper),#a96f1e); border-radius:0 0 8px 8px;}
+.mini-bulb{width:64px;height:64px;border-radius:50%; position:relative;
+  background:radial-gradient(circle at 35% 30%, #fff6d8, #ffd479 55%, #c98f2b 100%);
+  box-shadow:0 0 0 6px #2a2a2a, 0 30px 50px -15px rgba(0,0,0,.6);
+  animation:flicker 3.4s infinite ease-in-out;
+}
+.mini-bulb::after{content:''; position:absolute; bottom:-14px; left:50%; transform:translateX(-50%); width:30px;height:18px; background:linear-gradient(180deg,#9a9a9a,#5e5e5e); border-radius:0 0 6px 6px;}
+@keyframes flicker{0%,100%{filter:brightness(1) drop-shadow(0 0 14px #ffcf6b);}50%{filter:brightness(1.18) drop-shadow(0 0 26px #ffd98a);}}
+
+/* ---------- SECTION shells ---------- */
+section{max-width:1100px; margin:0 auto; padding:34px 20px;}
+.section-head{display:flex; align-items:center; gap:14px; margin-bottom:30px;}
+.section-num{
+  font-family:'Cairo',sans-serif; font-weight:900; font-size:1.05rem;
+  width:42px;height:42px; border-radius:12px; display:flex; align-items:center; justify-content:center;
+  background:rgba(232,169,76,.12); color:var(--copper-2); border:1px solid rgba(232,169,76,.35);
+  flex:none;
+}
+.section-head h2{font-size:1.7rem; margin:0; font-weight:700;}
+.section-head p{margin:4px 0 0; color:var(--cream-dim); font-size:.95rem;}
+
+/* explanation cards */
+.cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px;}
+.card{
+  background:linear-gradient(160deg, var(--night-2), #0c1c2e);
+  border:1px solid #1c3450; border-radius:var(--radius); padding:22px;
+  position:relative; overflow:hidden;
+}
+.card .ic{font-size:1.9rem; margin-bottom:10px; display:block;}
+.card h3{margin:0 0 8px; font-size:1.08rem;}
+.card p{margin:0; color:var(--cream-dim); font-size:.92rem;}
+
+.note{
+  background:rgba(43,179,163,.08); border-right:4px solid var(--teal);
+  border-radius:10px; padding:16px 18px; color:var(--cream-dim); font-size:.95rem; margin-top:18px;
+}
+
+/* ---------- DIRECTION DIAGRAM (نشاط 2) ---------- */
+.dir-toggle{display:flex; gap:10px; margin:18px 0 22px; flex-wrap:wrap;}
+.dir-btn{
+  flex:1; min-width:160px; padding:14px 18px; border-radius:14px; border:1px solid #1f3a56;
+  background:var(--night-2); color:var(--cream); cursor:pointer; font-family:'Tajawal'; font-weight:700; font-size:.96rem;
+  transition:.25s; text-align:center;
+}
+.dir-btn small{display:block; font-weight:400; color:var(--cream-dim); font-size:.78rem; margin-top:3px;}
+.dir-btn.active{background:linear-gradient(135deg,var(--copper),#b97e23); color:#1a1208; border-color:transparent; box-shadow:0 10px 24px -10px rgba(232,169,76,.55);}
+
+.loop-box{
+  background:var(--night-2); border:1px solid #1c3450; border-radius:var(--radius);
+  padding:30px 20px; display:flex; justify-content:center;
+}
+svg.loop{width:100%; max-width:480px; height:auto;}
+.loop-path{stroke:#3a567a; stroke-width:6; fill:none; stroke-linecap:round;}
+.loop-arrow{stroke:var(--copper-2); stroke-width:6; fill:none; stroke-linecap:round;
+  stroke-dasharray:14 14; animation:dash 1.1s linear infinite;}
+.loop-arrow.rev{animation-direction:reverse;}
+@keyframes dash{to{stroke-dashoffset:-56;}}
+
+/* =========================================================
+   VIRTUAL LAB — the signature element
+   ========================================================= */
+.lab-shell{
+  background:linear-gradient(165deg,#0d2034,#081523);
+  border:1px solid #1c3450; border-radius:24px; padding:6px;
+  box-shadow:0 40px 80px -30px rgba(0,0,0,.7);
+}
+.lab-inner{
+  background:radial-gradient(ellipse at 50% -10%, #163050, transparent 60%), #0a1828;
+  border-radius:20px; padding:26px 18px 32px;
+}
+.lab-toolbar{
+  display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px;
+  margin-bottom:18px; padding:0 6px;
+}
+.lab-title{display:flex; align-items:center; gap:10px; font-family:'Cairo'; font-weight:700;}
+.lab-title .led{width:10px;height:10px;border-radius:50%; background:#475a72; box-shadow:0 0 0 0 transparent; transition:.4s;}
+.lab-title .led.on{background:var(--glow); box-shadow:0 0 14px 4px var(--glow);}
+.lab-status{font-size:.85rem; color:var(--cream-dim);}
+.lab-status b{color:var(--copper-2);}
+
+.board-wrap{perspective:1500px; padding:10px 0;}
+.board{
+  position:relative; transform-style:preserve-3d;
+  transform:rotateX(36deg) rotateZ(0deg);
+  margin:0 auto; width:min(100%, 640px); height:380px;
+  background:
+    linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px) 0 0/40px 40px,
+    linear-gradient(0deg, rgba(255,255,255,.025) 1px, transparent 1px) 0 0/40px 40px,
+    linear-gradient(160deg,#0e2a22,#0a1f1a);
+  border-radius:16px;
+  box-shadow:
+    0 2px 0 #062019, 0 60px 90px -40px rgba(0,0,0,.85),
+    inset 0 0 0 1px rgba(120,255,210,.06);
+}
+.board::before{ /* board edge thickness */
+  content:''; position:absolute; inset:0; border-radius:16px;
+  transform:translateZ(-22px); background:#04130e; filter:brightness(.6);
+}
+
+.comp{position:absolute; transform-style:preserve-3d; cursor:pointer; user-select:none;}
+.comp .shadow{position:absolute; left:50%; bottom:-8px; width:70%; height:14px; background:rgba(0,0,0,.45);
+  filter:blur(6px); border-radius:50%; transform:translateX(-50%) translateZ(-20px);}
+
+/* battery */
+.comp.battery{ left:8%; top:38%; width:120px; height:60px; transform:translateZ(10px) rotateX(-36deg);}
+.batt-body{width:100%; height:100%; border-radius:10px; position:relative;
+  background:linear-gradient(180deg,#3c3c3c,#151515); box-shadow:0 10px 18px -6px rgba(0,0,0,.6), inset 0 0 0 2px #000;}
+.batt-body::after{content:'';position:absolute; left:0; top:0; bottom:0; width:38%; background:linear-gradient(90deg,var(--copper),#a96f1e); border-radius:10px 0 0 10px;}
+.batt-label{position:absolute; inset:0; display:flex; align-items:center; justify-content:space-between; padding:0 14px;
+  font-family:'Cairo'; font-weight:900; color:#fff; font-size:1.1rem; z-index:2;}
+.batt-label .m{color:#ddd;}
+.term{position:absolute; width:16px; height:16px; border-radius:50%; background:#cfcfcf; top:50%; transform:translateY(-50%);
+  box-shadow:0 0 0 3px #555; transition:.3s;}
+.term.pos{right:-8px;}
+.term.neg{left:-8px;}
+.term.connected{background:var(--glow); box-shadow:0 0 10px 4px var(--glow);}
+
+/* bulb */
+.comp.bulb{ left:43%; top:6%; width:90px; height:120px;}
+.bulb-base{width:34px;height:26px; margin:0 auto; background:linear-gradient(180deg,#bbb,#777); border-radius:0 0 6px 6px;}
+.bulb-socket{width:48px;height:18px; margin:0 auto; background:linear-gradient(180deg,#8a8a8a,#4d4d4d); border-radius:4px;
+  box-shadow:0 8px 14px -4px rgba(0,0,0,.5);}
+.bulb-glass{width:62px;height:62px; margin:4px auto 0; border-radius:50%; position:relative; transition:.4s;
+  background:radial-gradient(circle at 35% 30%, #cfd9da, #98a3a5 60%, #5f6a6c 100%);
+  box-shadow:0 16px 26px -10px rgba(0,0,0,.55);}
+.bulb-glass.lit{
+  background:radial-gradient(circle at 35% 30%, #fff8e0, var(--glow) 55%, #d99a2e 100%);
+  box-shadow:0 0 36px 14px rgba(255,212,121,.65), 0 16px 30px -8px rgba(0,0,0,.5);
+  animation:flicker 2.6s infinite ease-in-out;
+}
+.bulb-pins{position:absolute; bottom:-2px; left:50%; transform:translateX(-50%); display:flex; gap:30px;}
+.bulb-pins .term{position:static; transform:none;}
+
+/* switch */
+.comp.switch{ left:74%; top:42%; width:80px; height:50px;}
+.sw-base{width:100%; height:100%; background:linear-gradient(180deg,#3a2a16,#211608); border-radius:8px; position:relative;
+  box-shadow:0 10px 18px -6px rgba(0,0,0,.6);}
+.sw-lever{position:absolute; top:6px; left:50%; width:14px; height:30px; background:linear-gradient(180deg,#e3e3e3,#9a9a9a);
+  border-radius:6px; transform-origin:bottom center; transform:translateX(-50%) rotate(-28deg); transition:.3s;
+  box-shadow:0 4px 8px rgba(0,0,0,.4);}
+.comp.switch.on .sw-lever{transform:translateX(-50%) rotate(10deg); box-shadow:0 0 10px 3px var(--glow);}
+.sw-cap{position:absolute; top:-8px; right:-6px; font-size:.62rem; font-family:'Cairo'; font-weight:900; color:#8a6a3a;}
+.comp.switch .term{top:auto; bottom:-8px; transform:none;}
+.comp.switch .term.pos{left:14px; right:auto;}
+.comp.switch .term.neg{right:14px; left:auto;}
+
+/* wires (svg overlay) */
+.wire-layer{position:absolute; inset:0; transform:translateZ(2px); pointer-events:none;}
+.wire-layer svg{width:100%;height:100%; overflow:visible;}
+.wire-path{fill:none; stroke-width:7; stroke-linecap:round; stroke:#274a3d; transition:stroke .35s, filter .35s;}
+.wire-path.live{stroke:var(--copper); filter:drop-shadow(0 0 6px rgba(232,169,76,.7));}
+.wire-path.live.lit{stroke:var(--glow); filter:drop-shadow(0 0 10px rgba(255,212,121,.85));}
+.wire-flow{fill:none; stroke-width:4; stroke:#fff; opacity:0; stroke-dasharray:10 16;}
+.wire-flow.show{opacity:.85; animation:dash 0.9s linear infinite;}
+.wire-flow.show.rev{animation-direction:reverse;}
+
+.plug{position:absolute; width:22px; height:22px; border-radius:50%; transform:translate(-50%,-50%);
+  border:2px dashed #3a5a73; cursor:pointer; transition:.25s; pointer-events:all; z-index:6;}
+.plug:hover{border-color:var(--copper-2); background:rgba(232,169,76,.18);}
+.plug.filled{border-style:solid; border-color:var(--glow); background:rgba(255,212,121,.25);}
+.plug.selected{border-color:#fff; background:rgba(255,255,255,.25); box-shadow:0 0 0 4px rgba(255,255,255,.15);}
+
+/* lab controls under board */
+.lab-controls{display:flex; flex-wrap:wrap; gap:12px; margin-top:22px; justify-content:center;}
+.btn{
+  font-family:'Tajawal'; font-weight:700; font-size:.95rem; padding:12px 22px; border-radius:12px;
+  border:1px solid #1f3a56; background:var(--night-2); color:var(--cream); cursor:pointer; transition:.25s;
+}
+.btn:hover{border-color:var(--copper); color:var(--copper-2);}
+.btn.primary{background:linear-gradient(135deg,var(--copper),#b97e23); color:#1a1208; border-color:transparent;}
+.btn.primary:hover{filter:brightness(1.08); color:#1a1208;}
+.btn:disabled{opacity:.4; cursor:not-allowed;}
+
+.hint-bar{
+  margin-top:16px; background:rgba(232,169,76,.07); border:1px dashed rgba(232,169,76,.4);
+  border-radius:12px; padding:13px 18px; font-size:.9rem; color:var(--cream-dim); text-align:center;
+}
+
+.result-banner{
+  margin-top:18px; padding:16px 20px; border-radius:14px; text-align:center; font-weight:700;
+  display:none; align-items:center; justify-content:center; gap:10px; font-family:'Cairo';
+}
+.result-banner.show{display:flex;}
+.result-banner.success{background:rgba(43,179,163,.14); border:1px solid var(--teal); color:#9fe8da;}
+.result-banner.fail{background:rgba(209,73,91,.12); border:1px solid var(--wire-red); color:#f3aab2;}
+
+/* ---------- conclusions / worksheet ---------- */
+.worksheet{display:flex; flex-direction:column; gap:18px;}
+.q{
+  background:var(--night-2); border:1px solid #1c3450; border-radius:16px; padding:20px 22px;
+}
+.q .qn{color:var(--copper-2); font-family:'Cairo'; font-weight:700; margin-bottom:10px; display:block;}
+.q input[type=text], .q textarea{
+  width:100%; background:#081420; border:1px solid #1f3a56; border-radius:10px; color:var(--cream);
+  padding:12px 14px; font-family:'Tajawal'; font-size:.95rem; resize:vertical;
+}
+.q input[type=text]:focus, .q textarea:focus{outline:none; border-color:var(--copper);}
+.q .reveal-btn{margin-top:10px; font-size:.82rem; background:none; border:none; color:var(--teal); cursor:pointer; text-decoration:underline; padding:0;}
+.q .model-answer{display:none; margin-top:10px; background:rgba(43,179,163,.08); border-right:3px solid var(--teal); padding:10px 14px; border-radius:8px; font-size:.88rem; color:var(--cream-dim);}
+.q .model-answer.show{display:block;}
+.match-row{display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
+.match-row input{flex:1; min-width:160px;}
+
+/* matching diagram (نشاط2 سؤال1) simplified */
+.flow-pair{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+@media(max-width:620px){.flow-pair{grid-template-columns:1fr;}}
+.flow-card{background:#081420; border:1px solid #1f3a56; border-radius:12px; padding:16px; text-align:center;}
+.flow-card h4{margin:0 0 10px; font-size:.92rem; color:var(--copper-2);}
+.flow-steps{display:flex; align-items:center; justify-content:center; gap:6px; flex-wrap:wrap; font-size:.78rem; color:var(--cream-dim);}
+.flow-steps .node{background:#11293f; padding:6px 10px; border-radius:8px;}
+.flow-steps .arr{color:var(--teal);}
+
+footer{
+  text-align:center; padding:40px 20px 60px; color:#52688a; font-size:.82rem;
+}
+
+/* responsive */
+@media(max-width:680px){
+  .board{height:430px; transform:rotateX(30deg);}
+  .comp.battery{left:6%; top:30%; width:96px; height:52px;}
+  .comp.bulb{left:36%; top:4%; width:78px;}
+  .comp.switch{left:70%; top:34%; width:68px; height:44px;}
+  .hero-scene{height:170px;}
+  .scene-wrap{gap:34px;}
+}
+
+  /* ══ RESPONSIVE MOBILE & TABLET ══ */
+  @media (max-width: 768px) {
+    body { padding: 8px !important; font-size: 15px !important; overflow-x: hidden !important; }
+    .container, [class*="container"], [class*="wrapper"] { padding: 8px !important; max-width: 100% !important; }
+    canvas { width: 100% !important; height: auto !important; display: block !important; touch-action: none; max-width: 100% !important; }
+    svg { max-width: 100% !important; height: auto !important; }
+    h1 { font-size: clamp(18px,5vw,32px) !important; }
+    h2 { font-size: clamp(15px,4vw,26px) !important; }
+    h3 { font-size: clamp(13px,3.5vw,20px) !important; }
+    [class*="grid"] { grid-template-columns: 1fr !important; }
+    [class*="flex"] { flex-wrap: wrap !important; }
+    input[type="range"] { width: 100% !important; min-height: 36px; }
+    input[type="number"], input[type="text"], select, textarea {
+      font-size: 16px !important; width: 100% !important; box-sizing: border-box; padding: 8px !important; }
+    button { min-height: 44px !important; font-size: 14px !important; touch-action: manipulation; padding: 10px 14px !important; }
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 13px !important; }
+    th, td { padding: 6px 4px !important; }
+    header { padding: 10px 12px !important; }
+    .controls, [class*="controls"] { flex-direction: column !important; gap: 8px !important; }
+    .lab-window, [class*="lab-window"] { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+  }
+  @media (max-width: 480px) {
+    body { padding: 4px !important; }
+    button { width: 100% !important; }
+  }
+  /* ══ END RESPONSIVE ══ */
+</style>
+</head>
+<body>
+<style>
+.vlab-back{position:fixed;top:10px;left:10px;z-index:99999;
+background:rgba(10,22,40,0.93);border:1px solid rgba(0,200,150,0.4);
+border-radius:22px;padding:8px 16px;display:inline-flex;align-items:center;gap:7px;
+color:#00C896;font-family:Tajawal,Cairo,Arial,sans-serif;font-size:13px;font-weight:700;
+text-decoration:none;backdrop-filter:blur(8px);box-shadow:0 4px 18px rgba(0,0,0,0.3);
+transition:background 0.2s;}
+.vlab-back:hover{background:rgba(0,200,150,0.18);}
+</style>
+<a href="../grade6.html" class="vlab-back">&#8594; العودة للصف</a>
+
+<div class="bg-circuit"></div>
+
+<!-- ======================= HERO ======================= -->
+<div class="hero">
+  <div class="eyebrow"><span class="dot"></span> العلوم والحياة · الصف السادس · فلسطين</div>
+  <h1>طرق التوصيل في الدّارات الكهربائيّة</h1>
+  <p class="lead">
+    الدّرس الثاني — نتعرّف فيه على مكوّنات الدّارة الكهربائيّة البسيطة، وسبب إضاءة المصباح،
+    والفرق بين اتّجاه التيّار الاصطلاحي واتّجاه التيّار الإلكتروني، عبر شرح مبسّط ومختبر افتراضي
+    تبني فيه الدّارة بنفسك وتلاحظ النتيجة لحظيًّا.
+  </p>
+  <div class="hero-meta">
+    <div class="chip">⚡ <b>المفهوم الأساسي:</b> الدّارة الكهربائيّة المغلقة</div>
+    <div class="chip">🔋 <b>الأدوات:</b> بطّاريّة، مفتاح، مصباح، أسلاك توصيل</div>
+    <div class="chip">🧭 <b>الهدف:</b> التمييز بين التيّار الاصطلاحي والإلكتروني</div>
+  </div>
+  <div class="hero-scene">
+    <div class="scene-wrap">
+      <div class="mini-batt"></div>
+      <div class="mini-bulb"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================= 1) شرح الدرس ======================= -->
+<section id="explain">
+  <div class="section-head">
+    <div class="section-num">١</div>
+    <div>
+      <h2>الدّارة الكهربائيّة البسيطة</h2>
+      <p>تعرّف على أدوات الدّارة الكهربائيّة ووظيفة كلٍّ منها قبل أن تجرّب بنفسك في المختبر.</p>
+    </div>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <span class="ic">🔋</span>
+      <h3>البطّاريّة</h3>
+      <p>مصدر الطّاقة الكهربائيّة في الدّارة؛ لها قطبان: قطب موجب (+) وقطب سالب (−)، وهي التي تدفع الشّحنات لتتحرّك عبر الدّارة.</p>
+    </div>
+    <div class="card">
+      <span class="ic">💡</span>
+      <h3>المصباح الكهربائيّ وقاعدته</h3>
+      <p>يحوّل الطّاقة الكهربائيّة إلى طاقة ضوئيّة وحراريّة عندما يمرّ فيه التّيار الكهربائيّ ضمن دارة مغلقة.</p>
+    </div>
+    <div class="card">
+      <span class="ic">🔌</span>
+      <h3>أسلاك التّوصيل</h3>
+      <p>توصل بين أجزاء الدّارة المختلفة، وتسمح بمرور التّيار الكهربائيّ بينها بأقلّ مقاومة ممكنة.</p>
+    </div>
+    <div class="card">
+      <span class="ic">🔘</span>
+      <h3>المفتاح الكهربائيّ</h3>
+      <p>يتحكّم في فتح الدّارة أو إغلاقها؛ فعند إغلاقه يكتمل المسار وتضيء اللّمبة، وعند فتحه ينقطع التّيار.</p>
+    </div>
+  </div>
+
+  <div class="note">
+    💡 <b>تذكّر:</b> يضيء المصباح فقط عندما تكون الدّارة الكهربائيّة <b>مغلقة بالكامل</b> — أي أنّ هناك مسارًا متّصلًا
+    بلا انقطاع من القطب الموجب للبطّاريّة، مرورًا بالمفتاح والمصباح، وعودة إلى القطب السّالب.
+  </div>
+</section>
+
+<!-- ======================= 2) اتجاه التيار ======================= -->
+<section id="direction">
+  <div class="section-head">
+    <div class="section-num">٢</div>
+    <div>
+      <h2>اتّجاه التّيار الكهربائيّ</h2>
+      <p>لاحظ الفرق بين مسار الشّحنات الفعليّ ومسار التّيار المتّفق عليه علميًّا. اضغط الزرّين لمقارنة الاتّجاهين.</p>
+    </div>
+  </div>
+
+  <div class="dir-toggle">
+    <button class="dir-btn active" id="btnConv" onclick="setDir('conv')">
+      التّيار الاصطلاحي
+      <small>من القطب الموجب إلى القطب السّالب (خارج البطّاريّة)</small>
+    </button>
+    <button class="dir-btn" id="btnElec" onclick="setDir('elec')">
+      التّيار الإلكتروني
+      <small>حركة الشّحنات السّالبة الفعليّة — من السّالب إلى الموجب</small>
+    </button>
+  </div>
+
+  <div class="loop-box">
+    <svg class="loop" viewBox="0 0 480 260">
+      <!-- static loop -->
+      <path class="loop-path" d="M70,200 L70,70 L240,40 L410,70 L410,200 L300,200 L180,200 Z"/>
+      <!-- animated arrow overlay (conventional: clockwise from + through bulb to -) -->
+      <path id="arrowConv" class="loop-arrow" d="M70,200 L70,70 L240,40 L410,70 L410,200"/>
+      <path id="arrowElec" class="loop-arrow rev" d="M410,200 L410,70 L240,40 L70,70 L70,200" style="display:none"/>
+      <!-- battery symbol -->
+      <rect x="170" y="192" width="16" height="28" fill="#e8a94c"/>
+      <rect x="294" y="192" width="16" height="28" fill="#3a3a3a" stroke="#888"/>
+      <text x="178" y="186" fill="#e8a94c" font-size="20" font-family="Cairo" text-anchor="middle">+</text>
+      <text x="302" y="186" fill="#aaa" font-size="20" font-family="Cairo" text-anchor="middle">−</text>
+      <!-- bulb -->
+      <circle cx="240" cy="40" r="22" fill="#ffd479" opacity="0.9"/>
+      <text x="240" y="46" font-size="20" text-anchor="middle">💡</text>
+      <text x="240" y="240" fill="#cfc7b3" font-size="14" font-family="Tajawal" text-anchor="middle" id="loopCaption">
+        اتّجاه التّيار الاصطلاحي: من (+) إلى المصباح ثم إلى (−)
+      </text>
+    </svg>
+  </div>
+
+  <div class="note">
+    ⚖️ <b>اتّفاقٌ علميّ:</b> اصطلح العلماء على أن يكون اتّجاه التّيار عكس اتّجاه حركة الشّحنات السّالبة الفعليّة؛
+    فبينما تتحرّك الإلكترونات من القطب السّالب إلى القطب الموجب داخل الدّارة الخارجيّة، اعتُبر اتّجاه
+    التّيار الاصطلاحي من القطب الموجب إلى القطب السّالب.
+  </div>
+</section>
+
+<!-- ======================= 3) المختبر الافتراضي ======================= -->
+<section id="lab">
+  <div class="section-head">
+    <div class="section-num">٣</div>
+    <div>
+      <h2>المختبر الافتراضي — وصّل الدّارة بنفسك</h2>
+      <p>اسحب الوصلات بين الأطراف لتُكمل الدّارة الكهربائيّة، ثمّ أغلق المفتاح وراقب ماذا يحدث للمصباح.</p>
+    </div>
+  </div>
+
+  <div class="lab-shell">
+    <div class="lab-inner">
+      <div class="lab-toolbar">
+        <div class="lab-title"><span class="led" id="ledIndicator"></span> طاولة العمل — تجربة الدّارة البسيطة</div>
+        <div class="lab-status">الحالة: <b id="statusText">الدّارة مفتوحة</b></div>
+      </div>
+
+      <div class="board-wrap">
+        <div class="board" id="board">
+
+          <!-- wire layer (svg) -->
+          <div class="wire-layer">
+            <svg viewBox="0 0 640 380" preserveAspectRatio="none">
+              <path id="wireA" class="wire-path" d="M68,228 L210,228 L210,90"/>
+              <path id="wireFlowA" class="wire-flow" d="M68,228 L210,228 L210,90"/>
+              <path id="wireB" class="wire-path" d="M430,90 L430,228 L 470,228"/>
+              <path id="wireFlowB" class="wire-flow" d="M430,90 L430,228 L 470,228"/>
+              <path id="wireC" class="wire-path" d="M550,255 L550,300 L120,300 L120,255"/>
+              <path id="wireFlowC" class="wire-flow" d="M550,255 L550,300 L120,300 L120,255"/>
+            </svg>
+          </div>
+
+          <!-- battery -->
+          <div class="comp battery" id="compBattery">
+            <div class="shadow"></div>
+            <div class="batt-body">
+              <div class="batt-label"><span>+</span><span class="m">−</span></div>
+            </div>
+            <div class="term pos" id="termBattPos"></div>
+            <div class="term neg" id="termBattNeg"></div>
+          </div>
+
+          <!-- bulb -->
+          <div class="comp bulb" id="compBulb">
+            <div class="shadow"></div>
+            <div class="bulb-glass" id="bulbGlass"></div>
+            <div class="bulb-socket"></div>
+            <div class="bulb-base"></div>
+            <div class="bulb-pins">
+              <div class="term pos" id="termBulbL"></div>
+              <div class="term neg" id="termBulbR"></div>
+            </div>
+          </div>
+
+          <!-- switch -->
+          <div class="comp switch" id="compSwitch" onclick="toggleSwitch(event)">
+            <div class="shadow"></div>
+            <span class="sw-cap">OFF/ON</span>
+            <div class="sw-base"><div class="sw-lever"></div></div>
+            <div class="term pos" id="termSwPos"></div>
+            <div class="term neg" id="termSwNeg"></div>
+          </div>
+
+          <!-- connection plugs (clickable) -->
+          <div class="plug" id="plug1" style="left:10%; top:60%;" onclick="selectPlug('plug1')" title="الطّرف الموجب للبطّاريّة"></div>
+          <div class="plug" id="plug2" style="left:33%; top:24%;" onclick="selectPlug('plug2')" title="طرف المصباح الأيسر"></div>
+          <div class="plug" id="plug3" style="left:67%; top:24%;" onclick="selectPlug('plug3')" title="طرف المصباح الأيمن"></div>
+          <div class="plug" id="plug4" style="left:73%; top:60%;" onclick="selectPlug('plug4')" title="الطّرف الموجب للمفتاح"></div>
+          <div class="plug" id="plug5" style="left:86%; top:67%;" onclick="selectPlug('plug5')" title="الطّرف السّالب للمفتاح"></div>
+          <div class="plug" id="plug6" style="left:19%; top:67%;" onclick="selectPlug('plug6')" title="الطّرف السّالب للبطّاريّة"></div>
+        </div>
+      </div>
+
+      <div class="hint-bar" id="hintBar">
+        🔧 اضغط طرفين (نقطتين منقّطتين) بالتّرتيب لتوصيل سلكٍ بينهما. وصّل: ١) بطّاريّة(+) ↔ المصباح اليسار،
+        ٢) المصباح اليمين ↔ المفتاح(+)، ٣) المفتاح(−) ↔ بطّاريّة(−). ثمّ اضغط المفتاح لإغلاقه.
+      </div>
+
+      <div class="lab-controls">
+        <button class="btn" onclick="resetLab()">↺ إعادة ضبط التّجربة</button>
+        <button class="btn" onclick="toggleSwitch()" id="switchBtn">🔘 فتح/إغلاق المفتاح</button>
+        <button class="btn primary" onclick="checkCircuit()">✅ تحقّق من النّتيجة</button>
+      </div>
+
+      <div class="result-banner" id="resultBanner"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 4) أسئلة الاستنتاج ======================= -->
+<section id="worksheet">
+  <div class="section-head">
+    <div class="section-num">٤</div>
+    <div>
+      <h2>أكمل استنتاجاتك</h2>
+      <p>بعد تجربتك في المختبر الافتراضي، أجب عن الأسئلة الآتية بأسلوبك الخاص.</p>
+    </div>
+  </div>
+
+  <div class="worksheet">
+    <div class="q">
+      <span class="qn">١. ما سبب إضاءة المصباح الكهربائيّ؟</span>
+      <textarea rows="2" placeholder="اكتب إجابتك هنا..."></textarea>
+      <button class="reveal-btn" onclick="this.nextElementSibling.classList.toggle('show')">عرض إجابة نموذجيّة</button>
+      <div class="model-answer">يضيء المصباح لأنّ الدّارة الكهربائيّة أصبحت مغلقة، فيمرّ التّيار الكهربائيّ من البطّاريّة عبر الأسلاك والمفتاح إلى المصباح ويعود إلى البطّاريّة، فيتحوّل جزء من الطّاقة الكهربائيّة إلى طاقة ضوئيّة.</div>
+    </div>
+
+    <div class="q">
+      <span class="qn">٢. ما أهمّيّة كلٍّ ممّا يأتي في الدّارة الكهربائيّة؟</span>
+      <div class="match-row" style="margin-bottom:8px;"><label style="min-width:140px;">المفتاح الكهربائيّ:</label><input type="text" placeholder="...يتحكّم في..."></div>
+      <div class="match-row" style="margin-bottom:8px;"><label style="min-width:140px;">البطّاريّة:</label><input type="text" placeholder="...مصدر..."></div>
+      <div class="match-row"><label style="min-width:140px;">أسلاك التّوصيل:</label><input type="text" placeholder="...تربط..."></div>
+      <button class="reveal-btn" onclick="this.nextElementSibling.classList.toggle('show')">عرض إجابة نموذجيّة</button>
+      <div class="model-answer">المفتاح: يتحكّم بفتح الدّارة أو إغلاقها. البطّاريّة: مصدر الطّاقة الكهربائيّة الذي يدفع الشّحنات للحركة. أسلاك التّوصيل: تربط بين أجزاء الدّارة وتسمح بمرور التّيار بينها.</div>
+    </div>
+
+    <div class="q">
+      <span class="qn">٣. أكمل مخطّطَي اتّجاه التّيار في الدّارتين الكهربائيّتين السّابقتين</span>
+      <div class="flow-pair">
+        <div class="flow-card">
+          <h4>اتّجاه التّيار الاصطلاحي</h4>
+          <div class="flow-steps">
+            <span class="node">القطب الموجب للبطّاريّة</span><span class="arr">←</span>
+            <span class="node">المصباح</span><span class="arr">←</span>
+            <span class="node">القطب السّالب للبطّاريّة</span>
+          </div>
+        </div>
+        <div class="flow-card">
+          <h4>اتّجاه التّيار الإلكتروني</h4>
+          <div class="flow-steps">
+            <span class="node">القطب السّالب للبطّاريّة</span><span class="arr">→</span>
+            <span class="node">المصباح</span><span class="arr">→</span>
+            <span class="node">القطب الموجب للبطّاريّة</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="q">
+      <span class="qn">٤. ما الفرق الجوهريّ بين التّيار الاصطلاحي والتّيار الإلكتروني؟</span>
+      <textarea rows="2" placeholder="اكتب إجابتك هنا..."></textarea>
+      <button class="reveal-btn" onclick="this.nextElementSibling.classList.toggle('show')">عرض إجابة نموذجيّة</button>
+      <div class="model-answer">التّيار الإلكتروني هو الحركة الفعليّة للشّحنات السّالبة من القطب السّالب إلى القطب الموجب، أمّا التّيار الاصطلاحي فهو اتّجاهٌ اتّفق عليه العلماء يكون عكس حركة الإلكترونات، أي من القطب الموجب إلى القطب السّالب.</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  صُمِّمت هذه الصّفحة التّفاعليّة لمساعدة طلبة الصّفّ السّادس على فهم درس «طرق التّوصيل في الدّارات الكهربائيّة» — منهاج العلوم والحياة، فلسطين.
+</footer>
+
+<script>
+/* ---------------- direction loop toggle ---------------- */
+function setDir(mode){
+  document.getElementById('btnConv').classList.toggle('active', mode==='conv');
+  document.getElementById('btnElec').classList.toggle('active', mode==='elec');
+  document.getElementById('arrowConv').style.display = mode==='conv' ? 'block' : 'none';
+  document.getElementById('arrowElec').style.display = mode==='elec' ? 'block' : 'none';
+  document.getElementById('loopCaption').textContent = mode==='conv'
+    ? 'اتّجاه التّيار الاصطلاحي: من (+) إلى المصباح ثم إلى (−)'
+    : 'اتّجاه التّيار الإلكتروني: من (−) إلى المصباح ثم إلى (+)';
+}
+
+/* ---------------- virtual lab logic ---------------- */
+const correctPairs = [
+  ['plug1','plug2'], // battery+ -> bulb left
+  ['plug3','plug4'], // bulb right -> switch+
+  ['plug5','plug6'], // switch- -> battery-
+];
+let madeConnections = []; // store as sorted pair strings
+let selected = null;
+let switchOn = false;
+
+function pairKey(a,b){ return [a,b].sort().join('|'); }
+
+function selectPlug(id){
+  const el = document.getElementById(id);
+  if(el.classList.contains('filled')) return; // already connected
+  if(selected === id){
+    el.classList.remove('selected');
+    selected = null;
+    return;
+  }
+  if(selected === null){
+    selected = id;
+    el.classList.add('selected');
+    return;
+  }
+  // attempt connection
+  const a = selected, b = id;
+  document.getElementById(a).classList.remove('selected');
+  selected = null;
+  if(a === b) return;
+
+  const key = pairKey(a,b);
+  const isCorrect = correctPairs.some(p => pairKey(p[0],p[1]) === key);
+  if(isCorrect && !madeConnections.includes(key)){
+    madeConnections.push(key);
+    document.getElementById(a).classList.add('filled');
+    document.getElementById(b).classList.add('filled');
+    revealWireFor(key);
+    flashHint('🔗 تمّ التّوصيل بنجاح! استمرّ بتوصيل بقيّة الأطراف.', false);
+  } else {
+    flashHint('⚠️ هذا التّوصيل غير صحيح لإكمال هذه الدّارة، حاول مرّة أخرى.', true);
+  }
+  updateCircuitState();
+}
+
+function revealWireFor(key){
+  const map = {
+    [pairKey('plug1','plug2')]: 'wireA',
+    [pairKey('plug3','plug4')]: 'wireB',
+    [pairKey('plug5','plug6')]: 'wireC',
+  };
+  const id = map[key];
+  if(id){ document.getElementById(id).classList.add('live'); }
+}
+
+function flashHint(msg, warn){
+  const bar = document.getElementById('hintBar');
+  bar.textContent = msg;
+  bar.style.borderColor = warn ? 'rgba(209,73,91,.5)' : 'rgba(43,179,163,.5)';
+  bar.style.color = warn ? '#f3aab2' : '#9fe8da';
+}
+
+function toggleSwitch(e){
+  if(e) e.stopPropagation();
+  switchOn = !switchOn;
+  document.getElementById('compSwitch').classList.toggle('on', switchOn);
+  updateCircuitState();
+}
+
+function circuitClosed(){
+  return correctPairs.every(p => madeConnections.includes(pairKey(p[0],p[1])));
+}
+
+function updateCircuitState(){
+  const closed = circuitClosed();
+  const lit = closed && switchOn;
+
+  document.getElementById('bulbGlass').classList.toggle('lit', lit);
+  document.getElementById('ledIndicator').classList.toggle('on', lit);
+  document.getElementById('statusText').textContent =
+    lit ? 'الدّارة مغلقة — التّيار يمرّ والمصباح مضيء ✨'
+        : (closed ? 'الدّارة موصولة لكنّ المفتاح مفتوح — افتح المصباح بإغلاق المفتاح' : 'الدّارة مفتوحة');
+
+  // light terminals
+  ['termBattPos','termBattNeg','termBulbL','termBulbR','termSwPos','termSwNeg'].forEach(id=>{
+    document.getElementById(id).classList.toggle('connected', lit);
+  });
+
+  ['wireA','wireB','wireC'].forEach(id=>{
+    document.getElementById(id).classList.toggle('lit', lit);
+  });
+  ['wireFlowA','wireFlowB','wireFlowC'].forEach(id=>{
+    document.getElementById(id).classList.toggle('show', lit);
+  });
+}
+
+function resetLab(){
+  madeConnections = [];
+  selected = null;
+  switchOn = false;
+  document.querySelectorAll('.plug').forEach(p=>p.classList.remove('filled','selected'));
+  document.querySelectorAll('.wire-path').forEach(w=>w.classList.remove('live','lit'));
+  document.querySelectorAll('.wire-flow').forEach(w=>w.classList.remove('show'));
+  document.getElementById('compSwitch').classList.remove('on');
+  document.getElementById('resultBanner').classList.remove('show','success','fail');
+  flashHint('🔧 اضغط طرفين (نقطتين منقّطتين) بالتّرتيب لتوصيل سلكٍ بينهما. وصّل: ١) بطّاريّة(+) ↔ المصباح اليسار، ٢) المصباح اليمين ↔ المفتاح(+)، ٣) المفتاح(−) ↔ بطّاريّة(−). ثمّ اضغط المفتاح لإغلاقه.', false);
+  updateCircuitState();
+}
+
+function checkCircuit(){
+  const banner = document.getElementById('resultBanner');
+  banner.classList.remove('success','fail');
+  if(circuitClosed() && switchOn){
+    banner.textContent = '🎉 أحسنت! الدّارة مغلقة بالكامل والمفتاح مغلق، لذلك مرّ التّيار وأضاء المصباح.';
+    banner.classList.add('success','show');
+  } else if(!circuitClosed()){
+    banner.textContent = '🔧 لم تكتمل التّوصيلات بعد. تأكّد من توصيل جميع الأطراف الثلاثة المطلوبة.';
+    banner.classList.add('fail','show');
+  } else {
+    banner.textContent = '🔘 التّوصيلات صحيحة، لكنّ المفتاح ما زال مفتوحًا — أغلقه ليضيء المصباح.';
+    banner.classList.add('fail','show');
+  }
+}
+
+updateCircuitState();
+</script>
+</body>
+</html>

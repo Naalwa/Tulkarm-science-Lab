@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta http-equiv="Content-Language" content="ar">
+<title>خصائص الصّخور | مختبر افتراضي - الصف الخامس</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --stone-bg: #EDEAE1;
+    --stone-bg-2: #E3DFD3;
+    --stone-dark: #2B2A28;
+    --stone-dark-2: #3C3A36;
+    --paper: #FBF9F5;
+    --ink: #2B2A28;
+    --ink-soft: #5C574E;
+    --limestone: #DCCBA3;
+    --limestone-dark: #B49B68;
+    --marble: #F2EFEA;
+    --marble-vein: #C9C2B4;
+    --granite-a: #46433F;
+    --granite-b: #8A8580;
+    --granite-c: #C97B5B;
+    --mineral-green: #56744F;
+    --mineral-green-soft: #E4EBDF;
+    --water-blue: #3E7C93;
+    --water-blue-soft: #DCEBF0;
+    --clay-orange: #BE5A2A;
+    --clay-orange-soft: #F6E3D6;
+    --gold: #A9822C;
+    --radius: 18px;
+    --shadow-soft: 0 10px 30px rgba(43,42,40,0.12);
+    --shadow-deep: 0 20px 50px rgba(43,42,40,0.28);
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Tajawal','Segoe UI',Tahoma,sans-serif;
+    background:var(--stone-bg);
+    color:var(--ink);
+    line-height:1.8;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,h4, .display{
+    font-family:'Cairo','Segoe UI',Tahoma,sans-serif;
+  }
+  ::selection{ background:var(--clay-orange); color:#fff; }
+  img{max-width:100%; display:block;}
+  button{font-family:inherit; cursor:pointer;}
+  .wrap{ max-width:1100px; margin:0 auto; padding:0 24px; }
+
+  /* ===== Texture backgrounds for rock faces ===== */
+  .tex-marble{
+    background:
+      radial-gradient(ellipse at 20% 30%, rgba(255,255,255,0.5), transparent 55%),
+      linear-gradient(120deg, transparent 30%, var(--marble-vein) 31%, transparent 33%),
+      linear-gradient(65deg, transparent 55%, var(--marble-vein) 56%, transparent 58%),
+      linear-gradient(160deg, var(--marble), #E7E2D9);
+  }
+  .tex-limestone{
+    background:
+      radial-gradient(circle at 25% 25%, rgba(255,255,255,0.35) 0 2px, transparent 3px) 0 0/14px 14px,
+      radial-gradient(circle at 65% 60%, rgba(120,100,60,0.18) 0 2px, transparent 3px) 0 0/18px 18px,
+      linear-gradient(160deg, var(--limestone), var(--limestone-dark));
+  }
+  .tex-granite{
+    background:
+      radial-gradient(circle at 20% 30%, var(--granite-c) 0 3px, transparent 4px) 0 0/22px 22px,
+      radial-gradient(circle at 60% 70%, #f2efe9 0 2px, transparent 3px) 0 0/16px 16px,
+      radial-gradient(circle at 40% 15%, #1c1b19 0 2px, transparent 3px) 0 0/12px 12px,
+      linear-gradient(160deg, var(--granite-b), var(--granite-a));
+  }
+
+  /* ===== Header / Nav ===== */
+  header.site-header{
+    position:sticky; top:0; z-index:50;
+    background:var(--stone-dark);
+    color:#F4F1E9;
+    box-shadow:0 4px 18px rgba(0,0,0,0.25);
+  }
+  .nav-inner{
+    max-width:1100px; margin:0 auto; padding:14px 24px;
+    display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;
+  }
+  .brand{ display:flex; align-items:center; gap:10px; }
+  .brand-mark{
+    width:38px; height:38px; border-radius:10px;
+    background:linear-gradient(145deg, var(--granite-b), var(--granite-a));
+    position:relative; flex:none;
+    box-shadow: inset 0 0 0 2px rgba(255,255,255,0.15);
+  }
+  .brand-mark::after{
+    content:""; position:absolute; inset:6px; border-radius:6px;
+    background:radial-gradient(circle at 30% 30%, var(--granite-c), transparent 60%),
+               radial-gradient(circle at 70% 70%, #f2efe9, transparent 55%);
+  }
+  .brand-text{ font-weight:800; font-size:1.05rem; letter-spacing:.3px; }
+  .brand-sub{ font-size:.72rem; color:#C9C2B4; font-weight:500; }
+  nav.tabs{ display:flex; gap:6px; background:rgba(255,255,255,0.06); padding:5px; border-radius:999px; flex-wrap:wrap; }
+  nav.tabs button{
+    border:none; background:transparent; color:#E7E2D6; padding:9px 18px;
+    border-radius:999px; font-weight:700; font-size:.92rem; transition:.25s;
+  }
+  nav.tabs button.active{ background:var(--clay-orange); color:#fff; box-shadow:0 4px 12px rgba(190,90,42,0.45); }
+  nav.tabs button:hover:not(.active){ background:rgba(255,255,255,0.12); }
+
+  /* ===== Hero ===== */
+  .hero{
+    position:relative;
+    padding:64px 0 40px;
+    background:
+      radial-gradient(circle at 85% -10%, rgba(190,90,42,0.12), transparent 45%),
+      radial-gradient(circle at 10% 110%, rgba(86,116,79,0.14), transparent 45%),
+      var(--stone-bg);
+    overflow:hidden;
+  }
+  .hero-grid{ display:grid; grid-template-columns:1.1fr 1fr; gap:40px; align-items:center; }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    background:var(--marble); border:1px solid var(--marble-vein);
+    padding:6px 14px; border-radius:999px; font-size:.82rem; font-weight:700; color:var(--ink-soft);
+    box-shadow:var(--shadow-soft);
+  }
+  .eyebrow::before{ content:"◆"; color:var(--clay-orange); font-size:.7rem; }
+  .hero h1{
+    font-size:clamp(2.1rem, 4.5vw, 3.2rem);
+    font-weight:900; line-height:1.25; margin:16px 0 14px;
+    color:var(--stone-dark);
+  }
+  .hero h1 span{ color:var(--clay-orange); }
+  .hero p.lede{ font-size:1.08rem; color:var(--ink-soft); max-width:46ch; margin-bottom:26px; }
+  .hero-ctas{ display:flex; gap:12px; flex-wrap:wrap; }
+  .btn{
+    border:none; border-radius:12px; padding:13px 24px; font-weight:800; font-size:.98rem;
+    transition:transform .18s, box-shadow .18s; display:inline-flex; align-items:center; gap:8px;
+  }
+  .btn:active{ transform:translateY(1px); }
+  .btn-primary{ background:var(--clay-orange); color:#fff; box-shadow:0 10px 24px rgba(190,90,42,0.35); }
+  .btn-primary:hover{ box-shadow:0 14px 30px rgba(190,90,42,0.45); transform:translateY(-2px); }
+  .btn-ghost{ background:var(--paper); color:var(--stone-dark); border:1.5px solid var(--marble-vein); }
+  .btn-ghost:hover{ background:#fff; transform:translateY(-2px); }
+
+  /* 3D rock stage in hero */
+  .stage{ perspective:1200px; height:340px; position:relative; }
+  .stage-rock{
+    position:absolute; width:150px; height:150px; border-radius:26% 30% 28% 32%/30% 28% 32% 26%;
+    transform-style:preserve-3d;
+    box-shadow:var(--shadow-deep);
+    cursor:grab;
+    transition:transform .5s cubic-bezier(.2,.8,.2,1);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .stage-rock:active{ cursor:grabbing; }
+  .stage-rock .face-label{
+    font-family:'Cairo',sans-serif; font-weight:800; font-size:.78rem; color:rgba(0,0,0,0.55);
+    background:rgba(255,255,255,0.55); padding:3px 9px; border-radius:8px;
+  }
+  #rock-marble{ top:6%; right:8%; }
+  #rock-limestone{ top:38%; right:38%; }
+  #rock-granite{ top:14%; right:58%; }
+  @keyframes floaty{ 0%,100%{ transform:translateY(0) rotateY(var(--ry,0deg)) rotateX(var(--rx,0deg)); } 50%{ transform:translateY(-10px) rotateY(var(--ry,0deg)) rotateX(var(--rx,0deg)); } }
+
+  /* ===== Sections ===== */
+  .section{ padding:70px 0; }
+  .section-head{ max-width:640px; margin-bottom:38px; }
+  .kicker{ color:var(--clay-orange); font-weight:800; font-size:.85rem; letter-spacing:.4px; margin-bottom:6px; }
+  .section h2{ font-size:clamp(1.6rem,3vw,2.2rem); font-weight:900; color:var(--stone-dark); }
+  .section p.desc{ color:var(--ink-soft); margin-top:10px; font-size:1.02rem; }
+
+  .rock-types-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+  .type-card{
+    background:var(--paper); border-radius:var(--radius); padding:22px;
+    box-shadow:var(--shadow-soft); border:1px solid rgba(43,42,40,0.06);
+  }
+  .type-card .swatch{ width:100%; height:96px; border-radius:12px; margin-bottom:14px; box-shadow:inset 0 0 0 1px rgba(0,0,0,0.06); }
+  .type-card h3{ font-size:1.15rem; font-weight:800; margin-bottom:6px; }
+  .type-card .origin{ display:inline-block; font-size:.76rem; font-weight:700; color:var(--water-blue); background:var(--water-blue-soft); padding:3px 10px; border-radius:999px; margin-bottom:10px; }
+  .type-card p{ font-size:.93rem; color:var(--ink-soft); }
+
+  /* ===== Lab bench ===== */
+  .lab-wrap{
+    background:var(--stone-dark);
+    border-radius:28px;
+    padding:36px;
+    color:#EFEBE1;
+    box-shadow:var(--shadow-deep);
+    position:relative;
+    overflow:hidden;
+  }
+  .lab-wrap::before{
+    content:""; position:absolute; inset:0;
+    background: radial-gradient(circle at 90% 0%, rgba(190,90,42,0.14), transparent 40%);
+    pointer-events:none;
+  }
+  .lab-top{ display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; margin-bottom:24px; }
+  .lab-top h3{ font-size:1.4rem; font-weight:900; }
+  .lab-top p{ color:#C9C2B4; font-size:.9rem; margin-top:4px; }
+
+  .station-tabs{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:26px; }
+  .station-tab{
+    background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.12);
+    color:#EFEBE1; padding:10px 18px; border-radius:12px; font-weight:700; font-size:.9rem;
+    display:flex; align-items:center; gap:8px; transition:.2s;
+  }
+  .station-tab .num{ width:22px; height:22px; border-radius:50%; background:rgba(255,255,255,0.15); display:flex; align-items:center; justify-content:center; font-size:.75rem; }
+  .station-tab.active{ background:var(--clay-orange); border-color:transparent; }
+  .station-tab.active .num{ background:rgba(255,255,255,0.3); }
+  .station-tab:hover:not(.active){ background:rgba(255,255,255,0.14); }
+
+  .station{ display:none; }
+  .station.active{ display:block; animation:fadein .35s ease; }
+  @keyframes fadein{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
+
+  .warn-box{
+    background:var(--clay-orange-soft); border:1.5px solid var(--clay-orange);
+    color:#5A2C10; border-radius:14px; padding:16px 18px; display:flex; gap:14px; align-items:flex-start;
+    margin-bottom:22px;
+  }
+  .warn-box .icon{ font-size:1.5rem; flex:none; }
+  .warn-box strong{ display:block; margin-bottom:3px; font-family:'Cairo',sans-serif; }
+  .warn-box p{ font-size:.88rem; }
+
+  .bench-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+  .bench-card{
+    background:#211F1D; border:1px solid rgba(255,255,255,0.08);
+    border-radius:18px; padding:18px; text-align:center;
+    display:flex; flex-direction:column; align-items:center; gap:12px;
+  }
+  .bench-card h4{ font-size:1rem; font-weight:800; }
+  .rock-3d-holder{ perspective:900px; }
+  .rock-3d{
+    width:120px; height:120px; border-radius:28% 32% 26% 34%/32% 28% 34% 26%;
+    box-shadow:0 14px 26px rgba(0,0,0,0.5);
+    position:relative;
+    transition:transform .35s ease;
+    transform-style:preserve-3d;
+  }
+  .rock-3d:hover{ transform:rotateY(18deg) rotateX(-8deg) scale(1.04); }
+  .rock-3d.selected{ outline:3px solid var(--clay-orange); outline-offset:5px; }
+  .drop{
+    position:absolute; width:10px; height:14px; border-radius:60% 60% 60% 60%/70% 70% 40% 40%;
+    opacity:0; pointer-events:none;
+  }
+  .drop.water{ background:var(--water-blue); }
+  .drop.acid{ background:#CFE870; }
+  @keyframes fall{ 0%{ opacity:1; transform:translateY(-46px) scale(1); } 85%{ opacity:1; } 100%{ opacity:0; transform:translateY(10px) scale(.4); } }
+  .drop.animate{ animation: fall .7s ease-in forwards; }
+
+  .stain{
+    position:absolute; inset:auto; bottom:6px; left:50%; transform:translateX(-50%) scale(0);
+    width:60%; height:22%; border-radius:50%;
+    background:radial-gradient(ellipse, rgba(62,124,147,0.65), transparent 70%);
+    transition:transform .6s ease;
+  }
+  .stain.show{ transform:translateX(-50%) scale(1); }
+
+  .bead{
+    position:absolute; top:38%; left:50%; width:14px; height:10px; border-radius:50%;
+    background:linear-gradient(160deg, rgba(255,255,255,0.9), var(--water-blue));
+    opacity:0; transform:translate(-50%,-50%) scale(0);
+    transition:transform .5s ease, opacity .5s ease;
+  }
+  .bead.show{ opacity:1; transform:translate(-50%,-50%) scale(1); }
+
+  .bubbles{ position:absolute; inset:0; pointer-events:none; }
+  .bubble{
+    position:absolute; bottom:8px; width:6px; height:6px; border-radius:50%;
+    background:rgba(207,232,112,0.85);
+    opacity:0;
+  }
+  .bubble.show{ animation: rise 1.1s ease-in infinite; }
+  @keyframes rise{ 0%{ opacity:0; bottom:6px; } 15%{opacity:1;} 100%{ opacity:0; bottom:70px; transform:translateX(var(--dx,0px)) scale(.5); } }
+
+  .action-row{ display:flex; gap:8px; flex-wrap:wrap; justify-content:center; }
+  .mini-btn{
+    background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.16); color:#EFEBE1;
+    padding:8px 14px; border-radius:10px; font-size:.82rem; font-weight:700; transition:.2s;
+  }
+  .mini-btn:hover{ background:var(--water-blue); border-color:transparent; }
+  .mini-btn.acid-btn:hover{ background:var(--clay-orange); }
+  .mini-btn:disabled{ opacity:.35; cursor:not-allowed; }
+  .mini-btn:disabled:hover{ background:rgba(255,255,255,0.08); }
+
+  .result-line{ min-height:20px; font-size:.85rem; color:#C9C2B4; font-weight:700; }
+  .result-line.ok{ color:#B9D89A; }
+  .result-line.no{ color:#E5A98A; }
+
+  .magnifier-view{
+    width:120px; height:120px; border-radius:50%;
+    box-shadow:0 0 0 8px #2b2a28, 0 0 0 11px rgba(255,255,255,0.25), 0 14px 26px rgba(0,0,0,0.5);
+    background-size:220% 220%; background-position:center;
+    transition:.3s;
+  }
+  .magnifier-handle{ width:10px; height:42px; background:#3C3A36; margin:0 auto; border-radius:0 0 6px 6px; margin-top:-4px; }
+
+  /* results table */
+  .results-panel{
+    margin-top:26px; background:#211F1D; border-radius:16px; padding:20px 22px; border:1px solid rgba(255,255,255,0.08);
+  }
+  .results-panel h4{ font-size:.95rem; margin-bottom:12px; color:#C9C2B4; font-weight:800; }
+  table.results-table{ width:100%; border-collapse:collapse; font-size:.85rem; }
+  table.results-table th, table.results-table td{ padding:9px 10px; text-align:center; border-bottom:1px solid rgba(255,255,255,0.08); }
+  table.results-table th{ color:#C9C2B4; font-weight:700; font-family:'Cairo',sans-serif; }
+  table.results-table td{ color:#EFEBE1; font-weight:600; }
+  .pill{ display:inline-block; padding:3px 10px; border-radius:999px; font-size:.75rem; font-weight:800; }
+  .pill.yes{ background:rgba(185,216,154,0.18); color:#B9D89A; }
+  .pill.no{ background:rgba(229,169,138,0.18); color:#E5A98A; }
+  .pill.pending{ background:rgba(255,255,255,0.08); color:#9C978C; }
+
+  /* ===== Conclusion ===== */
+  .conclusion-grid{ display:grid; grid-template-columns:1.4fr 1fr; gap:28px; align-items:start; }
+  .conclude-card{
+    background:var(--paper); border-radius:var(--radius); padding:26px; box-shadow:var(--shadow-soft);
+    border:1px solid rgba(43,42,40,0.06); margin-bottom:16px;
+  }
+  .conclude-card .qnum{
+    width:30px; height:30px; border-radius:9px; background:var(--mineral-green-soft); color:var(--mineral-green);
+    display:flex; align-items:center; justify-content:center; font-weight:900; font-family:'Cairo',sans-serif; margin-bottom:10px;
+  }
+  .conclude-card textarea{
+    width:100%; min-height:64px; border:1.5px solid var(--marble-vein); border-radius:10px; padding:10px 12px;
+    font-family:'Tajawal',sans-serif; font-size:.95rem; resize:vertical; background:#fff;
+  }
+  .conclude-card textarea:focus{ outline:none; border-color:var(--mineral-green); }
+  .hint-row{ display:flex; justify-content:space-between; align-items:center; margin-top:10px; gap:10px; flex-wrap:wrap; }
+  .hint-btn{ background:transparent; border:1.5px dashed var(--marble-vein); color:var(--ink-soft); padding:6px 14px; border-radius:999px; font-size:.8rem; font-weight:700; }
+  .hint-btn:hover{ border-color:var(--gold); color:var(--gold); }
+  .hint-text{ display:none; margin-top:10px; background:var(--mineral-green-soft); color:#33482F; padding:10px 14px; border-radius:10px; font-size:.87rem; }
+  .hint-text.show{ display:block; }
+
+  .heritage-card{
+    background:linear-gradient(180deg, var(--stone-dark), #1e1d1c);
+    color:#EFEBE1; border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow-soft);
+  }
+  .heritage-img{
+    height:150px; background:
+      linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.55)),
+      repeating-linear-gradient(100deg, #6b6259, #6b6259 8px, #5a5148 8px, #5a5148 16px);
+    position:relative;
+  }
+  .heritage-img::after{ content:"⛰"; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:2.4rem; opacity:.5; }
+  .heritage-body{ padding:20px; }
+  .heritage-body .kicker2{ color:var(--gold); font-size:.75rem; font-weight:800; margin-bottom:6px; }
+  .heritage-body h4{ font-size:1.05rem; font-weight:800; margin-bottom:10px; }
+  .heritage-body p{ font-size:.88rem; color:#C9C2B4; margin-bottom:10px; }
+
+  .summary-box{
+    margin-top:20px; background:var(--mineral-green-soft); border-radius:14px; padding:18px 20px;
+  }
+  .summary-box h4{ font-size:.95rem; color:var(--mineral-green); margin-bottom:8px; }
+  #liveSummary{ font-size:.9rem; color:#33482F; }
+  #liveSummary ul{ padding-inline-start:20px; }
+
+  footer{ background:var(--stone-dark); color:#9C978C; text-align:center; padding:26px; font-size:.85rem; }
+
+  @media (max-width:860px){
+    .hero-grid{ grid-template-columns:1fr; }
+    .stage{ height:260px; }
+    .rock-types-grid{ grid-template-columns:1fr; }
+    .bench-grid{ grid-template-columns:1fr; }
+    .conclusion-grid{ grid-template-columns:1fr; }
+    .lab-wrap{ padding:22px 16px; }
+    .section{ padding:48px 0; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{ animation:none !important; transition:none !important; }
+  }
+
+  /* ══ RESPONSIVE MOBILE & TABLET ══ */
+  @media (max-width: 768px) {
+    body { padding: 8px !important; font-size: 15px !important; overflow-x: hidden !important; }
+    .container, [class*="container"], [class*="wrapper"] { padding: 8px !important; max-width: 100% !important; }
+    canvas { width: 100% !important; height: auto !important; display: block !important; touch-action: none; max-width: 100% !important; }
+    svg { max-width: 100% !important; height: auto !important; }
+    h1 { font-size: clamp(18px,5vw,32px) !important; }
+    h2 { font-size: clamp(15px,4vw,26px) !important; }
+    h3 { font-size: clamp(13px,3.5vw,20px) !important; }
+    [class*="grid"] { grid-template-columns: 1fr !important; }
+    [class*="flex"] { flex-wrap: wrap !important; }
+    input[type="range"] { width: 100% !important; min-height: 36px; }
+    input[type="number"], input[type="text"], select, textarea {
+      font-size: 16px !important; width: 100% !important; box-sizing: border-box; padding: 8px !important; }
+    button { min-height: 44px !important; font-size: 14px !important; touch-action: manipulation; padding: 10px 14px !important; }
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 13px !important; }
+    th, td { padding: 6px 4px !important; }
+    header { padding: 10px 12px !important; }
+    .controls, [class*="controls"] { flex-direction: column !important; gap: 8px !important; }
+    .lab-window, [class*="lab-window"] { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+  }
+  @media (max-width: 480px) {
+    body { padding: 4px !important; }
+    button { width: 100% !important; }
+  }
+  /* ══ END RESPONSIVE ══ */
+</style>
+</head>
+<body>
+<style>
+.vlab-back{position:fixed;top:10px;left:10px;z-index:99999;
+background:rgba(10,22,40,0.93);border:1px solid rgba(0,200,150,0.4);
+border-radius:22px;padding:8px 16px;display:inline-flex;align-items:center;gap:7px;
+color:#00C896;font-family:Tajawal,Cairo,Arial,sans-serif;font-size:13px;font-weight:700;
+text-decoration:none;backdrop-filter:blur(8px);box-shadow:0 4px 18px rgba(0,0,0,0.3);
+transition:background 0.2s;}
+.vlab-back:hover{background:rgba(0,200,150,0.18);}
+</style>
+<a href="../grade5.html" class="vlab-back">&#8594; العودة للصف</a>
+
+
+<header class="site-header">
+  <div class="nav-inner">
+    <div class="brand">
+      <div class="brand-mark"></div>
+      <div>
+        <div class="brand-text">خصائص الصّخور</div>
+        <div class="brand-sub">العلوم والحياة · الصف الخامس · نشاط (6)</div>
+      </div>
+    </div>
+    <nav class="tabs">
+      <button class="tab-btn active" data-target="lesson">الدّرس</button>
+      <button class="tab-btn" data-target="lab">المختبر الافتراضي</button>
+      <button class="tab-btn" data-target="conclusion">أستنتج أنّ</button>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">نشاط (6) — تجربة عملية</span>
+      <h1>لكلّ صخرٍ <span>بصمته</span> الخاصّة</h1>
+      <p class="lede">لون، وملمس، وقدرة على امتصاص الماء، وتفاعل مع الحمض — أربع صفات تكشف لنا هويّة كل صخرة. أدر الصخور، وجرّب عليها الأدوات الثلاث في المختبر الافتراضي، ثم سجّل استنتاجاتك.</p>
+      <div class="hero-ctas">
+        <button class="btn btn-primary" onclick="goTo('lab')">ابدأ التجربة 🧪</button>
+        <button class="btn btn-ghost" onclick="goTo('lesson')">اقرأ الدرس أولاً</button>
+      </div>
+    </div>
+    <div class="stage" id="stage">
+      <div class="stage-rock tex-marble" id="rock-marble" style="--ry:8deg;--rx:-6deg;"><span class="face-label">رخام</span></div>
+      <div class="stage-rock tex-limestone" id="rock-limestone" style="--ry:-10deg;--rx:4deg;"><span class="face-label">حجر بناء</span></div>
+      <div class="stage-rock tex-granite" id="rock-granite" style="--ry:14deg;--rx:8deg;"><span class="face-label">جرانيت</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== LESSON ===================== -->
+<section class="section" id="lesson">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">الدّرس</div>
+      <h2>من أين تأتي الصخور؟</h2>
+      <p class="desc">تتشكّل الصخور بطرق مختلفة، وهذا الاختلاف في طريقة التكوّن هو ما يمنح كل صخر لونه وملمسه وسلوكه الخاص أمام الماء والحمض. تعرّف إلى عيّنات التجربة الثلاث:</p>
+    </div>
+    <div class="rock-types-grid">
+      <div class="type-card">
+        <div class="swatch tex-marble"></div>
+        <span class="origin">صخر متحوّل</span>
+        <h3>صخر الرّخام</h3>
+        <p>يتكوّن حين تتعرّض صخور كربوناتية لحرارة وضغط عاليين داخل الأرض، فتعاد بلورته ليصبح متماسكًا ولامعًا، وغالبًا فاتح اللون بعروق مموّجة.</p>
+      </div>
+      <div class="type-card">
+        <div class="swatch tex-limestone"></div>
+        <span class="origin">صخر رسوبي</span>
+        <h3>صخر البناء (الحجر الجيري)</h3>
+        <p>يتكوّن من ترسّب بقايا كائنات بحرية وموادّ كلسية طبقةً فوق طبقة، لذلك يكون مساميًا نسبيًا ويمتص الماء بسهولة، وهو الحجر الذي تُبنى منه بيوت فلسطين التقليدية.</p>
+      </div>
+      <div class="type-card">
+        <div class="swatch tex-granite"></div>
+        <span class="origin">صخر ناري</span>
+        <h3>صخر الجرانيت</h3>
+        <p>يتكوّن من تبرّد الصهارة ببطء تحت سطح الأرض، فتنمو بلوراته الملوّنة (الوردية والبيضاء والسوداء) بشكل واضح للعين، وهو صلب وكثيف جدًا.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== LAB ===================== -->
+<section class="section" id="lab">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">المختبر الافتراضي</div>
+      <h2>نفّذ التجربة بنفسك</h2>
+      <p class="desc">اختر محطة، ثم اضغط على كل صخرة وشغّل الأداة عليها لتشاهد النتيجة الحقيقية، وستُسجَّل ملاحظاتك تلقائيًا في جدول النتائج أسفل المختبر.</p>
+    </div>
+
+    <div class="lab-wrap">
+      <div class="lab-top">
+        <div>
+          <h3>منضدة العمل</h3>
+          <p>اسحب الصخور لتديرها، واضغط الأزرار لتشغيل الأدوات</p>
+        </div>
+      </div>
+
+      <div class="station-tabs">
+        <button class="station-tab active" data-station="s1"><span class="num">١</span> فحص اللون والملمس</button>
+        <button class="station-tab" data-station="s2"><span class="num">٢</span> اختبار امتصاص الماء</button>
+        <button class="station-tab" data-station="s3"><span class="num">٣</span> اختبار حمض الهيدروكلوريك</button>
+      </div>
+
+      <!-- Station 1: magnifier -->
+      <div class="station active" id="s1">
+        <div class="bench-grid" id="s1-grid"></div>
+      </div>
+
+      <!-- Station 2: water -->
+      <div class="station" id="s2">
+        <div class="bench-grid" id="s2-grid"></div>
+      </div>
+
+      <!-- Station 3: HCl -->
+      <div class="station" id="s3">
+        <div class="warn-box">
+          <div class="icon">⚠️</div>
+          <div>
+            <strong>انتبه!</strong>
+            <p>احذر عند استخدام حمض الهيدروكلوريك المخفّف، ولا تستخدمه إلا بمساعدة معلّمك — هذا ينطبق على المختبر الحقيقي، أمّا هنا فالتجربة آمنة تمامًا ومحاكاة رقمية.</p>
+          </div>
+        </div>
+        <div class="bench-grid" id="s3-grid"></div>
+      </div>
+
+      <div class="results-panel">
+        <h4>جدول النتائج</h4>
+        <table class="results-table">
+          <thead>
+            <tr>
+              <th>الصخر</th>
+              <th>اللون والملمس</th>
+              <th>امتصاص الماء</th>
+              <th>التفاعل مع الحمض</th>
+            </tr>
+          </thead>
+          <tbody id="resultsBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CONCLUSION ===================== -->
+<section class="section" id="conclusion">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">أستنتج أنّ</div>
+      <h2>ماذا تعلّمنا من التجربة؟</h2>
+      <p class="desc">اكتب استنتاجك في كل نقطة بأسلوبك الخاص. إن احتجت مساعدة اضغط "تلميح"، وبعد أن تنتهي من التجارب الثلاث سيظهر لك ملخص تلقائي بنتائجك.</p>
+    </div>
+
+    <div class="conclusion-grid">
+      <div>
+        <div class="conclude-card">
+          <div class="qnum">١</div>
+          <p style="margin-bottom:10px; font-weight:700;">تتميّز الصخور بعدد من الخصائص، منها:</p>
+          <textarea placeholder="اكتب هنا... (فكّر في اللون والملمس)"></textarea>
+          <div class="hint-row">
+            <button class="hint-btn" onclick="toggleHint(this)">💡 تلميح</button>
+          </div>
+          <div class="hint-text">كل صخر له لون وملمس خاص به يميّزه عن غيره حتى قبل أي اختبار، وهذا أول ما نلاحظه بالعدسة المكبّرة.</div>
+        </div>
+        <div class="conclude-card">
+          <div class="qnum">٢</div>
+          <textarea placeholder="اكتب هنا... (فكّر في نتيجة قطرات الماء)"></textarea>
+          <div class="hint-row">
+            <button class="hint-btn" onclick="toggleHint(this)">💡 تلميح</button>
+          </div>
+          <div class="hint-text">بعض الصخور تحتوي مسامّ صغيرة تسمح للماء بالتسرّب داخلها، لذلك تمتص كمية أكبر من الماء مقارنة بصخور أكثر تماسكًا.</div>
+        </div>
+        <div class="conclude-card">
+          <div class="qnum">٣</div>
+          <textarea placeholder="اكتب هنا... (فكّر في نتيجة قطرات الحمض)"></textarea>
+          <div class="hint-row">
+            <button class="hint-btn" onclick="toggleHint(this)">💡 تلميح</button>
+          </div>
+          <div class="hint-text">الصخور التي تحتوي على مادة كلسية تتفاعل مع الحمض المخفّف وتصدر فقاعات، بينما الصخور الأخرى لا تتفاعل معه.</div>
+        </div>
+
+        <div class="summary-box">
+          <h4>📋 ملخّص نتائجي التلقائي</h4>
+          <div id="liveSummary">لم تُجرِ أي اختبار بعد — انتقل إلى المختبر الافتراضي وجرّب الأدوات الثلاث على كل صخرة.</div>
+        </div>
+      </div>
+
+      <div class="heritage-card">
+        <div class="heritage-img"></div>
+        <div class="heritage-body">
+          <div class="kicker2">إضاءة</div>
+          <h4>خربة قرقش الصخريّة</h4>
+          <p>على أحد السهول الساحلية في فلسطين المحتلّة، غرب سلفيت، تقع خربة أثرية منحوتة بالكامل في الصخر، تضمّ رسومًا فلكية للشمس والقمر، وكهوفًا وآبار مياه محفورة يدويًا.</p>
+          <p>يسمّيها بعض المزارعين المحليين "مدينة الشمس والقمر"، وهي اليوم مهدَّدة بخطر السرقة الأثرية ومحاولات طمس هويتها الفلسطينية.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  إعداد تفاعلي لدرس «خصائص الصّخور» — منهاج العلوم والحياة، الصف الخامس، فلسطين
+</footer>
+
+<script>
+/* ========================= DATA ========================= */
+const ROCKS = [
+  {
+    id:'marble', name:'صخر الرّخام', tex:'tex-marble',
+    colorText:'أبيض إلى رمادي فاتح، سطحه لامع بعروق متموّجة، وبلوراته دقيقة ومتراصّة.',
+    absorbs:false, absorbText:'تكاد لا تمتصّ الماء؛ تبقى القطرة كحبّة لؤلؤ على سطحها لأنّ بلوراته متراصّة بإحكام.',
+    reacts:true, reactText:'يتفاعل مع الحمض بفقاعات متوسّطة، لأنّه يحتوي على مادة كلسية أعيد تبلورها.'
+  },
+  {
+    id:'limestone', name:'صخر البناء (حجري)', tex:'tex-limestone',
+    colorText:'بيج إلى رمادي فاتح، سطحه خشن ومسامي، وحبيباته غير منتظمة.',
+    absorbs:true, absorbText:'يمتصّ الماء بسرعة وبكمية واضحة، وتنتشر بقعة رطوبة داكنة مكان القطرة بسبب مساماته الكثيرة.',
+    reacts:true, reactText:'يتفاعل بقوّة مع الحمض وتصدر عنه فقاعات غزيرة، لأنّه غنيّ جدًا بالمادة الكلسية.'
+  },
+  {
+    id:'granite', name:'صخر الجرانيت', tex:'tex-granite',
+    colorText:'بقع متداخلة من الأسود والأبيض والوردي، سطحه خشن وحبيبي وبلوراته واضحة للعين.',
+    absorbs:false, absorbText:'لا يكاد يمتصّ الماء لأنّه كثيف جدًا وقليل المسامات؛ تبقى القطرة على سطحه.',
+    reacts:false, reactText:'لا يتفاعل مع الحمض إطلاقًا ولا تظهر أي فقاعات، لأنّه لا يحتوي على مادة كلسية.'
+  }
+];
+
+const state = {}; // state[rockId] = {seen:false, water:null, acid:null}
+ROCKS.forEach(r=> state[r.id] = {seen:false, water:null, acid:null});
+
+/* ========================= NAV ========================= */
+const tabBtns = document.querySelectorAll('.tab-btn');
+tabBtns.forEach(btn=>{
+  btn.addEventListener('click', ()=> goTo(btn.dataset.target));
+});
+function goTo(id){
+  document.getElementById(id).scrollIntoView({behavior:'smooth', block:'start'});
+  tabBtns.forEach(b=> b.classList.toggle('active', b.dataset.target===id));
+}
+const sections = ['lesson','lab','conclusion'].map(id=>document.getElementById(id));
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      tabBtns.forEach(b=> b.classList.toggle('active', b.dataset.target===e.target.id));
+    }
+  });
+}, {threshold:0.4});
+sections.forEach(s=>io.observe(s));
+
+/* ========================= HERO 3D DRAG ========================= */
+document.querySelectorAll('.stage-rock').forEach(el=>{
+  let dragging=false, startX=0, startY=0, ry=parseFloat(el.style.getPropertyValue('--ry'))||0, rx=parseFloat(el.style.getPropertyValue('--rx'))||0;
+  el.style.animation = `floaty ${5+Math.random()*2}s ease-in-out infinite`;
+  const onDown=(x,y)=>{ dragging=true; startX=x; startY=y; el.style.animation='none'; };
+  const onMove=(x,y)=>{
+    if(!dragging) return;
+    const dx=x-startX, dy=y-startY;
+    el.style.setProperty('--ry',(ry+dx*0.4)+'deg');
+    el.style.setProperty('--rx',(rx-dy*0.4)+'deg');
+    el.style.transform=`rotateY(${ry+dx*0.4}deg) rotateX(${rx-dy*0.4}deg)`;
+  };
+  const onUp=(x,y)=>{
+    if(!dragging) return;
+    dragging=false;
+    ry = parseFloat(el.style.getPropertyValue('--ry'))||ry;
+    rx = parseFloat(el.style.getPropertyValue('--rx'))||rx;
+    el.style.animation = `floaty ${5+Math.random()*2}s ease-in-out infinite`;
+  };
+  el.addEventListener('mousedown', e=>onDown(e.clientX,e.clientY));
+  window.addEventListener('mousemove', e=>onMove(e.clientX,e.clientY));
+  window.addEventListener('mouseup', e=>onUp(e.clientX,e.clientY));
+  el.addEventListener('touchstart', e=>{ const t=e.touches[0]; onDown(t.clientX,t.clientY); }, {passive:true});
+  el.addEventListener('touchmove', e=>{ const t=e.touches[0]; onMove(t.clientX,t.clientY); }, {passive:true});
+  el.addEventListener('touchend', ()=> onUp());
+});
+
+/* ========================= STATION TABS ========================= */
+document.querySelectorAll('.station-tab').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.station-tab').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.station').forEach(s=>s.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.station).classList.add('active');
+  });
+});
+
+/* ========================= BUILD BENCH CARDS ========================= */
+function buildBench(gridId, stationType){
+  const grid = document.getElementById(gridId);
+  ROCKS.forEach(r=>{
+    const card = document.createElement('div');
+    card.className='bench-card';
+    let inner = '';
+    if(stationType==='magnify'){
+      inner = `
+        <h4>${r.name}</h4>
+        <div class="magnifier-view ${r.tex}"></div>
+        <div class="action-row">
+          <button class="mini-btn" data-rock="${r.id}" data-act="magnify">🔍 افحص بالعدسة</button>
+        </div>
+        <div class="result-line" id="res-mag-${r.id}"></div>
+      `;
+    } else if(stationType==='water'){
+      inner = `
+        <h4>${r.name}</h4>
+        <div class="rock-3d-holder">
+          <div class="rock-3d ${r.tex}" id="rockwrap-water-${r.id}">
+            <div class="drop water" id="drop-water-${r.id}"></div>
+            <div class="bead" id="bead-${r.id}"></div>
+            <div class="stain" id="stain-${r.id}"></div>
+          </div>
+        </div>
+        <div class="action-row">
+          <button class="mini-btn" data-rock="${r.id}" data-act="water">💧 أضف قطرة ماء</button>
+        </div>
+        <div class="result-line" id="res-water-${r.id}"></div>
+      `;
+    } else if(stationType==='acid'){
+      inner = `
+        <h4>${r.name}</h4>
+        <div class="rock-3d-holder">
+          <div class="rock-3d ${r.tex}" id="rockwrap-acid-${r.id}">
+            <div class="drop acid" id="drop-acid-${r.id}"></div>
+            <div class="bubbles" id="bubbles-${r.id}"></div>
+          </div>
+        </div>
+        <div class="action-row">
+          <button class="mini-btn acid-btn" data-rock="${r.id}" data-act="acid">🧪 أضف قطرة حمض</button>
+        </div>
+        <div class="result-line" id="res-acid-${r.id}"></div>
+      `;
+    }
+    card.innerHTML = inner;
+    grid.appendChild(card);
+  });
+}
+buildBench('s1-grid','magnify');
+buildBench('s2-grid','water');
+buildBench('s3-grid','acid');
+
+/* ========================= INTERACTIONS ========================= */
+document.getElementById('s1-grid').addEventListener('click', e=>{
+  const btn = e.target.closest('button[data-act="magnify"]');
+  if(!btn) return;
+  const rock = ROCKS.find(r=>r.id===btn.dataset.rock);
+  state[rock.id].seen = true;
+  const el = document.getElementById('res-mag-'+rock.id);
+  el.textContent = rock.colorText;
+  el.className = 'result-line ok';
+  const view = btn.closest('.bench-card').querySelector('.magnifier-view');
+  view.style.transform = 'scale(1.12)';
+  setTimeout(()=> view.style.transform='scale(1)', 350);
+  updateTable(); updateSummary();
+});
+
+document.getElementById('s2-grid').addEventListener('click', e=>{
+  const btn = e.target.closest('button[data-act="water"]');
+  if(!btn) return;
+  const rock = ROCKS.find(r=>r.id===btn.dataset.rock);
+  const drop = document.getElementById('drop-water-'+rock.id);
+  drop.style.left='50%'; drop.style.top='0px'; drop.style.opacity='0';
+  drop.classList.remove('animate'); void drop.offsetWidth; drop.classList.add('animate');
+
+  setTimeout(()=>{
+    state[rock.id].water = rock.absorbs;
+    const el = document.getElementById('res-water-'+rock.id);
+    if(rock.absorbs){
+      document.getElementById('stain-'+rock.id).classList.add('show');
+      el.textContent = 'امتصّ الماء بسرعة ✅';
+      el.className='result-line ok';
+    } else {
+      document.getElementById('bead-'+rock.id).classList.add('show');
+      el.textContent = 'لم يمتصّ الماء تقريبًا ❌';
+      el.className='result-line no';
+    }
+    updateTable(); updateSummary();
+  }, 650);
+});
+
+document.getElementById('s3-grid').addEventListener('click', e=>{
+  const btn = e.target.closest('button[data-act="acid"]');
+  if(!btn) return;
+  const rock = ROCKS.find(r=>r.id===btn.dataset.rock);
+  const drop = document.getElementById('drop-acid-'+rock.id);
+  drop.style.left='50%'; drop.style.top='0px'; drop.style.opacity='0';
+  drop.classList.remove('animate'); void drop.offsetWidth; drop.classList.add('animate');
+
+  setTimeout(()=>{
+    state[rock.id].acid = rock.reacts;
+    const el = document.getElementById('res-acid-'+rock.id);
+    const bubbleWrap = document.getElementById('bubbles-'+rock.id);
+    if(rock.reacts){
+      bubbleWrap.innerHTML='';
+      for(let i=0;i<8;i++){
+        const b=document.createElement('div');
+        b.className='bubble show';
+        b.style.left=(30+Math.random()*40)+'%';
+        b.style.setProperty('--dx',(Math.random()*16-8)+'px');
+        b.style.animationDelay=(Math.random()*0.9)+'s';
+        bubbleWrap.appendChild(b);
+      }
+      setTimeout(()=>{ bubbleWrap.innerHTML=''; }, 2600);
+      el.textContent = 'تفاعل! ظهرت فقاعات 🫧';
+      el.className='result-line ok';
+    } else {
+      el.textContent = 'لا يوجد تفاعل، لا فقاعات';
+      el.className='result-line no';
+    }
+    updateTable(); updateSummary();
+  }, 650);
+});
+
+/* ========================= TABLE ========================= */
+function pill(val){
+  if(val===null || val===undefined) return '<span class="pill pending">لم يُختبر</span>';
+  return val ? '<span class="pill yes">نعم</span>' : '<span class="pill no">لا</span>';
+}
+function updateTable(){
+  const body = document.getElementById('resultsBody');
+  body.innerHTML = ROCKS.map(r=>{
+    const s = state[r.id];
+    return `<tr>
+      <td>${r.name}</td>
+      <td>${s.seen ? '✔ لوحظ' : '—'}</td>
+      <td>${pill(s.water)}</td>
+      <td>${pill(s.acid)}</td>
+    </tr>`;
+  }).join('');
+}
+updateTable();
+
+/* ========================= LIVE SUMMARY ========================= */
+function updateSummary(){
+  const el = document.getElementById('liveSummary');
+  const done = ROCKS.filter(r=> state[r.id].water!==null && state[r.id].acid!==null);
+  if(done.length===0){
+    el.textContent = 'لم تُجرِ أي اختبار بعد — انتقل إلى المختبر الافتراضي وجرّب الأدوات الثلاث على كل صخرة.';
+    return;
+  }
+  const mostAbsorb = ROCKS.filter(r=> state[r.id].water===true).map(r=>r.name);
+  const reacted = ROCKS.filter(r=> state[r.id].acid===true).map(r=>r.name);
+  let html = '<ul>';
+  html += `<li>أجريت الاختبار على ${done.length} من أصل ${ROCKS.length} صخور.</li>`;
+  if(mostAbsorb.length) html += `<li>الصخور التي امتصّت الماء: <b>${mostAbsorb.join('، ')}</b></li>`;
+  if(reacted.length) html += `<li>الصخور التي تفاعلت مع الحمض: <b>${reacted.join('، ')}</b></li>`;
+  html += '</ul>';
+  el.innerHTML = html;
+}
+
+/* ========================= HINTS ========================= */
+function toggleHint(btn){
+  const hint = btn.closest('.conclude-card').querySelector('.hint-text');
+  hint.classList.toggle('show');
+}
+</script>
+</body>
+</html>

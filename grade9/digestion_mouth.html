@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>هضم الطعام داخل الفم</title>
+<meta name="description" content="درس تفاعلي: هضم الطعام داخل الفم، مع مختبر افتراضي للكشف عن عمل إنزيم الأميليز اللعابي">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@300;400;500;700&family=IBM+Plex+Sans+Arabic:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F6F1E7;
+    --paper-warm:#EADFC8;
+    --ink:#20261F;
+    --tissue:#1F4B43;
+    --tissue-light:#2E6E5F;
+    --starch:#2C4770;
+    --saliva:#C99A3B;
+    --positive:#A64B3C;
+    --line: rgba(32,38,31,0.14);
+    --shadow: 0 18px 40px rgba(31,75,67,0.16);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Tajawal', sans-serif;
+    line-height:1.8;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{
+    font-family:'Cairo', sans-serif;
+    margin:0;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Sans Arabic', sans-serif;
+    letter-spacing:.06em;
+    font-size:.8rem;
+    color:var(--tissue-light);
+    font-weight:500;
+    display:flex;
+    align-items:center;
+    gap:.6rem;
+  }
+  .eyebrow::before{
+    content:"";
+    width:26px;height:2px;
+    background:var(--saliva);
+    display:inline-block;
+  }
+  a{color:inherit;}
+  img,svg{display:block;max-width:100%;}
+  button{font-family:inherit;cursor:pointer;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 22px;}
+  :focus-visible{outline:3px solid var(--saliva);outline-offset:3px;}
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(246,241,231,0.86);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;padding:14px 22px;}
+  .brand{display:flex;align-items:center;gap:10px;font-family:'Cairo';font-weight:800;font-size:1.05rem;color:var(--tissue);}
+  .brand .dot{width:10px;height:10px;border-radius:50%;background:var(--positive);box-shadow:0 0 0 4px rgba(166,75,60,.15);}
+  .navlinks{display:flex;gap:22px;font-size:.92rem;font-weight:500;}
+  .navlinks a{text-decoration:none;color:var(--ink);opacity:.75;transition:opacity .2s;}
+  .navlinks a:hover{opacity:1;color:var(--tissue);}
+  @media (max-width:640px){.navlinks{display:none;}}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    padding:64px 0 40px;
+    overflow:hidden;
+  }
+  .hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;}
+  @media (max-width:860px){.hero .wrap{grid-template-columns:1fr;}}
+  .hero h1{font-size:clamp(2.1rem,5vw,3.2rem);font-weight:900;color:var(--tissue);margin:14px 0 16px;}
+  .hero p.lead{font-size:1.08rem;color:#3c4238;max-width:52ch;}
+  .hero .tags{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px;}
+  .tag{
+    background:#fff;border:1px solid var(--line);
+    padding:7px 14px;border-radius:99px;font-size:.82rem;
+    font-family:'IBM Plex Sans Arabic';color:var(--tissue);
+  }
+  .cta-row{display:flex;gap:12px;margin-top:26px;flex-wrap:wrap;}
+  .btn{
+    border:none;border-radius:12px;padding:13px 22px;font-weight:700;font-size:.95rem;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn:active{transform:translateY(1px);}
+  .btn-primary{background:var(--tissue);color:#fff;box-shadow:var(--shadow);}
+  .btn-primary:hover{transform:translateY(-2px);}
+  .btn-ghost{background:transparent;color:var(--tissue);border:1.5px solid var(--tissue);}
+
+  /* ---------- 3D MOUTH SCENE ---------- */
+  .scene{
+    perspective:1200px;
+    display:flex;justify-content:center;align-items:center;
+    height:340px;
+  }
+  .mouth{
+    position:relative;width:230px;height:230px;
+    transform-style:preserve-3d;
+    animation:float 6s ease-in-out infinite;
+  }
+  @keyframes float{
+    0%,100%{transform:rotateY(-14deg) rotateX(6deg) translateY(0);}
+    50%{transform:rotateY(-14deg) rotateX(6deg) translateY(-14px);}
+  }
+  .lip-top,.lip-bottom{
+    position:absolute;left:10px;right:10px;height:110px;
+    background:linear-gradient(160deg,#E9A7A0,#C96F63);
+    border-radius:50% 50% 46% 46% / 60% 60% 40% 40%;
+    box-shadow: inset 0 -10px 24px rgba(0,0,0,.15);
+  }
+  .lip-top{top:6px;}
+  .lip-bottom{bottom:6px;border-radius:46% 46% 50% 50% / 40% 40% 60% 60%;}
+  .cavity{
+    position:absolute;inset:46px 26px;
+    background:radial-gradient(ellipse at 50% 30%, #7a2f2c, #401513 78%);
+    border-radius:50%;
+    box-shadow: var(--shadow);
+  }
+  .tooth-row{position:absolute;left:0;right:0;display:flex;justify-content:center;gap:4px;}
+  .tooth-row.top{top:8px;}
+  .tooth-row.bottom{bottom:6px;}
+  .tooth{width:12px;height:16px;background:#FBF7EE;border-radius:3px;box-shadow:0 1px 2px rgba(0,0,0,.25);}
+  .tongue{
+    position:absolute;bottom:14px;left:50%;translate:-50% 0;
+    width:78px;height:44px;background:linear-gradient(180deg,#D8746B,#B54B44);
+    border-radius:50% 50% 40% 40% / 70% 70% 30% 30%;
+  }
+  .gland{
+    position:absolute;width:16px;height:16px;border-radius:50%;
+    background:var(--saliva);box-shadow:0 0 0 5px rgba(201,154,59,.18);
+    animation:pulse 2.4s ease-in-out infinite;
+  }
+  .gland.g1{left:6px;top:96px;animation-delay:.2s;}
+  .gland.g2{right:6px;top:96px;animation-delay:.9s;}
+  .gland.g3{left:50%;translate:-50% 0;bottom:-4px;animation-delay:1.5s;}
+  @keyframes pulse{0%,100%{opacity:.55;transform:scale(1);}50%{opacity:1;transform:scale(1.25);}}
+  .drop{
+    position:absolute;width:6px;height:9px;background:var(--saliva);
+    border-radius:0 60% 60% 60%;transform:rotate(45deg);opacity:0;
+    animation:drip 2.4s ease-in infinite;
+  }
+  .drop.d1{left:12px;top:110px;animation-delay:.2s;}
+  .drop.d2{right:12px;top:110px;animation-delay:.9s;}
+  @keyframes drip{
+    0%{opacity:0;transform:translateY(0) rotate(45deg);}
+    10%{opacity:1;}
+    70%{opacity:1;transform:translateY(18px) rotate(45deg);}
+    100%{opacity:0;transform:translateY(24px) rotate(45deg);}
+  }
+
+  /* ---------- SECTION SHELL ---------- */
+  section{padding:64px 0;}
+  .section-head{max-width:640px;margin-bottom:34px;}
+  .section-head h2{font-size:clamp(1.5rem,3.4vw,2.1rem);color:var(--tissue);font-weight:800;margin-top:10px;}
+  .section-head p{color:#4b5147;font-size:1rem;margin-top:10px;}
+
+  /* ---------- DIGESTION CARDS ---------- */
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  @media (max-width:760px){.duo{grid-template-columns:1fr;}}
+  .card{
+    background:#fff;border-radius:18px;padding:26px;
+    border:1px solid var(--line);box-shadow:var(--shadow);
+    position:relative; overflow:hidden;
+  }
+  .card .icon{
+    width:52px;height:52px;border-radius:14px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:1.5rem;margin-bottom:14px;
+  }
+  .card.mech .icon{background:#EADFC8;color:var(--tissue);}
+  .card.chem .icon{background:#F0E3C6;color:var(--positive);}
+  .card h3{font-size:1.2rem;color:var(--tissue);margin-bottom:8px;}
+  .card p{color:#454b40;font-size:.96rem;}
+  .card ul{margin:12px 0 0;padding-inline-start:20px;color:#454b40;font-size:.94rem;}
+  .card li{margin-bottom:6px;}
+  .rxn{
+    margin-top:16px;background:var(--paper-warm);border-radius:12px;padding:14px 16px;
+    font-family:'IBM Plex Sans Arabic';font-size:.9rem;color:var(--tissue);
+    display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  }
+  .rxn b{color:var(--positive);}
+
+  /* ---------- LAB SECTION ---------- */
+  .lab-section{background:var(--tissue);color:#fff;border-radius:28px;margin:0 16px;padding:56px 6px;}
+  .lab-section .wrap{max-width:1080px;}
+  .lab-section .eyebrow{color:#CFE4DC;}
+  .lab-section .eyebrow::before{background:var(--saliva);}
+  .lab-section h2{color:#fff;font-size:clamp(1.5rem,3.4vw,2.1rem);margin-top:10px;}
+  .lab-section > .wrap > p{color:#CFE4DC;max-width:60ch;margin-top:10px;}
+
+  .procedure{
+    display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:34px 0;
+  }
+  @media (max-width:760px){.procedure{grid-template-columns:1fr;}}
+  .proc-card{
+    background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);
+    border-radius:16px;padding:20px;
+  }
+  .proc-card h4{font-family:'Cairo';font-size:1rem;color:var(--saliva);margin-bottom:10px;}
+  .proc-card ul{margin:0;padding-inline-start:18px;font-size:.92rem;color:#EFEAE0;}
+  .proc-card li{margin-bottom:6px;}
+
+  /* step tracker */
+  .steps{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:30px;}
+  .step-pill{
+    display:flex;align-items:center;gap:8px;
+    background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);
+    padding:8px 14px;border-radius:99px;font-size:.82rem;color:#CFE4DC;
+    transition:all .25s ease;
+  }
+  .step-pill .num{
+    width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,.15);
+    display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;
+  }
+  .step-pill.done{background:var(--saliva);color:#2a2110;border-color:var(--saliva);}
+  .step-pill.done .num{background:#2a2110;color:var(--saliva);}
+  .step-pill.active{border-color:var(--saliva);color:#fff;}
+
+  /* bench */
+  .bench-wrap{perspective:1400px;}
+  .bench{
+    background:linear-gradient(180deg,#163832,#0F2924);
+    border-radius:20px;padding:34px 20px 26px;
+    display:grid;grid-template-columns:1fr 1fr;gap:26px;
+    box-shadow:inset 0 2px 0 rgba(255,255,255,.06), 0 30px 60px rgba(0,0,0,.35);
+    transform:rotateX(3deg);
+    transform-style:preserve-3d;
+  }
+  @media (max-width:760px){.bench{grid-template-columns:1fr;}}
+  .tube-unit{text-align:center;}
+  .tube-label{font-family:'IBM Plex Sans Arabic';font-size:.85rem;color:#CFE4DC;margin-bottom:14px;}
+  .tube-label b{color:#fff;display:block;font-family:'Cairo';font-size:1rem;margin-bottom:2px;}
+
+  .tube-stand{
+    position:relative;height:230px;display:flex;justify-content:center;align-items:flex-end;
+  }
+  .tube{
+    position:relative;width:46px;height:190px;
+    border:2px solid rgba(255,255,255,.35);
+    border-top:none;
+    border-radius:0 0 20px 20px;
+    background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+    overflow:hidden;
+    box-shadow:0 10px 24px rgba(0,0,0,.4);
+  }
+  .tube::before{
+    content:"";position:absolute;top:0;left:0;right:0;height:6px;
+    background:rgba(255,255,255,.35);border-radius:3px;
+  }
+  .tube .liquid{
+    position:absolute;bottom:0;left:0;right:0;height:0%;
+    background:transparent;
+    transition:height 1s ease, background 1.4s ease;
+  }
+  .tube .liquid::after{
+    content:"";position:absolute;top:0;left:0;right:0;height:5px;
+    background:rgba(255,255,255,.25);border-radius:50%;
+  }
+  .drop-fx{
+    position:absolute;top:-14px;left:50%;translate:-50% 0;width:8px;height:12px;
+    background:var(--saliva);border-radius:0 70% 70% 70%;transform:rotate(45deg);
+    opacity:0;
+  }
+  .drop-fx.fall{animation:fallin 1s ease-in forwards;}
+  @keyframes fallin{
+    0%{opacity:1;top:-14px;}
+    85%{opacity:1;top:70%;}
+    100%{opacity:0;top:78%;}
+  }
+  .tube-note{margin-top:12px;font-size:.78rem;color:#9FC2B7;font-family:'IBM Plex Sans Arabic';min-height:34px;}
+
+  .controls{
+    display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:16px;
+  }
+  .lab-btn{
+    background:#fff;color:var(--tissue);border:none;border-radius:10px;
+    padding:10px 16px;font-weight:700;font-size:.85rem;
+    box-shadow:0 6px 16px rgba(0,0,0,.25);
+    transition:transform .15s ease, opacity .15s ease;
+  }
+  .lab-btn:disabled{opacity:.35;cursor:not-allowed;box-shadow:none;}
+  .lab-btn:not(:disabled):hover{transform:translateY(-2px);}
+  .lab-btn.warn{background:var(--positive);color:#fff;}
+
+  .timer-box{
+    grid-column:1/-1;
+    background:rgba(255,255,255,.06);border:1px dashed rgba(255,255,255,.3);
+    border-radius:14px;padding:18px;text-align:center;
+  }
+  .timer-box .time{font-family:'Cairo';font-size:2rem;font-weight:800;color:var(--saliva);}
+  .timer-box .bar{
+    height:8px;border-radius:6px;background:rgba(255,255,255,.12);overflow:hidden;margin-top:10px;
+  }
+  .timer-box .bar-fill{height:100%;width:0%;background:var(--saliva);transition:width .3s linear;}
+  .timer-box p{font-size:.8rem;color:#9FC2B7;margin-top:8px;font-family:'IBM Plex Sans Arabic';}
+
+  .observe-box{
+    grid-column:1/-1;
+    background:#fff;color:var(--ink);border-radius:16px;padding:22px;margin-top:6px;
+    display:none;
+  }
+  .observe-box.show{display:block;}
+  .observe-box h4{font-family:'Cairo';color:var(--tissue);font-size:1.1rem;margin-bottom:12px;}
+  .observe-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media (max-width:600px){.observe-grid{grid-template-columns:1fr;}}
+  .observe-item{background:var(--paper);border-radius:12px;padding:14px;font-size:.9rem;}
+  .observe-item b{display:block;color:var(--positive);margin-bottom:4px;font-family:'Cairo';font-size:.95rem;}
+
+  .qbox{margin-top:18px;}
+  .qbox textarea{
+    width:100%;border-radius:10px;border:1px solid var(--line);padding:12px;
+    font-family:'Tajawal';font-size:.94rem;resize:vertical;min-height:70px;background:var(--paper);
+  }
+  .qbox .reveal-btn{
+    margin-top:10px;background:var(--tissue);color:#fff;border:none;border-radius:10px;
+    padding:9px 16px;font-size:.85rem;font-weight:700;
+  }
+  .answer-key{
+    margin-top:14px;background:#EEF6F1;border:1px solid #cfe4d8;border-radius:12px;padding:14px;
+    font-size:.9rem;color:#1F4B43;display:none;
+  }
+  .answer-key.show{display:block;}
+
+  /* ---------- QUIZ ---------- */
+  .quiz{display:grid;gap:16px;}
+  .qcard{
+    background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:var(--shadow);
+  }
+  .qcard p.q{font-weight:700;color:var(--tissue);margin-bottom:12px;font-family:'Cairo';}
+  .opts{display:grid;gap:8px;}
+  .opt{
+    display:flex;align-items:center;gap:10px;
+    background:var(--paper);border:1px solid var(--line);border-radius:10px;
+    padding:10px 14px;cursor:pointer;font-size:.92rem;transition:all .2s;
+  }
+  .opt:hover{border-color:var(--tissue-light);}
+  .opt.correct{background:#E4F3E9;border-color:#4E9C6E;color:#255C3D;font-weight:700;}
+  .opt.wrong{background:#FBE6E2;border-color:var(--positive);color:#7A2E23;}
+
+  footer{
+    text-align:center;padding:40px 20px 60px;color:#6b6f63;font-size:.85rem;
+    font-family:'IBM Plex Sans Arabic';
+  }
+  footer b{color:var(--tissue);}
+
+  .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);}
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important;}
+  }
+
+  /* ═══ RESPONSIVE MOBILE & TABLET — AUTO-INJECTED ═══ */
+  @media (max-width: 768px) {
+    body { padding: 8px !important; font-size: 15px !important; overflow-x: hidden !important; }
+    .container, [class*="container"], [class*="wrapper"] { padding: 8px !important; max-width: 100% !important; }
+    canvas { width: 100% !important; height: auto !important; display: block !important; touch-action: none; max-width: 100% !important; }
+    svg { max-width: 100% !important; height: auto !important; }
+    h1 { font-size: clamp(18px, 5vw, 32px) !important; }
+    h2 { font-size: clamp(16px, 4vw, 26px) !important; }
+    h3 { font-size: clamp(14px, 3.5vw, 22px) !important; }
+    p, li, td, th, label, span { font-size: clamp(13px, 3.5vw, 16px) !important; }
+    [class*="grid"] { grid-template-columns: 1fr !important; }
+    [class*="flex"] { flex-wrap: wrap !important; }
+    input[type="range"] { width: 100% !important; min-height: 36px; }
+    input[type="number"], input[type="text"], select, textarea { 
+      font-size: 16px !important; width: 100% !important; box-sizing: border-box; padding: 8px !important;
+    }
+    button { min-height: 44px !important; font-size: 14px !important; touch-action: manipulation; padding: 10px 14px !important; }
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 13px !important; }
+    th, td { padding: 6px 4px !important; white-space: nowrap; }
+    [style*="display: grid"], [style*="display:grid"] { display: flex !important; flex-direction: column !important; }
+    .lab-window, [class*="lab-window"] { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+    header { padding: 12px !important; }
+    .controls, [class*="controls"] { flex-direction: column !important; gap: 8px !important; }
+  }
+  @media (max-width: 480px) {
+    body { padding: 4px !important; }
+    h1 { font-size: clamp(16px, 5vw, 24px) !important; }
+    button { width: 100% !important; }
+  }
+  /* ═══ END RESPONSIVE ═══ */
+</style>
+</head>
+<body>
+
+<style>
+.vlab-back-btn {
+  position: fixed; top: 10px; left: 10px; z-index: 99999;
+  background: rgba(10,22,40,0.93); border: 1px solid rgba(0,200,150,0.4);
+  border-radius: 22px; padding: 8px 16px;
+  display: inline-flex; align-items: center; gap: 7px;
+  color: #00C896; font-family: Tajawal, Cairo, Arial, sans-serif;
+  font-size: 13px; font-weight: 700; text-decoration: none;
+  backdrop-filter: blur(8px); box-shadow: 0 4px 18px rgba(0,0,0,0.3);
+  transition: background 0.2s;
+}
+.vlab-back-btn:hover { background: rgba(0,200,150,0.18); color: #00C896; }
+</style>
+
+<a href="../grade9.html" class="vlab-back-btn">&#8594; العودة للصف</a>
+
+
+<nav>
+  <div class="wrap">
+    <div class="brand"><span class="dot"></span> العلوم والحياة · الصف التاسع</div>
+    <div class="navlinks">
+      <a href="#lesson">الدرس</a>
+      <a href="#lab">المختبر الافتراضي</a>
+      <a href="#quiz">اختبر نفسك</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <p class="eyebrow">الوحدة الثانية · الجهاز الهضمي</p>
+      <h1>هضم الطعام داخل الفم</h1>
+      <p class="lead">الفم هو محطة الانطلاق الأولى لرحلة الطعام داخل جسمك. فيه يلتقي هضمان مختلفان في اللحظة نفسها: هضمٌ ميكانيكي تقوم به الأسنان واللسان، وهضمٌ كيميائي يقوم به إنزيم خفي في لعابك. تعرّف على الآلية، ثم نفّذ التجربة بنفسك في المختبر الافتراضي أدناه.</p>
+      <div class="tags">
+        <span class="tag">🦷 الهضم الميكانيكي</span>
+        <span class="tag">💧 إنزيم الأميليز</span>
+        <span class="tag">🧪 تجربة تفاعلية</span>
+      </div>
+      <div class="cta-row">
+        <button class="btn btn-primary" onclick="document.getElementById('lesson').scrollIntoView({behavior:'smooth'})">ابدأ الدرس</button>
+        <button class="btn btn-ghost" onclick="document.getElementById('lab').scrollIntoView({behavior:'smooth'})">اذهب مباشرة إلى المختبر</button>
+      </div>
+    </div>
+    <div class="scene" aria-hidden="true">
+      <div class="mouth">
+        <div class="lip-top"></div>
+        <div class="cavity">
+          <div class="tooth-row top">
+            <div class="tooth"></div><div class="tooth"></div><div class="tooth"></div><div class="tooth"></div><div class="tooth"></div>
+          </div>
+          <div class="tongue"></div>
+          <div class="tooth-row bottom">
+            <div class="tooth"></div><div class="tooth"></div><div class="tooth"></div><div class="tooth"></div><div class="tooth"></div>
+          </div>
+        </div>
+        <div class="lip-bottom"></div>
+        <div class="gland g1"></div><div class="drop d1"></div>
+        <div class="gland g2"></div><div class="drop d2"></div>
+        <div class="gland g3"></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main id="lesson">
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">الفكرة الأساسية</p>
+        <h2>نوعان من الهضم يحدثان معًا في فمك</h2>
+        <p>عندما تمضغ لقمة خبز، لا يتوقف الأمر عند تكسيرها إلى قطع صغيرة. في الوقت ذاته، تبدأ مادة النشا الموجودة في الخبز بالتحوّل كيميائيًا إلى سكريات أبسط. إليك كيف يعمل كل نوع:</p>
+      </div>
+
+      <div class="duo">
+        <div class="card mech">
+          <div class="icon">🦷</div>
+          <h3>الهضم الميكانيكي</h3>
+          <p>عملية فيزيائية بحتة تُغيّر شكل الطعام دون تغيير تركيبه الكيميائي.</p>
+          <ul>
+            <li><b>الأسنان:</b> تقطع وتطحن الطعام لتكبير مساحة سطحه.</li>
+            <li><b>اللسان:</b> يحرّك الطعام ويخلطه باللعاب، ويشكّله في كتلة تسمى «البلعة».</li>
+            <li><b>الفكّان:</b> يوفران قوة الإطباق اللازمة للمضغ.</li>
+          </ul>
+        </div>
+
+        <div class="card chem">
+          <div class="icon">💧</div>
+          <h3>الهضم الكيميائي</h3>
+          <p>تفرز الغدد اللعابية اللعاب، الذي يحتوي على إنزيم يُسمى <b>الأميليز اللعابي</b> (أو التيالين).</p>
+          <ul>
+            <li>يعمل هذا الإنزيم على تحليل <b>النشا</b> إلى سكريات أبسط مثل المالتوز.</li>
+            <li>يبدأ عمله فور اختلاط اللعاب بالطعام أثناء المضغ.</li>
+            <li>يتوقف عمله لاحقًا في المعدة بسبب الوسط الحمضي.</li>
+          </ul>
+          <div class="rxn">النشا (معقّد) <b>+ إنزيم الأميليز →</b> سكريات بسيطة (مالتوز)</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="lab" class="lab-section">
+    <div class="wrap">
+      <p class="eyebrow">نشاط (٩)</p>
+      <h2>المختبر الافتراضي: الكشف عن عمل إنزيم أميليز اللعاب</h2>
+      <p>نفّذ التجربة خطوة بخطوة كما لو كنت في المختبر الحقيقي، وراقب ماذا يحدث حين يقابل اليودُ النشا في وجود اللعاب وفي غيابه.</p>
+
+      <div class="procedure">
+        <div class="proc-card">
+          <h4>🧰 ماذا يلزمك؟</h4>
+          <ul>
+            <li>أنبوبا اختبار (عدد ٢)</li>
+            <li>محلول نشا (٢٪)</li>
+            <li>محلول اليود أو لوغول</li>
+          </ul>
+        </div>
+        <div class="proc-card">
+          <h4>📋 ما خطوات عملك؟</h4>
+          <ul>
+            <li>رقّم الأنبوبين، وأضف ٢ سم³ من النشا في كلٍّ منهما.</li>
+            <li>أضف ٢ سم³ من الماء إلى الأنبوب الأول.</li>
+            <li>أضف ٢ سم³ من اللعاب إلى الأنبوب الثاني.</li>
+            <li>اترك الأنبوبين مدة ٢٠ دقيقة، ثم أضف قطرات من اليود لكلٍّ منهما.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="steps" id="stepTracker">
+        <div class="step-pill active" data-step="1"><span class="num">١</span> إضافة النشا</div>
+        <div class="step-pill" data-step="2"><span class="num">٢</span> ماء / لعاب</div>
+        <div class="step-pill" data-step="3"><span class="num">٣</span> الانتظار ٢٠ دقيقة</div>
+        <div class="step-pill" data-step="4"><span class="num">٤</span> إضافة اليود</div>
+        <div class="step-pill" data-step="5"><span class="num">٥</span> الملاحظة والاستنتاج</div>
+      </div>
+
+      <div class="bench-wrap">
+        <div class="bench">
+          <div class="tube-unit">
+            <div class="tube-label"><b>الأنبوب الأول — الضابط</b>نشا + ماء (بلا إنزيم)</div>
+            <div class="tube-stand">
+              <div class="tube" id="tube1">
+                <div class="drop-fx" id="drop1"></div>
+                <div class="liquid" id="liquid1"></div>
+              </div>
+            </div>
+            <div class="tube-note" id="note1">اضغط «أضف محلول النشا» للبدء.</div>
+          </div>
+
+          <div class="tube-unit">
+            <div class="tube-label"><b>الأنبوب الثاني — التجربة</b>نشا + لعاب (فيه الإنزيم)</div>
+            <div class="tube-stand">
+              <div class="tube" id="tube2">
+                <div class="drop-fx" id="drop2"></div>
+                <div class="liquid" id="liquid2"></div>
+              </div>
+            </div>
+            <div class="tube-note" id="note2">اضغط «أضف محلول النشا» للبدء.</div>
+          </div>
+
+          <div class="timer-box" id="timerBox" style="display:none;">
+            <div class="time" id="timeDisplay">٢٠:٠٠</div>
+            <div class="bar"><div class="bar-fill" id="barFill"></div></div>
+            <p>محاكاة مُسرَّعة لمرور ٢٠ دقيقة — انتظر حتى يكتمل الشريط.</p>
+          </div>
+
+          <div class="observe-box" id="observeBox">
+            <h4>ماذا شاهدت؟</h4>
+            <div class="observe-grid">
+              <div class="observe-item"><b>الأنبوب الأول (ماء)</b> تحوّل اللون إلى أزرق-أسود داكن عند إضافة اليود — دليل على وجود النشا كما هو دون تحلل.</div>
+              <div class="observe-item"><b>الأنبوب الثاني (لعاب)</b> بقي اللون بنّيًا محمرًّا قريبًا من لون اليود نفسه — دليل على أن النشا قد تحلّل ولم يعد موجودًا.</div>
+            </div>
+            <div class="qbox">
+              <p style="font-family:'Cairo';font-weight:700;color:var(--tissue);margin-bottom:8px;">ماذا تستنتج؟ اكتب إجابتك بكلماتك ثم اكشف الإجابة النموذجية.</p>
+              <textarea id="studentAnswer" placeholder="اكتب استنتاجك هنا... مثال: يبدأ هضم النشا كيميائيًا في..."></textarea>
+              <br>
+              <button class="reveal-btn" onclick="revealAnswer()">إظهار الإجابة النموذجية</button>
+              <div class="answer-key" id="answerKey">
+                <b>الاستنتاج:</b> يحتوي اللعاب على إنزيم الأميليز الذي يُحلّل النشا إلى سكريات بسيطة. ولأن الأنبوب الذي يحتوي على اللعاب لم يُعطِ لون اليود المميز للنشا، فهذا يدل على أن النشا فيه قد تحلّل بفعل الإنزيم. إذًا، يبدأ هضم النشا (الهضم الكيميائي) داخل الفم بمجرد اختلاط الطعام باللعاب.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="controls" id="controlPanel">
+        <button class="lab-btn" id="btnStarch" onclick="addStarch()">١. أضف محلول النشا للأنبوبين</button>
+        <button class="lab-btn" id="btnWater" onclick="addWater()" disabled>٢. أضف الماء للأنبوب الأول</button>
+        <button class="lab-btn" id="btnSaliva" onclick="addSaliva()" disabled>٢. أضف اللعاب للأنبوب الثاني</button>
+        <button class="lab-btn" id="btnWait" onclick="startTimer()" disabled>٣. انتظر ٢٠ دقيقة</button>
+        <button class="lab-btn warn" id="btnIodine" onclick="addIodine()" disabled>٤. أضف قطرات اليود</button>
+        <button class="lab-btn" id="btnReset" onclick="resetLab()">↺ إعادة ضبط التجربة</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="quiz">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">اختبر نفسك</p>
+        <h2>هل استوعبت الدرس؟</h2>
+        <p>اختر الإجابة الصحيحة لكل سؤال وستظهر لك النتيجة فورًا.</p>
+      </div>
+
+      <div class="quiz">
+        <div class="qcard">
+          <p class="q">١. أي إنزيم مسؤول عن هضم النشا داخل الفم؟</p>
+          <div class="opts" data-answer="1">
+            <div class="opt" onclick="checkAnswer(this,false)">الببسين</div>
+            <div class="opt" onclick="checkAnswer(this,true)">الأميليز اللعابي</div>
+            <div class="opt" onclick="checkAnswer(this,false)">الليبيز</div>
+          </div>
+        </div>
+
+        <div class="qcard">
+          <p class="q">٢. عند إضافة اليود إلى محلول يحتوي على نشا لم يتحلل، فإن اللون الذي يظهر هو:</p>
+          <div class="opts" data-answer="2">
+            <div class="opt" onclick="checkAnswer(this,false)">بنّي محمرّ</div>
+            <div class="opt" onclick="checkAnswer(this,true)">أزرق داكن إلى أسود</div>
+            <div class="opt" onclick="checkAnswer(this,false)">أخضر فاتح</div>
+          </div>
+        </div>
+
+        <div class="qcard">
+          <p class="q">٣. مضغ الطعام بواسطة الأسنان وتحريكه باللسان يُعدّان مثالًا على:</p>
+          <div class="opts" data-answer="3">
+            <div class="opt" onclick="checkAnswer(this,true)">الهضم الميكانيكي</div>
+            <div class="opt" onclick="checkAnswer(this,false)">الهضم الكيميائي</div>
+            <div class="opt" onclick="checkAnswer(this,false)">الامتصاص</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  صُممت هذه الصفحة كمادة تعليمية تفاعلية لمبحث <b>العلوم والحياة</b> — الصف التاسع، فلسطين · مبنية بترميز UTF-8 لدعم اللغة العربية بالكامل، وتعمل على الهاتف والحاسوب.
+</footer>
+
+<script>
+// ===== ترميز النص: الصفحة مكتوبة بترميز UTF-8 مع lang="ar" و dir="rtl" لضمان عرض صحيح للغة العربية على كل الأجهزة =====
+
+let stepState = { starch:false, water:false, saliva:false, waited:false, iodine:false };
+let timerInterval = null;
+
+function setStep(n){
+  document.querySelectorAll('.step-pill').forEach(p=>{
+    const s = parseInt(p.dataset.step);
+    p.classList.remove('active','done');
+    if(s < n) p.classList.add('done');
+    else if(s === n) p.classList.add('active');
+  });
+}
+
+function addStarch(){
+  document.getElementById('liquid1').style.height = '55%';
+  document.getElementById('liquid1').style.background = 'linear-gradient(180deg,#EDEADB,#DDD6BC)';
+  document.getElementById('liquid2').style.height = '55%';
+  document.getElementById('liquid2').style.background = 'linear-gradient(180deg,#EDEADB,#DDD6BC)';
+  document.getElementById('note1').textContent = 'أُضيف محلول النشا (٢ سم³).';
+  document.getElementById('note2').textContent = 'أُضيف محلول النشا (٢ سم³).';
+  stepState.starch = true;
+  document.getElementById('btnStarch').disabled = true;
+  document.getElementById('btnWater').disabled = false;
+  document.getElementById('btnSaliva').disabled = false;
+  setStep(2);
+}
+
+function addWater(){
+  document.getElementById('liquid1').style.height = '80%';
+  document.getElementById('note1').textContent = 'أُضيف الماء (٢ سم³) — بلا إنزيم.';
+  stepState.water = true;
+  document.getElementById('btnWater').disabled = true;
+  maybeEnableWait();
+}
+
+function addSaliva(){
+  document.getElementById('liquid2').style.height = '80%';
+  document.getElementById('liquid2').style.background = 'linear-gradient(180deg,#E9DFB8,#D8C784)';
+  document.getElementById('note2').textContent = 'أُضيف اللعاب (٢ سم³) — يحتوي إنزيم الأميليز.';
+  stepState.saliva = true;
+  document.getElementById('btnSaliva').disabled = true;
+  maybeEnableWait();
+}
+
+function maybeEnableWait(){
+  if(stepState.water && stepState.saliva){
+    document.getElementById('btnWait').disabled = false;
+    setStep(3);
+  }
+}
+
+function startTimer(){
+  document.getElementById('btnWait').disabled = true;
+  document.getElementById('timerBox').style.display = 'block';
+  let totalSeconds = 20*60; // يمثل ٢٠ دقيقة مخبرية
+  let elapsed = 0;
+  const durationRealMs = 16000; // ١٦ ثانية واقعية تمثل محاكاة ٢٠ دقيقة
+  const tickMs = 200;
+  const steps = durationRealMs / tickMs;
+  let tick = 0;
+
+  timerInterval = setInterval(()=>{
+    tick++;
+    const progress = tick/steps;
+    const remaining = Math.max(0, Math.round(totalSeconds * (1-progress)));
+    const mm = String(Math.floor(remaining/60)).padStart(2,'0');
+    const ss = String(remaining%60).padStart(2,'0');
+    document.getElementById('timeDisplay').textContent = toArabicDigits(mm+':'+ss);
+    document.getElementById('barFill').style.width = (progress*100)+'%';
+
+    if(tick >= steps){
+      clearInterval(timerInterval);
+      document.getElementById('timeDisplay').textContent = toArabicDigits('00:00');
+      document.getElementById('barFill').style.width = '100%';
+      document.getElementById('note1').textContent = 'انتهى وقت الانتظار (٢٠ دقيقة).';
+      document.getElementById('note2').textContent = 'انتهى وقت الانتظار (٢٠ دقيقة).';
+      stepState.waited = true;
+      document.getElementById('btnIodine').disabled = false;
+      setStep(4);
+    }
+  }, tickMs);
+}
+
+function addIodine(){
+  document.getElementById('btnIodine').disabled = true;
+  const d1 = document.getElementById('drop1');
+  const d2 = document.getElementById('drop2');
+  d1.classList.add('fall');
+  d2.classList.add('fall');
+
+  setTimeout(()=>{
+    // الأنبوب ١: النشا ما زال موجودًا -> أزرق-أسود
+    document.getElementById('liquid1').style.background = 'linear-gradient(180deg,#2C3E70,#141B36)';
+    document.getElementById('note1').textContent = 'أزرق داكن/أسود ← النشا ما زال موجودًا (لا يوجد إنزيم).';
+
+    // الأنبوب ٢: النشا تحلل -> بني محمر (لون اليود الأصلي تقريبًا)
+    document.getElementById('liquid2').style.background = 'linear-gradient(180deg,#B96A3E,#7C3B26)';
+    document.getElementById('note2').textContent = 'بنّي محمرّ ← النشا تحلّل بفعل إنزيم الأميليز.';
+
+    stepState.iodine = true;
+    setStep(5);
+    document.getElementById('observeBox').classList.add('show');
+    document.getElementById('observeBox').scrollIntoView({behavior:'smooth', block:'center'});
+  }, 850);
+}
+
+function resetLab(){
+  clearInterval(timerInterval);
+  stepState = { starch:false, water:false, saliva:false, waited:false, iodine:false };
+  ['liquid1','liquid2'].forEach(id=>{
+    const el = document.getElementById(id);
+    el.style.height = '0%';
+    el.style.background = 'transparent';
+  });
+  document.getElementById('note1').textContent = 'اضغط «أضف محلول النشا» للبدء.';
+  document.getElementById('note2').textContent = 'اضغط «أضف محلول النشا» للبدء.';
+  document.getElementById('drop1').classList.remove('fall');
+  document.getElementById('drop2').classList.remove('fall');
+  document.getElementById('timerBox').style.display = 'none';
+  document.getElementById('barFill').style.width = '0%';
+  document.getElementById('observeBox').classList.remove('show');
+  document.getElementById('answerKey').classList.remove('show');
+  document.getElementById('studentAnswer').value = '';
+
+  document.getElementById('btnStarch').disabled = false;
+  document.getElementById('btnWater').disabled = true;
+  document.getElementById('btnSaliva').disabled = true;
+  document.getElementById('btnWait').disabled = true;
+  document.getElementById('btnIodine').disabled = true;
+  setStep(1);
+}
+
+function revealAnswer(){
+  document.getElementById('answerKey').classList.add('show');
+}
+
+function toArabicDigits(str){
+  const map = {'0':'٠','1':'١','2':'٢','3':'٣','4':'٤','5':'٥','6':'٦','7':'٧','8':'٨','9':'٩'};
+  return str.replace(/[0-9]/g, d=>map[d]);
+}
+
+function checkAnswer(el,isCorrect){
+  const group = el.parentElement;
+  if(group.dataset.locked) return;
+  group.dataset.locked = "true";
+  [...group.children].forEach(opt=>{
+    opt.style.pointerEvents='none';
+  });
+  el.classList.add(isCorrect ? 'correct':'wrong');
+  if(!isCorrect){
+    // إظهار الإجابة الصحيحة أيضًا
+    const correctOpt = [...group.children].find(o => o.getAttribute('onclick').includes('true'));
+    if(correctOpt) correctOpt.classList.add('correct');
+  }
+}
+</script>
+</body>
+</html>

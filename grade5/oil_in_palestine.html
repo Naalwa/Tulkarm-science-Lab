@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta http-equiv="Content-Language" content="ar">
+<title>النفط في بلادي — مختبر افتراضي | الصف الخامس</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lalezar&family=Tajawal:wght@400;500;700;800;900&family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --oil-black:#131110;
+  --oil-black2:#1d1815;
+  --oil-black3:#241d18;
+  --amber:#E8A33D;
+  --amber-dark:#C67F1E;
+  --amber-light:#F4C97A;
+  --rust:#B5542B;
+  --rust-dark:#8C3E1E;
+  --sand:#DCC9A3;
+  --sand-light:#F3E9D2;
+  --teal:#2E5F5A;
+  --teal-light:#4C8C86;
+  --paper:#FBF6EA;
+  --ink:#241C12;
+  --ink-soft:#4a3d2c;
+  --green-ok:#3C8A5B;
+  --red-no:#B3402E;
+  --radius:18px;
+  --shadow-deep:0 20px 50px -20px rgba(0,0,0,.55);
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Tajawal',sans-serif;
+  font-size:18px;
+  line-height:1.75;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,.display{
+  font-family:'Lalezar',sans-serif;
+  font-weight:400;
+  letter-spacing:.5px;
+  margin:0;
+}
+::selection{background:var(--amber);color:var(--ink);}
+a{color:inherit;}
+button{font-family:inherit;cursor:pointer;}
+
+/* subtle oily grain texture */
+.grain{
+  position:fixed;inset:0;pointer-events:none;z-index:2;opacity:.05;mix-blend-mode:multiply;
+  background-image:radial-gradient(circle at 1px 1px, #000 1px, transparent 0);
+  background-size:3px 3px;
+}
+
+/* ---------- Sticky progress bar ---------- */
+.topbar{
+  position:sticky;top:0;z-index:50;
+  display:flex;align-items:center;gap:14px;
+  padding:10px 20px;
+  background:linear-gradient(180deg,var(--oil-black) 0%,var(--oil-black2) 100%);
+  color:var(--sand-light);
+  border-bottom:3px solid var(--amber-dark);
+}
+.topbar .title-mini{font-family:'Lalezar',sans-serif;font-size:20px;color:var(--amber-light);white-space:nowrap;}
+.gauge-wrap{display:flex;align-items:center;gap:10px;margin-inline-start:auto;}
+.gauge-track{
+  width:140px;height:14px;border-radius:20px;background:#000;
+  border:2px solid var(--rust-dark);overflow:hidden;position:relative;
+  box-shadow:inset 0 2px 6px rgba(0,0,0,.7);
+}
+.gauge-fill{
+  height:100%;width:0%;
+  background:linear-gradient(90deg,var(--rust) 0%,var(--amber) 100%);
+  transition:width .8s cubic-bezier(.4,1.4,.6,1);
+}
+.gauge-label{font-family:'Orbitron',monospace;font-size:13px;color:var(--amber-light);min-width:42px;}
+
+/* ---------- HERO ---------- */
+.hero{
+  position:relative;
+  background:
+    radial-gradient(circle at 20% 15%, rgba(232,163,61,.18), transparent 45%),
+    radial-gradient(circle at 80% 80%, rgba(46,95,90,.25), transparent 50%),
+    linear-gradient(180deg,var(--oil-black) 0%,var(--oil-black2) 60%, var(--oil-black3) 100%);
+  color:var(--sand-light);
+  padding:70px 20px 60px;
+  overflow:hidden;
+  text-align:center;
+}
+.hero .eyebrow{
+  font-family:'Orbitron',monospace;font-size:13px;letter-spacing:3px;
+  color:var(--amber);text-transform:uppercase;margin-bottom:14px;
+}
+.hero h1{font-size:clamp(38px,7vw,64px);color:var(--sand-light);text-shadow:0 4px 0 rgba(0,0,0,.4);}
+.hero h1 span{color:var(--amber);}
+.hero p.sub{max-width:640px;margin:18px auto 0;color:var(--sand);font-size:19px;}
+
+/* 3D rig scene */
+.rig-scene{
+  margin:50px auto 0;
+  width:100%;max-width:520px;height:230px;
+  perspective:900px;
+  position:relative;
+}
+.derrick{
+  position:absolute;bottom:0;left:50%;transform:translateX(-50%) rotateX(8deg);
+  transform-style:preserve-3d;
+  width:100%;height:100%;
+}
+.barrel3d{
+  position:absolute;bottom:6px;left:50%;transform:translateX(-50%) rotateX(6deg);
+  width:130px;height:150px;transform-style:preserve-3d;
+}
+.barrel-body{
+  position:absolute;inset:0;border-radius:20px;
+  background:linear-gradient(90deg,#0c0b0a 0%, #2a221a 18%, #4d3c28 40%, var(--rust) 55%, #2a221a 82%, #0c0b0a 100%);
+  box-shadow:var(--shadow-deep), inset 0 0 0 4px rgba(0,0,0,.35);
+}
+.barrel-band{position:absolute;left:0;right:0;height:10px;background:rgba(0,0,0,.35);}
+.barrel-band.b1{top:22px;} .barrel-band.b2{bottom:22px;}
+.barrel-top{
+  position:absolute;top:-14px;left:6px;right:6px;height:26px;border-radius:50%;
+  background:radial-gradient(ellipse at 35% 30%, var(--amber-light), var(--amber-dark) 60%, var(--rust-dark) 100%);
+  box-shadow:0 3px 0 rgba(0,0,0,.3);
+}
+.barrel-label{
+  position:absolute;top:52px;left:50%;transform:translateX(-50%);
+  font-family:'Orbitron',monospace;font-size:11px;color:var(--amber-light);
+  letter-spacing:2px;writing-mode:vertical-rl;opacity:.85;
+}
+.droplet{
+  position:absolute;width:34px;height:44px;left:50%;top:-30px;
+  transform:translateX(-50%);
+  animation:bob 2.6s ease-in-out infinite;
+}
+.droplet svg{width:100%;height:100%;filter:drop-shadow(0 6px 10px rgba(0,0,0,.5));}
+@keyframes bob{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(-14px);}}
+
+.pump-flare{
+  position:absolute;bottom:150px;left:calc(50% + 90px);width:6px;height:70px;
+  background:linear-gradient(180deg,var(--rust) 0%, var(--oil-black3) 100%);
+  border-radius:4px;
+}
+.pump-flare::after{
+  content:"";position:absolute;top:-18px;left:50%;transform:translateX(-50%);
+  width:16px;height:22px;border-radius:50% 50% 50% 0;
+  background:radial-gradient(circle at 40% 30%, #ffd98a, var(--amber) 55%, var(--rust) 100%);
+  animation:flicker 1.6s ease-in-out infinite;
+}
+@keyframes flicker{0%,100%{opacity:.85;transform:translateX(-50%) scale(1);}50%{opacity:1;transform:translateX(-50%) scale(1.15);}}
+
+/* ---------- Sections shared ---------- */
+section{padding:64px 20px;max-width:1000px;margin:0 auto;}
+.section-head{text-align:center;margin-bottom:40px;}
+.section-head .kicker{
+  font-family:'Orbitron',monospace;font-size:12px;letter-spacing:3px;color:var(--rust);
+  text-transform:uppercase;
+}
+.section-head h2{font-size:clamp(28px,4vw,40px);color:var(--ink);margin-top:8px;}
+.section-head h2 em{font-style:normal;color:var(--rust);}
+
+.card{
+  background:var(--sand-light);
+  border-radius:var(--radius);
+  padding:28px;
+  box-shadow:0 10px 30px -14px rgba(36,28,18,.25);
+  border:1px solid rgba(181,84,43,.15);
+}
+
+/* intro */
+.intro-grid{display:grid;grid-template-columns:1.3fr .9fr;gap:26px;align-items:stretch;}
+.intro-grid .card p{margin:0 0 14px;}
+.intro-grid .card p:last-child{margin-bottom:0;}
+.intro-grid .card b{color:var(--rust-dark);}
+.pump-illustration{
+  border-radius:var(--radius);
+  background:linear-gradient(160deg,var(--teal) 0%,var(--teal-light) 100%);
+  display:flex;align-items:center;justify-content:center;padding:20px;
+  min-height:200px;
+}
+@media (max-width:760px){.intro-grid{grid-template-columns:1fr;}}
+
+/* fuel types */
+.fuel-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
+@media (max-width:820px){.fuel-grid{grid-template-columns:repeat(2,1fr);}}
+.fuel-card{
+  background:var(--oil-black2);color:var(--sand-light);
+  border-radius:var(--radius);padding:20px 14px;text-align:center;
+  perspective:700px;position:relative;overflow:hidden;
+  border-bottom:5px solid var(--fuel-color,var(--amber));
+  transition:transform .35s ease;
+}
+.fuel-card:hover{transform:translateY(-6px) rotateX(4deg);}
+.nozzle{
+  width:54px;height:70px;margin:0 auto 12px;position:relative;
+}
+.nozzle .tank{
+  position:absolute;bottom:0;left:6px;right:6px;height:44px;border-radius:6px;
+  background:linear-gradient(180deg, rgba(255,255,255,.15), transparent), var(--fuel-color,var(--amber));
+  box-shadow:inset 0 -6px 10px rgba(0,0,0,.25);
+}
+.nozzle .nozzle-tip{
+  position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:10px;height:24px;background:#c9c9c9;border-radius:4px 4px 2px 2px;
+}
+.fuel-card h3{font-family:'Tajawal',sans-serif;font-weight:800;font-size:18px;margin-bottom:6px;color:var(--amber-light);}
+.fuel-card p{font-size:14.5px;color:var(--sand);margin:0;}
+
+/* LAB */
+.lab-section{
+  background:linear-gradient(180deg,var(--oil-black3) 0%, var(--oil-black2) 100%);
+  border-radius:28px;color:var(--sand-light);padding:44px 22px;
+  margin:0 20px;max-width:1000px;
+}
+.lab-section .section-head h2{color:var(--sand-light);}
+.lab-section .section-head .kicker{color:var(--amber);}
+
+.lab-layout{display:grid;grid-template-columns:230px 1fr;gap:28px;align-items:start;}
+@media (max-width:840px){.lab-layout{grid-template-columns:1fr;}}
+
+.barrel-gauge{
+  position:sticky;top:80px;
+  background:var(--oil-black);
+  border-radius:20px;padding:20px 16px;text-align:center;
+  border:1px solid rgba(232,163,61,.25);
+}
+.big-barrel{width:100%;max-width:150px;margin:0 auto 14px;height:190px;position:relative;perspective:600px;}
+.big-barrel .shell{
+  position:absolute;inset:0;border-radius:22px;overflow:hidden;
+  background:#0c0b0a;
+  border:3px solid var(--rust-dark);
+  box-shadow:inset 0 0 20px rgba(0,0,0,.6);
+}
+.big-barrel .liquid{
+  position:absolute;bottom:0;left:0;right:0;height:0%;
+  background:linear-gradient(180deg,#2a1c10, #0c0704 70%);
+  transition:height 1s cubic-bezier(.4,1.3,.5,1);
+}
+.big-barrel .liquid::before{
+  content:"";position:absolute;top:-6px;left:0;right:0;height:12px;
+  background:linear-gradient(90deg,var(--amber),var(--rust));
+  filter:blur(1px);opacity:.85;
+}
+.big-barrel .rivets{position:absolute;inset:0;}
+.big-barrel .rivets span{
+  position:absolute;width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.15);
+}
+.percent-readout{font-family:'Orbitron',monospace;font-size:26px;color:var(--amber-light);}
+.percent-caption{font-size:13px;color:var(--sand);margin-top:2px;}
+.step-list{margin-top:16px;text-align:right;font-size:13.5px;}
+.step-list .s-item{display:flex;align-items:center;gap:8px;padding:6px 0;color:var(--sand);opacity:.55;}
+.step-list .s-item.active{opacity:1;color:var(--amber-light);font-weight:700;}
+.step-list .s-item.done{opacity:1;color:var(--green-ok);}
+.step-list .dot{width:9px;height:9px;border-radius:50%;background:currentColor;flex:none;}
+
+.lab-steps{display:flex;flex-direction:column;gap:20px;}
+.step-card{
+  background:var(--oil-black);
+  border-radius:20px;padding:24px;border:1px solid rgba(255,255,255,.06);
+  transition:opacity .3s ease, filter .3s ease;
+}
+.step-card.locked{opacity:.35;filter:grayscale(.6);pointer-events:none;}
+.step-card h3{font-family:'Tajawal',sans-serif;font-weight:800;font-size:20px;color:var(--amber-light);display:flex;align-items:center;gap:10px;}
+.step-num{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:30px;height:30px;border-radius:50%;background:var(--rust);color:#fff;
+  font-family:'Orbitron',monospace;font-size:14px;flex:none;
+}
+.step-card p.hint{color:var(--sand);font-size:15px;margin:8px 0 16px;}
+
+.controls-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px;}
+.btn{
+  border:none;border-radius:30px;padding:11px 20px;font-weight:700;font-size:15px;
+  background:var(--sand-light);color:var(--ink);transition:transform .15s ease, box-shadow .15s ease;
+}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 16px -8px rgba(0,0,0,.5);}
+.btn:active{transform:translateY(0);}
+.btn.primary{background:linear-gradient(120deg,var(--amber),var(--rust));color:#1a1208;}
+.btn.ghost{background:transparent;border:2px solid rgba(255,255,255,.25);color:var(--sand-light);}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none !important;box-shadow:none !important;}
+.sample-select{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+.chip{
+  border:2px solid rgba(255,255,255,.18);background:transparent;color:var(--sand-light);
+  border-radius:30px;padding:8px 16px;font-size:14px;font-weight:700;
+}
+.chip.selected{background:var(--fuel-color,var(--amber));color:#1a1208;border-color:transparent;}
+
+/* beaker visuals */
+.bench{display:flex;gap:24px;align-items:flex-end;flex-wrap:wrap;margin:10px 0 16px;}
+.beaker{
+  width:90px;height:150px;border:3px solid rgba(255,255,255,.35);border-top:none;
+  border-radius:0 0 14px 14px;position:relative;overflow:hidden;background:rgba(255,255,255,.03);
+}
+.beaker::after{
+  content:"";position:absolute;top:0;left:-6px;right:-6px;height:8px;
+  border:3px solid rgba(255,255,255,.35);border-radius:6px;background:rgba(255,255,255,.05);
+}
+.beaker .layer{position:absolute;left:0;right:0;height:0%;transition:height .8s ease, transform .15s ease;}
+.beaker .layer.water{bottom:0;background:linear-gradient(180deg,#5fa3c7,#2f6e94);}
+.beaker .layer.oil{background:linear-gradient(180deg, var(--fuel-color-light,#f0c470), var(--fuel-color,#d99a2c));}
+.beaker.shaking{animation:shake .18s linear infinite;}
+@keyframes shake{
+  0%{transform:translateX(0) rotate(0deg);}
+  25%{transform:translateX(-6px) rotate(-3deg);}
+  50%{transform:translateX(6px) rotate(3deg);}
+  75%{transform:translateX(-4px) rotate(-2deg);}
+  100%{transform:translateX(4px) rotate(2deg);}
+}
+.beaker-caption{font-family:'Orbitron',monospace;font-size:12px;color:var(--sand);text-align:center;margin-top:8px;}
+
+.sheet3d{
+  width:170px;height:110px;position:relative;
+  transform:rotateX(50deg) rotateZ(-4deg);
+  transform-style:preserve-3d;perspective:600px;
+  background:linear-gradient(160deg, rgba(255,255,255,.14), rgba(255,255,255,.02));
+  border:2px solid rgba(255,255,255,.3);border-radius:10px;
+  box-shadow:0 30px 40px -20px rgba(0,0,0,.6);
+}
+.blob{
+  position:absolute;top:10px;left:50%;transform:translateX(-50%);
+  width:14px;height:14px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%, var(--fuel-color-light,#f0c470), var(--fuel-color,#d99a2c));
+  transition:width 3.4s cubic-bezier(.2,.7,.3,1), height 3.4s cubic-bezier(.2,.7,.3,1), border-radius 3.4s ease;
+}
+.blob.spread{width:130px;height:60px;border-radius:50% 50% 45% 45%/60% 60% 40% 40%;}
+
+.notice{
+  margin-top:12px;padding:12px 16px;border-radius:12px;background:rgba(232,163,61,.12);
+  border:1px dashed var(--amber);color:var(--sand-light);font-size:14.5px;display:none;
+}
+.notice.show{display:block;animation:fadein .5s ease;}
+@keyframes fadein{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+textarea.observe{
+  width:100%;min-height:70px;border-radius:12px;border:2px solid rgba(255,255,255,.2);
+  background:rgba(255,255,255,.04);color:var(--sand-light);padding:12px;font-family:inherit;font-size:15px;resize:vertical;
+}
+textarea.observe:focus{outline:2px solid var(--amber);}
+textarea.observe::placeholder{color:rgba(255,255,255,.35);}
+
+/* properties picker */
+.prop-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-top:6px;}
+.prop-chip{
+  border:2px solid rgba(255,255,255,.2);background:rgba(255,255,255,.03);color:var(--sand-light);
+  border-radius:14px;padding:14px 10px;font-size:14.5px;font-weight:700;text-align:center;
+  transition:all .2s ease;
+}
+.prop-chip.correct{background:var(--green-ok);border-color:var(--green-ok);color:#fff;}
+.prop-chip.wrong{background:var(--red-no);border-color:var(--red-no);color:#fff;animation:shake2 .4s ease;}
+.prop-chip.disabled{pointer-events:none;}
+@keyframes shake2{0%,100%{transform:translateX(0);}25%{transform:translateX(-6px);}75%{transform:translateX(6px);}}
+.prop-status{font-family:'Orbitron',monospace;font-size:14px;color:var(--amber-light);margin-top:10px;}
+
+/* definition / report */
+.report-card{background:var(--sand-light);border-radius:var(--radius);padding:30px;}
+.report-card textarea{
+  width:100%;min-height:110px;border-radius:14px;border:2px solid var(--rust);
+  padding:14px;font-family:inherit;font-size:16px;color:var(--ink);background:#fff;resize:vertical;
+}
+.report-actions{display:flex;gap:12px;margin-top:16px;flex-wrap:wrap;}
+
+/* discussion quote */
+.discuss{
+  background:linear-gradient(120deg,var(--rust) 0%, var(--rust-dark) 100%);
+  color:#fff;border-radius:var(--radius);padding:30px;display:flex;gap:20px;align-items:flex-start;
+}
+.discuss .icon{font-size:40px;flex:none;}
+.discuss h3{font-family:'Lalezar',sans-serif;font-size:24px;margin-bottom:8px;}
+.discuss p{margin:0;color:rgba(255,255,255,.92);}
+
+footer{text-align:center;padding:34px 20px;color:var(--ink-soft);font-size:14px;}
+
+@media (max-width:600px){
+  section{padding:44px 16px;}
+  .fuel-grid{grid-template-columns:repeat(2,1fr);}
+  .bench{justify-content:center;}
+  .gauge-track{width:90px;}
+  .topbar .title-mini{font-size:16px;}
+}
+
+/* focus visibility */
+button:focus-visible, .chip:focus-visible, .prop-chip:focus-visible, textarea:focus-visible{
+  outline:3px solid var(--amber); outline-offset:2px;
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important;}
+}
+
+  /* ══ RESPONSIVE MOBILE & TABLET ══ */
+  @media (max-width: 768px) {
+    body { padding: 8px !important; font-size: 15px !important; overflow-x: hidden !important; }
+    .container, [class*="container"], [class*="wrapper"] { padding: 8px !important; max-width: 100% !important; }
+    canvas { width: 100% !important; height: auto !important; display: block !important; touch-action: none; max-width: 100% !important; }
+    svg { max-width: 100% !important; height: auto !important; }
+    h1 { font-size: clamp(18px,5vw,32px) !important; }
+    h2 { font-size: clamp(15px,4vw,26px) !important; }
+    h3 { font-size: clamp(13px,3.5vw,20px) !important; }
+    [class*="grid"] { grid-template-columns: 1fr !important; }
+    [class*="flex"] { flex-wrap: wrap !important; }
+    input[type="range"] { width: 100% !important; min-height: 36px; }
+    input[type="number"], input[type="text"], select, textarea {
+      font-size: 16px !important; width: 100% !important; box-sizing: border-box; padding: 8px !important; }
+    button { min-height: 44px !important; font-size: 14px !important; touch-action: manipulation; padding: 10px 14px !important; }
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 13px !important; }
+    th, td { padding: 6px 4px !important; }
+    header { padding: 10px 12px !important; }
+    .controls, [class*="controls"] { flex-direction: column !important; gap: 8px !important; }
+    .lab-window, [class*="lab-window"] { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+  }
+  @media (max-width: 480px) {
+    body { padding: 4px !important; }
+    button { width: 100% !important; }
+  }
+  /* ══ END RESPONSIVE ══ */
+</style>
+</head>
+<body>
+<style>
+.vlab-back{position:fixed;top:10px;left:10px;z-index:99999;
+background:rgba(10,22,40,0.93);border:1px solid rgba(0,200,150,0.4);
+border-radius:22px;padding:8px 16px;display:inline-flex;align-items:center;gap:7px;
+color:#00C896;font-family:Tajawal,Cairo,Arial,sans-serif;font-size:13px;font-weight:700;
+text-decoration:none;backdrop-filter:blur(8px);box-shadow:0 4px 18px rgba(0,0,0,0.3);
+transition:background 0.2s;}
+.vlab-back:hover{background:rgba(0,200,150,0.18);}
+</style>
+<a href="../grade5.html" class="vlab-back">&#8594; العودة للصف</a>
+
+<div class="grain"></div>
+
+<div class="topbar">
+  <span class="title-mini">🛢️ النفط في بلادي</span>
+  <div class="gauge-wrap">
+    <span class="gauge-label" id="topPercent">٠٪</span>
+    <div class="gauge-track"><div class="gauge-fill" id="topFill"></div></div>
+  </div>
+</div>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="eyebrow">العلوم والحياة · الصف الخامس · فلسطين</div>
+  <h1>النّفط في <span>بلادي</span></h1>
+  <p class="sub">رافق حمزة ووالده في رحلة إلى محطة الوقود، واكتشف معه أسرار "الذّهب الأسود" من خلال مختبر افتراضي تُجري فيه تجربتك بنفسك.</p>
+
+  <div class="rig-scene">
+    <div class="pump-flare"></div>
+    <div class="barrel3d">
+      <div class="droplet">
+        <svg viewBox="0 0 34 44"><path d="M17 0 C17 0 34 22 34 32 C34 39 26 44 17 44 C8 44 0 39 0 32 C0 22 17 0 17 0 Z" fill="#1a1310" stroke="#E8A33D" stroke-width="1.5"/></svg>
+      </div>
+      <div class="barrel-top"></div>
+      <div class="barrel-body"></div>
+      <div class="barrel-band b1"></div>
+      <div class="barrel-band b2"></div>
+      <div class="barrel-label">PETROLEUM</div>
+    </div>
+  </div>
+</header>
+
+<!-- INTRO -->
+<section id="intro">
+  <div class="section-head">
+    <div class="kicker">نشاط (١)</div>
+    <h2>ما الذي يُخبّئه <em>خزّان الوقود</em>؟</h2>
+  </div>
+  <div class="intro-grid">
+    <div class="card">
+      <p>رافق حمزة والده إلى محطة الوقود لملء خزّان الوقود بالبنزين، فشاهد العديد من أنواع الوقود. سأل حمزة والده: عن مصدر هذا الوقود؟ فأجابه: إنّه <b>النّفط</b> ويُطلق عليه <b>الذّهب الأسود</b>.</p>
+      <p>تساءل حمزة: ما النّفط؟ وهل يوجد في بلادنا؟ هيّا نساعد حمزة على التعرّف إلى النّفط من خلال المختبر الافتراضي أدناه — ستُجري التجربة بنفسك خطوة بخطوة!</p>
+    </div>
+    <div class="pump-illustration">
+      <svg width="130" height="170" viewBox="0 0 130 170">
+        <rect x="20" y="20" width="90" height="120" rx="14" fill="#F3E9D2"/>
+        <rect x="34" y="34" width="62" height="46" rx="6" fill="#131110"/>
+        <text x="65" y="63" text-anchor="middle" fill="#E8A33D" font-family="Orbitron" font-size="16">90</text>
+        <rect x="34" y="88" width="62" height="10" rx="4" fill="#2E5F5A"/>
+        <rect x="34" y="104" width="30" height="10" rx="4" fill="#B5542B"/>
+        <circle cx="65" cy="150" r="10" fill="#B5542B"/>
+        <rect x="60" y="140" width="10" height="18" fill="#B5542B"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- FUEL TYPES -->
+<section id="fuels">
+  <div class="section-head">
+    <div class="kicker">مشتقّات النّفط</div>
+    <h2>أنواع الوقود في <em>محطّتنا</em></h2>
+  </div>
+  <div class="fuel-grid">
+    <div class="fuel-card" style="--fuel-color:#E8C158;">
+      <div class="nozzle"><div class="nozzle-tip"></div><div class="tank"></div></div>
+      <h3>بنزين</h3>
+      <p>وقود سيّارات الرّكاب، سريع الاشتعال وله رائحة نفّاذة.</p>
+    </div>
+    <div class="fuel-card" style="--fuel-color:#7FB3C9;">
+      <div class="nozzle"><div class="nozzle-tip"></div><div class="tank"></div></div>
+      <h3>كيروسين</h3>
+      <p>يُستخدم للتدفئة والإنارة، ويُعرف أيضاً باسم "الكاز".</p>
+    </div>
+    <div class="fuel-card" style="--fuel-color:#C68A3D;">
+      <div class="nozzle"><div class="nozzle-tip"></div><div class="tank"></div></div>
+      <h3>ديزل</h3>
+      <p>وقود الشّاحنات والحافلات، أثقل قليلاً من البنزين.</p>
+    </div>
+    <div class="fuel-card" style="--fuel-color:#5A4632;">
+      <div class="nozzle"><div class="nozzle-tip"></div><div class="tank"></div></div>
+      <h3>زيت السّيّارات</h3>
+      <p>يُستخدم لتشحيم أجزاء المحرّك وتقليل الاحتكاك.</p>
+    </div>
+  </div>
+</section>
+
+<!-- LAB -->
+<section class="lab-section" id="lab">
+  <div class="section-head">
+    <div class="kicker">المختبر الافتراضي</div>
+    <h2>جرّب بنفسك: هل يمتزج النّفط بالماء؟</h2>
+  </div>
+
+  <div class="lab-layout">
+    <!-- gauge -->
+    <div class="barrel-gauge">
+      <div class="big-barrel">
+        <div class="shell"><div class="liquid" id="bigLiquid"></div></div>
+      </div>
+      <div class="percent-readout" id="bigPercent">٠٪</div>
+      <div class="percent-caption">مستوى إنجاز التجربة</div>
+      <div class="step-list" id="stepList">
+        <div class="s-item" data-s="1"><span class="dot"></span> تجهيز العيّنات</div>
+        <div class="s-item" data-s="2"><span class="dot"></span> الهزّ والمزج</div>
+        <div class="s-item" data-s="3"><span class="dot"></span> السّكب على اللّوح</div>
+        <div class="s-item" data-s="4"><span class="dot"></span> السّكب في الكأس</div>
+        <div class="s-item" data-s="5"><span class="dot"></span> استنتاج الخصائص</div>
+      </div>
+    </div>
+
+    <!-- steps -->
+    <div class="lab-steps">
+
+      <!-- STEP 1 -->
+      <div class="step-card" id="step1">
+        <h3><span class="step-num">١</span> ضَع العيّنات في القارورة البلاستيكيّة</h3>
+        <p class="hint">اختر أحد مشتقّات النّفط، ثمّ أضف الماء والعيّنة إلى القارورة بالضغط على الأزرار.</p>
+        <div class="sample-select" id="sampleSelect">
+          <button class="chip selected" data-fuel="بنزين" style="--fuel-color:#E8C158">بنزين</button>
+          <button class="chip" data-fuel="كيروسين" style="--fuel-color:#7FB3C9">كيروسين</button>
+          <button class="chip" data-fuel="ديزل" style="--fuel-color:#C68A3D">ديزل</button>
+          <button class="chip" data-fuel="زيت السيارات" style="--fuel-color:#5A4632">زيت السّيّارات</button>
+        </div>
+        <div class="bench">
+          <div>
+            <div class="beaker" id="beaker1" style="--fuel-color:#E8C158;--fuel-color-light:#f5da8f;">
+              <div class="layer water" id="waterLayer1"></div>
+              <div class="layer oil" id="oilLayer1"></div>
+            </div>
+            <div class="beaker-caption">القارورة</div>
+          </div>
+        </div>
+        <div class="controls-row">
+          <button class="btn" id="addWaterBtn">＋ أضف الماء</button>
+          <button class="btn" id="addSampleBtn">＋ أضف العيّنة</button>
+          <button class="btn primary" id="step1Next" disabled>التّالي: أغلق القارورة وهزّها ←</button>
+        </div>
+        <div class="notice" id="notice1">جهّزنا الماء وعيّنة "<span id="sampleNameHint"></span>" في القارورة نفسها. لاحظ أنّ العيّنة استقرّت فوق الماء منذ البداية!</div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="step-card locked" id="step2">
+        <h3><span class="step-num">٢</span> أغلِق القارورة بإحكام وهزّها جيّدًا</h3>
+        <p class="hint">اضغط على زرّ الهزّ، وراقب ماذا يحدث للمزيج أثناء الهزّ وبعد التّوقّف.</p>
+        <div class="bench">
+          <div>
+            <div class="beaker" id="beaker2" style="--fuel-color:#E8C158;--fuel-color-light:#f5da8f;">
+              <div class="layer water" id="waterLayer2"></div>
+              <div class="layer oil" id="oilLayer2"></div>
+            </div>
+            <div class="beaker-caption">القارورة المُغلقة</div>
+          </div>
+        </div>
+        <div class="controls-row">
+          <button class="btn primary" id="shakeBtn">🤝 اهزّ القارورة بقوّة</button>
+        </div>
+        <textarea class="observe" id="obs2" placeholder="ماذا لاحظت أثناء الهزّ، وماذا حدث بعد أن تركت القارورة تستقرّ؟"></textarea>
+        <div class="notice" id="notice2">حتّى بعد الهزّ بقوّة، عاد المزيج ليَنفصل إلى طبقتين: النّفط في الأعلى، والماء في الأسفل. هذا يدلّ على أنّ <b>النّفط لا يمتزج بالماء</b>.</div>
+        <div class="controls-row" style="margin-top:14px;">
+          <button class="btn primary" id="step2Next" disabled>التّالي: اسكب على اللّوح البلاستيكي ←</button>
+        </div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="step-card locked" id="step3">
+        <h3><span class="step-num">٣</span> اسكب قليلاً من المزيج على اللّوح البلاستيكي</h3>
+        <p class="hint">بعد إمالة اللّوح، راقب حركة المزيج: هل ينساب بسرعة أم ببطء؟</p>
+        <div class="bench">
+          <div style="display:flex;flex-direction:column;align-items:center;">
+            <div class="sheet3d"><div class="blob" id="blob3" style="--fuel-color:#E8C158;--fuel-color-light:#f5da8f;"></div></div>
+            <div class="beaker-caption">اللّوح البلاستيكي المائل</div>
+          </div>
+        </div>
+        <div class="controls-row">
+          <button class="btn primary" id="pourSheetBtn">↘ اسكب واملَ اللّوح</button>
+        </div>
+        <textarea class="observe" id="obs3" placeholder="كيف كانت حركة المزيج على اللّوح؟ سريعة أم بطيئة ولزجة؟"></textarea>
+        <div class="notice" id="notice3">لاحظنا أنّ المزيج تحرّك ببطء وبقوام لزج وسميك — هذا يعني أنّ <b>النّفط كثيف القوام (لزج)</b> ولا ينساب كالماء.</div>
+        <div class="controls-row" style="margin-top:14px;">
+          <button class="btn primary" id="step3Next" disabled>التّالي: أضف الماء في الكأس الزّجاجي ←</button>
+        </div>
+      </div>
+
+      <!-- STEP 4 -->
+      <div class="step-card locked" id="step4">
+        <h3><span class="step-num">٤</span> أسكب قليلاً من الماء في كأس زجاجيّ، ثمّ أضف إليه قليلاً من المزيج</h3>
+        <p class="hint">اضغط على الأزرار بالتّرتيب وسجّل ملاحظاتك.</p>
+        <div class="bench">
+          <div>
+            <div class="beaker" id="beaker4" style="--fuel-color:#E8C158;--fuel-color-light:#f5da8f;">
+              <div class="layer water" id="waterLayer4"></div>
+              <div class="layer oil" id="oilLayer4"></div>
+            </div>
+            <div class="beaker-caption">الكأس الزّجاجي</div>
+          </div>
+        </div>
+        <div class="controls-row">
+          <button class="btn" id="addWaterBtn4">＋ أسكب الماء أوّلاً</button>
+          <button class="btn" id="addMixBtn4">＋ أضف المزيج</button>
+        </div>
+        <textarea class="observe" id="obs4" placeholder="أين استقرّ المزيج بالنّسبة إلى الماء؟"></textarea>
+        <div class="notice" id="notice4">استقرّ النّفط دائمًا فوق سطح الماء ولم يمتزج به، لأنّ <b>النّفط أقلّ كثافة من الماء فيطفو فوقه</b>.</div>
+        <div class="controls-row" style="margin-top:14px;">
+          <button class="btn primary" id="step4Next" disabled>التّالي: استنتج خصائص النّفط ←</button>
+        </div>
+      </div>
+
+      <!-- STEP 5 -->
+      <div class="step-card locked" id="step5">
+        <h3><span class="step-num">٥</span> نستنتج: ما خصائص النّفط؟</h3>
+        <p class="hint">بناءً على ما شاهدته في التّجربة، اختر الخصائص الصّحيحة للنّفط (اختر خمس خصائص).</p>
+        <div class="prop-grid" id="propGrid">
+          <button class="prop-chip" data-correct="true">لونه غامق (أسود إلى بنّي)</button>
+          <button class="prop-chip" data-correct="false">عديم اللّون تمامًا</button>
+          <button class="prop-chip" data-correct="true">لا يمتزج بالماء</button>
+          <button class="prop-chip" data-correct="false">يذوب في الماء بسهولة</button>
+          <button class="prop-chip" data-correct="true">يطفو فوق سطح الماء</button>
+          <button class="prop-chip" data-correct="false">سائل رائق كالماء تمامًا</button>
+          <button class="prop-chip" data-correct="true">لزج وكثيف القوام</button>
+          <button class="prop-chip" data-correct="true">له رائحة مميّزة نفّاذة</button>
+        </div>
+        <div class="prop-status" id="propStatus">اخترت: ٠ / ٥</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- DEFINITION -->
+<section id="definition">
+  <div class="section-head">
+    <div class="kicker">التّعريف العلميّ</div>
+    <h2>أكتب تعريفي الخاصّ <em>للنّفط</em></h2>
+  </div>
+  <div class="report-card">
+    <p>بعد كل ما لاحظته في المختبر الافتراضي، اكتب بأسلوبك تعريفًا للنّفط:</p>
+    <textarea id="defBox" placeholder="النّفط هو..."></textarea>
+    <div class="report-actions">
+      <button class="btn primary" id="checkDefBtn">✓ تحقّق من تعريفي</button>
+      <button class="btn ghost" id="printBtn">🖨️ اطبع بطاقة إنجازي</button>
+    </div>
+    <div class="notice" id="defNotice" style="color:#4a3d2c;border-color:var(--rust);background:rgba(181,84,43,.08);"></div>
+  </div>
+</section>
+
+<!-- DISCUSSION -->
+<section id="discuss">
+  <div class="discuss">
+    <div class="icon">💬</div>
+    <div>
+      <h3>أناقش زملائي</h3>
+      <p>يُطلق على النّفط اسم "الذّهب الأسود". ناقش مع زملائك: لماذا حصل النّفط على هذا اللّقب؟ ثمّ اكتب تقريرًا مصغّرًا واحتفظ به في ملفّ الإنجاز الخاصّ بك.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  درس "النّفط في بلادي" — منهاج العلوم والحياة، الصّفّ الخامس، فلسطين · مختبر افتراضي تفاعلي
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  const arabicIndicDigits = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
+  function toArabicDigits(n){
+    return String(n).split('').map(ch => /[0-9]/.test(ch) ? arabicIndicDigits[+ch] : ch).join('');
+  }
+
+  const fuelColors = {
+    'بنزين':      {c:'#E8C158', l:'#f5da8f'},
+    'كيروسين':    {c:'#7FB3C9', l:'#bfe0ea'},
+    'ديزل':       {c:'#C68A3D', l:'#e0ac66'},
+    'زيت السيارات':{c:'#5A4632', l:'#8a6c4b'}
+  };
+
+  let selectedFuel = 'بنزين';
+  let progressSteps = {1:false,2:false,3:false,4:false,5:false};
+  let s1 = {water:false, sample:false};
+  let s4 = {water:false, mix:false};
+  let propsCorrectFound = 0;
+
+  const bigLiquid = document.getElementById('bigLiquid');
+  const bigPercent = document.getElementById('bigPercent');
+  const topFill = document.getElementById('topFill');
+  const topPercent = document.getElementById('topPercent');
+  const stepListEls = document.querySelectorAll('#stepList .s-item');
+
+  function updateProgress(){
+    const done = Object.values(progressSteps).filter(Boolean).length;
+    const pct = done * 20;
+    bigLiquid.style.height = pct + '%';
+    bigPercent.textContent = toArabicDigits(pct) + '٪';
+    topFill.style.width = pct + '%';
+    topPercent.textContent = toArabicDigits(pct) + '٪';
+    stepListEls.forEach(el=>{
+      const n = +el.dataset.s;
+      el.classList.remove('active','done');
+      if(progressSteps[n]) el.classList.add('done');
+      else if((n===1) || progressSteps[n-1]) el.classList.add('active');
+    });
+  }
+
+  function unlock(stepId){
+    const el = document.getElementById(stepId);
+    el.classList.remove('locked');
+  }
+
+  function applyFuelColor(scopeEl){
+    const col = fuelColors[selectedFuel];
+    scopeEl.style.setProperty('--fuel-color', col.c);
+    scopeEl.style.setProperty('--fuel-color-light', col.l);
+  }
+
+  // ---- Sample selection ----
+  document.getElementById('sampleSelect').addEventListener('click', e=>{
+    const btn = e.target.closest('.chip');
+    if(!btn) return;
+    document.querySelectorAll('#sampleSelect .chip').forEach(c=>c.classList.remove('selected'));
+    btn.classList.add('selected');
+    selectedFuel = btn.dataset.fuel;
+    ['beaker1','beaker2','beaker4'].forEach(id=>applyFuelColor(document.getElementById(id)));
+    applyFuelColor(document.getElementById('blob3'));
+  });
+
+  // ---- STEP 1 ----
+  const waterLayer1 = document.getElementById('waterLayer1');
+  const oilLayer1 = document.getElementById('oilLayer1');
+  document.getElementById('addWaterBtn').addEventListener('click', ()=>{
+    s1.water = true;
+    waterLayer1.style.height = '45%';
+    checkStep1();
+  });
+  document.getElementById('addSampleBtn').addEventListener('click', ()=>{
+    s1.sample = true;
+    applyFuelColor(document.getElementById('beaker1'));
+    oilLayer1.style.bottom = '45%';
+    oilLayer1.style.height = '30%';
+    checkStep1();
+  });
+  function checkStep1(){
+    if(s1.water && s1.sample){
+      document.getElementById('sampleNameHint').textContent = selectedFuel;
+      document.getElementById('notice1').classList.add('show');
+      document.getElementById('step1Next').disabled = false;
+    }
+  }
+  document.getElementById('step1Next').addEventListener('click', ()=>{
+    progressSteps[1] = true;
+    updateProgress();
+    unlock('step2');
+    // mirror initial state into beaker2
+    document.getElementById('waterLayer2').style.height = '45%';
+    const oil2 = document.getElementById('oilLayer2');
+    applyFuelColor(document.getElementById('beaker2'));
+    oil2.style.bottom = '45%'; oil2.style.height = '30%';
+    document.getElementById('step2').scrollIntoView({behavior:'smooth', block:'center'});
+  });
+
+  // ---- STEP 2 ----
+  document.getElementById('shakeBtn').addEventListener('click', function(){
+    const beaker = document.getElementById('beaker2');
+    const oil2 = document.getElementById('oilLayer2');
+    const water2 = document.getElementById('waterLayer2');
+    beaker.classList.add('shaking');
+    oil2.style.transition = 'none';
+    oil2.style.bottom = '10%'; oil2.style.height = '65%'; oil2.style.opacity = '.75';
+    this.disabled = true;
+    setTimeout(()=>{
+      beaker.classList.remove('shaking');
+      oil2.style.transition = 'height .9s ease, bottom .9s ease, opacity .9s ease';
+      oil2.style.bottom = '45%'; oil2.style.height = '30%'; oil2.style.opacity = '1';
+      document.getElementById('notice2').classList.add('show');
+      shakeBtn.disabled = false;
+      if(document.getElementById('obs2').dataset.filled) document.getElementById('step2Next').disabled = false;
+      else document.getElementById('step2Next').disabled = false;
+    }, 1300);
+  });
+  document.getElementById('step2Next').addEventListener('click', ()=>{
+    progressSteps[2] = true;
+    updateProgress();
+    unlock('step3');
+    applyFuelColor(document.getElementById('blob3'));
+    document.getElementById('step3').scrollIntoView({behavior:'smooth', block:'center'});
+  });
+
+  // ---- STEP 3 ----
+  document.getElementById('pourSheetBtn').addEventListener('click', function(){
+    const blob = document.getElementById('blob3');
+    blob.classList.add('spread');
+    this.disabled = true;
+    setTimeout(()=>{
+      document.getElementById('notice3').classList.add('show');
+      document.getElementById('step3Next').disabled = false;
+    }, 1600);
+  });
+  document.getElementById('step3Next').addEventListener('click', ()=>{
+    progressSteps[3] = true;
+    updateProgress();
+    unlock('step4');
+    applyFuelColor(document.getElementById('beaker4'));
+    document.getElementById('step4').scrollIntoView({behavior:'smooth', block:'center'});
+  });
+
+  // ---- STEP 4 ----
+  const waterLayer4 = document.getElementById('waterLayer4');
+  const oilLayer4 = document.getElementById('oilLayer4');
+  document.getElementById('addWaterBtn4').addEventListener('click', ()=>{
+    s4.water = true;
+    waterLayer4.style.height = '55%';
+    checkStep4();
+  });
+  document.getElementById('addMixBtn4').addEventListener('click', ()=>{
+    s4.mix = true;
+    oilLayer4.style.bottom = '55%';
+    oilLayer4.style.height = '20%';
+    checkStep4();
+  });
+  function checkStep4(){
+    if(s4.water && s4.mix){
+      document.getElementById('notice4').classList.add('show');
+      document.getElementById('step4Next').disabled = false;
+    }
+  }
+  document.getElementById('step4Next').addEventListener('click', ()=>{
+    progressSteps[4] = true;
+    updateProgress();
+    unlock('step5');
+    document.getElementById('step5').scrollIntoView({behavior:'smooth', block:'center'});
+  });
+
+  // ---- STEP 5 ----
+  const propGrid = document.getElementById('propGrid');
+  const propStatus = document.getElementById('propStatus');
+  propGrid.addEventListener('click', e=>{
+    const chip = e.target.closest('.prop-chip');
+    if(!chip || chip.classList.contains('disabled')) return;
+    const correct = chip.dataset.correct === 'true';
+    if(correct){
+      chip.classList.add('correct','disabled');
+      propsCorrectFound++;
+      propStatus.textContent = 'اخترت: ' + toArabicDigits(propsCorrectFound) + ' / ' + toArabicDigits(5);
+      if(propsCorrectFound >= 5){
+        progressSteps[5] = true;
+        updateProgress();
+        propStatus.textContent = '🎉 أحسنت! توصّلت إلى جميع خصائص النّفط الصّحيحة.';
+        document.getElementById('definition').scrollIntoView({behavior:'smooth', block:'start'});
+      }
+    } else {
+      chip.classList.add('wrong');
+      setTimeout(()=>chip.classList.remove('wrong'), 450);
+    }
+  });
+
+  // ---- Definition check ----
+  document.getElementById('checkDefBtn').addEventListener('click', ()=>{
+    const val = document.getElementById('defBox').value.trim();
+    const notice = document.getElementById('defNotice');
+    notice.classList.add('show');
+    if(val.length < 8){
+      notice.innerHTML = 'حاول أن تكتب تعريفًا أكثر تفصيلاً باستخدام ما لاحظته في التّجربة (اللّون، اللّزوجة، الطّفو على الماء).';
+    } else {
+      notice.innerHTML = 'أحسنت! تذكّر أنّ النّفط علميًّا هو: <b>سائل طبيعي داكن اللّون، لزج القوام، يتكوّن من بقايا كائنات حيّة عاشت قبل ملايين السّنين ودُفنت تحت طبقات الأرض، ولا يمتزج بالماء ويطفو فوقه، ويُستخرج منه أنواع الوقود المختلفة.</b>';
+    }
+  });
+
+  document.getElementById('printBtn').addEventListener('click', ()=> window.print());
+
+  updateProgress();
+})();
+</script>
+</body>
+</html>

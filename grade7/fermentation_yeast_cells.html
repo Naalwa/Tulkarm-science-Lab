@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta http-equiv="Content-Language" content="ar">
+<title>التخمّر في خلايا الخميرة — الصف السابع</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lalezar&family=Tajawal:wght@300;400;500;700;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #172922;
+    --bg-2: #1f362d;
+    --wood: #7c4a26;
+    --wood-dark: #4f2f18;
+    --paper: #f5eedd;
+    --paper-2: #ece0c6;
+    --ink: #2a2015;
+    --ink-soft: #56492f;
+    --amber: #dd9c3c;
+    --amber-dark: #a86a1c;
+    --lavender: #9986cb;
+    --lavender-dark: #6c568f;
+    --line: rgba(245,238,221,0.14);
+    --good: #6fae7b;
+    --bad: #c4685b;
+    --radius: 18px;
+    font-family: 'Tajawal', sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background: radial-gradient(circle at 20% -10%, #23412f 0%, var(--bg) 45%, #101d17 100%);
+    color: var(--paper);
+    line-height:1.9;
+    overflow-x:hidden;
+  }
+  ::selection{ background: var(--amber); color: var(--ink); }
+
+  h1,h2,h3,.display{
+    font-family:'Lalezar', 'Tajawal', sans-serif;
+    font-weight:400;
+    letter-spacing:.5px;
+  }
+  .mono{ font-family:'JetBrains Mono', monospace; }
+
+  .wrap{ max-width: 1040px; margin:0 auto; padding: 0 20px; }
+
+  /* ---------- top texture bar ---------- */
+  .topbar{
+    background: var(--wood-dark);
+    background-image: repeating-linear-gradient(90deg, rgba(0,0,0,.15) 0 2px, transparent 2px 22px);
+    padding:10px 0;
+    font-family:'Tajawal';
+    font-size:.8rem;
+    color: #e8d9b8;
+    text-align:center;
+    letter-spacing:1px;
+  }
+
+  /* ---------- hero ---------- */
+  .hero{ padding: 64px 0 40px; position:relative; }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    background: rgba(153,134,203,.18);
+    border:1px solid var(--lavender);
+    color:#cfc2ec;
+    padding:6px 16px; border-radius:999px;
+    font-size:.85rem; margin-bottom:22px;
+  }
+  .hero h1{
+    font-size: clamp(2.3rem, 5vw, 3.6rem);
+    margin:0 0 14px;
+    color: var(--paper);
+    text-shadow: 0 4px 0 rgba(0,0,0,.25);
+  }
+  .hero h1 span{ color: var(--amber); }
+  .hero p.lead{
+    max-width:640px; color:#d9d0b8; font-size:1.08rem;
+  }
+  .hero-meta{
+    display:flex; flex-wrap:wrap; gap:10px; margin-top:26px;
+  }
+  .pill{
+    background: var(--bg-2); border:1px solid var(--line);
+    padding:8px 14px; border-radius:999px; font-size:.82rem; color:#cddccf;
+  }
+
+  /* floating decorative bubbles in hero */
+  .hero-scene{
+    position:absolute; inset:0; overflow:hidden; pointer-events:none; z-index:0;
+  }
+  .float-bubble{
+    position:absolute; border-radius:50%;
+    background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.5), rgba(221,156,60,.05));
+    animation: floatUp linear infinite;
+  }
+  @keyframes floatUp{
+    0%{ transform: translateY(0) scale(1); opacity:0; }
+    10%{ opacity:.5; }
+    90%{ opacity:.4; }
+    100%{ transform: translateY(-620px) scale(1.3); opacity:0; }
+  }
+
+  section{ position:relative; z-index:1; padding: 46px 0; }
+  .section-head{ margin-bottom: 28px; }
+  .kicker{
+    font-size:.78rem; letter-spacing:2px; color: var(--amber);
+    text-transform:uppercase; margin-bottom:8px; font-weight:700;
+  }
+  .section-head h2{ font-size: clamp(1.6rem,3.2vw,2.2rem); margin:0; color:var(--paper); }
+  .section-head p{ color:#c9c0a4; max-width:640px; margin-top:10px; }
+
+  .card{
+    background: var(--paper);
+    color: var(--ink);
+    border-radius: var(--radius);
+    padding: 26px 28px;
+    box-shadow: 0 18px 40px -20px rgba(0,0,0,.55);
+  }
+  .card h3{ margin-top:0; color: var(--wood-dark); }
+
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:22px; }
+  @media(max-width:760px){ .grid2{ grid-template-columns:1fr; } }
+
+  /* ---------- comparison table ---------- */
+  table.compare{ width:100%; border-collapse:collapse; font-size:.95rem; }
+  table.compare th, table.compare td{
+    padding:12px 14px; text-align:center; border-bottom:1px solid rgba(0,0,0,.08);
+  }
+  table.compare thead th{
+    background: var(--wood); color:#fff5e6; font-family:'Lalezar'; font-weight:400; font-size:1rem;
+  }
+  table.compare tbody tr:nth-child(odd){ background: rgba(0,0,0,.03); }
+  table.compare td:first-child{ font-weight:700; color:var(--wood-dark); text-align:right; }
+
+  /* ---------- equation builder ---------- */
+  .equation-box{
+    background: var(--bg-2);
+    border:1px dashed var(--amber);
+    border-radius: 14px;
+    padding: 22px;
+    display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:center;
+    font-family:'JetBrains Mono';
+  }
+  .eq-slot{
+    min-width:150px; text-align:center;
+    background: rgba(255,255,255,.06);
+    border:2px dashed rgba(255,255,255,.25);
+    border-radius:10px; padding:10px 14px; color:#cbd6c9;
+    cursor:pointer; transition:.2s; font-size:.95rem;
+  }
+  .eq-slot.filled{ border-style:solid; border-color: var(--good); color:var(--paper); background: rgba(111,174,123,.15); font-weight:700;}
+  .eq-op{ font-size:1.4rem; color: var(--amber); }
+  .word-bank{ display:flex; flex-wrap:wrap; gap:10px; margin-top:18px; justify-content:center; }
+  .word-chip{
+    background: var(--amber); color:#3a2606; border:none; padding:9px 16px;
+    border-radius:999px; font-family:'Tajawal'; font-weight:700; cursor:pointer; font-size:.88rem;
+    transition:.15s;
+  }
+  .word-chip:hover{ transform:translateY(-2px); box-shadow:0 6px 14px rgba(0,0,0,.3); }
+  .word-chip:disabled{ opacity:.25; cursor:default; transform:none; box-shadow:none; }
+  #eqFeedback{ text-align:center; margin-top:14px; font-weight:700; min-height:24px; }
+
+  /* =========================================================
+     VIRTUAL LAB — signature element
+  ==========================================================*/
+  .lab-frame{
+    background: linear-gradient(180deg, #24170d, #150d07 75%);
+    border-radius: 22px;
+    padding: 28px 20px 20px;
+    position:relative;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.05), 0 30px 60px -25px rgba(0,0,0,.7);
+  }
+  .lab-steps{
+    display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin-bottom:22px;
+  }
+  .lab-step-dot{
+    display:flex; align-items:center; gap:6px;
+    font-size:.72rem; color:#a08a68; background:rgba(255,255,255,.04);
+    padding:6px 12px; border-radius:999px; border:1px solid rgba(255,255,255,.07);
+  }
+  .lab-step-dot.active{ color:#151007; background: var(--amber); font-weight:700; }
+  .lab-step-dot.done{ color: var(--good); border-color: var(--good); }
+
+  .bench{
+    perspective: 1400px;
+    display:flex; justify-content:center; align-items:flex-end;
+    min-height: 340px; padding: 30px 10px 0;
+    position:relative;
+  }
+  .rig{
+    display:flex; align-items:flex-end; gap:46px; transform-style:preserve-3d;
+    transform: rotateX(6deg);
+  }
+
+  /* --- wooden rack --- */
+  .rack{
+    width:190px; height:64px;
+    background: linear-gradient(180deg,var(--wood), var(--wood-dark));
+    border-radius:8px;
+    position:relative;
+    box-shadow: 0 14px 18px -8px rgba(0,0,0,.6);
+  }
+  .rack::before{
+    content:""; position:absolute; inset:6px 6px auto 6px; height:22px;
+    background: repeating-linear-gradient(90deg, #1c1108 0 10px, transparent 10px 40px);
+    border-radius:20px;
+  }
+
+  /* --- test tube 1: reaction tube --- */
+  .tube-col{ position:relative; display:flex; flex-direction:column; align-items:center; }
+  .tube{
+    width:46px; height:150px;
+    border-radius: 0 0 23px 23px / 0 0 30px 30px;
+    background: linear-gradient(100deg, rgba(255,255,255,.35), rgba(255,255,255,.05) 40%, rgba(255,255,255,.25) 100%);
+    border:1px solid rgba(255,255,255,.35);
+    border-top:none;
+    position:relative; overflow:hidden;
+    margin-bottom:-2px;
+    box-shadow: 0 10px 24px -10px rgba(0,0,0,.6);
+  }
+  .tube-rim{
+    width:52px; height:10px; border-radius:6px;
+    background: linear-gradient(180deg,#fff,#cfd3d6);
+    margin-bottom:-4px; z-index:2;
+  }
+  .liquid{
+    position:absolute; bottom:0; left:0; right:0; height:0%;
+    background: linear-gradient(180deg, var(--amber), var(--amber-dark));
+    transition: height 1s ease;
+  }
+  .liquid.yeasty{ background: linear-gradient(180deg,#c98a2f,#8a5a13); }
+  .bubble{
+    position:absolute; bottom:6px; border-radius:50%;
+    background: rgba(255,255,255,.75);
+    opacity:0; width:6px; height:6px;
+  }
+  .rig.running .bubble{ animation: rise 2.4s linear infinite; }
+  @keyframes rise{
+    0%{ transform:translateY(0) scale(.6); opacity:0; }
+    15%{ opacity:.9; }
+    90%{ opacity:.3; }
+    100%{ transform:translateY(-120px) scale(1.1); opacity:0; }
+  }
+
+  /* --- rubber tube to balloon --- */
+  .connector{
+    width:10px; height:26px; background: var(--lavender-dark);
+    margin-bottom:-2px; border-radius:3px; z-index:3;
+  }
+
+  /* --- balloon --- */
+  .balloon-wrap{ display:flex; flex-direction:column; align-items:center; transform-origin:bottom center; cursor:grab; }
+  .balloon-wrap.traveling{ transition: transform 1.3s cubic-bezier(.5,0,.3,1); cursor:default; }
+  .balloon-wrap.hint::after{
+    content:"👆 اضغط لنقل البالون"; position:absolute; top:-26px; right:-4px;
+    font-size:.62rem; background: rgba(0,0,0,.55); color:#fff2d6; padding:3px 8px;
+    border-radius:999px; white-space:nowrap; animation: pulseHint 1.4s ease-in-out infinite;
+  }
+  @keyframes pulseHint{ 0%,100%{ opacity:.6; } 50%{ opacity:1; } }
+  .gas-puff{
+    position:fixed; width:8px; height:8px; border-radius:50%;
+    background: radial-gradient(circle, #fff, rgba(255,255,255,0));
+    pointer-events:none; z-index:50; opacity:0;
+  }
+  .gas-puff.go{ animation: puffDown 1s ease-in forwards; }
+  @keyframes puffDown{
+    0%{ opacity:.9; transform: translateY(0) scale(1); }
+    100%{ opacity:0; transform: translateY(46px) scale(.4); }
+  }
+  .balloon{
+    width:70px; height:80px;
+    background: radial-gradient(circle at 32% 28%, #c6b7ec, var(--lavender) 55%, var(--lavender-dark) 100%);
+    border-radius: 50% 50% 48% 48% / 58% 58% 42% 42%;
+    transform: scale(.28);
+    transition: transform 1.4s cubic-bezier(.34,1.4,.4,1);
+    box-shadow: inset -8px -8px 16px rgba(0,0,0,.18), 0 8px 20px -6px rgba(0,0,0,.5);
+    position:relative;
+  }
+  .balloon::after{
+    content:""; position:absolute; bottom:-6px; left:50%; transform:translateX(-50%);
+    width:0; height:0; border-left:6px solid transparent; border-right:6px solid transparent;
+    border-top:8px solid var(--lavender-dark);
+  }
+  .balloon-label{ font-size:.68rem; color:#c9beea; margin-top:8px; text-align:center; max-width:110px;}
+
+  /* --- limewater tube --- */
+  .lime-col{ display:flex; flex-direction:column; align-items:center; margin-inline-start:20px;}
+  .lime-tube{
+    width:40px; height:110px;
+    border-radius:0 0 20px 20px / 0 0 26px 26px;
+    border:1px solid rgba(255,255,255,.35); border-top:none;
+    background: linear-gradient(100deg, rgba(255,255,255,.3), rgba(255,255,255,.05) 45%, rgba(255,255,255,.22));
+    position:relative; overflow:hidden;
+  }
+  .lime-liquid{
+    position:absolute; bottom:0; left:0; right:0; height:55%;
+    background: rgba(210,230,240,.55);
+    transition: background 1.2s ease, filter 1.2s ease;
+  }
+  .lime-liquid.cloudy{ background:#eef4f2; filter: none; }
+  .lime-label{ font-size:.66rem; color:#b7c9c0; margin-top:8px; text-align:center; }
+
+  .lab-controls{
+    display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin-top:26px;
+  }
+  .btn{
+    border:none; border-radius:12px; padding:12px 22px; font-family:'Tajawal'; font-weight:700;
+    cursor:pointer; font-size:.92rem; transition:.15s;
+  }
+  .btn-primary{ background: var(--amber); color:#3a2606; }
+  .btn-primary:hover{ background:#eab359; transform:translateY(-2px); }
+  .btn-primary:disabled{ opacity:.3; cursor:not-allowed; transform:none; }
+  .btn-ghost{ background: transparent; border:1px solid rgba(255,255,255,.25); color:#e7e2d0; }
+  .btn-ghost:hover{ background: rgba(255,255,255,.08); }
+
+  .timer-readout{
+    text-align:center; margin-top:16px; color:#d9cba4; font-size:.85rem;
+  }
+  .timer-readout .mono{ font-size:1.3rem; color: var(--amber); }
+
+  .lab-note{
+    background: rgba(255,255,255,.05); border-radius:12px; padding:14px 18px;
+    margin-top:18px; font-size:.88rem; color:#d5cdb2; min-height:26px;
+    border-inline-start:3px solid var(--amber);
+  }
+
+  /* results chart */
+  .chart{ display:flex; align-items:flex-end; gap:14px; padding:10px 6px; }
+  .bar-col{ flex:1; display:flex; flex-direction:column; align-items:center; gap:8px; }
+  .bar-track{
+    width:100%; max-width:42px; height:150px; border-radius:6px 6px 0 0;
+    background: rgba(0,0,0,.06);
+    display:flex; align-items:flex-end; overflow:hidden;
+  }
+  .bar{ width:100%; background: linear-gradient(180deg,var(--lavender),var(--lavender-dark)); border-radius:6px 6px 0 0; height:2%; transition: height 1s ease; }
+  .bar-tag{ font-size:.72rem; color: var(--ink-soft); }
+  .bar-value{ font-size:.72rem; font-weight:700; color: var(--wood-dark); font-family:'JetBrains Mono'; }
+
+  /* ---------- observation log ---------- */
+  textarea.obs{
+    width:100%; min-height:90px; border-radius:12px; border:1px solid rgba(0,0,0,.15);
+    padding:12px 14px; font-family:'Tajawal'; font-size:.95rem; resize:vertical; background:#fffdf7;
+  }
+
+  /* ---------- think section ---------- */
+  .think-card{
+    background: linear-gradient(135deg, #f3ded0, #ecd2c4);
+    border-radius: var(--radius); padding:22px 26px; color:var(--ink);
+  }
+  .think-q{ font-weight:700; margin-bottom:8px; display:flex; gap:8px; }
+  details{ margin-bottom:14px; background: rgba(255,255,255,.5); border-radius:10px; padding:10px 14px; }
+  summary{ cursor:pointer; font-weight:700; color: var(--wood-dark); }
+  details p{ margin:10px 0 2px; }
+
+  /* ---------- quiz ---------- */
+  .quiz-q{ margin-bottom:22px; }
+  .quiz-q p.qtext{ font-weight:700; margin-bottom:10px; }
+  .opt{
+    display:block; width:100%; text-align:right; margin-bottom:8px;
+    background: #fffdf7; border:1.5px solid rgba(0,0,0,.12); border-radius:10px;
+    padding:10px 14px; cursor:pointer; font-family:'Tajawal'; font-size:.92rem; color:var(--ink);
+    transition:.15s;
+  }
+  .opt:hover{ border-color: var(--amber); }
+  .opt.correct{ background:#e4f3e6; border-color:var(--good); font-weight:700;}
+  .opt.wrong{ background:#fbe7e4; border-color:var(--bad); }
+  .score-box{ text-align:center; margin-top:20px; font-weight:700; color: var(--wood-dark); font-size:1.05rem; }
+
+  footer{ text-align:center; padding:40px 20px; color:#8a9689; font-size:.82rem; }
+  footer a{ color:var(--amber); }
+
+  .badge-eco{
+    display:inline-block; background: var(--bg-2); color:#c9d8cc; font-size:.72rem;
+    padding:4px 10px; border-radius:999px; margin-inline-start:6px; border:1px solid var(--line);
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">منهاج العلوم والحياة &nbsp;•&nbsp; الصف السابع &nbsp;•&nbsp; فلسطين &nbsp;•&nbsp; الوحدة: التغذية والتنفس في الكائنات الحية</div>
+
+<header class="hero">
+  <div class="hero-scene" id="heroScene"></div>
+  <div class="wrap">
+    <span class="eyebrow">🧫 نشاط (٤) — درس تفاعلي</span>
+    <h1>التّخمّر في خلايا <span>الخميرة</span></h1>
+    <p class="lead">
+      كيف تستطيع كائنات دقيقة كالخميرة أن تُنتج طاقة دون أن تتنفس أكسجينًا؟
+      في هذا الدرس ستفهم آلية التنفّس اللاهوائي، ثم تنتقل إلى المختبر الافتراضي لتنفّذ
+      تجربة الخميرة والمحلول السكري بنفسك، وتسجّل ملاحظاتك، وتتوصّل إلى الاستنتاج بنفسك.
+    </p>
+    <div class="hero-meta">
+      <span class="pill">⏱️ حصة صفية واحدة</span>
+      <span class="pill">🧪 مختبر افتراضي تفاعلي</span>
+      <span class="pill">📱 يعمل على الهاتف والحاسوب</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ================= LESSON EXPLANATION ================= -->
+  <section id="lesson">
+    <div class="section-head">
+      <div class="kicker">أولًا</div>
+      <h2>ما الذي يحدث داخل خلية الخميرة؟</h2>
+      <p>الخميرة كائن حيّ مجهري ينتمي إلى الفطريات، ولها قدرة استثنائية: يمكنها إنتاج الطاقة سواء توفّر الأكسجين أم غاب تمامًا.</p>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>🫧 التخمّر الكحولي</h3>
+        <p>
+          عندما تغيب أو تقل كمية الأكسجين حول الخميرة، تلجأ خلاياها إلى مسار بديل يُسمّى
+          <strong>التنفّس اللاهوائي</strong>، وأكثر أشكاله شيوعًا في الخميرة هو
+          <strong>التخمّر الكحولي</strong>. في هذا المسار تُفكَّك جزيئات السكر (الجلوكوز) جزئيًا
+          داخل السيتوبلازم، فينتج عنها كحول إيثيلي وغاز ثاني أكسيد الكربون، إضافة إلى كمية
+          صغيرة من الطاقة تكفي الخميرة لنشاطها الحيوي.
+        </p>
+      </div>
+      <div class="card">
+        <h3>💨 لماذا ينتفخ البالون؟</h3>
+        <p>
+          في تجربة اليوم، الغاز المتصاعد من المحلول السكري بعد إضافة الخميرة هو
+          <strong>ثاني أكسيد الكربون</strong>. هذا الغاز لا يستطيع الهروب من الأنبوب المُحكم الغلق،
+          فيتجمّع تدريجيًا داخل البالون المربوط على فوهته ويجعله ينتفخ شيئًا فشيئًا، وهو دليل مادي
+          ملموس على أنّ تفاعلًا كيميائيًا حيويًا يجري داخل الأنبوب.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= COMPARISON ================= -->
+  <section id="compare">
+    <div class="section-head">
+      <div class="kicker">ثانيًا</div>
+      <h2>التنفّس الهوائي مقابل التنفّس اللاهوائي</h2>
+      <p>قارن بين المسارين لتدرك لماذا تُفضّل معظم الكائنات الأكسجين، ولماذا تبقى الخميرة قادرة على العمل بدونه.</p>
+    </div>
+    <div class="card">
+      <table class="compare">
+        <thead>
+          <tr><th>وجه المقارنة</th><th>التنفّس الهوائي</th><th>التنفّس اللاهوائي (التخمّر)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>الحاجة إلى الأكسجين</td><td>ضروري</td><td>غير ضروري</td></tr>
+          <tr><td>المادة المتفاعلة</td><td>الجلوكوز + الأكسجين</td><td>الجلوكوز فقط</td></tr>
+          <tr><td>النواتج</td><td>ثاني أكسيد الكربون + ماء</td><td>كحول إيثيلي + ثاني أكسيد الكربون</td></tr>
+          <tr><td>كمية الطاقة الناتجة</td><td>كبيرة</td><td>قليلة جدًا</td></tr>
+          <tr><td>مكان حدوثه في الخلية</td><td>الميتوكندريا بشكل أساسي</td><td>السيتوبلازم</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ================= EQUATION BUILDER ================= -->
+  <section id="equation">
+    <div class="section-head">
+      <div class="kicker">ثالثًا</div>
+      <h2>ابنِ المعادلة اللفظية للتخمّر</h2>
+      <p>اسحب/اضغط الكلمة المناسبة من البنك أدناه وضعها في مكانها الصحيح من المعادلة.</p>
+    </div>
+    <div class="card">
+      <div class="equation-box" id="eqBox">
+        <div class="eq-slot" data-answer="الجلوكوز (السكر)" id="slot0">؟</div>
+        <span class="eq-op">⟵</span>
+        <div class="eq-slot" data-answer="الكحول الإيثيلي" id="slot1">؟</div>
+        <span class="eq-op">+</span>
+        <div class="eq-slot" data-answer="ثاني أكسيد الكربون" id="slot2">؟</div>
+        <span class="eq-op">+</span>
+        <div class="eq-slot" data-answer="طاقة قليلة" id="slot3">؟</div>
+      </div>
+      <div class="word-bank" id="wordBank"></div>
+      <div id="eqFeedback"></div>
+    </div>
+  </section>
+
+  <!-- ================= VIRTUAL LAB — SIGNATURE ================= -->
+  <section id="lab">
+    <div class="section-head">
+      <div class="kicker">رابعًا — المختبر الافتراضي</div>
+      <h2>نفّذ تجربة "التخمّر في خلايا الخميرة" بنفسك</h2>
+      <p>اتبع خطوات الكتاب المدرسي داخل هذا المختبر ثلاثي الأبعاد، وسجّل ما يحدث في كل مرحلة.</p>
+    </div>
+
+    <div class="lab-frame">
+      <div class="lab-steps" id="labSteps"></div>
+
+      <div class="bench">
+        <div class="rig" id="rig">
+          <div class="tube-col">
+            <div class="connector" id="connector" style="opacity:0;"></div>
+            <div class="balloon-wrap" id="balloonWrap" style="position:absolute; top:-92px;">
+              <div class="balloon" id="balloon"></div>
+              <div class="balloon-label">البالون يتمدد بفعل تجمّع الغاز</div>
+            </div>
+            <div class="tube-rim"></div>
+            <div class="tube" id="tube">
+              <div class="liquid" id="liquid"></div>
+              <div class="bubble" style="left:10px; animation-delay:.1s;"></div>
+              <div class="bubble" style="left:22px; animation-delay:.9s;"></div>
+              <div class="bubble" style="left:32px; animation-delay:.5s;"></div>
+              <div class="bubble" style="left:16px; animation-delay:1.4s;"></div>
+            </div>
+            <div class="rack"></div>
+          </div>
+
+          <div class="lime-col">
+            <div class="lime-tube" id="limeTube">
+              <div class="lime-liquid" id="limeLiquid"></div>
+            </div>
+            <div class="lime-label">أنبوب ماء الجير<br>(لاختبار الغاز)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="timer-readout">
+        الزمن داخل المختبر: <span class="mono" id="simClock">٠٠:٠٠</span> / ٣٠:٠٠ دقيقة
+      </div>
+
+      <div class="lab-controls">
+        <button class="btn btn-primary" id="btnStep" onclick="nextStep()">ابدأ التجربة</button>
+        <button class="btn btn-ghost" id="btnReset" onclick="resetLab()">إعادة الضبط</button>
+      </div>
+
+      <div class="lab-note" id="labNote">اضغط "ابدأ التجربة" لوضع المحلول السكري في الأنبوب.</div>
+    </div>
+
+    <div class="card" style="margin-top:24px;">
+      <h3>📊 النتائج: حجم الغاز المتجمّع عبر الزمن</h3>
+      <p>هذه القراءات سُجّلت تلقائيًا أثناء تنفيذك للتجربة أعلاه:</p>
+      <div class="chart" id="chart">
+        <div class="bar-col">
+          <div class="bar-value" id="val0">—</div>
+          <div class="bar-track"><div class="bar" id="bar0"></div></div>
+          <div class="bar-tag">البداية</div>
+        </div>
+        <div class="bar-col">
+          <div class="bar-value" id="val1">—</div>
+          <div class="bar-track"><div class="bar" id="bar1"></div></div>
+          <div class="bar-tag">١٠ دقائق</div>
+        </div>
+        <div class="bar-col">
+          <div class="bar-value" id="val2">—</div>
+          <div class="bar-track"><div class="bar" id="bar2"></div></div>
+          <div class="bar-tag">٢٠ دقيقة</div>
+        </div>
+        <div class="bar-col">
+          <div class="bar-value" id="val3">—</div>
+          <div class="bar-track"><div class="bar" id="bar3"></div></div>
+          <div class="bar-tag">٣٠ دقيقة</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:24px;">
+      <h3>✍️ سجّل مشاهداتك وفسّرها</h3>
+      <p>بعد إتمام التجربة، اكتب ما لاحظته على البالون والمحلول، وفسّر سبب حدوث ذلك:</p>
+      <textarea class="obs" id="obsBox" placeholder="مثال: لاحظتُ أنّ البالون بدأ ينتفخ تدريجيًا بعد إضافة الخميرة إلى المحلول السكري، وذلك بسبب..."></textarea>
+    </div>
+  </section>
+
+  <!-- ================= THINK ================= -->
+  <section id="think">
+    <div class="section-head">
+      <div class="kicker">خامسًا</div>
+      <h2>فكّر</h2>
+    </div>
+    <div class="think-card">
+      <div class="think-q">💡 ١) فسّر: انبعاث روائح كريهة بين أشجار الغابات الكثيفة.</div>
+      <details>
+        <summary>أظهر إجابة نموذجية</summary>
+        <p>بين أشجار الغابات الكثيفة يقلّ تجدّد الهواء ويشتد التزاحم، فتتحلل الأوراق والمواد العضوية الميتة في بيئة فقيرة بالأكسجين. تقوم كائنات مجهرية (فطريات وبكتيريا) بعملية تخمّر لاهوائي لهذه المواد، فتُنتج غازات وموادّ كيميائية ذات روائح كريهة كناتج ثانوي لتنفّسها اللاهوائي.</p>
+      </details>
+
+      <div class="think-q" style="margin-top:18px;">💡 ٢) للخميرة أهمية اقتصادية كبيرة. وضّح ذلك.</div>
+      <details>
+        <summary>أظهر إجابة نموذجية</summary>
+        <p>تُستخدم الخميرة في صناعة الخبز؛ إذ يجعل غاز ثاني أكسيد الكربون الناتج عن تخمّرها العجين يرتفع ويصبح إسفنجيًا. كما تُستخدم في الصناعات الغذائية والمشروبات المخمّرة لإنتاج الكحول الإيثيلي، وتدخل في بعض الصناعات الدوائية والغذائية الأخرى التي تعتمد على نواتج تخمّرها.</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- ================= QUIZ ================= -->
+  <section id="quiz">
+    <div class="section-head">
+      <div class="kicker">سادسًا — تحقّق من فهمك</div>
+      <h2>اختبر نفسك</h2>
+    </div>
+    <div class="card" id="quizCard"></div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    درس تفاعلي في مبحث العلوم والحياة — الصف السابع، فلسطين. <span class="badge-eco">التنفّس اللاهوائي / التخمّر</span>
+  </div>
+</footer>
+
+<script>
+/* ---------------- hero floating bubbles ---------------- */
+(function(){
+  const scene = document.getElementById('heroScene');
+  for(let i=0;i<14;i++){
+    const b = document.createElement('div');
+    b.className='float-bubble';
+    const size = 6 + Math.random()*16;
+    b.style.width = size+'px';
+    b.style.height = size+'px';
+    b.style.left = (Math.random()*100)+'%';
+    b.style.bottom = '-40px';
+    b.style.animationDuration = (7+Math.random()*8)+'s';
+    b.style.animationDelay = (Math.random()*8)+'s';
+    scene.appendChild(b);
+  }
+})();
+
+/* ---------------- equation builder ---------------- */
+const words = ["الكحول الإيثيلي","الجلوكوز (السكر)","طاقة قليلة","ثاني أكسيد الكربون"];
+const bank = document.getElementById('wordBank');
+function shuffle(arr){ return arr.map(v=>[Math.random(),v]).sort((a,b)=>a[0]-b[0]).map(v=>v[1]); }
+shuffle(words).forEach(w=>{
+  const btn = document.createElement('button');
+  btn.className='word-chip'; btn.textContent=w;
+  btn.onclick=()=>placeWord(w, btn);
+  bank.appendChild(btn);
+});
+let filledCount = 0;
+function placeWord(word, btn){
+  const slots = document.querySelectorAll('.eq-slot');
+  for(const slot of slots){
+    if(!slot.classList.contains('filled')){
+      slot.textContent = word;
+      if(slot.dataset.answer === word){
+        slot.classList.add('filled');
+        btn.disabled = true;
+        filledCount++;
+      } else {
+        slot.style.borderColor = 'var(--bad)';
+        setTimeout(()=>{ slot.textContent='؟'; slot.style.borderColor=''; },900);
+      }
+      break;
+    }
+  }
+  if(filledCount === 4){
+    document.getElementById('eqFeedback').innerHTML =
+      '<span style="color:var(--good)">✅ أحسنت! هذه هي المعادلة اللفظية الصحيحة لعملية التخمّر الكحولي.</span>';
+  }
+}
+
+/* ---------------- virtual lab ---------------- */
+const stepsInfo = [
+  "ضع المحلول السكري في الأنبوب",
+  "أضف ملعقة من الخميرة المحسّنة",
+  "اربط البالون على فوهة الأنبوب بإحكام",
+  "ضع الأنبوب في مكان دافئ وابدأ العد الزمني",
+  "انقل البالون فوق ماء الجير لفحص الغاز"
+];
+let step = 0;
+const stepsWrap = document.getElementById('labSteps');
+function renderSteps(){
+  stepsWrap.innerHTML='';
+  stepsInfo.forEach((s,i)=>{
+    const d = document.createElement('div');
+    d.className = 'lab-step-dot' + (i<step?' done':'') + (i===step?' active':'');
+    d.textContent = (i+1)+'. '+s;
+    stepsWrap.appendChild(d);
+  });
+}
+renderSteps();
+
+const liquid = document.getElementById('liquid');
+const balloon = document.getElementById('balloon');
+const connector = document.getElementById('connector');
+const rig = document.getElementById('rig');
+const labNote = document.getElementById('labNote');
+const btnStep = document.getElementById('btnStep');
+const simClock = document.getElementById('simClock');
+const limeLiquid = document.getElementById('limeLiquid');
+
+const arNums = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
+function toArabicDigits(n){ return String(n).split('').map(c=> arNums[+c] ?? c).join(''); }
+
+let timerInterval = null;
+let simSeconds = 0; // out of 1800 (30 min)
+const dataPoints = [0,0,0,0];
+
+function nextStep(){
+  if(step===0){
+    liquid.style.height = '38%';
+    labNote.textContent = "تم سكب ٥ مل من المحلول السكري في الأنبوب. الآن أضف الخميرة.";
+  } else if(step===1){
+    liquid.classList.add('yeasty');
+    liquid.style.height = '46%';
+    labNote.textContent = "أُضيفت الخميرة المحسّنة إلى المحلول. الآن اربط البالون على فوهة الأنبوب.";
+  } else if(step===2){
+    connector.style.opacity = 1;
+    document.getElementById('balloonWrap').style.top = '-70px';
+    balloon.style.transform = 'scale(.28)';
+    labNote.textContent = "تم إحكام ربط البالون. ضع الأنبوب في مكان دافئ وابدأ العدّ الزمني.";
+  } else if(step===3){
+    startReaction();
+    return; // handled asynchronously, don't advance immediately
+  } else if(step===4){
+    moveBalloonOverLime();
+    return; // handled asynchronously
+  }
+  step++;
+  renderSteps();
+  if(step < stepsInfo.length){
+    btnStep.textContent = "الخطوة التالية: " + stepsInfo[step];
+  }
+}
+
+function startReaction(){
+  rig.classList.add('running');
+  btnStep.disabled = true;
+  labNote.textContent = "التفاعل جارٍ... راقب فقاعات الغاز والبالون وهو يتمدد تدريجيًا.";
+  simSeconds = 0;
+  const totalSimSeconds = 1800; // 30 minutes simulated
+  const durationRealMs = 14000; // compress into 14 real seconds
+  const stepMs = 100;
+  const increment = totalSimSeconds / (durationRealMs/stepMs);
+
+  timerInterval = setInterval(()=>{
+    simSeconds += increment;
+    if(simSeconds >= totalSimSeconds){ simSeconds = totalSimSeconds; }
+    const mm = Math.floor(simSeconds/60);
+    const ss = Math.floor(simSeconds%60);
+    simClock.textContent = toArabicDigits(String(mm).padStart(2,'0')) + ':' + toArabicDigits(String(ss).padStart(2,'0'));
+
+    const progress = simSeconds/totalSimSeconds; // 0 -> 1
+    const scale = 0.28 + progress*0.95;
+    balloon.style.transform = 'scale(' + scale.toFixed(2) + ')';
+
+    // sample data points at ~0,10,20,30 min
+    if(simSeconds >= 0 && dataPoints[0]===0) dataPoints[0] = 4;
+    if(simSeconds >= 600 && dataPoints[1]===0) dataPoints[1] = Math.round(20+progress*10);
+    if(simSeconds >= 1200 && dataPoints[2]===0) dataPoints[2] = Math.round(55+progress*10);
+    if(simSeconds >= totalSimSeconds){
+      dataPoints[3] = Math.round(90+Math.random()*8);
+      clearInterval(timerInterval);
+      rig.classList.remove('running');
+      labNote.textContent = "انتهى نصف الساعة تقريبًا. لاحظ حجم البالون النهائي! اضغط للمتابعة لاختبار نوع الغاز.";
+      btnStep.disabled = false;
+      btnStep.textContent = "الخطوة التالية: " + stepsInfo[4];
+      step = 4;
+      renderSteps();
+      drawChart();
+    }
+  }, stepMs);
+}
+
+function moveBalloonOverLime(){
+  btnStep.disabled = true;
+  const balloonWrap = document.getElementById('balloonWrap');
+  const limeTube = document.getElementById('limeTube');
+
+  const balloonRect = balloonWrap.getBoundingClientRect();
+  const limeRect = limeTube.getBoundingClientRect();
+
+  const dx = (limeRect.left + limeRect.width/2) - (balloonRect.left + balloonRect.width/2);
+  const dy = (limeRect.top - 30) - balloonRect.top;
+
+  labNote.textContent = "يتم الآن نقل البالون المنتفخ ليصبح فوق فوهة أنبوب ماء الجير مباشرة...";
+  balloonWrap.classList.add('traveling');
+  balloonWrap.style.transform = `translate(${dx}px, ${dy}px)`;
+
+  setTimeout(()=>{
+    labNote.textContent = "أُفرغ الغاز المحبوس داخل البالون فوق ماء الجير...";
+    releaseGasPuffs(limeTube);
+  }, 1350);
+
+  setTimeout(()=>{
+    limeLiquid.classList.add('cloudy');
+    labNote.innerHTML = "أصبح ماء الجير عكرًا (حليبيًّا)! هذا دليل قاطع على أنّ الغاز المتجمّع هو <strong>ثاني أكسيد الكربون CO₂</strong>، الناتج عن تخمّر الخميرة للسكر.";
+    btnStep.textContent = "اكتملت التجربة ✔";
+    step++;
+    renderSteps();
+  }, 2500);
+}
+
+function releaseGasPuffs(limeTube){
+  const rect = limeTube.getBoundingClientRect();
+  for(let i=0;i<6;i++){
+    const puff = document.createElement('div');
+    puff.className = 'gas-puff';
+    puff.style.left = (rect.left + rect.width/2 - 4 + (Math.random()*16-8)) + 'px';
+    puff.style.top = (rect.top + 4) + 'px';
+    document.body.appendChild(puff);
+    setTimeout(()=> puff.classList.add('go'), i*90);
+    setTimeout(()=> puff.remove(), 1300 + i*90);
+  }
+}
+
+function drawChart(){
+  for(let i=0;i<4;i++){
+    const bar = document.getElementById('bar'+i);
+    const val = document.getElementById('val'+i);
+    bar.style.height = dataPoints[i] + '%';
+    val.textContent = dataPoints[i] > 0 ? toArabicDigits(dataPoints[i]) + '%' : '—';
+  }
+}
+
+function resetLab(){
+  clearInterval(timerInterval);
+  step = 0;
+  liquid.style.height = '0%';
+  liquid.classList.remove('yeasty');
+  connector.style.opacity = 0;
+  const bw = document.getElementById('balloonWrap');
+  bw.classList.remove('traveling');
+  bw.style.transform = 'translate(0,0)';
+  bw.style.top = '-92px';
+  balloon.style.transform = 'scale(.28)';
+  limeLiquid.classList.remove('cloudy');
+  rig.classList.remove('running');
+  simSeconds = 0;
+  simClock.textContent = '٠٠:٠٠';
+  dataPoints.fill(0);
+  drawChart();
+  btnStep.disabled = false;
+  btnStep.textContent = "ابدأ التجربة";
+  labNote.textContent = 'اضغط "ابدأ التجربة" لوضع المحلول السكري في الأنبوب.';
+  renderSteps();
+}
+
+/* ---------------- quiz ---------------- */
+const quizData = [
+  {
+    q: "أي غاز يتجمّع داخل البالون في تجربة تخمّر الخميرة؟",
+    opts: ["الأكسجين","ثاني أكسيد الكربون","النيتروجين","الهيدروجين"],
+    correct: 1
+  },
+  {
+    q: "أين يحدث التخمّر داخل خلية الخميرة؟",
+    opts: ["الميتوكندريا","النواة","السيتوبلازم","الفجوة العصارية"],
+    correct: 2
+  },
+  {
+    q: "ما الدليل التجريبي الذي يؤكد أن الغاز الناتج هو ثاني أكسيد الكربون؟",
+    opts: ["ارتفاع درجة حرارة الأنبوب","تعكّر ماء الجير","تغيّر لون المحلول السكري","ظهور رائحة نفّاذة"],
+    correct: 1
+  },
+  {
+    q: "مقارنة بالتنفّس الهوائي، فإنّ التخمّر ينتج:",
+    opts: ["طاقة أكبر بكثير","نفس كمية الطاقة","طاقة أقل بكثير","لا يُنتج طاقة إطلاقًا"],
+    correct: 2
+  }
+];
+
+const quizCard = document.getElementById('quizCard');
+let score = 0, answered = 0;
+quizData.forEach((item, qi)=>{
+  const block = document.createElement('div');
+  block.className = 'quiz-q';
+  const p = document.createElement('p');
+  p.className='qtext';
+  p.textContent = (qi+1)+'. '+item.q;
+  block.appendChild(p);
+  item.opts.forEach((opt, oi)=>{
+    const b = document.createElement('button');
+    b.className='opt';
+    b.textContent = opt;
+    b.onclick = ()=> handleAnswer(block, oi, item.correct, b);
+    block.appendChild(b);
+  });
+  quizCard.appendChild(block);
+});
+const scoreBox = document.createElement('div');
+scoreBox.className='score-box';
+quizCard.appendChild(scoreBox);
+
+function handleAnswer(block, chosen, correct, btnEl){
+  const opts = block.querySelectorAll('.opt');
+  if(block.dataset.done) return;
+  block.dataset.done = "1";
+  opts.forEach((o,i)=>{
+    o.style.pointerEvents='none';
+    if(i===correct) o.classList.add('correct');
+    else if(i===chosen) o.classList.add('wrong');
+  });
+  if(chosen===correct) score++;
+  answered++;
+  if(answered === quizData.length){
+    scoreBox.textContent = "نتيجتك: " + score + " من " + quizData.length +
+      (score===quizData.length ? " 🎉 ممتاز!" : " — راجع الأجزاء التي أخطأت فيها.");
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>التعرّف إلى المِجهر المركّب</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Amiri:wght@400;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg-deep:#0d2b28;
+  --bg-deeper:#082019;
+  --glass:#7fe9c4;
+  --glass-dim:#3f8c79;
+  --brass:#c9a24b;
+  --brass-dim:#8a7038;
+  --paper:#f6efe1;
+  --paper-dim:#e7dcc4;
+  --ink:#16241f;
+  --ink-soft:#3a4f47;
+  --danger:#c2543a;
+  --ok:#3f8c5c;
+  font-size:16px;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:
+    radial-gradient(ellipse at 20% -10%, rgba(127,233,196,0.10), transparent 50%),
+    radial-gradient(ellipse at 90% 10%, rgba(201,162,75,0.12), transparent 45%),
+    var(--bg-deeper);
+  color:var(--paper);
+  font-family:'Tajawal', sans-serif;
+  line-height:1.8;
+  overflow-x:hidden;
+}
+::selection{background:var(--glass); color:var(--ink);}
+::-webkit-scrollbar{width:10px;}
+::-webkit-scrollbar-track{background:var(--bg-deeper);}
+::-webkit-scrollbar-thumb{background:var(--glass-dim); border-radius:10px;}
+
+h1,h2,h3{font-family:'Amiri', serif; font-weight:700; margin:0;}
+.eyebrow{
+  font-family:'IBM Plex Mono', monospace;
+  letter-spacing:.12em;
+  font-size:.72rem;
+  color:var(--glass);
+  text-transform:uppercase;
+  display:flex; align-items:center; gap:10px;
+}
+.eyebrow::before{content:""; width:26px; height:1px; background:var(--glass);}
+
+a{color:var(--glass);}
+
+/* ============ HERO ============ */
+.hero{
+  position:relative;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:6vh 6vw 8vh;
+  overflow:hidden;
+}
+.hero::after{
+  content:"";
+  position:absolute; inset:0;
+  background-image:
+    linear-gradient(rgba(127,233,196,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(127,233,196,0.05) 1px, transparent 1px);
+  background-size:42px 42px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 10%, transparent 75%);
+  pointer-events:none;
+}
+.hero-grid{
+  position:relative; z-index:2;
+  display:grid;
+  grid-template-columns:1.1fr 1fr;
+  gap:4vw;
+  align-items:center;
+}
+@media(max-width:900px){ .hero-grid{grid-template-columns:1fr; text-align:center;} }
+
+.hero h1{font-size:clamp(2.1rem, 4.6vw, 3.6rem); color:var(--paper); line-height:1.25;}
+.hero h1 span{color:var(--glass);}
+.hero p.lead{color:var(--paper-dim); font-size:1.05rem; max-width:46ch; margin-top:18px;}
+@media(max-width:900px){ .hero p.lead{margin-inline:auto;} }
+
+.meta-row{display:flex; gap:14px; flex-wrap:wrap; margin-top:28px;}
+@media(max-width:900px){ .meta-row{justify-content:center;} }
+.meta-chip{
+  border:1px solid var(--glass-dim);
+  color:var(--glass);
+  padding:7px 16px;
+  border-radius:999px;
+  font-size:.82rem;
+  font-family:'IBM Plex Mono', monospace;
+}
+.cta-row{margin-top:36px; display:flex; gap:14px; flex-wrap:wrap;}
+@media(max-width:900px){ .cta-row{justify-content:center;} }
+.btn{
+  font-family:'Tajawal', sans-serif;
+  font-weight:700;
+  border-radius:10px;
+  padding:14px 26px;
+  border:none;
+  cursor:pointer;
+  font-size:.98rem;
+  transition:transform .15s ease, box-shadow .15s ease, background .2s ease;
+}
+.btn-primary{background:var(--glass); color:var(--ink);}
+.btn-primary:hover{transform:translateY(-2px); box-shadow:0 10px 26px rgba(127,233,196,0.25);}
+.btn-ghost{background:transparent; color:var(--paper); border:1px solid rgba(246,239,225,0.35);}
+.btn-ghost:hover{border-color:var(--paper); transform:translateY(-2px);}
+
+/* ===== 3D microscope ===== */
+.scene-wrap{
+  perspective:1400px;
+  display:flex; justify-content:center; align-items:center;
+  min-height:440px;
+}
+.scope{
+  position:relative;
+  width:300px; height:380px;
+  transform-style:preserve-3d;
+  transform: rotateX(8deg) rotateY(-18deg);
+  transition:transform .4s ease;
+  animation:floaty 7s ease-in-out infinite;
+}
+.scene-wrap:hover .scope{transform:rotateX(8deg) rotateY(-26deg);}
+@keyframes floaty{
+  0%,100%{transform:rotateX(8deg) rotateY(-18deg) translateY(0px);}
+  50%{transform:rotateX(8deg) rotateY(-18deg) translateY(-10px);}
+}
+.scope *{position:absolute; transform-style:preserve-3d;}
+.s-base{
+  width:170px; height:18px; bottom:0; left:65px;
+  background:linear-gradient(180deg,#3a4f47,#1c2925);
+  border-radius:8px;
+  box-shadow:0 18px 30px rgba(0,0,0,0.45);
+}
+.s-arm{
+  width:26px; height:230px; bottom:16px; left:120px;
+  background:linear-gradient(90deg,#22332e,#3a4f47 50%,#22332e);
+  border-radius:14px;
+  transform: rotateZ(8deg);
+  transform-origin:bottom center;
+}
+.s-stage{
+  width:120px; height:14px; bottom:128px; left:78px;
+  background:linear-gradient(180deg,#c9a24b,#8a7038);
+  border-radius:4px;
+  box-shadow:0 6px 14px rgba(0,0,0,.4);
+}
+.s-slide{
+  width:70px; height:22px; bottom:138px; left:103px;
+  background:rgba(127,233,196,0.55);
+  border:1px solid rgba(127,233,196,0.9);
+  border-radius:2px;
+}
+.s-condenser{
+  width:18px; height:34px; bottom:96px; left:148px;
+  background:#2b3a35; border-radius:3px;
+}
+.s-nose{
+  width:42px; height:42px; bottom:262px; left:96px;
+  background:radial-gradient(circle at 35% 30%, #4c645c, #1c2925);
+  border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;
+  box-shadow:0 8px 16px rgba(0,0,0,.4);
+}
+.s-obj{
+  width:14px; height:46px; bottom:222px;
+  background:linear-gradient(180deg,#c9a24b,#7a6230);
+  border-radius:3px;
+}
+.s-obj1{left:90px; transform:rotateZ(-18deg);}
+.s-obj2{left:112px;}
+.s-obj3{left:134px; transform:rotateZ(18deg);}
+.s-head{
+  width:64px; height:46px; bottom:300px; left:88px;
+  background:linear-gradient(160deg,#3a4f47,#1c2925);
+  border-radius:30px 30px 10px 10px;
+}
+.s-tube{
+  width:20px; height:60px; bottom:330px; left:130px;
+  background:linear-gradient(90deg,#22332e,#3a4f47);
+  border-radius:6px;
+  transform:rotateZ(-10deg);
+}
+.s-eye{
+  width:22px; height:22px; bottom:380px; left:96px;
+  background:radial-gradient(circle at 35% 30%, var(--glass), var(--glass-dim));
+  border-radius:50%;
+  box-shadow:0 0 16px rgba(127,233,196,0.7);
+}
+.s-eye2{left:124px;}
+.s-knob{
+  width:20px; height:20px; bottom:170px; left:148px;
+  background:radial-gradient(circle at 35% 30%, #c9a24b, #7a6230);
+  border-radius:50%;
+}
+.s-knob2{bottom:150px; left:152px; width:14px; height:14px;}
+.label3d{
+  font-family:'IBM Plex Mono', monospace;
+  font-size:.62rem;
+  color:var(--glass);
+  white-space:nowrap;
+  background:rgba(8,32,25,0.75);
+  padding:3px 8px;
+  border:1px solid var(--glass-dim);
+  border-radius:6px;
+  pointer-events:none;
+  opacity:.85;
+}
+.l-eye{bottom:392px; left:60px;}
+.l-nose{bottom:268px; left:-10px;}
+.l-stage{bottom:130px; left:-26px;}
+.l-base{bottom:-14px; left:60px;}
+.l-arm{bottom:160px; left:200px;}
+
+/* ============ SECTION shell ============ */
+section{padding:9vh 6vw;}
+.section-head{max-width:760px; margin-bottom:5vh;}
+.section-head h2{font-size:clamp(1.7rem,3vw,2.5rem); color:var(--paper); margin-top:14px;}
+.section-head p{color:var(--paper-dim); margin-top:12px; max-width:60ch;}
+
+/* ============ LESSON / PARTS ============ */
+.parts-wrap{
+  display:grid;
+  grid-template-columns:1.1fr 1fr;
+  gap:40px;
+}
+@media(max-width:900px){.parts-wrap{grid-template-columns:1fr;}}
+.diagram-card{
+  background:linear-gradient(160deg, rgba(127,233,196,0.06), rgba(8,32,25,0.4));
+  border:1px solid var(--glass-dim);
+  border-radius:18px;
+  padding:30px;
+  position:relative;
+}
+#interactiveSvg{width:100%; height:auto; display:block;}
+.hotspot{
+  cursor:pointer;
+  fill:var(--glass);
+  fill-opacity:.18;
+  stroke:var(--glass);
+  stroke-width:1.4;
+  transition:fill-opacity .2s ease;
+}
+.hotspot:hover, .hotspot.active{fill-opacity:.5;}
+.parts-list{display:flex; flex-direction:column; gap:10px;}
+.part-item{
+  background:rgba(246,239,225,0.04);
+  border:1px solid rgba(246,239,225,0.12);
+  border-radius:12px;
+  padding:16px 18px;
+  cursor:pointer;
+  transition:border-color .2s ease, background .2s ease;
+}
+.part-item:hover, .part-item.active{
+  border-color:var(--glass);
+  background:rgba(127,233,196,0.08);
+}
+.part-item h3{font-size:1.02rem; color:var(--brass); font-family:'Tajawal',sans-serif; font-weight:700;}
+.part-item p{font-size:.88rem; color:var(--paper-dim); margin-top:6px; display:none;}
+.part-item.active p{display:block;}
+
+/* ============ LAB ============ */
+.lab-shell{
+  background:linear-gradient(180deg, rgba(8,32,25,0.6), rgba(8,32,25,0.9));
+  border:1px solid var(--brass-dim);
+  border-radius:22px;
+  padding:5vh 5vw;
+}
+.lab-grid{
+  display:grid;
+  grid-template-columns:1.15fr 0.85fr;
+  gap:40px;
+}
+@media(max-width:980px){.lab-grid{grid-template-columns:1fr;}}
+
+.viewport-card{
+  background:var(--bg-deep);
+  border:1px solid var(--glass-dim);
+  border-radius:18px;
+  padding:24px;
+}
+.scope-screen{
+  width:100%;
+  aspect-ratio:1/1;
+  max-width:420px;
+  margin:0 auto;
+  border-radius:50%;
+  background:radial-gradient(circle, #f0fff8 0%, #d3f3e6 55%, #0d2b28 100%);
+  border:10px solid #1c2925;
+  position:relative;
+  overflow:hidden;
+  box-shadow:inset 0 0 60px rgba(0,0,0,.45), 0 0 0 4px var(--brass-dim);
+}
+.specimen{
+  position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  transition:transform .35s ease, filter .35s ease;
+  filter:blur(14px);
+}
+.specimen svg{width:78%; height:78%;}
+.crosshair{
+  position:absolute; inset:0;
+  background:
+    linear-gradient(to bottom, transparent calc(50% - .5px), rgba(13,43,40,0.25) calc(50% - .5px), rgba(13,43,40,0.25) calc(50% + .5px), transparent calc(50% + .5px)),
+    linear-gradient(to right, transparent calc(50% - .5px), rgba(13,43,40,0.25) calc(50% - .5px), rgba(13,43,40,0.25) calc(50% + .5px), transparent calc(50% + .5px));
+  pointer-events:none;
+}
+.focus-readout{
+  position:absolute; bottom:10px; right:50%; transform:translateX(50%);
+  font-family:'IBM Plex Mono', monospace;
+  font-size:.7rem;
+  background:rgba(13,43,40,0.7);
+  color:var(--glass);
+  padding:3px 10px;
+  border-radius:8px;
+}
+.controls-block{margin-top:24px; display:flex; flex-direction:column; gap:18px;}
+.control-row label{
+  font-size:.85rem; color:var(--brass); display:flex; justify-content:space-between;
+  font-family:'IBM Plex Mono', monospace;
+}
+input[type=range]{
+  width:100%; accent-color:var(--glass); margin-top:8px;
+}
+.select-row{display:flex; gap:12px; flex-wrap:wrap;}
+select{
+  flex:1; min-width:140px;
+  background:var(--bg-deeper);
+  color:var(--paper);
+  border:1px solid var(--glass-dim);
+  border-radius:10px;
+  padding:10px 12px;
+  font-family:'Tajawal', sans-serif;
+  font-size:.92rem;
+}
+
+.lab-panel{
+  background:rgba(246,239,225,0.04);
+  border:1px solid rgba(246,239,225,0.12);
+  border-radius:18px;
+  padding:26px;
+}
+.lab-panel h3{color:var(--paper); font-size:1.2rem; margin-bottom:14px;}
+.calc-box{
+  background:var(--bg-deeper);
+  border:1px dashed var(--glass-dim);
+  border-radius:14px;
+  padding:18px;
+  margin-top:16px;
+  font-family:'IBM Plex Mono', monospace;
+  font-size:.9rem;
+  color:var(--glass);
+}
+.calc-box .total{font-size:1.5rem; color:var(--paper); font-weight:700; font-family:'Tajawal'; margin-top:6px;}
+
+.q-list{display:flex; flex-direction:column; gap:18px; margin-top:20px;}
+.q-item{
+  background:var(--bg-deeper);
+  border-radius:12px;
+  padding:16px 18px;
+  border:1px solid rgba(246,239,225,0.08);
+}
+.q-item p.q{color:var(--paper); font-weight:500; margin-bottom:10px;}
+.q-item input[type=text], .q-item textarea{
+  width:100%;
+  background:rgba(246,239,225,0.05);
+  border:1px solid var(--glass-dim);
+  border-radius:8px;
+  color:var(--paper);
+  padding:9px 12px;
+  font-family:'Tajawal', sans-serif;
+  resize:vertical;
+}
+.q-item .check{
+  margin-top:8px; font-size:.82rem; display:none;
+  padding:6px 10px; border-radius:6px; width:fit-content;
+}
+.q-item .check.ok{display:block; background:rgba(63,140,92,0.2); color:#9fe3b6;}
+.q-item .check.bad{display:block; background:rgba(194,84,58,0.2); color:#f0a98f;}
+
+.lab-footer{display:flex; gap:14px; margin-top:24px; flex-wrap:wrap;}
+
+/* result strip */
+.result-strip{
+  margin-top:30px;
+  background:linear-gradient(120deg, rgba(127,233,196,0.12), rgba(201,162,75,0.10));
+  border:1px solid var(--glass);
+  border-radius:16px;
+  padding:22px 26px;
+  display:none;
+}
+.result-strip.show{display:block;}
+.result-strip h4{color:var(--glass); font-size:1.05rem; margin-bottom:8px;}
+.result-strip p{color:var(--paper);}
+
+/* ============ CONCLUSION ============ */
+.conclusion-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(230px,1fr));
+  gap:20px;
+}
+.conc-card{
+  background:rgba(246,239,225,0.04);
+  border:1px solid rgba(246,239,225,0.12);
+  border-radius:16px;
+  padding:22px;
+}
+.conc-card .num{
+  font-family:'IBM Plex Mono', monospace;
+  color:var(--brass); font-size:.78rem; letter-spacing:.1em;
+}
+.conc-card h3{color:var(--paper); font-size:1.05rem; margin-top:8px;}
+.conc-card p{color:var(--paper-dim); font-size:.88rem; margin-top:8px;}
+
+footer{
+  padding:5vh 6vw;
+  text-align:center;
+  color:var(--paper-dim);
+  font-size:.82rem;
+  border-top:1px solid rgba(246,239,225,0.08);
+}
+
+@media (prefers-reduced-motion: reduce){
+  .scope{animation:none !important; transition:none !important;}
+  *{transition:none !important;}
+}
+
+.skip-link{position:absolute; right:-999px; top:0; background:var(--glass); color:var(--ink); padding:10px; z-index:99;}
+.skip-link:focus{right:10px; top:10px;}
+
+button:focus-visible, select:focus-visible, input:focus-visible, .part-item:focus-visible, .hotspot:focus-visible{
+  outline:3px solid var(--brass); outline-offset:2px;
+}
+
+  /* ═══ RESPONSIVE MOBILE & TABLET — AUTO-INJECTED ═══ */
+  @media (max-width: 768px) {
+    body { padding: 8px !important; font-size: 15px !important; overflow-x: hidden !important; }
+    .container, [class*="container"], [class*="wrapper"] { padding: 8px !important; max-width: 100% !important; }
+    canvas { width: 100% !important; height: auto !important; display: block !important; touch-action: none; max-width: 100% !important; }
+    svg { max-width: 100% !important; height: auto !important; }
+    h1 { font-size: clamp(18px, 5vw, 32px) !important; }
+    h2 { font-size: clamp(16px, 4vw, 26px) !important; }
+    h3 { font-size: clamp(14px, 3.5vw, 22px) !important; }
+    p, li, td, th, label, span { font-size: clamp(13px, 3.5vw, 16px) !important; }
+    [class*="grid"] { grid-template-columns: 1fr !important; }
+    [class*="flex"] { flex-wrap: wrap !important; }
+    input[type="range"] { width: 100% !important; min-height: 36px; }
+    input[type="number"], input[type="text"], select, textarea { 
+      font-size: 16px !important; width: 100% !important; box-sizing: border-box; padding: 8px !important;
+    }
+    button { min-height: 44px !important; font-size: 14px !important; touch-action: manipulation; padding: 10px 14px !important; }
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 13px !important; }
+    th, td { padding: 6px 4px !important; white-space: nowrap; }
+    [style*="display: grid"], [style*="display:grid"] { display: flex !important; flex-direction: column !important; }
+    .lab-window, [class*="lab-window"] { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+    header { padding: 12px !important; }
+    .controls, [class*="controls"] { flex-direction: column !important; gap: 8px !important; }
+  }
+  @media (max-width: 480px) {
+    body { padding: 4px !important; }
+    h1 { font-size: clamp(16px, 5vw, 24px) !important; }
+    button { width: 100% !important; }
+  }
+  /* ═══ END RESPONSIVE ═══ */
+</style>
+</head>
+<body>
+
+<style>
+.vlab-back-btn {
+  position: fixed; top: 10px; left: 10px; z-index: 99999;
+  background: rgba(10,22,40,0.93); border: 1px solid rgba(0,200,150,0.4);
+  border-radius: 22px; padding: 8px 16px;
+  display: inline-flex; align-items: center; gap: 7px;
+  color: #00C896; font-family: Tajawal, Cairo, Arial, sans-serif;
+  font-size: 13px; font-weight: 700; text-decoration: none;
+  backdrop-filter: blur(8px); box-shadow: 0 4px 18px rgba(0,0,0,0.3);
+  transition: background 0.2s;
+}
+.vlab-back-btn:hover { background: rgba(0,200,150,0.18); color: #00C896; }
+</style>
+
+<a href="../grade8.html" class="vlab-back-btn">&#8594; العودة للصف</a>
+
+
+<a href="#lesson" class="skip-link">تخطَّ إلى المحتوى</a>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="hero-grid">
+    <div>
+      <div class="eyebrow">العلوم والحياة · الصف الثامن · وحدة المجاهر</div>
+      <h1>التعرُّف إلى <span>المِجهر المركّب</span></h1>
+      <p class="lead">رحلة بصرية ثلاثية الأبعاد إلى داخل أهمّ أداة في عالم الأحياء؛ تعرّف على أجزاء المجهر، واستخدم المختبر الافتراضي لحساب التكبير الكلي ومشاهدة أثره على العيّنة، تمامًا كما تفعل في مختبر مدرستك.</p>
+      <div class="meta-row">
+        <span class="meta-chip">٧ أسئلة تجربة</span>
+        <span class="meta-chip">مختبر افتراضي تفاعلي</span>
+        <span class="meta-chip">يعمل على الجوال والحاسوب</span>
+      </div>
+      <div class="cta-row">
+        <button class="btn btn-primary" onclick="document.getElementById('lesson').scrollIntoView({behavior:'smooth'})">ابدأ الدرس</button>
+        <button class="btn btn-ghost" onclick="document.getElementById('lab').scrollIntoView({behavior:'smooth'})">انتقل إلى المختبر الافتراضي</button>
+      </div>
+    </div>
+    <div class="scene-wrap" aria-hidden="true">
+      <div class="scope">
+        <div class="s-base"></div>
+        <div class="s-arm"></div>
+        <div class="s-stage"></div>
+        <div class="s-slide"></div>
+        <div class="s-condenser"></div>
+        <div class="s-nose"></div>
+        <div class="s-obj s-obj1"></div>
+        <div class="s-obj s-obj2"></div>
+        <div class="s-obj s-obj3"></div>
+        <div class="s-head"></div>
+        <div class="s-tube"></div>
+        <div class="s-eye"></div>
+        <div class="s-eye s-eye2"></div>
+        <div class="s-knob"></div>
+        <div class="s-knob s-knob2"></div>
+        <div class="label3d l-eye">عدسة عينية</div>
+        <div class="label3d l-nose">قرص الأجسام</div>
+        <div class="label3d l-stage">المنضدة</div>
+        <div class="label3d l-base">القاعدة</div>
+        <div class="label3d l-arm">الذراع</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ LESSON: PARTS ============ -->
+<section id="lesson">
+  <div class="section-head">
+    <div class="eyebrow">السؤال ١</div>
+    <h2>الأجزاء الأساسية للمِجهر المركّب</h2>
+    <p>انقر على أي جزء في الرسم، أو على اسمه في القائمة، لتتعرّف على وظيفته. هذا يجيب عن السؤال الأول في النشاط.</p>
+  </div>
+
+  <div class="parts-wrap">
+    <div class="diagram-card">
+      <svg id="interactiveSvg" viewBox="0 0 360 420" xmlns="http://www.w3.org/2000/svg">
+        <!-- base -->
+        <ellipse cx="180" cy="395" rx="120" ry="14" fill="#1c2925"/>
+        <rect x="80" y="370" width="200" height="26" rx="10" fill="#3a4f47"/>
+        <!-- arm -->
+        <rect x="225" y="120" width="26" height="255" rx="12" fill="#2b3a35" transform="rotate(6 238 247)"/>
+        <!-- stage -->
+        <rect x="95" y="240" width="150" height="16" rx="4" fill="#c9a24b"/>
+        <rect x="135" y="232" width="70" height="22" rx="2" fill="#bdeede" stroke="#7fe9c4"/>
+        <!-- condenser -->
+        <rect x="178" y="262" width="16" height="34" rx="3" fill="#2b3a35"/>
+        <!-- nosepiece -->
+        <ellipse cx="200" cy="170" rx="36" ry="32" fill="#3a4f47"/>
+        <rect x="172" y="190" width="12" height="42" rx="3" fill="#c9a24b" transform="rotate(-16 178 211)"/>
+        <rect x="194" y="195" width="12" height="48" rx="3" fill="#c9a24b"/>
+        <rect x="216" y="190" width="12" height="42" rx="3" fill="#c9a24b" transform="rotate(16 222 211)"/>
+        <!-- head/tube -->
+        <rect x="178" y="95" width="60" height="42" rx="20" fill="#2b3a35"/>
+        <rect x="216" y="55" width="18" height="55" rx="6" fill="#3a4f47" transform="rotate(-12 225 82)"/>
+        <!-- eyepieces -->
+        <circle cx="195" cy="48" r="13" fill="#7fe9c4"/>
+        <circle cx="222" cy="48" r="13" fill="#7fe9c4"/>
+        <!-- focus knobs -->
+        <circle cx="255" cy="220" r="11" fill="#c9a24b"/>
+        <circle cx="259" cy="245" r="8" fill="#c9a24b"/>
+
+        <!-- hotspots -->
+        <circle class="hotspot" data-part="eyepiece" cx="208" cy="48" r="28" tabindex="0" role="button" aria-label="العدسة العينية"></circle>
+        <ellipse class="hotspot" data-part="nosepiece" cx="200" cy="170" rx="42" ry="38" tabindex="0" role="button" aria-label="قرص حامل الأجسام"></ellipse>
+        <rect class="hotspot" data-part="stage" x="95" y="232" width="150" height="24" rx="6" tabindex="0" role="button" aria-label="المنضدة"></rect>
+        <rect class="hotspot" data-part="condenser" x="172" y="258" width="28" height="42" rx="6" tabindex="0" role="button" aria-label="المكثف"></rect>
+        <circle class="hotspot" data-part="focusknob" cx="256" cy="232" r="22" tabindex="0" role="button" aria-label="مقابض الضبط"></circle>
+        <rect class="hotspot" data-part="arm" x="222" y="125" width="32" height="120" rx="14" tabindex="0" role="button" aria-label="الذراع" transform="rotate(6 238 185)"></rect>
+        <rect class="hotspot" data-part="base" x="80" y="368" width="200" height="30" rx="12" tabindex="0" role="button" aria-label="القاعدة"></rect>
+      </svg>
+    </div>
+
+    <div class="parts-list" id="partsList">
+      <div class="part-item" data-part="eyepiece">
+        <h3>العدسة العينية (Eyepiece)</h3>
+        <p>العدسة التي ينظر الطالب من خلالها، وتحمل عادةً ترميز تكبير مثل ×١٠ أو ×١٥.</p>
+      </div>
+      <div class="part-item" data-part="nosepiece">
+        <h3>قرص حامل الأجسام (Nosepiece)</h3>
+        <p>قرص دوّار يحمل عدسات شيئية متعددة بتكبيرات مختلفة (×٤، ×١٠، ×٤٠)، يمكن تدويره لاختيار العدسة المناسبة.</p>
+      </div>
+      <div class="part-item" data-part="stage">
+        <h3>المنضدة (Stage)</h3>
+        <p>السطح المستوي الذي توضع عليه الشريحة الزجاجية الحاملة للعيّنة، وغالبًا ما يحتوي مشبكًا لتثبيتها.</p>
+      </div>
+      <div class="part-item" data-part="condenser">
+        <h3>المكثف ومرآة الإضاءة</h3>
+        <p>يجمّع أشعة الضوء ويوجّهها نحو العيّنة، ويتحكّم في شدّة الإضاءة الواصلة إلى الشريحة.</p>
+      </div>
+      <div class="part-item" data-part="focusknob">
+        <h3>مقابض الضبط الكلي والدقيق</h3>
+        <p>تُستخدم لرفع المنضدة أو خفضها للحصول على صورة واضحة (تبئير الصورة).</p>
+      </div>
+      <div class="part-item" data-part="arm">
+        <h3>الذراع (Arm)</h3>
+        <p>يربط الجزء العلوي بقاعدة المجهر، ويُستخدم لحمله بأمان من جهة، مع إسناده من القاعدة باليد الأخرى.</p>
+      </div>
+      <div class="part-item" data-part="base">
+        <h3>القاعدة (Base)</h3>
+        <p>تُثبّت المجهر على الطاولة وتحمل وزنه بالكامل، وقد تحتوي مصدر إضاءة كهربائيًا في المجاهر الحديثة.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LESSON: MAGNIFICATION NUMBERS ============ -->
+<section style="padding-top:0;">
+  <div class="section-head">
+    <div class="eyebrow">السؤال ٢ و ٣</div>
+    <h2>ماذا تعني الأرقام على العدسات؟</h2>
+    <p>كل رقم مطبوع على العدسة (مثل ×١٠ أو ×٤٠) يمثّل <strong style="color:var(--glass)">قوة تكبير</strong> تلك العدسة لقطر الجسم المرئي. وجود عدسات شيئية متعدّدة بتكبيرات متفاوتة يتيح للطالب الانتقال تدريجيًا من رؤية عامة (تكبير منخفض) إلى تفاصيل دقيقة (تكبير عالٍ) دون فقدان العيّنة من مجال الرؤية.</p>
+  </div>
+  <div class="conclusion-grid">
+    <div class="conc-card">
+      <div class="num">عدسة شيئية</div>
+      <h3>×٤ تكبير ضعيف</h3>
+      <p>للمسح السريع وتحديد موقع العيّنة على الشريحة قبل التكبير.</p>
+    </div>
+    <div class="conc-card">
+      <div class="num">عدسة شيئية</div>
+      <h3>×١٠ تكبير متوسط</h3>
+      <p>لرؤية تفاصيل أوضح بعد تحديد موقع العيّنة.</p>
+    </div>
+    <div class="conc-card">
+      <div class="num">عدسة شيئية</div>
+      <h3>×٤٠ تكبير قوي</h3>
+      <p>لدراسة التراكيب الدقيقة جدًا داخل الخلايا أو الأنسجة.</p>
+    </div>
+    <div class="conc-card">
+      <div class="num">عدسة عينية</div>
+      <h3>×١٠ أو ×١٥</h3>
+      <p>تُضاعِف ما كبّرته العدسة الشيئية، والتكبير الكلي = العينية × الشيئية.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ VIRTUAL LAB ============ -->
+<section id="lab">
+  <div class="section-head">
+    <div class="eyebrow">المختبر الافتراضي</div>
+    <h2>نفِّذ التجربة بنفسك</h2>
+    <p>اختر عدسة شيئية وعدسة عينية كما لو كنت تقف أمام المجهر الحقيقي في مختبر مدرستك، اضبط البؤرة، وراقب أثر تغيير العدسات على وضوح الصورة وحجمها، ثم أجب عن أسئلة النشاط أدناه.</p>
+  </div>
+
+  <div class="lab-shell">
+    <div class="lab-grid">
+      <!-- viewport -->
+      <div class="viewport-card">
+        <div class="scope-screen" id="scopeScreen">
+          <div class="specimen" id="specimenSVG">
+            <svg viewBox="0 0 200 200">
+              <g id="cellGroup">
+                <ellipse cx="100" cy="100" rx="70" ry="55" fill="#bfe9c9" stroke="#3f8c5c" stroke-width="3"/>
+                <circle cx="80" cy="95" r="18" fill="#7fb89a" stroke="#3f8c5c" stroke-width="2"/>
+                <circle cx="80" cy="95" r="6" fill="#3f8c5c"/>
+                <circle cx="125" cy="80" r="9" fill="#a3d6b6" stroke="#3f8c5c" stroke-width="1.5"/>
+                <circle cx="118" cy="120" r="7" fill="#a3d6b6" stroke="#3f8c5c" stroke-width="1.5"/>
+                <circle cx="140" cy="110" r="5" fill="#a3d6b6" stroke="#3f8c5c" stroke-width="1.5"/>
+                <circle cx="65" cy="120" r="6" fill="#a3d6b6" stroke="#3f8c5c" stroke-width="1.5"/>
+              </g>
+            </svg>
+          </div>
+          <div class="crosshair"></div>
+          <div class="focus-readout" id="focusReadout">البؤرة: غير مضبوطة</div>
+        </div>
+
+        <div class="controls-block">
+          <div class="select-row">
+            <select id="objectiveSelect" aria-label="اختر العدسة الشيئية">
+              <option value="4">عدسة شيئية ×٤</option>
+              <option value="10">عدسة شيئية ×١٠</option>
+              <option value="40">عدسة شيئية ×٤٠</option>
+            </select>
+            <select id="eyepieceSelect" aria-label="اختر العدسة العينية">
+              <option value="10">عدسة عينية ×١٠</option>
+              <option value="15">عدسة عينية ×١٥</option>
+            </select>
+          </div>
+
+          <div class="control-row">
+            <label>مقبض الضبط (التبئير) <span id="focusVal">٥٠٪</span></label>
+            <input type="range" id="focusRange" min="0" max="100" value="50">
+          </div>
+          <div class="control-row">
+            <label>شدّة الإضاءة (المكثف) <span id="lightVal">٧٠٪</span></label>
+            <input type="range" id="lightRange" min="10" max="100" value="70">
+          </div>
+        </div>
+      </div>
+
+      <!-- panel -->
+      <div class="lab-panel">
+        <h3>حساب التكبير الكلي</h3>
+        <p style="color:var(--paper-dim); font-size:.9rem;">التكبير الكلي = تكبير العدسة العينية × تكبير العدسة الشيئية</p>
+        <div class="calc-box">
+          <div>العدسة العينية المختارة: <span id="calcEye">×١٠</span></div>
+          <div>العدسة الشيئية المختارة: <span id="calcObj">×٤</span></div>
+          <div class="total">التكبير الكلي = <span id="calcTotal">٤٠</span> مرة</div>
+        </div>
+
+        <div class="result-strip" id="bestFocusBanner">
+          <h4>صورة واضحة ✓</h4>
+          <p>أحسنت! وصلت إلى نقطة التبئير الصحيحة، ولاحظ كيف تبدو التراكيب الداخلية للخلية بوضوح أكبر عند العدسات الأقوى.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- questions -->
+    <div class="lab-panel" style="margin-top:30px;">
+      <h3>أسئلة النشاط (٤ - ٧)</h3>
+      <div class="q-list">
+        <div class="q-item">
+          <p class="q">٤- ما اسم الجزء في المِجهر المركّب الذي نضع عليه الشريحة؟</p>
+          <input type="text" data-answer="المنضدة|منضدة" placeholder="اكتب إجابتك هنا">
+          <div class="check"></div>
+        </div>
+        <div class="q-item">
+          <p class="q">٥- كيف يتمّ تثبيت الشريحة على المنضدة؟</p>
+          <textarea rows="2" data-answer="مشبك|مشابك|ماسكة|الملقط" placeholder="اكتب إجابتك هنا"></textarea>
+          <div class="check"></div>
+        </div>
+        <div class="q-item">
+          <p class="q">٦- ما الجزء الذي يتحكّم في شدّة الإضاءة الواصلة إلى الشريحة؟</p>
+          <input type="text" data-answer="المكثف|مكثف|الحجاب الحاجز|حجاب" placeholder="اكتب إجابتك هنا">
+          <div class="check"></div>
+        </div>
+        <div class="q-item">
+          <p class="q">٧- احسب مقدار التكبير لعيّنة وُضعت تحت عدسة شيئية ×٤٠ وعدسة عينية ×١٥.</p>
+          <input type="text" data-answer="600|٦٠٠" placeholder="اكتب الناتج رقمًا">
+          <div class="check"></div>
+        </div>
+      </div>
+
+      <div class="lab-footer">
+        <button class="btn btn-primary" id="checkAnswers">تحقق من إجاباتي</button>
+        <button class="btn btn-ghost" id="resetLab">إعادة ضبط المختبر</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONCLUSION ============ -->
+<section>
+  <div class="section-head">
+    <div class="eyebrow">الاستنتاج</div>
+    <h2>ماذا تعلّمنا من التجربة؟</h2>
+  </div>
+  <div class="conclusion-grid">
+    <div class="conc-card">
+      <div class="num">استنتاج ١</div>
+      <h3>التكبير الكلي حاصل ضرب</h3>
+      <p>تكبير الصورة الذي يراه الطالب هو ناتج ضرب تكبير العدسة العينية في تكبير العدسة الشيئية المستخدمة.</p>
+    </div>
+    <div class="conc-card">
+      <div class="num">استنتاج ٢</div>
+      <h3>العدسات الأقوى تحتاج ضبطًا أدق</h3>
+      <p>كلما زاد التكبير، قلّ مجال الرؤية ووجب استخدام مقبض الضبط الدقيق للحصول على صورة واضحة.</p>
+    </div>
+    <div class="conc-card">
+      <div class="num">استنتاج ٣</div>
+      <h3>الإضاءة تتناسب مع التكبير</h3>
+      <p>زيادة التكبير غالبًا تتطلّب زيادة شدّة الإضاءة عبر المكثف للحفاظ على وضوح التفاصيل.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  درس تفاعلي وفق منهاج العلوم والحياة - فلسطين، الصف الثامن — وحدة المجاهر، نشاط (٢) التعرّف إلى المجهر المركّب.
+</footer>
+
+<script>
+// ---------- Parts interaction ----------
+const partItems = document.querySelectorAll('.part-item');
+const hotspots = document.querySelectorAll('.hotspot');
+
+function activatePart(name){
+  partItems.forEach(p=>p.classList.toggle('active', p.dataset.part===name));
+  hotspots.forEach(h=>h.classList.toggle('active', h.dataset.part===name));
+}
+partItems.forEach(p=>{
+  p.addEventListener('click', ()=> activatePart(p.classList.contains('active') ? null : p.dataset.part));
+});
+hotspots.forEach(h=>{
+  h.addEventListener('click', ()=> activatePart(h.dataset.part));
+  h.addEventListener('keypress', (e)=>{ if(e.key==='Enter') activatePart(h.dataset.part); });
+});
+
+// ---------- Virtual lab ----------
+const objectiveSelect = document.getElementById('objectiveSelect');
+const eyepieceSelect = document.getElementById('eyepieceSelect');
+const focusRange = document.getElementById('focusRange');
+const lightRange = document.getElementById('lightRange');
+const focusVal = document.getElementById('focusVal');
+const lightVal = document.getElementById('lightVal');
+const specimen = document.getElementById('specimenSVG');
+const focusReadout = document.getElementById('focusReadout');
+const calcEye = document.getElementById('calcEye');
+const calcObj = document.getElementById('calcObj');
+const calcTotal = document.getElementById('calcTotal');
+const bestFocusBanner = document.getElementById('bestFocusBanner');
+const scopeScreen = document.getElementById('scopeScreen');
+
+const arabicNums = {4:'٤',10:'١٠',15:'١٥',40:'٤٠'};
+
+function toArabicDigits(n){
+  return String(n).replace(/[0-9]/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
+}
+
+function updateLab(){
+  const obj = parseInt(objectiveSelect.value,10);
+  const eye = parseInt(eyepieceSelect.value,10);
+  const total = obj*eye;
+
+  calcEye.textContent = '×' + arabicNums[eye];
+  calcObj.textContent = '×' + arabicNums[obj];
+  calcTotal.textContent = toArabicDigits(total);
+
+  // scale specimen based on objective power (visual feel of zoom)
+  const scaleMap = {4:1, 10:1.7, 40:3.4};
+  const baseScale = scaleMap[obj] * (eye===15 ? 1.15 : 1);
+  specimen.style.transform = `scale(${baseScale.toFixed(2)})`;
+
+  evaluateFocus();
+}
+
+function evaluateFocus(){
+  const focus = parseInt(focusRange.value,10);
+  const light = parseInt(lightRange.value,10);
+  const distFromIdeal = Math.abs(focus-50);
+  const blur = Math.max(0, (distFromIdeal/50)*16);
+  specimen.style.filter = `blur(${blur.toFixed(1)}px) brightness(${0.55 + light/100*0.9})`;
+
+  focusVal.textContent = toArabicDigits(focus) + '٪';
+  lightVal.textContent = toArabicDigits(light) + '٪';
+
+  if(blur < 1.5){
+    focusReadout.textContent = 'البؤرة: واضحة ✓';
+    bestFocusBanner.classList.add('show');
+  } else {
+    focusReadout.textContent = 'البؤرة: ' + (focus<50 ? 'اخفض المنضدة قليلاً' : 'ارفع المنضدة قليلاً');
+    bestFocusBanner.classList.remove('show');
+  }
+}
+
+objectiveSelect.addEventListener('change', updateLab);
+eyepieceSelect.addEventListener('change', updateLab);
+focusRange.addEventListener('input', evaluateFocus);
+lightRange.addEventListener('input', evaluateFocus);
+
+updateLab();
+
+// ---------- Answer checking ----------
+document.getElementById('checkAnswers').addEventListener('click', ()=>{
+  document.querySelectorAll('.q-item').forEach(item=>{
+    const field = item.querySelector('input,textarea');
+    const checkDiv = item.querySelector('.check');
+    const accepted = field.dataset.answer.split('|').map(s=>s.trim());
+    const userVal = field.value.trim();
+    const isCorrect = accepted.some(a => userVal.includes(a) || a.includes(userVal)) && userVal.length>0;
+    checkDiv.classList.remove('ok','bad');
+    if(isCorrect){
+      checkDiv.textContent = 'إجابة صحيحة ✓';
+      checkDiv.classList.add('ok');
+    } else {
+      checkDiv.textContent = userVal.length===0 ? 'لم تتم الإجابة بعد' : 'حاول مرة أخرى، راجع شرح الأجزاء أعلاه';
+      checkDiv.classList.add('bad');
+    }
+  });
+});
+
+document.getElementById('resetLab').addEventListener('click', ()=>{
+  objectiveSelect.value='4';
+  eyepieceSelect.value='10';
+  focusRange.value=50;
+  lightRange.value=70;
+  document.querySelectorAll('.q-item input, .q-item textarea').forEach(f=>f.value='');
+  document.querySelectorAll('.q-item .check').forEach(c=>{c.classList.remove('ok','bad'); c.textContent='';});
+  updateLab();
+});
+</script>
+</body>
+</html>

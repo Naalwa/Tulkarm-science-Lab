@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>البرق والرعد | مختبر افتراضي - العلوم والحياة، الصف الخامس</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lalezar&family=Tajawal:wght@400;500;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+<style>
+:root{
+  --midnight:#0a0e24;
+  --midnight-2:#141a3d;
+  --storm-violet:#463a82;
+  --lightning:#baf0ff;
+  --lightning-core:#ffffff;
+  --gold-dome:#e8b94a;
+  --gold-soft:#f3d489;
+  --cloud:#d7dcea;
+  --cloud-dark:#9aa3c2;
+  --charge-neg:#3f6bf0;
+  --charge-pos:#ff5a52;
+  --paper:#f7f2e7;
+  --paper-2:#efe6d3;
+  --ink:#221f2e;
+  --ink-soft:#5a5570;
+  --amber:#e08a2e;
+  --card-shadow: 0 10px 30px rgba(34,31,46,.12);
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  font-family:'Tajawal',sans-serif;
+  background:var(--paper);
+  color:var(--ink);
+  overflow-x:hidden;
+}
+h1,h2,h3,.display{font-family:'Lalezar',sans-serif; font-weight:400; letter-spacing:.5px;}
+.utility, .num, .badge, .tag{font-family:'IBM Plex Sans Arabic',sans-serif;}
+::selection{background:var(--gold-soft); color:var(--ink);}
+
+/* ---------- progress dots ---------- */
+.progress-nav{
+  position:fixed; top:50%; left:18px; transform:translateY(-50%);
+  z-index:60; display:flex; flex-direction:column; gap:14px;
+}
+.progress-nav a{
+  width:11px; height:11px; border-radius:50%;
+  background:rgba(34,31,46,.18); display:block; position:relative;
+  transition:.25s;
+}
+.progress-nav a.active{background:var(--amber); transform:scale(1.35);}
+.progress-nav a span{
+  position:absolute; right:20px; top:50%; transform:translateY(-50%);
+  white-space:nowrap; font-size:.72rem; background:var(--ink); color:#fff;
+  padding:3px 9px; border-radius:6px; opacity:0; pointer-events:none; transition:.2s;
+}
+.progress-nav a:hover span{opacity:1;}
+@media (max-width:820px){.progress-nav{display:none;}}
+
+/* ---------- HERO ---------- */
+.hero{
+  position:relative; min-height:100vh; overflow:hidden;
+  background:radial-gradient(ellipse at 50% 0%, var(--storm-violet) 0%, var(--midnight-2) 45%, var(--midnight) 100%);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  text-align:center; color:#fff; padding:40px 20px;
+}
+.stars{position:absolute; inset:0; background-image:
+  radial-gradient(1.5px 1.5px at 20% 30%, #fff, transparent),
+  radial-gradient(1.5px 1.5px at 70% 20%, #fff, transparent),
+  radial-gradient(1px 1px at 40% 70%, #fff, transparent),
+  radial-gradient(1px 1px at 85% 55%, #fff, transparent),
+  radial-gradient(1.5px 1.5px at 10% 80%, #fff, transparent),
+  radial-gradient(1px 1px at 60% 85%, #fff, transparent),
+  radial-gradient(1.5px 1.5px at 90% 10%, #fff, transparent);
+  opacity:.7; animation:twinkle 4s ease-in-out infinite alternate;}
+@keyframes twinkle{from{opacity:.4} to{opacity:.9}}
+
+.skyline{position:absolute; bottom:0; right:0; left:0; height:34%;
+  background:linear-gradient(180deg, transparent, var(--midnight) 92%);
+}
+.skyline svg{width:100%; height:100%; display:block;}
+
+.bolt-flash{position:absolute; inset:0; background:#fff; opacity:0; pointer-events:none; mix-blend-mode:screen;}
+
+.hero-content{position:relative; z-index:5; max-width:780px;}
+.eyebrow{
+  display:inline-flex; align-items:center; gap:8px; font-family:'IBM Plex Sans Arabic';
+  font-size:.8rem; letter-spacing:1px; background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.25); padding:6px 16px; border-radius:99px; margin-bottom:22px;
+}
+.hero h1{font-size:clamp(2.6rem,8vw,4.6rem); margin:0 0 6px; text-shadow:0 0 40px rgba(186,240,255,.5);}
+.hero .subtitle{font-size:clamp(1rem,2.4vw,1.25rem); color:#cfd6f0; margin:0 0 34px; line-height:1.9;}
+.scroll-cue{display:flex; flex-direction:column; align-items:center; gap:6px; color:#b9c2e8; font-size:.8rem; margin-top:10px;}
+.scroll-cue .arrow{width:9px; height:9px; border-left:2px solid #b9c2e8; border-bottom:2px solid #b9c2e8; transform:rotate(-45deg); animation:bounce 1.6s infinite;}
+@keyframes bounce{0%,100%{transform:translateY(0) rotate(-45deg);} 50%{transform:translateY(8px) rotate(-45deg);}}
+
+/* ---------- generic sections ---------- */
+section{padding:90px 6vw; position:relative;}
+.section-inner{max-width:980px; margin:0 auto;}
+.kicker{font-family:'IBM Plex Sans Arabic'; font-size:.78rem; letter-spacing:2px; color:var(--amber); font-weight:600; margin-bottom:10px;}
+h2.section-title{font-size:clamp(1.8rem,4vw,2.6rem); margin:0 0 26px; color:var(--ink);}
+
+/* ---------- story card ---------- */
+.story-wrap{display:grid; grid-template-columns:1fr; gap:0; border-radius:22px; overflow:hidden; box-shadow:var(--card-shadow); background:linear-gradient(160deg,#1b2450,#0a0e24); color:#fff;}
+.story-body{padding:44px 40px;}
+.story-body p{line-height:2.1; font-size:1.05rem; color:#e2e6f7;}
+.story-body p.q{font-weight:700; color:var(--gold-soft); font-size:1.15rem; margin-top:22px;}
+.dome{display:inline-block; width:14px; height:14px; border-radius:50%; background:var(--gold-dome); box-shadow:0 0 12px var(--gold-dome); vertical-align:middle;}
+
+/* ---------- concept steps ---------- */
+.steps{display:grid; grid-template-columns:repeat(3,1fr); gap:22px; margin-top:10px;}
+@media(max-width:800px){.steps{grid-template-columns:1fr;}}
+.step-card{
+  background:#fff; border-radius:18px; padding:26px 22px; box-shadow:var(--card-shadow);
+  border-top:5px solid var(--amber); perspective:800px;
+}
+.step-card .num{font-family:'Lalezar'; font-size:2.2rem; color:var(--amber); line-height:1;}
+.step-card h3{margin:10px 0 8px; font-size:1.25rem;}
+.step-card p{color:var(--ink-soft); line-height:1.85; font-size:.95rem; margin:0;}
+.mini-cloud{width:100%; height:90px; margin:14px 0; display:flex; align-items:center; justify-content:center; gap:4px; flex-wrap:wrap; background:linear-gradient(180deg,#eef1fb,#dde3f5); border-radius:14px; transition:transform .4s;}
+.step-card:hover .mini-cloud{transform:rotateY(8deg) rotateX(4deg);}
+.mini-cloud span{width:18px; height:18px; border-radius:50%; background:#fff; border:2px solid var(--cloud-dark); display:flex; align-items:center; justify-content:center; font-size:.65rem; font-weight:700; color:var(--ink-soft);}
+.mini-cloud.pos span:nth-child(-n+5){border-color:var(--charge-pos); color:var(--charge-pos);}
+.mini-cloud.neg span:nth-child(n+6){border-color:var(--charge-neg); color:var(--charge-neg);}
+
+/* ---------- lab section ---------- */
+.lab-section{background:linear-gradient(180deg,var(--midnight-2),var(--midnight)); color:#fff;}
+.lab-section .kicker{color:var(--lightning);}
+.lab-shell{
+  border-radius:22px; overflow:hidden; background:#050818; box-shadow:0 20px 60px rgba(0,0,0,.5);
+  border:1px solid rgba(186,240,255,.15);
+}
+.lab-canvas-wrap{position:relative; width:100%; aspect-ratio:16/10; max-height:560px;}
+#labCanvas{width:100%; height:100%; display:block; touch-action:none;}
+.lab-flash{position:absolute; inset:0; background:#fff; opacity:0; pointer-events:none;}
+.lab-hud{position:absolute; top:14px; right:14px; left:14px; display:flex; justify-content:space-between; gap:10px; pointer-events:none; flex-wrap:wrap;}
+.hud-chip{pointer-events:auto; background:rgba(10,14,36,.72); backdrop-filter:blur(6px); border:1px solid rgba(255,255,255,.12); border-radius:12px; padding:8px 14px; font-family:'IBM Plex Sans Arabic'; font-size:.78rem; display:flex; align-items:center; gap:8px;}
+.dot{width:9px; height:9px; border-radius:50%; display:inline-block;}
+.dot.neutral{background:#8b93b8;}
+.dot.neg{background:var(--charge-neg); box-shadow:0 0 8px var(--charge-neg);}
+.dot.pos{background:var(--charge-pos); box-shadow:0 0 8px var(--charge-pos);}
+.lab-caption{position:absolute; bottom:14px; right:14px; left:14px; text-align:center; pointer-events:none;}
+.lab-caption span{background:rgba(10,14,36,.78); border:1px solid rgba(186,240,255,.25); color:var(--lightning); padding:8px 18px; border-radius:99px; font-size:.85rem; font-family:'IBM Plex Sans Arabic'; opacity:0; transition:.4s;}
+.lab-caption span.show{opacity:1;}
+
+.lab-controls{padding:26px 24px; display:flex; flex-direction:column; gap:18px; background:#0a0e24;}
+.control-row{display:flex; align-items:center; gap:14px; flex-wrap:wrap;}
+.control-row label{font-family:'IBM Plex Sans Arabic'; font-size:.85rem; color:#c7cdea; min-width:150px;}
+input[type=range]{-webkit-appearance:none; flex:1; min-width:140px; height:6px; border-radius:99px; background:#232a52; outline:none;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none; width:18px; height:18px; border-radius:50%; background:var(--gold-dome); cursor:pointer; box-shadow:0 0 10px rgba(232,185,74,.6);}
+.btn{
+  font-family:'IBM Plex Sans Arabic'; font-weight:600; font-size:.88rem; border:none; cursor:pointer;
+  padding:11px 22px; border-radius:99px; transition:.2s; display:inline-flex; align-items:center; gap:8px;
+}
+.btn-primary{background:linear-gradient(135deg,var(--amber),var(--gold-dome)); color:#241703;}
+.btn-primary:hover{transform:translateY(-2px); box-shadow:0 8px 20px rgba(232,185,74,.35);}
+.btn-electric{background:linear-gradient(135deg,#6a5cff,#baf0ff); color:#0a0e24;}
+.btn-electric:hover{transform:translateY(-2px); box-shadow:0 8px 20px rgba(186,240,255,.35);}
+.btn:disabled{opacity:.35; cursor:not-allowed; transform:none !important; box-shadow:none !important;}
+.btn-ghost{background:transparent; border:1px solid rgba(255,255,255,.25); color:#e2e6f7;}
+.btn-ghost:hover{background:rgba(255,255,255,.08);}
+
+.lab-log{background:#050818; border-top:1px dashed rgba(255,255,255,.12); padding:16px 24px; font-family:'IBM Plex Sans Arabic'; font-size:.82rem; color:#9fa8d1; max-height:120px; overflow-y:auto;}
+.lab-log div{padding:3px 0; border-bottom:1px solid rgba(255,255,255,.05);}
+.lab-log .t{color:var(--gold-soft); font-weight:600;}
+
+/* ---------- info callout ---------- */
+.info-box{
+  background:linear-gradient(135deg,var(--paper-2),var(--paper)); border-radius:18px; padding:30px 32px;
+  border-right:6px solid var(--amber); box-shadow:var(--card-shadow); position:relative;
+}
+.info-box .icon{position:absolute; top:-18px; right:26px; width:44px; height:44px; border-radius:50%; background:var(--amber); display:flex; align-items:center; justify-content:center; font-size:1.3rem; box-shadow:0 6px 16px rgba(224,138,46,.4);}
+.info-box h3{margin:0 0 10px; font-size:1.15rem;}
+.info-box p{margin:0; line-height:2; color:var(--ink-soft);}
+
+/* ---------- worksheet ---------- */
+.q-card{background:#fff; border-radius:16px; padding:22px 24px; margin-bottom:16px; box-shadow:var(--card-shadow); border-right:4px solid var(--storm-violet);}
+.q-card .q-num{font-family:'Lalezar'; color:var(--storm-violet); font-size:1.3rem; margin-inline-end:8px;}
+.q-card h4{display:inline; font-size:1.02rem; font-weight:700;}
+.q-card textarea{
+  width:100%; margin-top:12px; border:1px solid #e3ddc9; border-radius:10px; padding:12px 14px;
+  font-family:'Tajawal'; font-size:.95rem; resize:vertical; min-height:56px; background:#fbf9f3; color:var(--ink);
+}
+.q-card textarea:focus{outline:2px solid var(--amber); background:#fff;}
+.q-actions{display:flex; justify-content:flex-end; margin-top:10px;}
+.reveal-btn{background:none; border:1px solid var(--storm-violet); color:var(--storm-violet); padding:6px 16px; border-radius:99px; font-family:'IBM Plex Sans Arabic'; font-size:.78rem; cursor:pointer;}
+.reveal-btn:hover{background:var(--storm-violet); color:#fff;}
+.model-answer{margin-top:12px; background:#f1eefc; border-radius:10px; padding:12px 16px; font-size:.9rem; color:#3d3468; line-height:1.9; display:none;}
+.model-answer.show{display:block;}
+
+/* ---------- investigate ---------- */
+.investigate{background:linear-gradient(160deg,#0a0e24,#1b2450); color:#fff; border-radius:22px; padding:40px; box-shadow:var(--card-shadow);}
+.investigate .kicker{color:var(--lightning);}
+.calc-row{display:flex; align-items:center; gap:16px; flex-wrap:wrap; margin:22px 0;}
+.calc-row label{font-family:'IBM Plex Sans Arabic'; font-size:.9rem; min-width:170px;}
+.readout{display:flex; gap:18px; flex-wrap:wrap; margin-top:18px;}
+.readout .box{background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.15); border-radius:14px; padding:16px 22px; flex:1; min-width:180px; text-align:center;}
+.readout .box .val{font-family:'Lalezar'; font-size:1.8rem; color:var(--gold-soft);}
+.readout .box .lab{font-family:'IBM Plex Sans Arabic'; font-size:.75rem; color:#b9c2e8; margin-top:4px;}
+
+/* ---------- definitions ---------- */
+.defs{display:grid; grid-template-columns:1fr 1fr; gap:22px;}
+@media(max-width:700px){.defs{grid-template-columns:1fr;}}
+.def-card{background:#fff; border-radius:18px; padding:26px; box-shadow:var(--card-shadow); text-align:center;}
+.def-card .glyph{font-size:2.4rem; margin-bottom:10px;}
+.def-card h3{margin:0 0 10px;}
+.def-card textarea{width:100%; min-height:80px; border:1px solid #e3ddc9; border-radius:10px; padding:12px; font-family:'Tajawal'; background:#fbf9f3;}
+
+footer{background:var(--midnight); color:#93a0cc; text-align:center; padding:34px 20px; font-family:'IBM Plex Sans Arabic'; font-size:.82rem; line-height:2;}
+footer strong{color:#fff;}
+
+.reveal{opacity:0; transform:translateY(24px); transition:opacity .7s ease, transform .7s ease;}
+.reveal.in{opacity:1; transform:translateY(0);}
+
+  /* ══ RESPONSIVE MOBILE & TABLET ══ */
+  @media (max-width: 768px) {
+    body { padding: 8px !important; font-size: 15px !important; overflow-x: hidden !important; }
+    .container, [class*="container"], [class*="wrapper"] { padding: 8px !important; max-width: 100% !important; }
+    canvas { width: 100% !important; height: auto !important; display: block !important; touch-action: none; max-width: 100% !important; }
+    svg { max-width: 100% !important; height: auto !important; }
+    h1 { font-size: clamp(18px,5vw,32px) !important; }
+    h2 { font-size: clamp(15px,4vw,26px) !important; }
+    h3 { font-size: clamp(13px,3.5vw,20px) !important; }
+    [class*="grid"] { grid-template-columns: 1fr !important; }
+    [class*="flex"] { flex-wrap: wrap !important; }
+    input[type="range"] { width: 100% !important; min-height: 36px; }
+    input[type="number"], input[type="text"], select, textarea {
+      font-size: 16px !important; width: 100% !important; box-sizing: border-box; padding: 8px !important; }
+    button { min-height: 44px !important; font-size: 14px !important; touch-action: manipulation; padding: 10px 14px !important; }
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 13px !important; }
+    th, td { padding: 6px 4px !important; }
+    header { padding: 10px 12px !important; }
+    .controls, [class*="controls"] { flex-direction: column !important; gap: 8px !important; }
+    .lab-window, [class*="lab-window"] { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+  }
+  @media (max-width: 480px) {
+    body { padding: 4px !important; }
+    button { width: 100% !important; }
+  }
+  /* ══ END RESPONSIVE ══ */
+</style>
+</head>
+<body>
+<style>
+.vlab-back{position:fixed;top:10px;left:10px;z-index:99999;
+background:rgba(10,22,40,0.93);border:1px solid rgba(0,200,150,0.4);
+border-radius:22px;padding:8px 16px;display:inline-flex;align-items:center;gap:7px;
+color:#00C896;font-family:Tajawal,Cairo,Arial,sans-serif;font-size:13px;font-weight:700;
+text-decoration:none;backdrop-filter:blur(8px);box-shadow:0 4px 18px rgba(0,0,0,0.3);
+transition:background 0.2s;}
+.vlab-back:hover{background:rgba(0,200,150,0.18);}
+</style>
+<a href="../grade5.html" class="vlab-back">&#8594; العودة للصف</a>
+
+
+<nav class="progress-nav">
+  <a href="#hero" class="active"><span>البداية</span></a>
+  <a href="#story"><span>القصة</span></a>
+  <a href="#concept"><span>الفكرة العلمية</span></a>
+  <a href="#lab"><span>المختبر الافتراضي</span></a>
+  <a href="#worksheet"><span>ورقة العمل</span></a>
+  <a href="#investigate"><span>ابحث</span></a>
+  <a href="#definitions"><span>التعريفات</span></a>
+</nav>
+
+<!-- ================= HERO ================= -->
+<header class="hero" id="hero">
+  <div class="stars"></div>
+  <div class="bolt-flash" id="heroFlash"></div>
+  <div class="skyline">
+    <svg viewBox="0 0 1200 260" preserveAspectRatio="none">
+      <rect x="0" y="120" width="1200" height="140" fill="#0a0e24"></rect>
+      <rect x="40" y="140" width="60" height="120" fill="#11162f"></rect>
+      <rect x="120" y="110" width="50" height="150" fill="#0e1330"></rect>
+      <rect x="190" y="150" width="70" height="110" fill="#11162f"></rect>
+      <rect x="900" y="130" width="55" height="130" fill="#0e1330"></rect>
+      <rect x="980" y="150" width="65" height="110" fill="#11162f"></rect>
+      <rect x="1070" y="120" width="50" height="140" fill="#0e1330"></rect>
+      <circle cx="600" cy="150" r="46" fill="#161b3d"></circle>
+      <path d="M554 150 a46 46 0 0 1 92 0 Z" fill="#1d2350"></path>
+      <circle cx="600" cy="98" r="9" fill="var(--gold-dome)"></circle>
+      <rect x="597" y="60" width="6" height="38" fill="var(--gold-dome)"></rect>
+    </svg>
+  </div>
+  <div class="hero-content">
+    <div class="eyebrow">⚡ نشاط (١) &nbsp;·&nbsp; مبحث العلوم والحياة &nbsp;·&nbsp; الصف الخامس</div>
+    <h1>البرق والرعد</h1>
+    <p class="subtitle">رحلة تفاعلية لفهم الكهرباء السكونية في السحب، من خلال قصة، ومختبر افتراضي ثلاثي الأبعاد، وورقة عمل تُبنى فيها استنتاجاتك خطوة بخطوة.</p>
+    <div class="scroll-cue">انزل لتبدأ القصة<div class="arrow"></div></div>
+  </div>
+</header>
+
+<!-- ================= STORY ================= -->
+<section id="story">
+  <div class="section-inner">
+    <div class="kicker">موقف من الحياة</div>
+    <h2 class="section-title">قصة صفاء</h2>
+    <div class="story-wrap reveal">
+      <div class="story-body">
+        <p>استيقظت صفاء على صوت هطول المطر بغزارة، فنظرت من نافذة غرفتها التي تُطلّ على قبّة الصخرة <span class="dome"></span> في مدينة القدس، عاصمة دولتنا فلسطين، وشاهدت ضوءاً لامعاً على شكل شرارة في وسط السماء، ثم تبعه صوتٌ مُدوٍّ.</p>
+        <p class="q">فتساءلت: ما مصدر هذا الضوء، وهذا الصوت؟</p>
+        <p>هيّا بنا نساعد صفاء في تفسير هذه الظاهرة، بالانتقال إلى المختبر الافتراضي بالأسفل 👇</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONCEPT ================= -->
+<section id="concept">
+  <div class="section-inner">
+    <div class="kicker">الفكرة العلمية</div>
+    <h2 class="section-title">كيف تتكوّن الشحنة داخل السحابة؟</h2>
+    <p style="color:var(--ink-soft); line-height:2; max-width:760px;">تتكوّن السحابة من عدد هائل من قطرات الماء الصغيرة. في الأحوال العادية تكون هذه القطرات متعادلة كهربائياً (لا تحمل شحنة). لكن حركة تيارات الهواء الصاعدة داخل السحابة تُحدث احتكاكاً بين القطرات، فتتحوّل تدريجياً إلى قطرات مشحونة.</p>
+    <div class="steps reveal">
+      <div class="step-card">
+        <div class="num">١</div>
+        <h3>تيارات هواء صاعدة</h3>
+        <div class="mini-cloud">
+          <span>o</span><span>o</span><span>o</span><span>o</span><span>o</span><span>o</span><span>o</span><span>o</span>
+        </div>
+        <p>تتحرك تيارات الهواء داخل السحابة إلى الأعلى، وتحمل معها قطرات الماء المتعادلة.</p>
+      </div>
+      <div class="step-card">
+        <div class="num">٢</div>
+        <h3>انفصال الشحنات</h3>
+        <div class="mini-cloud pos neg">
+          <span>+</span><span>+</span><span>+</span><span>+</span><span>+</span><span>−</span><span>−</span><span>−</span>
+        </div>
+        <p>يتحول أسفل السحابة إلى شحنة سالبة، بينما يتحول أعلى السحابة إلى شحنة موجبة.</p>
+      </div>
+      <div class="step-card">
+        <div class="num">٣</div>
+        <h3>الشرارة الكهربائية</h3>
+        <div class="mini-cloud" style="background:linear-gradient(180deg,#fff7e6,#ffe9c2);">
+          <span style="border-color:var(--charge-neg); color:var(--charge-neg);">⚡</span>
+        </div>
+        <p>عند اقتراب سحابتين، تنتقل الشحنات السالبة بسرعة بينهما، فتنتج شرارة كبيرة وصوتاً مدوّياً.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= LAB ================= -->
+<section id="lab" class="lab-section">
+  <div class="section-inner">
+    <div class="kicker">المختبر الافتراضي — ثلاثي الأبعاد</div>
+    <h2 class="section-title">نفّذ التجربة بنفسك</h2>
+    <p style="color:#b9c2e8; line-height:2; max-width:760px; margin-bottom:26px;">حرّك المشهد بإصبعك أو بالفأرة لاستكشافه من كل الجهات، ثم اتبع الخطوات الثلاث بالأسفل لتشحن السحابتين وتُشاهد البرق والرعد يتكوّنان أمامك.</p>
+
+    <div class="lab-shell">
+      <div class="lab-canvas-wrap">
+        <canvas id="labCanvas"></canvas>
+        <div class="lab-flash" id="labFlash"></div>
+        <div class="lab-hud">
+          <div class="hud-chip"><span class="dot" id="dotA">●</span> السحابة أ: <span id="stateA">متعادلة</span></div>
+          <div class="hud-chip"><span class="dot" id="dotB">●</span> السحابة ب: <span id="stateB">متعادلة</span></div>
+        </div>
+        <div class="lab-caption"><span id="labCaption"></span></div>
+      </div>
+
+      <div class="lab-controls">
+        <div class="control-row">
+          <button class="btn btn-primary" id="btnWind">💨 شغّل تيارات الهواء الصاعدة</button>
+          <span style="font-family:'IBM Plex Sans Arabic'; font-size:.78rem; color:#8b93b8;">الخطوة ١ — اشحن السحابتين</span>
+        </div>
+        <div class="control-row">
+          <label for="distSlider">الخطوة ٢ — قرّب السحابتين من بعضهما</label>
+          <input type="range" id="distSlider" min="0" max="100" value="0">
+        </div>
+        <div class="control-row">
+          <button class="btn btn-electric" id="btnSpark" disabled>⚡ ولّد الشرارة (البرق)</button>
+          <span style="font-family:'IBM Plex Sans Arabic'; font-size:.78rem; color:#8b93b8;">الخطوة ٣ — استمع لصوت الرعد</span>
+          <button class="btn btn-ghost" id="btnReset">↺ إعادة الضبط</button>
+        </div>
+      </div>
+
+      <div class="lab-log" id="labLog"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= INFO BOX ================= -->
+<section>
+  <div class="section-inner">
+    <div class="info-box reveal">
+      <div class="icon">💡</div>
+      <h3>معلومة مفيدة</h3>
+      <p>تعمل تيارات الهواء الصاعدة على تحويل قطرات الماء المتعادلة في الغيوم إلى قطرات مشحونة كهربائياً؛ إذ تتكوّن في أسفل السحابة قطرات تحمل شحنة سالبة، بينما تتكوّن في أعلى السحابة قطرات تحمل شحنة موجبة.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= WORKSHEET ================= -->
+<section id="worksheet">
+  <div class="section-inner">
+    <div class="kicker">ورقة العمل</div>
+    <h2 class="section-title">أُجيب بعد التجربة</h2>
+
+    <div class="q-card reveal">
+      <span class="q-num">١</span><h4>ما شحنة قطرات الماء في السحابة (١)؟</h4>
+      <textarea placeholder="اكتب إجابتك هنا..."></textarea>
+      <div class="q-actions"><button class="reveal-btn">أظهر الإجابة النموذجية</button></div>
+      <div class="model-answer">تكون قطرات الماء في السحابة (١) متعادلة كهربائياً، أي لا تحمل أي شحنة.</div>
+    </div>
+
+    <div class="q-card reveal">
+      <span class="q-num">٢</span><h4>ماذا حدث لشحنة قطرات الماء في السحابة (٢) بفعل حركة تيارات الهواء الصاعدة؟</h4>
+      <textarea placeholder="اكتب إجابتك هنا..."></textarea>
+      <div class="q-actions"><button class="reveal-btn">أظهر الإجابة النموذجية</button></div>
+      <div class="model-answer">انفصلت القطرات إلى نوعين: قطرات سالبة الشحنة تجمّعت في أسفل السحابة، وقطرات موجبة الشحنة تجمّعت في أعلى السحابة.</div>
+    </div>
+
+    <div class="q-card reveal">
+      <span class="q-num">٣</span><h4>ماذا ينتج عند اقتراب سحابتين مشحونتين كما في الشكل (٣)؟ ولماذا؟</h4>
+      <textarea placeholder="اكتب إجابتك هنا..."></textarea>
+      <div class="q-actions"><button class="reveal-btn">أظهر الإجابة النموذجية</button></div>
+      <div class="model-answer">تنتج شرارة كهربائية كبيرة، وذلك بسبب انتقال الشحنات السالبة بسرعة كبيرة بين السحابتين لتعادل الفرق في الشحنة بينهما.</div>
+    </div>
+
+    <div class="q-card reveal">
+      <span class="q-num">٤</span><h4>ماذا نسمّي الشرارة الناتجة عن اقتراب السحابتين من بعضهما؟</h4>
+      <textarea placeholder="اكتب إجابتك هنا..."></textarea>
+      <div class="q-actions"><button class="reveal-btn">أظهر الإجابة النموذجية</button></div>
+      <div class="model-answer">نسمّيها البرق.</div>
+    </div>
+
+    <div class="q-card reveal">
+      <span class="q-num">٥</span><h4>ماذا نسمّي الصوت الناتج عن الشرارة؟</h4>
+      <textarea placeholder="اكتب إجابتك هنا..."></textarea>
+      <div class="q-actions"><button class="reveal-btn">أظهر الإجابة النموذجية</button></div>
+      <div class="model-answer">نسمّيه الرعد.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= INVESTIGATE ================= -->
+<section id="investigate">
+  <div class="section-inner">
+    <div class="kicker">أبحث</div>
+    <h2 class="section-title" style="color:#fff;">لماذا نرى ضوء البرق قبل أن نسمع صوت الرعد؟</h2>
+    <div class="investigate">
+      <p style="line-height:2; color:#dfe3f6;">يحدث البرق والرعد في اللحظة نفسها تقريباً، لكن الضوء يسير بسرعة أكبر بكثير من سرعة الصوت في الهواء. جرّب المسافة بينك وبين العاصفة، وشاهد كم من الوقت يحتاج الصوت ليصلك بعد الضوء.</p>
+      <div class="calc-row">
+        <label for="kmSlider">المسافة بينك وبين العاصفة: <b id="kmVal">3</b> كم</label>
+        <input type="range" id="kmSlider" min="1" max="12" value="3">
+        <button class="btn btn-electric" id="btnDemo">⚡ ابرق الآن</button>
+      </div>
+      <div class="readout">
+        <div class="box"><div class="val" id="lightTime">≈ 0.00</div><div class="lab">ثانية حتى يصلك الضوء</div></div>
+        <div class="box"><div class="val" id="soundTime">—</div><div class="lab">ثانية حتى يصلك صوت الرعد</div></div>
+        <div class="box"><div class="val" id="diffTime">—</div><div class="lab">فرق الزمن بين الاثنين</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= DEFINITIONS ================= -->
+<section id="definitions">
+  <div class="section-inner">
+    <div class="kicker">أُلخّص ما تعلمته</div>
+    <h2 class="section-title">أكتب تعريفاً لكلٍّ من:</h2>
+    <div class="defs">
+      <div class="def-card reveal">
+        <div class="glyph">⚡</div>
+        <h3>البرق</h3>
+        <textarea placeholder="البرق هو..."></textarea>
+      </div>
+      <div class="def-card reveal">
+        <div class="glyph">🔊</div>
+        <h3>الرعد</h3>
+        <textarea placeholder="الرعد هو..."></textarea>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div><strong>نشاط (١): البرق والرعد</strong> — مبحث العلوم والحياة، الصف الخامس، فلسطين</div>
+  <div>صُممت هذه الصفحة كأداة تعلّم تفاعلية مرافقة للكتاب المدرسي — استخدم سماعات الصوت لتجربة أفضل 🎧</div>
+</footer>
+
+<script>
+/* ---------- reveal on scroll ---------- */
+const revealEls = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); } });
+},{threshold:.15});
+revealEls.forEach(el=>io.observe(el));
+
+/* ---------- progress nav ---------- */
+const navLinks = document.querySelectorAll('.progress-nav a');
+const secIds = ['hero','story','concept','lab','worksheet','investigate','definitions'];
+const secEls = secIds.map(id=>document.getElementById(id));
+function updateNav(){
+  let idx = 0;
+  secEls.forEach((el,i)=>{ if(el && el.getBoundingClientRect().top < window.innerHeight*0.5) idx = i; });
+  navLinks.forEach((a,i)=>a.classList.toggle('active', i===idx));
+}
+window.addEventListener('scroll', updateNav);
+updateNav();
+
+/* ---------- hero flash ---------- */
+const heroFlash = document.getElementById('heroFlash');
+function heroLightning(){
+  heroFlash.style.transition='none'; heroFlash.style.opacity=.85;
+  requestAnimationFrame(()=>{ heroFlash.style.transition='opacity 1.1s ease'; heroFlash.style.opacity=0; });
+  setTimeout(heroLightning, 5000 + Math.random()*6000);
+}
+setTimeout(heroLightning, 1800);
+
+/* ---------- worksheet reveal buttons ---------- */
+document.querySelectorAll('.reveal-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const ans = btn.closest('.q-card').querySelector('.model-answer');
+    ans.classList.toggle('show');
+    btn.textContent = ans.classList.contains('show') ? 'إخفاء الإجابة النموذجية' : 'أظهر الإجابة النموذجية';
+  });
+});
+
+/* ---------- thunder / crack synth ---------- */
+let audioCtx;
+function ctx(){ if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)(); return audioCtx; }
+
+function playCrack(){
+  const c = ctx();
+  const bufferSize = c.sampleRate * 0.35;
+  const buffer = c.createBuffer(1, bufferSize, c.sampleRate);
+  const data = buffer.getChannelData(0);
+  for(let i=0;i<bufferSize;i++){ data[i] = (Math.random()*2-1) * Math.pow(1 - i/bufferSize, 1.5); }
+  const src = c.createBufferSource(); src.buffer = buffer;
+  const filter = c.createBiquadFilter(); filter.type='highpass'; filter.frequency.value=800;
+  const gain = c.createGain(); gain.gain.setValueAtTime(1, c.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, c.currentTime + 0.35);
+  src.connect(filter); filter.connect(gain); gain.connect(c.destination);
+  src.start();
+}
+
+function playThunder(delaySec){
+  const c = ctx();
+  setTimeout(()=>{
+    const dur = 2.6;
+    const bufferSize = c.sampleRate * dur;
+    const buffer = c.createBuffer(1, bufferSize, c.sampleRate);
+    const data = buffer.getChannelData(0);
+    for(let i=0;i<bufferSize;i++){ data[i] = (Math.random()*2-1) * Math.pow(1 - i/bufferSize, 1.2); }
+    const src = c.createBufferSource(); src.buffer = buffer;
+    const filter = c.createBiquadFilter(); filter.type='lowpass';
+    filter.frequency.setValueAtTime(450, c.currentTime);
+    filter.frequency.exponentialRampToValueAtTime(70, c.currentTime + dur);
+    const gain = c.createGain();
+    gain.gain.setValueAtTime(0.0001, c.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.9, c.currentTime + 0.15);
+    gain.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + dur);
+    src.connect(filter); filter.connect(gain); gain.connect(c.destination);
+    src.start(); src.stop(c.currentTime + dur);
+  }, Math.max(0,delaySec) * 1000);
+}
+
+/* ---------- investigate calculator ---------- */
+const kmSlider = document.getElementById('kmSlider');
+const kmVal = document.getElementById('kmVal');
+const lightTimeEl = document.getElementById('lightTime');
+const soundTimeEl = document.getElementById('soundTime');
+const diffTimeEl = document.getElementById('diffTime');
+const SOUND_SPEED = 343; // m/s
+const LIGHT_SPEED = 300000000; // m/s
+
+function updateCalc(){
+  const km = parseFloat(kmSlider.value);
+  kmVal.textContent = km;
+  const meters = km*1000;
+  const lt = meters/LIGHT_SPEED;
+  const st = meters/SOUND_SPEED;
+  lightTimeEl.textContent = '≈ ' + lt.toFixed(5);
+  soundTimeEl.textContent = st.toFixed(2);
+  diffTimeEl.textContent = (st-lt).toFixed(2) + ' ث';
+}
+kmSlider.addEventListener('input', updateCalc);
+updateCalc();
+
+document.getElementById('btnDemo').addEventListener('click', ()=>{
+  const km = parseFloat(kmSlider.value);
+  const st = (km*1000)/SOUND_SPEED;
+  playCrack();
+  const flashDiv = document.querySelector('.investigate');
+  flashDiv.style.transition='none'; flashDiv.style.filter='brightness(2.2)';
+  requestAnimationFrame(()=>{ flashDiv.style.transition='filter 1s ease'; flashDiv.style.filter='brightness(1)'; });
+  playThunder(st);
+});
+
+/* ================= 3D LAB ================= */
+import('three').then(async (THREE)=>{
+  const { OrbitControls } = await import('three/addons/controls/OrbitControls.js');
+
+  const canvas = document.getElementById('labCanvas');
+  const wrap = canvas.parentElement;
+  const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:false});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x050818);
+  scene.fog = new THREE.FogExp2(0x050818, 0.028);
+
+  const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+  camera.position.set(0, 1.5, 11);
+
+  const controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+  controls.dampingFactor = 0.08;
+  controls.minDistance = 6;
+  controls.maxDistance = 18;
+  controls.maxPolarAngle = Math.PI*0.55;
+  controls.target.set(0,0,0);
+  controls.autoRotate = true;
+  controls.autoRotateSpeed = 0.4;
+
+  const ambient = new THREE.AmbientLight(0x8891c9, 0.7);
+  scene.add(ambient);
+  const dirLight = new THREE.DirectionalLight(0xffffff, 0.5);
+  dirLight.position.set(4,6,4);
+  scene.add(dirLight);
+  const flashLight = new THREE.PointLight(0xbaf0ff, 0, 40, 2);
+  flashLight.position.set(0,1,0);
+  scene.add(flashLight);
+
+  function resize(){
+    const w = wrap.clientWidth, h = wrap.clientHeight;
+    renderer.setSize(w,h,false);
+    camera.aspect = w/h;
+    camera.updateProjectionMatrix();
+  }
+  window.addEventListener('resize', resize);
+
+  // ---- puff (fluffy sphere cluster) cloud shell ----
+  function makeCloudShell(color){
+    const group = new THREE.Group();
+    const mat = new THREE.MeshStandardMaterial({color, transparent:true, opacity:.5, roughness:1});
+    const puffs = [
+      [0,0,0,1.5],[1.1,0.3,0.2,1.1],[-1.1,0.2,-0.1,1.1],[0.5,0.6,0.6,1],
+      [-0.6,0.5,-0.5,1],[0.2,-0.4,0.3,1.1],[-0.3,-0.3,-0.4,1]
+    ];
+    puffs.forEach(p=>{
+      const geo = new THREE.SphereGeometry(p[3], 14, 14);
+      const m = new THREE.Mesh(geo, mat);
+      m.position.set(p[0],p[1],p[2]);
+      group.add(m);
+    });
+    return group;
+  }
+
+  // ---- droplets (instanced) ----
+  function makeDroplets(count){
+    const geo = new THREE.SphereGeometry(0.11, 10, 10);
+    const mat = new THREE.MeshStandardMaterial({color:0xd7dcea, roughness:.4, metalness:.1});
+    const inst = new THREE.InstancedMesh(geo, mat, count);
+    const positions = [];
+    for(let i=0;i<count;i++){
+      let x,y,z;
+      do{
+        x = (Math.random()*2-1)*1.7;
+        y = (Math.random()*2-1)*1.0;
+        z = (Math.random()*2-1)*1.7;
+      } while((x*x)/(1.7*1.7)+(y*y)/(1*1)+(z*z)/(1.7*1.7) > 1);
+      positions.push(new THREE.Vector3(x,y,z));
+      const m = new THREE.Matrix4().makeTranslation(x,y,z);
+      inst.setMatrixAt(i,m);
+      inst.setColorAt(i, new THREE.Color(0xd7dcea));
+    }
+    inst.userData.basePositions = positions;
+    inst.instanceMatrix.needsUpdate = true;
+    return inst;
+  }
+
+  const DROP_COUNT = 34;
+  const cloudGroupA = new THREE.Group();
+  const cloudGroupB = new THREE.Group();
+  cloudGroupA.add(makeCloudShell(0xffffff));
+  cloudGroupB.add(makeCloudShell(0xffffff));
+  const dropsA = makeDroplets(DROP_COUNT);
+  const dropsB = makeDroplets(DROP_COUNT);
+  cloudGroupA.add(dropsA);
+  cloudGroupB.add(dropsB);
+
+  const BASE_X = 2.6;
+  cloudGroupA.position.set(-BASE_X, 0.6, 0);
+  cloudGroupB.position.set(BASE_X, -0.6, 0.4);
+  scene.add(cloudGroupA, cloudGroupB);
+
+  // ground reflection hint (subtle plane)
+  const groundGeo = new THREE.PlaneGeometry(40,40);
+  const groundMat = new THREE.MeshStandardMaterial({color:0x0a0e24, roughness:1});
+  const ground = new THREE.Mesh(groundGeo, groundMat);
+  ground.rotation.x = -Math.PI/2;
+  ground.position.y = -4.2;
+  scene.add(ground);
+
+  // lightning bolt (hidden until spark)
+  const boltMat = new THREE.LineBasicMaterial({color:0xbaf0ff, transparent:true, opacity:0, linewidth:2});
+  const boltGeo = new THREE.BufferGeometry();
+  const boltLine = new THREE.Line(boltGeo, boltMat);
+  scene.add(boltLine);
+  const boltGlowMat = new THREE.MeshBasicMaterial({color:0xffffff, transparent:true, opacity:0});
+  const boltGlow = new THREE.Mesh(new THREE.SphereGeometry(0.4,10,10), boltGlowMat);
+  scene.add(boltGlow);
+
+  function buildBoltPoints(start, end, segments){
+    const pts = [start.clone()];
+    for(let i=1;i<segments;i++){
+      const t = i/segments;
+      const base = new THREE.Vector3().lerpVectors(start,end,t);
+      base.x += (Math.random()-0.5)*0.55;
+      base.y += (Math.random()-0.5)*0.35;
+      base.z += (Math.random()-0.5)*0.55;
+      pts.push(base);
+    }
+    pts.push(end.clone());
+    return pts;
+  }
+
+  // ---- state ----
+  let charged = false;
+  let distanceFactor = 0; // 0..1 from slider
+  let sparked = false;
+
+  function logMsg(text){
+    const log = document.getElementById('labLog');
+    const line = document.createElement('div');
+    const time = new Date().toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+    line.innerHTML = '<span class="t">['+time+']</span> ' + text;
+    log.prepend(line);
+  }
+
+  function setDropletCharge(inst, chargeUp){
+    const color = new THREE.Color();
+    for(let i=0;i<DROP_COUNT;i++){
+      const pos = inst.userData.basePositions[i];
+      const isTop = pos.y > 0;
+      if(chargeUp){
+        color.set(isTop ? 0xff5a52 : 0x3f6bf0);
+      } else {
+        color.set(0xd7dcea);
+      }
+      inst.setColorAt(i,color);
+    }
+    inst.instanceColor.needsUpdate = true;
+  }
+
+  document.getElementById('btnWind').addEventListener('click', (e)=>{
+    if(charged) return;
+    charged = true;
+    e.target.disabled = true;
+    e.target.textContent = '💨 التيارات تعمل...';
+    logMsg('بدأت تيارات الهواء الصاعدة بتحريك قطرات الماء داخل السحابتين.');
+    let t = 0;
+    const dur = 1400;
+    const start = performance.now();
+    function animateCharge(now){
+      t = Math.min(1, (now-start)/dur);
+      // simple pulse rotation to suggest turbulence
+      cloudGroupA.rotation.y = Math.sin(t*Math.PI*4)*0.15;
+      cloudGroupB.rotation.y = Math.cos(t*Math.PI*4)*0.15;
+      if(t<1){ requestAnimationFrame(animateCharge); }
+      else{
+        cloudGroupA.rotation.y = 0; cloudGroupB.rotation.y = 0;
+        setDropletCharge(dropsA, true);
+        setDropletCharge(dropsB, true);
+        document.getElementById('stateA').textContent = 'مشحونة (− أسفل / + أعلى)';
+        document.getElementById('stateB').textContent = 'مشحونة (− أسفل / + أعلى)';
+        document.getElementById('dotA').style.background = 'linear-gradient(180deg,var(--charge-pos),var(--charge-neg))';
+        document.getElementById('dotB').style.background = 'linear-gradient(180deg,var(--charge-pos),var(--charge-neg))';
+        e.target.textContent = '✔ تم شحن السحابتين';
+        showCaption('أصبحت السحابتان مشحونتين: سالبة في الأسفل، وموجبة في الأعلى.');
+        logMsg('اكتمل انفصال الشحنات: سالبة أسفل كل سحابة، وموجبة أعلى كل سحابة.');
+        checkSparkReady();
+      }
+    }
+    requestAnimationFrame(animateCharge);
+  });
+
+  const distSlider = document.getElementById('distSlider');
+  distSlider.addEventListener('input', ()=>{
+    distanceFactor = parseFloat(distSlider.value)/100;
+    const x = BASE_X - distanceFactor*(BASE_X-0.55);
+    const y = 0.6 - distanceFactor*1.2;
+    cloudGroupB.position.x = x;
+    cloudGroupB.position.y = -0.6 + distanceFactor*1.2*0; // keep gentle
+    checkSparkReady();
+  });
+
+  function checkSparkReady(){
+    const close = distanceFactor > 0.72;
+    const ready = charged && close && !sparked;
+    document.getElementById('btnSpark').disabled = !ready;
+    if(charged && close && !sparked){
+      showCaption('السحابتان قريبتان بما يكفي الآن — اضغط زر توليد الشرارة!');
+    }
+  }
+
+  function showCaption(text){
+    const el = document.getElementById('labCaption');
+    el.textContent = text;
+    el.classList.add('show');
+    clearTimeout(el._t);
+    el._t = setTimeout(()=>el.classList.remove('show'), 4200);
+  }
+
+  document.getElementById('btnSpark').addEventListener('click', ()=>{
+    if(sparked) return;
+    sparked = true;
+    document.getElementById('btnSpark').disabled = true;
+    // find closest facing points (bottom of A near top-ish region facing B)
+    const start = new THREE.Vector3(cloudGroupA.position.x+1.0, cloudGroupA.position.y-0.4, cloudGroupA.position.z);
+    const end = new THREE.Vector3(cloudGroupB.position.x-1.0, cloudGroupB.position.y+0.4, cloudGroupB.position.z);
+    const pts = buildBoltPoints(start,end,9);
+    boltGeo.setFromPoints(pts);
+    boltGlow.position.copy(new THREE.Vector3().lerpVectors(start,end,0.5));
+
+    let flashes = 0;
+    function doFlash(){
+      boltMat.opacity = 1;
+      boltGlowMat.opacity = .9;
+      flashLight.intensity = 6;
+      document.getElementById('labFlash').style.transition='none';
+      document.getElementById('labFlash').style.opacity = .9;
+      document.getElementById('heroFlash') && null;
+      requestAnimationFrame(()=>{
+        document.getElementById('labFlash').style.transition='opacity .35s ease';
+        document.getElementById('labFlash').style.opacity = 0;
+      });
+      setTimeout(()=>{
+        boltMat.opacity = 0; boltGlowMat.opacity = 0; flashLight.intensity = 0;
+        flashes++;
+        if(flashes<2){ setTimeout(doFlash, 90); }
+      }, 110);
+    }
+    playCrack();
+    doFlash();
+    showCaption('هذا هو البرق! استمع الآن لصوت الرعد المرافق له.');
+    logMsg('⚡ حدثت الشرارة الكهربائية (البرق) بين السحابتين المشحونتين.');
+    playThunder(0.5);
+    setTimeout(()=>logMsg('🔊 هذا هو صوت الرعد الناتج عن التمدد السريع للهواء حول الشرارة.'), 500);
+  });
+
+  document.getElementById('btnReset').addEventListener('click', ()=>{
+    charged = false; sparked = false; distanceFactor = 0;
+    distSlider.value = 0;
+    cloudGroupA.position.set(-BASE_X, 0.6, 0);
+    cloudGroupB.position.set(BASE_X, -0.6, 0.4);
+    setDropletCharge(dropsA,false); setDropletCharge(dropsB,false);
+    document.getElementById('stateA').textContent='متعادلة';
+    document.getElementById('stateB').textContent='متعادلة';
+    document.getElementById('dotA').style.background='#8b93b8';
+    document.getElementById('dotB').style.background='#8b93b8';
+    const windBtn = document.getElementById('btnWind');
+    windBtn.disabled=false; windBtn.textContent='💨 شغّل تيارات الهواء الصاعدة';
+    document.getElementById('btnSpark').disabled = true;
+    document.getElementById('labLog').innerHTML='';
+    showCaption('تمت إعادة ضبط التجربة — ابدأ من جديد.');
+  });
+
+  // initial log
+  logMsg('مرحباً بك في المختبر الافتراضي! ابدأ بتشغيل تيارات الهواء الصاعدة.');
+
+  resize();
+  function loop(){
+    controls.update();
+    renderer.render(scene, camera);
+    requestAnimationFrame(loop);
+  }
+  loop();
+});
+</script>
+</body>
+</html>

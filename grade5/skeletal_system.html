@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>الجهاز الهيكلي | علوم وحياة - الصف الخامس</title>
+<style>
+@font-face {
+  font-family: 'Cairo';
+  src: local('Cairo');
+}
+:root{
+  --bone: #f3ead9;
+  --bone-dark: #d8c7a3;
+  --marrow-red: #c0392b;
+  --joint-blue: #2c6e91;
+  --skin: #e8b894;
+  --bg-deep: #0e1b2b;
+  --bg-mid: #16273b;
+  --panel: #fbf7ee;
+  --ink: #1d2733;
+  --accent: #c08a3e;
+  --accent2: #4f8a72;
+  --danger: #b33;
+  --success: #2f7d4f;
+  --shadow: 0 10px 30px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:'Tahoma','Segoe UI',Arial,sans-serif;
+  background: radial-gradient(ellipse at top, var(--bg-mid), var(--bg-deep) 70%);
+  color:var(--ink);
+  min-height:100vh;
+  line-height:1.7;
+}
+::selection{background:var(--accent);color:#fff;}
+
+/* ===== HEADER ===== */
+header.hero{
+  position:relative;
+  padding:48px 20px 90px;
+  text-align:center;
+  overflow:hidden;
+  color:#f4ead3;
+}
+header.hero h1{
+  font-size:clamp(28px,5vw,46px);
+  margin:0 0 8px;
+  letter-spacing:1px;
+  text-shadow:0 4px 18px rgba(0,0,0,.5);
+}
+header.hero p.sub{
+  font-size:clamp(14px,2.2vw,18px);
+  color:#cbb98f;
+  margin:0;
+}
+.skull-deco{
+  position:absolute;
+  opacity:.12;
+  font-size:140px;
+  top:-20px;
+  user-select:none;
+  pointer-events:none;
+}
+.skull-deco.left{right:-20px;transform:rotate(-12deg);}
+.skull-deco.right{left:-20px;transform:rotate(10deg);}
+.badge-row{
+  display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:18px;
+}
+.badge{
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(244,234,211,.35);
+  padding:6px 16px;border-radius:30px;font-size:13px;color:#f4ead3;
+}
+
+/* ===== NAV ===== */
+nav.tabs{
+  position:sticky;top:0;z-index:50;
+  display:flex;gap:6px;justify-content:center;flex-wrap:wrap;
+  padding:10px 12px;
+  background:rgba(14,27,43,.92);
+  backdrop-filter:blur(8px);
+  border-bottom:2px solid var(--accent);
+}
+nav.tabs button{
+  font-family:inherit;
+  cursor:pointer;
+  border:none;
+  background:transparent;
+  color:#cdd8e3;
+  padding:10px 16px;
+  border-radius:10px;
+  font-size:14px;
+  transition:.25s;
+}
+nav.tabs button:hover{background:rgba(192,138,62,.2);color:#fff;}
+nav.tabs button.active{
+  background:var(--accent);
+  color:#1d130a;
+  font-weight:bold;
+}
+
+main{max-width:1100px;margin:0 auto;padding:24px 16px 80px;}
+section.panel{
+  display:none;
+  background:var(--panel);
+  border-radius:22px;
+  box-shadow:var(--shadow);
+  padding:clamp(16px,4vw,40px);
+  animation:fadeUp .5s ease;
+}
+section.panel.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+
+h2.section-title{
+  font-size:clamp(20px,3.4vw,28px);
+  color:#3a2a14;
+  border-right:6px solid var(--accent);
+  padding-right:14px;
+  margin-top:0;
+}
+h3.sub-title{
+  color:var(--joint-blue);
+  font-size:19px;
+  margin-top:30px;
+  border-bottom:2px dashed #cbb98f;
+  padding-bottom:6px;
+}
+.info-box{
+  background:#eef6f2;
+  border:1px solid #bfe0cf;
+  border-radius:14px;
+  padding:16px 18px;
+  margin:18px 0;
+  position:relative;
+}
+.info-box.tip::before{content:"💡 معلومة مفيدة";display:block;font-weight:bold;color:var(--accent2);margin-bottom:6px;}
+.info-box.goal{background:#fff3e4;border-color:#f0d2a0;}
+.info-box.goal::before{content:"🎯 الهدف من النشاط";font-weight:bold;color:var(--accent);display:block;margin-bottom:6px;}
+
+/* ===== 3D Skeleton Viewer ===== */
+.lab-stage{
+  display:flex;
+  flex-wrap:wrap;
+  gap:24px;
+  align-items:flex-start;
+  margin:20px 0;
+}
+.skeleton-3d-wrap{
+  flex:1 1 320px;
+  min-width:280px;
+  perspective:1100px;
+  display:flex;justify-content:center;
+}
+.skeleton-3d{
+  width:240px;height:480px;
+  position:relative;
+  transform-style:preserve-3d;
+  transform:rotateY(0deg) rotateX(4deg);
+  transition:transform .15s linear;
+  cursor:grab;
+}
+.skeleton-3d:active{cursor:grabbing;}
+.bone-part{
+  position:absolute;
+  background:linear-gradient(160deg,var(--bone),var(--bone-dark));
+  border:2px solid #b6a276;
+  border-radius:14px;
+  box-shadow:inset -4px -4px 10px rgba(0,0,0,.18), 0 6px 14px rgba(0,0,0,.3);
+  transition:.25s;
+  cursor:pointer;
+}
+.bone-part:hover, .bone-part.highlight{
+  filter:brightness(1.18) saturate(1.3);
+  box-shadow:0 0 0 3px var(--accent), 0 8px 20px rgba(0,0,0,.4);
+  z-index:5;
+}
+.bone-part.selected{
+  box-shadow:0 0 0 4px var(--marrow-red), 0 8px 24px rgba(0,0,0,.4);
+}
+/* placements (approximate 2D-ish layered to feel 3D w/ rotateX) */
+#part-skull{width:70px;height:78px;border-radius:50% 50% 46% 46%;top:0;left:85px;}
+#part-spine{width:18px;height:175px;border-radius:9px;top:95px;left:111px;background:repeating-linear-gradient(180deg,var(--bone),var(--bone) 12px,var(--bone-dark) 12px,var(--bone-dark) 16px);}
+#part-ribcage{width:130px;height:110px;border-radius:50% 50% 40% 40%;top:100px;left:55px;background:repeating-linear-gradient(180deg,var(--bone) 0 6px,#cdbf9a 6px 10px);opacity:.95;}
+#part-shoulder-l{width:30px;height:18px;border-radius:10px;top:96px;left:48px;transform:rotate(-18deg);}
+#part-shoulder-r{width:30px;height:18px;border-radius:10px;top:96px;left:162px;transform:rotate(18deg);}
+#part-arm-up-l{width:18px;height:80px;border-radius:9px;top:118px;left:38px;transform:rotate(8deg);}
+#part-arm-up-r{width:18px;height:80px;border-radius:9px;top:118px;left:184px;transform:rotate(-8deg);}
+#part-arm-low-l{width:16px;height:75px;border-radius:8px;top:195px;left:34px;transform:rotate(4deg);}
+#part-arm-low-r{width:16px;height:75px;border-radius:8px;top:195px;left:190px;transform:rotate(-4deg);}
+#part-hand-l{width:24px;height:28px;border-radius:40%;top:266px;left:26px;}
+#part-hand-r{width:24px;height:28px;border-radius:40%;top:266px;left:190px;}
+#part-pelvis{width:90px;height:46px;border-radius:40% 40% 60% 60%;top:262px;left:75px;}
+#part-leg-up-l{width:24px;height:100px;border-radius:11px;top:300px;left:80px;}
+#part-leg-up-r{width:24px;height:100px;border-radius:11px;top:300px;left:136px;}
+#part-leg-low-l{width:20px;height:95px;border-radius:9px;top:392px;left:82px;}
+#part-leg-low-r{width:20px;height:95px;border-radius:9px;top:392px;left:138px;}
+#part-foot-l{width:34px;height:18px;border-radius:8px;top:478px;left:70px;}
+#part-foot-r{width:34px;height:18px;border-radius:8px;top:478px;left:136px;}
+
+.rotate-controls{
+  display:flex;gap:10px;justify-content:center;margin-top:14px;flex-wrap:wrap;
+}
+.rotate-controls button{
+  background:var(--joint-blue);color:#fff;border:none;border-radius:10px;
+  padding:8px 14px;cursor:pointer;font-family:inherit;font-size:13px;
+}
+.rotate-controls button:hover{background:#1f5274;}
+
+.info-panel-3d{
+  flex:1 1 280px;
+  background:#fff;
+  border:2px solid var(--accent);
+  border-radius:16px;
+  padding:18px;
+  min-height:200px;
+}
+.info-panel-3d h4{margin-top:0;color:var(--accent);font-size:18px;}
+.info-panel-3d .placeholder{color:#999;text-align:center;padding:40px 10px;}
+.tag-axial{display:inline-block;background:#dff0ea;color:var(--success);padding:3px 10px;border-radius:20px;font-size:12px;margin-bottom:8px;}
+.tag-append{display:inline-block;background:#fde7d8;color:#b9601a;padding:3px 10px;border-radius:20px;font-size:12px;margin-bottom:8px;}
+
+/* ===== Drag classify table activity ===== */
+.classify-wrap{display:flex;gap:18px;flex-wrap:wrap;margin-top:20px;}
+.bank{
+  flex:1 1 220px;
+  background:#f1ece0;
+  border-radius:14px;
+  padding:14px;
+  min-height:140px;
+}
+.bank h4{margin:0 0 10px;color:#7a5b22;}
+.drag-item{
+  background:linear-gradient(160deg,#fff,#eee2c8);
+  border:1px solid var(--accent);
+  border-radius:10px;
+  padding:8px 12px;
+  margin:6px 0;
+  cursor:grab;
+  font-size:14px;
+  user-select:none;
+}
+.drag-item:active{cursor:grabbing;}
+.dropzones{flex:2 1 420px;display:flex;gap:14px;flex-wrap:wrap;}
+.dropzone{
+  flex:1 1 190px;
+  min-height:220px;
+  border:3px dashed #aaa;
+  border-radius:14px;
+  padding:12px;
+  background:#fbfbfb;
+  transition:.2s;
+}
+.dropzone.axial{border-color:var(--success);}
+.dropzone.append{border-color:#c97c2c;}
+.dropzone.over{background:#fef6e6;border-style:solid;}
+.dropzone h4{margin-top:0;text-align:center;}
+.dropzone.axial h4{color:var(--success);}
+.dropzone.append h4{color:#c97c2c;}
+.dz-item{background:#fff;border-radius:8px;padding:6px 10px;margin:5px 0;font-size:13px;box-shadow:0 2px 6px rgba(0,0,0,.1);}
+
+.check-btn{
+  display:inline-block;margin-top:16px;
+  background:var(--accent2);color:#fff;border:none;border-radius:10px;
+  padding:10px 22px;cursor:pointer;font-size:15px;font-family:inherit;
+}
+.check-btn:hover{background:#3c6c58;}
+.feedback{margin-top:12px;font-weight:bold;padding:10px;border-radius:10px;display:none;}
+.feedback.good{background:#e3f6e8;color:var(--success);display:block;}
+.feedback.bad{background:#fdeaea;color:var(--danger);display:block;}
+
+/* ===== Fill in blanks ===== */
+.fill-q{margin:14px 0;padding:12px;background:#fbf8f1;border-radius:10px;border:1px solid #e6dcc4;}
+.fill-q label{display:block;margin-bottom:6px;font-weight:bold;}
+.fill-q input[type=text]{
+  width:100%;padding:8px 10px;border-radius:8px;border:1px solid #c9b98a;
+  font-family:inherit;font-size:14px;
+}
+.fill-q .answer-reveal{
+  display:none;margin-top:6px;color:var(--success);font-size:13px;
+}
+
+/* ===== Skull explore (image2/3 content) ===== */
+.skull-explore{
+  display:flex;gap:20px;flex-wrap:wrap;align-items:center;justify-content:center;
+  margin:20px 0;
+}
+.skull-3d-mini{
+  width:200px;height:200px;position:relative;perspective:700px;
+}
+.skull-shape{
+  width:160px;height:160px;margin:20px auto;
+  background:radial-gradient(circle at 35% 30%, #fdf6e3, var(--bone-dark) 80%);
+  border-radius:50% 50% 45% 45%;
+  position:relative;
+  box-shadow:inset -10px -10px 20px rgba(0,0,0,.2), 0 10px 30px rgba(0,0,0,.3);
+  transform:rotateY(0deg);
+  transition:transform .3s;
+  cursor:grab;
+}
+.skull-cavity{
+  position:absolute;background:#2c2c2c;border-radius:50%;
+}
+.eye-l{width:24px;height:18px;top:60px;left:30px;background:radial-gradient(circle,#1d3b54,#000);border-radius:50%;}
+.eye-r{width:24px;height:18px;top:60px;left:106px;background:radial-gradient(circle,#1d3b54,#000);border-radius:50%;}
+.nose-cav{width:18px;height:26px;top:90px;left:71px;border-radius:40% 40% 50% 50%;background:#3a3a3a;}
+.ear-cav{width:10px;height:14px;top:75px;left:6px;border-radius:50%;background:#3a3a3a;}
+.jaw-line{position:absolute;bottom:18px;left:35px;width:90px;height:14px;border-bottom:3px solid #8a7752;border-radius:0 0 30px 30px;}
+
+/* ===== Vertebra builder mini-3D ===== */
+.vert-strip{display:flex;gap:4px;align-items:flex-end;justify-content:center;flex-wrap:wrap;margin:18px 0;min-height:60px;}
+.vert-piece{
+  width:26px;height:26px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%, #fff, var(--bone-dark));
+  border:2px solid #a98f5e;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;color:#6b4f1f;
+  box-shadow:0 3px 6px rgba(0,0,0,.25);
+  position:relative;
+}
+.vert-piece.disc{background:radial-gradient(circle,#e9c08a,#c97c2c);border-color:#a85c1a;}
+
+/* ===== VIRTUAL LAB ===== */
+.lab-intro{
+  background:linear-gradient(135deg,#1c2f44,#0e1b2b);
+  color:#f0e6cf;
+  border-radius:18px;
+  padding:20px 24px;
+  margin-bottom:24px;
+}
+.lab-intro h3{color:#e8c98a;margin-top:0;}
+.lab-bench{
+  background:#dfd6c0;
+  border-radius:20px;
+  padding:20px;
+  box-shadow:inset 0 0 30px rgba(0,0,0,.15);
+  position:relative;
+}
+.materials-tray{
+  display:flex;gap:14px;flex-wrap:wrap;justify-content:center;
+  background:#c9bd9d;
+  border-radius:14px;padding:14px;margin-bottom:20px;
+}
+.material{
+  background:#fffdf6;
+  border:2px solid #b6a276;
+  border-radius:12px;
+  padding:10px;
+  width:90px;
+  text-align:center;
+  font-size:12px;
+  cursor:grab;
+  box-shadow:0 4px 10px rgba(0,0,0,.15);
+  transition:.2s;
+  user-select:none;
+}
+.material:hover{transform:translateY(-4px);}
+.material .icon{font-size:30px;display:block;margin-bottom:4px;}
+.material.used{opacity:.35;cursor:not-allowed;}
+
+.build-area{
+  min-height:160px;
+  background:repeating-linear-gradient(90deg,#f6f1e3,#f6f1e3 38px,#ece3cd 38px,#ece3cd 40px);
+  border:3px dashed #9a8a5e;
+  border-radius:14px;
+  display:flex;align-items:center;gap:6px;flex-wrap:wrap;
+  padding:18px;
+  justify-content:center;
+}
+.build-area.over{background:#fff3da;border-style:solid;}
+.build-area .hint{color:#998a5e;font-size:14px;}
+.column-piece{
+  width:34px;height:34px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#fff,var(--bone-dark));
+  border:2px solid #a98f5e;
+  box-shadow:0 3px 8px rgba(0,0,0,.2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:bold;color:#6b4f1f;
+  animation:pop .3s ease;
+}
+.column-piece.cd{background:radial-gradient(circle,#f0cf99,#c97c2c);border-color:#a85c1a;width:14px;}
+@keyframes pop{from{transform:scale(0);}to{transform:scale(1);}}
+
+.lab-steps{margin-top:24px;}
+.lab-step{
+  background:#fff;border-radius:14px;padding:16px 18px;margin-bottom:14px;
+  border-right:5px solid var(--joint-blue);
+}
+.lab-step h4{margin:0 0 8px;color:var(--joint-blue);}
+.test-btn{
+  background:var(--marrow-red);color:#fff;border:none;border-radius:10px;
+  padding:8px 16px;cursor:pointer;font-family:inherit;margin-top:8px;
+}
+.test-btn:hover{background:#8e2a20;}
+.flex-result{
+  display:none;margin-top:10px;padding:10px;border-radius:10px;
+  background:#eef6ee;color:var(--success);font-size:14px;
+}
+.flex-anim-wrap{display:flex;justify-content:center;margin-top:10px;}
+.flex-anim{display:flex;gap:2px;}
+.flex-anim .seg{width:12px;height:18px;background:var(--bone-dark);border:1px solid #a98f5e;border-radius:4px;transition:transform .6s ease;}
+
+textarea.notebook{
+  width:100%;min-height:80px;border-radius:10px;border:1px solid #c9b98a;
+  padding:10px;font-family:inherit;font-size:14px;resize:vertical;
+}
+
+.conclusion-box{
+  background:#fff9ec;border:2px solid var(--accent);border-radius:14px;
+  padding:18px;margin-top:20px;
+}
+.conclusion-box h4{margin-top:0;color:var(--accent);}
+
+footer{
+  text-align:center;color:#9fb0c2;font-size:13px;padding:20px;
+}
+
+/* progress */
+.progress-wrap{
+  max-width:1100px;margin:0 auto;padding:0 16px;
+}
+.progress-bar-outer{
+  height:8px;background:rgba(255,255,255,.15);border-radius:6px;overflow:hidden;margin:6px 0 0;
+}
+.progress-bar-inner{
+  height:100%;width:0%;background:linear-gradient(90deg,var(--accent),#e8c98a);
+  transition:width .4s;
+}
+.progress-label{color:#cdd8e3;font-size:12px;text-align:center;margin-top:4px;}
+
+@media (max-width:600px){
+  .skeleton-3d{transform:scale(.85);}
+}
+
+  /* ══ RESPONSIVE MOBILE & TABLET ══ */
+  @media (max-width: 768px) {
+    body { padding: 8px !important; font-size: 15px !important; overflow-x: hidden !important; }
+    .container, [class*="container"], [class*="wrapper"] { padding: 8px !important; max-width: 100% !important; }
+    canvas { width: 100% !important; height: auto !important; display: block !important; touch-action: none; max-width: 100% !important; }
+    svg { max-width: 100% !important; height: auto !important; }
+    h1 { font-size: clamp(18px,5vw,32px) !important; }
+    h2 { font-size: clamp(15px,4vw,26px) !important; }
+    h3 { font-size: clamp(13px,3.5vw,20px) !important; }
+    [class*="grid"] { grid-template-columns: 1fr !important; }
+    [class*="flex"] { flex-wrap: wrap !important; }
+    input[type="range"] { width: 100% !important; min-height: 36px; }
+    input[type="number"], input[type="text"], select, textarea {
+      font-size: 16px !important; width: 100% !important; box-sizing: border-box; padding: 8px !important; }
+    button { min-height: 44px !important; font-size: 14px !important; touch-action: manipulation; padding: 10px 14px !important; }
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 13px !important; }
+    th, td { padding: 6px 4px !important; }
+    header { padding: 10px 12px !important; }
+    .controls, [class*="controls"] { flex-direction: column !important; gap: 8px !important; }
+    .lab-window, [class*="lab-window"] { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+  }
+  @media (max-width: 480px) {
+    body { padding: 4px !important; }
+    button { width: 100% !important; }
+  }
+  /* ══ END RESPONSIVE ══ */
+</style>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+<style>
+.vlab-back{position:fixed;top:10px;left:10px;z-index:99999;
+background:rgba(10,22,40,0.93);border:1px solid rgba(0,200,150,0.4);
+border-radius:22px;padding:8px 16px;display:inline-flex;align-items:center;gap:7px;
+color:#00C896;font-family:Tajawal,Cairo,Arial,sans-serif;font-size:13px;font-weight:700;
+text-decoration:none;backdrop-filter:blur(8px);box-shadow:0 4px 18px rgba(0,0,0,0.3);
+transition:background 0.2s;}
+.vlab-back:hover{background:rgba(0,200,150,0.18);}
+</style>
+<a href="../grade5.html" class="vlab-back">&#8594; العودة للصف</a>
+
+
+<header class="hero">
+  <span class="skull-deco left">🦴</span>
+  <span class="skull-deco right">🦴</span>
+  <h1>الجهاز الهيكلي 🦴</h1>
+  <p class="sub">أقسام الجهاز الهيكلي — مادة العلوم والحياة | الصف الخامس | فلسطين</p>
+  <div class="badge-row">
+    <span class="badge">🧪 مختبر افتراضي تفاعلي</span>
+    <span class="badge">🦴 نموذج ثلاثي الأبعاد</span>
+    <span class="badge">✅ أنشطة وتقييم ذاتي</span>
+  </div>
+</header>
+
+<nav class="tabs">
+  <button class="tab-btn active" data-tab="intro">المقدمة</button>
+  <button class="tab-btn" data-tab="model3d">الهيكل ثلاثي الأبعاد</button>
+  <button class="tab-btn" data-tab="classify">تصنيف الأجزاء</button>
+  <button class="tab-btn" data-tab="skull">الجمجمة</button>
+  <button class="tab-btn" data-tab="lab">المختبر الافتراضي</button>
+  <button class="tab-btn" data-tab="quiz">التقويم النهائي</button>
+</nav>
+
+<div class="progress-wrap">
+  <div class="progress-bar-outer"><div class="progress-bar-inner" id="progressBar"></div></div>
+  <div class="progress-label" id="progressLabel">تقدمك في الدرس: 0%</div>
+</div>
+
+<main>
+
+<!-- ============ TAB 1: INTRO ============ -->
+<section class="panel active" id="tab-intro">
+  <h2 class="section-title">نشاط (٢): أقسام الجهاز الهيكلي</h2>
+  <p>يتكوّن جسم الإنسان من <b>206 عظمة</b> تشكّل معاً <b>الجهاز الهيكلي</b>، وهو الإطار الصلب الذي يدعم الجسم، ويحمي أعضاءه الداخلية، ويساعد العضلات على الحركة. في هذا الدرس سنكتشف معاً أقسام الجهاز الهيكلي، ونبني نموذجاً ثلاثي الأبعاد له، ثم ننتقل إلى المختبر الافتراضي لنصنع نموذجاً للعمود الفقاري ونتوصل إلى استنتاجات علمية حقيقية.</p>
+
+  <div class="info-box goal">
+    أن يتعرّف الطالب على أقسام الجهاز الهيكلي (المحوري والطرفي)، وأن يميّز بين أجزاء كل قسم، وأن يستنتج وظيفة العمود الفقاري من خلال تجربة عملية.
+  </div>
+
+  <h3 class="sub-title">أحضرُ ومعلمي مجسّماً للجهاز الهيكليّ</h3>
+  <p>تأمّل الشكل: الجسم البشري ينقسم إلى منطقتين رئيسيتين بحسب موقع العظام:</p>
+  <div class="classify-wrap" style="margin-top:10px;">
+    <div class="bank" style="flex:1;">
+      <h4 style="color:var(--success);">🟢 الهيكل المحوري</h4>
+      <p style="font-size:14px;">يقع في محور الجسم الأوسط: الجمجمة، العمود الفقاري، القفص الصدري.</p>
+    </div>
+    <div class="bank" style="flex:1;">
+      <h4 style="color:#c97c2c;">🟠 الهيكل الطرفي</h4>
+      <p style="font-size:14px;">يشمل الأطراف العلوية والسفلية، ومنطقتي الاتصال التي تربطها بالهيكل المحوري.</p>
+    </div>
+  </div>
+  <p style="margin-top:18px;">انتقل الآن إلى تبويب <b>"الهيكل ثلاثي الأبعاد"</b> لاستكشاف النموذج بنفسك! 👉</p>
+</section>
+
+<!-- ============ TAB 2: 3D MODEL ============ -->
+<section class="panel" id="tab-model3d">
+  <h2 class="section-title">استكشف الهيكل العظمي ثلاثي الأبعاد</h2>
+  <p>دوّر النموذج باستخدام الأزرار أو بالسحب عليه باللمس/الفأرة، ثم اضغط على أي عظمة لتتعرّف على اسمها وقسمها.</p>
+
+  <div class="lab-stage">
+    <div class="skeleton-3d-wrap">
+      <div class="skeleton-3d" id="skeleton3d">
+        <div class="bone-part" id="part-skull" data-name="الجُمجُمة" data-group="محوري" data-desc="تحمي الدماغ، وتتكوّن من عظام مسطّحة متّصلة بمفاصل ثابتة عدا الفك السفلي."></div>
+        <div class="bone-part" id="part-spine" data-name="العمود الفقاري" data-group="محوري" data-desc="سلسلة من الفقرات تدعم الجذع وتحمي الحبل الشوكي، وتسمح بالانحناء والالتفاف."></div>
+        <div class="bone-part" id="part-ribcage" data-name="القفص الصدري" data-group="محوري" data-desc="يتكوّن من الأضلاع وعظم القص، ويحمي القلب والرئتين."></div>
+        <div class="bone-part" id="part-shoulder-l" data-name="منطقة اتّصال (الكتف)" data-group="طرفي" data-desc="تربط الطرف العلوي بالهيكل المحوري."></div>
+        <div class="bone-part" id="part-shoulder-r" data-name="منطقة اتّصال (الكتف)" data-group="طرفي" data-desc="تربط الطرف العلوي بالهيكل المحوري."></div>
+        <div class="bone-part" id="part-arm-up-l" data-name="الطرف العلوي (العضد)" data-group="طرفي" data-desc="جزء من الذراع يتيح الحركة الواسعة."></div>
+        <div class="bone-part" id="part-arm-up-r" data-name="الطرف العلوي (العضد)" data-group="طرفي" data-desc="جزء من الذراع يتيح الحركة الواسعة."></div>
+        <div class="bone-part" id="part-arm-low-l" data-name="الطرف العلوي (الساعد)" data-group="طرفي" data-desc="يربط العضد باليد."></div>
+        <div class="bone-part" id="part-arm-low-r" data-name="الطرف العلوي (الساعد)" data-group="طرفي" data-desc="يربط العضد باليد."></div>
+        <div class="bone-part" id="part-hand-l" data-name="الطرف العلوي (اليد)" data-group="طرفي" data-desc="تتكوّن من عظام صغيرة عديدة تتيح حركة دقيقة."></div>
+        <div class="bone-part" id="part-hand-r" data-name="الطرف العلوي (اليد)" data-group="طرفي" data-desc="تتكوّن من عظام صغيرة عديدة تتيح حركة دقيقة."></div>
+        <div class="bone-part" id="part-pelvis" data-name="منطقة اتّصال (الحوض)" data-group="طرفي" data-desc="تربط الطرف السفلي بالهيكل المحوري وتحمل وزن الجسم."></div>
+        <div class="bone-part" id="part-leg-up-l" data-name="الطرف السفلي (الفخذ)" data-group="طرفي" data-desc="أطول وأقوى عظمة في الجسم."></div>
+        <div class="bone-part" id="part-leg-up-r" data-name="الطرف السفلي (الفخذ)" data-group="طرفي" data-desc="أطول وأقوى عظمة في الجسم."></div>
+        <div class="bone-part" id="part-leg-low-l" data-name="الطرف السفلي (الساق)" data-group="طرفي" data-desc="يربط الفخذ بالقدم."></div>
+        <div class="bone-part" id="part-leg-low-r" data-name="الطرف السفلي (الساق)" data-group="طرفي" data-desc="يربط الفخذ بالقدم."></div>
+        <div class="bone-part" id="part-foot-l" data-name="الطرف السفلي (القدم)" data-group="طرفي" data-desc="تحمل وزن الجسم وتساعد على المشي والتوازن."></div>
+        <div class="bone-part" id="part-foot-r" data-name="الطرف السفلي (القدم)" data-group="طرفي" data-desc="تحمل وزن الجسم وتساعد على المشي والتوازن."></div>
+      </div>
+    </div>
+    <div class="info-panel-3d" id="infoPanel">
+      <div class="placeholder">👆 اضغط على أي جزء من الهيكل لعرض معلوماته هنا</div>
+    </div>
+  </div>
+
+  <div class="rotate-controls">
+    <button onclick="rotateModel(-20)">⟲ تدوير يسار</button>
+    <button onclick="resetModel()">إعادة ضبط</button>
+    <button onclick="rotateModel(20)">⟳ تدوير يمين</button>
+  </div>
+</section>
+
+<!-- ============ TAB 3: CLASSIFY (Drag & Drop) ============ -->
+<section class="panel" id="tab-classify">
+  <h2 class="section-title">١. مستعيناً بالشكل السابق، أُكمل الجدول الآتي</h2>
+  <p>اسحب كل بطاقة من بنك الأجزاء إلى الجدول المناسب: <b>أجزاء الهيكل المحوري</b> أو <b>أجزاء الهيكل الطرفي</b>.</p>
+
+  <div class="classify-wrap">
+    <div class="bank" id="itemBank">
+      <h4>🗂️ بنك الأجزاء (اسحب من هنا)</h4>
+      <div class="drag-item" draggable="true" data-answer="axial">الجمجمة</div>
+      <div class="drag-item" draggable="true" data-answer="axial">العمود الفقاري</div>
+      <div class="drag-item" draggable="true" data-answer="axial">القفص الصدري</div>
+      <div class="drag-item" draggable="true" data-answer="append">الطرف العلوي</div>
+      <div class="drag-item" draggable="true" data-answer="append">الطرف السفلي</div>
+      <div class="drag-item" draggable="true" data-answer="append">منطقتا الاتّصال</div>
+    </div>
+    <div class="dropzones">
+      <div class="dropzone axial" id="zoneAxial" data-type="axial">
+        <h4>الهيكل المحوريّ</h4>
+      </div>
+      <div class="dropzone append" id="zoneAppend" data-type="append">
+        <h4>الهيكل الطرفيّ</h4>
+      </div>
+    </div>
+  </div>
+  <button class="check-btn" onclick="checkClassify()">تحقّق من إجابتي ✓</button>
+  <div class="feedback" id="classifyFeedback"></div>
+
+  <div class="info-box tip" style="margin-top:24px;">
+    أستنتج أن الجهاز الهيكلي يُقسم إلى قسمين، هما: <b>الهيكل المحوري</b> و<b>الهيكل الطرفي</b>، ويرتبطان معاً بواسطة منطقتي الاتصال (الكتف والحوض).
+  </div>
+
+  <div class="fill-q">
+    <label>🗨️ أناقش زملائي: لماذا سُمّي الجهاز الهيكلي المحوري بهذا الاسم؟</label>
+    <input type="text" id="ans1" placeholder="اكتب إجابتك هنا...">
+    <button class="check-btn" style="padding:6px 14px;font-size:13px;margin-top:8px;" onclick="revealAnswer('ans1','r1')">عرض إجابة نموذجية</button>
+    <div class="answer-reveal" id="r1">✅ لأنّه يقع على المحور الأوسط (الطولي) لجسم الإنسان، وتتوزّع بقية عظام الجسم حوله.</div>
+  </div>
+</section>
+
+<!-- ============ TAB 4: SKULL EXPLORE ============ -->
+<section class="panel" id="tab-skull">
+  <h2 class="section-title">نشاط (٣): الهيكل المحوريّ — أولاً: الجمجمة</h2>
+  <p>أحضرُ ومعلمي نموذجاً للهيكل العظمي، وأتفحّص الجمجمة مستعيناً بالشكل: دوّرها بالسحب عليها لاستكشاف تجاويفها التي تحمي الأعضاء الحسّاسة.</p>
+
+  <div class="skull-explore">
+    <div class="skull-3d-mini">
+      <div class="skull-shape" id="skullShape">
+        <div class="skull-cavity eye-l" title="تجويف العين"></div>
+        <div class="skull-cavity eye-r" title="تجويف العين"></div>
+        <div class="skull-cavity nose-cav" title="تجويف الأنف"></div>
+        <div class="skull-cavity ear-cav" title="تجويف الأذن"></div>
+        <div class="jaw-line"></div>
+      </div>
+      <p style="text-align:center;font-size:12px;color:#8a7752;">🖱️ اسحب يميناً/يساراً للتدوير</p>
+    </div>
+    <div style="flex:1;min-width:240px;">
+      <table style="width:100%;border-collapse:collapse;">
+        <tr style="background:#f1ece0;"><th style="padding:8px;border:1px solid #ddd;">التجويف</th><th style="padding:8px;border:1px solid #ddd;">العضو المحمي</th></tr>
+        <tr><td style="padding:8px;border:1px solid #ddd;">تجويف الجمجمة</td><td style="padding:8px;border:1px solid #ddd;">الدّماغ 🧠</td></tr>
+        <tr><td style="padding:8px;border:1px solid #ddd;">تجويف العين</td><td style="padding:8px;border:1px solid #ddd;">العين 👁️</td></tr>
+        <tr><td style="padding:8px;border:1px solid #ddd;">تجويف الأنف</td><td style="padding:8px;border:1px solid #ddd;">الأنف 👃</td></tr>
+        <tr><td style="padding:8px;border:1px solid #ddd;">تجويف الأذن</td><td style="padding:8px;border:1px solid #ddd;">الأذن 👂</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="fill-q">
+    <label>١. ما نوع عظام الجمجمة؟</label>
+    <input type="text" id="ans2">
+    <button class="check-btn" style="padding:6px 14px;font-size:13px;margin-top:8px;" onclick="revealAnswer('ans2','r2')">عرض الإجابة</button>
+    <div class="answer-reveal" id="r2">✅ عظام مسطّحة.</div>
+  </div>
+  <div class="fill-q">
+    <label>٢. يوجد للإنسان فكّان، هما:</label>
+    <input type="text" id="ans3">
+    <button class="check-btn" style="padding:6px 14px;font-size:13px;margin-top:8px;" onclick="revealAnswer('ans3','r3')">عرض الإجابة</button>
+    <div class="answer-reveal" id="r3">✅ الفكّ العلوي، والفكّ السفلي.</div>
+  </div>
+  <div class="fill-q">
+    <label>٣. هل أستطيع تحريك الجزء العلوي من عظام جمجمتي؟ ولماذا؟</label>
+    <input type="text" id="ans4">
+    <button class="check-btn" style="padding:6px 14px;font-size:13px;margin-top:8px;" onclick="revealAnswer('ans4','r4')">عرض الإجابة</button>
+    <div class="answer-reveal" id="r4">✅ لا، لأن عظام الجمجمة العلوية مرتبطة بمفاصل ثابتة. أمّا الفكّ السفلي فمرتبط بمفصل متحرّك، لذلك يمكن تحريكه عند الكلام أو المضغ.</div>
+  </div>
+
+  <div class="info-box tip">
+    <b>المفصل:</b> مكان اتصال عظمتين أو أكثر، وهو نوعان: <b>ثابت</b> مثل الدّرزات المستّنة بين عظام الجمجمة، و<b>متحرّك</b> مثل مفصل الفكّ السفلي.
+  </div>
+
+  <h3 class="sub-title">ثانياً: العمود الفقاري</h3>
+  <p>يتكوّن العمود الفقاري من سلسلة عظام تُسمّى <b>الفقرات</b>، يفصل بينها أقراص غضروفية:</p>
+  <div class="vert-strip">
+    <div class="vert-piece">فقرة</div><div class="vert-piece disc"></div>
+    <div class="vert-piece">فقرة</div><div class="vert-piece disc"></div>
+    <div class="vert-piece">فقرة</div><div class="vert-piece disc"></div>
+    <div class="vert-piece">فقرة</div><div class="vert-piece disc"></div>
+    <div class="vert-piece">فقرة</div>
+  </div>
+  <p style="text-align:center;font-size:13px;color:#777;">الدوائر الكبيرة = فقرات | الدوائر البرتقالية الصغيرة = أقراص غضروفية</p>
+
+  <div class="fill-q">
+    <label>٤. يفصل بين الفقرات أقراص تُسمّى ........ تعطي العمود الفقاري المرونة اللازمة لتسهيل الحركة، وتساعده على تحمّل الضغط الواقع عليه.</label>
+    <input type="text" id="ans5" placeholder="اكتب الكلمة الناقصة">
+    <button class="check-btn" style="padding:6px 14px;font-size:13px;margin-top:8px;" onclick="revealAnswer('ans5','r5')">عرض الإجابة</button>
+    <div class="answer-reveal" id="r5">✅ أقراص غضروفية.</div>
+  </div>
+
+  <p>👉 الآن انتقل إلى <b>"المختبر الافتراضي"</b> لتصنع نموذجك الخاص للعمود الفقاري وتكتشف عملياً سبب مرونته!</p>
+</section>
+
+<!-- ============ TAB 5: VIRTUAL LAB ============ -->
+<section class="panel" id="tab-lab">
+  <h2 class="section-title">🧪 المختبر الافتراضي: نموذج العمود الفقاري</h2>
+  <div class="lab-intro">
+    <h3>مشروع: أصنع نموذجاً لفقرات العمود الفقاري</h3>
+    <p>باستخدام المواد الموضّحة في الصينية أدناه، اسحب كل مادة بالترتيب إلى منطقة التركيب لبناء نموذج العمود الفقاري، تماماً كما في النشاط الورقي (قطعة صلصال + كرتونة بيض مقصوصة كأقراص + خيط يمرّ بداخلها).</p>
+  </div>
+
+  <div class="lab-bench">
+    <p style="text-align:center;font-weight:bold;color:#5a4a28;">🧰 صينية المواد</p>
+    <div class="materials-tray" id="materialsTray">
+      <div class="material" draggable="true" data-type="vertebra">
+        <span class="icon">🟤</span>قرص صلصال (فقرة)
+      </div>
+      <div class="material" draggable="true" data-type="disc">
+        <span class="icon">🟠</span>قرص كرتون بيض (قرص غضروفي)
+      </div>
+      <div class="material" draggable="true" data-type="thread">
+        <span class="icon">〰️</span>خيط (يمثّل الحبل الشوكي)
+      </div>
+    </div>
+
+    <p style="text-align:center;font-weight:bold;color:#5a4a28;margin-top:18px;">🔧 منطقة التركيب — اسحب القطع هنا بالتناوب (فقرة، قرص، فقرة، قرص...)</p>
+    <div class="build-area" id="buildArea">
+      <span class="hint" id="buildHint">اسحب وأفلِت المواد هنا لبدء البناء...</span>
+    </div>
+    <div style="text-align:center;margin-top:10px;">
+      <button class="check-btn" onclick="resetLab()" style="background:#888;">🔄 إعادة المحاولة</button>
+      <span id="threadStatus" style="margin-right:10px;font-size:13px;color:#555;"></span>
+    </div>
+  </div>
+
+  <div class="lab-steps">
+    <div class="lab-step">
+      <h4>الخطوة ١: اختبار الثبات</h4>
+      <p>أحاول تحريك الجزء العلوي من النموذج (يمثّل الفكّ العلوي/الجمجمة) دون الخيط — هل أستطيع تحريكه بسهولة؟</p>
+      <button class="test-btn" onclick="testRigid()">▶ تنفيذ الاختبار</button>
+      <div class="flex-result" id="rigidResult">
+        🔬 <b>الملاحظة:</b> النموذج المصنوع من قطعة صلصال واحدة متماسكة لا ينحني ولا يلتف بسهولة، تماماً كما لا تتحرك عظام الجمجمة العلوية بسبب مفاصلها الثابتة.
+      </div>
+    </div>
+
+    <div class="lab-step">
+      <h4>الخطوة ٢: اختبار المرونة (بعد إضافة الأقراص والخيط)</h4>
+      <p>الآن أضغط على زر "تحريك النموذج" بعد إكمال البناء بالتناوب بين الفقرات والأقراص، وأُلاحظ ماذا يحدث.</p>
+      <button class="test-btn" onclick="testFlex()">▶ تحريك النموذج</button>
+      <div class="flex-anim-wrap">
+        <div class="flex-anim" id="flexAnim"></div>
+      </div>
+      <div class="flex-result" id="flexResult">
+        🔬 <b>الملاحظة:</b> عند إضافة الأقراص الغضروفية اللينة بين الفقرات وربطها بخيط (يمثّل الحبل الشوكي)، أصبح بالإمكان ثني النموذج والتفافه في اتجاهات مختلفة بسهولة ومرونة!
+      </div>
+    </div>
+  </div>
+
+  <div class="fill-q">
+    <label>📝 سجّل ملاحظاتك: هل استطعت تحريك النموذج بعد إضافة الأقراص الغضروفية؟ ولماذا؟</label>
+    <textarea class="notebook" id="labNotes" placeholder="اكتب ملاحظاتك هنا..."></textarea>
+  </div>
+
+  <div class="conclusion-box">
+    <h4>🎯 الاستنتاج النهائي</h4>
+    <p>من خلال التجربة، أستنتج أن:</p>
+    <ul>
+      <li>العمود الفقاري يتكوّن من سلسلة من <b>الفقرات</b> يفصل بينها <b>أقراص غضروفية</b>.</li>
+      <li>هذه الأقراص هي التي تمنح العمود الفقاري <b>المرونة</b> اللازمة للانحناء والالتفاف.</li>
+      <li>كما تساعد الأقراص على <b>امتصاص الصدمات وتحمّل الضغط</b> الواقع على العمود الفقاري أثناء الحركة (كالقفز والجري).</li>
+      <li>معظم فقرات العمود الفقاري ترتبط بمفاصل <b>محدودة الحركة</b>، ولهذا سُمّي الجزء العلوي منها بمنطقة "العمود الفقاري المرن" وليس حرّ الحركة بالكامل، حفاظاً على حماية الحبل الشوكي.</li>
+    </ul>
+    <p>🔎 <b>أبحث:</b> بالرجوع إلى مكتبة المدرسة أو الشبكة العنكبوتية، ابحث عن سبب فقدان أغلب المسنين عدّة سنتيمترات من قاماتهم — <i>تلميح: يرتبط ذلك بانضغاط الأقراص الغضروفية بين الفقرات مع التقدّم في العمر!</i></p>
+  </div>
+</section>
+
+<!-- ============ TAB 6: QUIZ ============ -->
+<section class="panel" id="tab-quiz">
+  <h2 class="section-title">✅ التقويم النهائي</h2>
+  <p>أجب عن الأسئلة الآتية لتقييم فهمك للدرس:</p>
+  <div id="quizContainer"></div>
+  <button class="check-btn" onclick="gradeQuiz()">تسليم الإجابات وعرض النتيجة</button>
+  <div class="feedback" id="quizFeedback"></div>
+</section>
+
+</main>
+
+<footer>
+  صُمّمت هذه الصفحة التفاعلية وفق منهاج العلوم والحياة - الصف الخامس - فلسطين 🇵🇸 | تدعم اللغة العربية بالكامل (UTF-8 / RTL) وتعمل على الحاسوب والهاتف
+</footer>
+
+<script>
+/* ======= Tabs ======= */
+const tabBtns = document.querySelectorAll('.tab-btn');
+const panels = document.querySelectorAll('.panel');
+let visited = new Set(['intro']);
+function updateProgress(){
+  const pct = Math.round((visited.size/6)*100);
+  document.getElementById('progressBar').style.width = pct+'%';
+  document.getElementById('progressLabel').textContent = 'تقدمك في الدرس: '+pct+'%';
+}
+tabBtns.forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    tabBtns.forEach(b=>b.classList.remove('active'));
+    panels.forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-'+btn.dataset.tab).classList.add('active');
+    visited.add(btn.dataset.tab);
+    updateProgress();
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+});
+updateProgress();
+
+/* ======= 3D skeleton rotate ======= */
+const skeleton = document.getElementById('skeleton3d');
+let rotY = 0, rotX = 4;
+function applyRotate(){ skeleton.style.transform = `rotateY(${rotY}deg) rotateX(${rotX}deg)`; }
+function rotateModel(delta){ rotY += delta; applyRotate(); }
+function resetModel(){ rotY=0; rotX=4; applyRotate(); }
+
+let dragging=false, lastX=0, lastY=0;
+skeleton.addEventListener('pointerdown', e=>{dragging=true; lastX=e.clientX; lastY=e.clientY;});
+window.addEventListener('pointerup', ()=>dragging=false);
+window.addEventListener('pointermove', e=>{
+  if(!dragging) return;
+  const dx = e.clientX-lastX, dy = e.clientY-lastY;
+  rotY += dx*0.4; rotX -= dy*0.2;
+  rotX = Math.max(-20,Math.min(20,rotX));
+  lastX=e.clientX; lastY=e.clientY;
+  applyRotate();
+});
+
+document.querySelectorAll('.bone-part').forEach(part=>{
+  part.addEventListener('click', (e)=>{
+    e.stopPropagation();
+    document.querySelectorAll('.bone-part').forEach(p=>p.classList.remove('selected'));
+    part.classList.add('selected');
+    const group = part.dataset.group;
+    const tagHtml = group==='محوري'
+      ? `<span class="tag-axial">الهيكل المحوري</span>`
+      : `<span class="tag-append">الهيكل الطرفي</span>`;
+    document.getElementById('infoPanel').innerHTML = `
+      ${tagHtml}
+      <h4>${part.dataset.name}</h4>
+      <p>${part.dataset.desc}</p>
+    `;
+  });
+});
+
+/* ======= Skull mini rotate ======= */
+const skullShape = document.getElementById('skullShape');
+let sRot=0, sDragging=false, sLastX=0;
+skullShape.addEventListener('pointerdown', e=>{sDragging=true; sLastX=e.clientX;});
+window.addEventListener('pointerup', ()=>sDragging=false);
+window.addEventListener('pointermove', e=>{
+  if(!sDragging) return;
+  const dx = e.clientX - sLastX;
+  sRot += dx*0.6;
+  skullShape.style.transform = `rotateY(${sRot}deg)`;
+  sLastX = e.clientX;
+});
+
+/* ======= Reveal answers ======= */
+function revealAnswer(inputId,revealId){
+  document.getElementById(revealId).style.display='block';
+}
+
+/* ======= Classify drag & drop ======= */
+let draggedItem=null;
+document.querySelectorAll('#itemBank .drag-item').forEach(item=>{
+  item.addEventListener('dragstart', ()=>{ draggedItem=item; });
+});
+['zoneAxial','zoneAppend'].forEach(id=>{
+  const zone = document.getElementById(id);
+  zone.addEventListener('dragover', e=>{ e.preventDefault(); zone.classList.add('over'); });
+  zone.addEventListener('dragleave', ()=> zone.classList.remove('over'));
+  zone.addEventListener('drop', e=>{
+    e.preventDefault();
+    zone.classList.remove('over');
+    if(draggedItem){
+      const clone = draggedItem.cloneNode(true);
+      clone.classList.remove('drag-item');
+      clone.classList.add('dz-item');
+      clone.dataset.answer = draggedItem.dataset.answer;
+      zone.appendChild(clone);
+      draggedItem.remove();
+      draggedItem=null;
+    }
+  });
+});
+function checkClassify(){
+  let correct=0, total=0;
+  document.querySelectorAll('#zoneAxial .dz-item').forEach(el=>{
+    total++; if(el.dataset.answer==='axial') correct++;
+  });
+  document.querySelectorAll('#zoneAppend .dz-item').forEach(el=>{
+    total++; if(el.dataset.answer==='append') correct++;
+  });
+  const fb = document.getElementById('classifyFeedback');
+  if(total<6){
+    fb.className='feedback bad';
+    fb.textContent='⚠️ يرجى سحب جميع البطاقات الستّ قبل التحقق.';
+    return;
+  }
+  if(correct===6){
+    fb.className='feedback good';
+    fb.textContent='✅ ممتاز! جميع الإجابات صحيحة. لقد صنّفت أجزاء الهيكل بشكل صحيح تماماً.';
+  } else {
+    fb.className='feedback bad';
+    fb.textContent=`❌ أجبت بشكل صحيح عن ${correct} من أصل 6. حاول مرة أخرى!`;
+  }
+}
+
+/* ======= Virtual Lab build ======= */
+let buildSequence = [];
+const buildArea = document.getElementById('buildArea');
+document.querySelectorAll('.material').forEach(mat=>{
+  mat.addEventListener('dragstart', e=>{ e.dataTransfer.setData('type', mat.dataset.type); });
+});
+buildArea.addEventListener('dragover', e=>{ e.preventDefault(); buildArea.classList.add('over'); });
+buildArea.addEventListener('dragleave', ()=> buildArea.classList.remove('over'));
+buildArea.addEventListener('drop', e=>{
+  e.preventDefault();
+  buildArea.classList.remove('over');
+  const type = e.dataTransfer.getData('type');
+  if(!type) return;
+  document.getElementById('buildHint')?.remove();
+  if(type==='thread'){
+    document.getElementById('threadStatus').textContent = '〰️ تمّ تمرير الخيط عبر النموذج (يمثّل الحبل الشوكي).';
+    return;
+  }
+  const piece = document.createElement('div');
+  piece.className = 'column-piece' + (type==='disc' ? ' cd':'');
+  piece.textContent = type==='vertebra' ? 'فقرة' : '';
+  buildArea.appendChild(piece);
+  buildSequence.push(type);
+  buildFlexAnim();
+});
+function buildFlexAnim(){
+  const wrap = document.getElementById('flexAnim');
+  wrap.innerHTML='';
+  const count = Math.max(buildSequence.length,1);
+  for(let i=0;i<count;i++){
+    const seg = document.createElement('div');
+    seg.className='seg';
+    wrap.appendChild(seg);
+  }
+}
+buildFlexAnim();
+function resetLab(){
+  buildSequence=[];
+  buildArea.innerHTML = '<span class="hint" id="buildHint">اسحب وأفلِت المواد هنا لبدء البناء...</span>';
+  document.getElementById('threadStatus').textContent='';
+  document.getElementById('rigidResult').style.display='none';
+  document.getElementById('flexResult').style.display='none';
+  buildFlexAnim();
+}
+function testRigid(){
+  document.getElementById('rigidResult').style.display='block';
+}
+function testFlex(){
+  const hasDisc = buildSequence.includes('disc');
+  const hasVert = buildSequence.includes('vertebra');
+  const segs = document.querySelectorAll('#flexAnim .seg');
+  if(hasDisc && hasVert && segs.length>1){
+    segs.forEach((seg,i)=>{
+      const angle = (i - segs.length/2) * 6;
+      seg.style.transform = `rotate(${angle}deg) translateY(${Math.abs(i-segs.length/2)*2}px)`;
+    });
+    document.getElementById('flexResult').style.display='block';
+  } else {
+    segs.forEach(seg=> seg.style.transform = 'rotate(0deg)');
+    alert('🔔 أكمل بناء النموذج أولاً بالتناوب بين الفقرات والأقراص الغضروفية لتلاحظ المرونة!');
+  }
+}
+
+/* ======= Quiz ======= */
+const quizData = [
+  {q:'الجهاز الهيكلي ينقسم إلى:', options:['الهيكل المحوري والهيكل الطرفي','الهيكل العلوي والهيكل السفلي','الجمجمة والعمود الفقاري فقط'], correct:0},
+  {q:'أي ممّا يلي يُعدّ من الهيكل المحوري؟', options:['اليد','القفص الصدري','القدم'], correct:1},
+  {q:'ما الذي يفصل بين فقرات العمود الفقاري؟', options:['عظام صغيرة','أقراص غضروفية','عضلات فقط'], correct:1},
+  {q:'مفصل الفكّ السفلي هو مفصل:', options:['ثابت','متحرّك','لا يوجد مفصل'], correct:1},
+  {q:'منطقتا الاتصال اللتان تربطان الهيكل الطرفي بالمحوري هما:', options:['الكتف والحوض','الرأس والرقبة','اليد والقدم'], correct:0},
+  {q:'وظيفة القفص الصدري الرئيسية:', options:['حماية القلب والرئتين','المساعدة على المشي','حماية الدماغ'], correct:0},
+];
+const quizContainer = document.getElementById('quizContainer');
+quizData.forEach((item,i)=>{
+  const div = document.createElement('div');
+  div.className='fill-q';
+  div.innerHTML = `<label>${i+1}. ${item.q}</label>` +
+    item.options.map((opt,j)=>`
+      <div style="margin:4px 0;">
+        <label style="font-weight:normal;display:flex;align-items:center;gap:6px;cursor:pointer;">
+          <input type="radio" name="q${i}" value="${j}"> ${opt}
+        </label>
+      </div>`).join('');
+  quizContainer.appendChild(div);
+});
+function gradeQuiz(){
+  let score=0;
+  quizData.forEach((item,i)=>{
+    const sel = document.querySelector(`input[name="q${i}"]:checked`);
+    if(sel && parseInt(sel.value)===item.correct) score++;
+  });
+  const fb = document.getElementById('quizFeedback');
+  const pct = Math.round((score/quizData.length)*100);
+  fb.className = pct>=60 ? 'feedback good' : 'feedback bad';
+  fb.textContent = `نتيجتك: ${score} من ${quizData.length} (${pct}%) ${pct>=60?'— أحسنت! 🎉':'— راجع الدرس وحاول مجدداً 💪'}`;
+  visited.add('quiz_done');
+}
+</script>
+
+</body>
+</html>

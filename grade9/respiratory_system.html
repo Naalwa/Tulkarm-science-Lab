@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الجهاز التنفسي | العلوم والحياة - الصف التاسع</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@500;700;800;900&family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy-deep:#0A1B2C;
+    --navy-mid:#123049;
+    --navy-soft:#1B4363;
+    --sky-pale:#EAF3F6;
+    --sky-white:#F7FBFC;
+    --coral:#FF6B7A;
+    --coral-dark:#E14F60;
+    --teal:#3FD0C4;
+    --teal-dark:#1FA79C;
+    --amber:#FFA45C;
+    --amber-dark:#E4823A;
+    --ink:#0A1B2C;
+    --ink-soft:#3B5166;
+    --paper:#FFFFFF;
+    --line:#D8E6EA;
+    --shadow: 0 20px 50px rgba(10,27,44,.18);
+    --radius-lg: 28px;
+    --radius-md: 18px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important;}
+  }
+
+  body{
+    margin:0;
+    font-family:'Cairo', sans-serif;
+    color:var(--ink);
+    background:var(--sky-white);
+    line-height:1.9;
+    overflow-x:hidden;
+  }
+
+  h1,h2,h3,h4,.display{
+    font-family:'Tajawal','Cairo',sans-serif;
+    margin:0;
+  }
+
+  a{color:inherit;}
+
+  .container{
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 28px;
+  }
+
+  ::selection{ background:var(--coral); color:#fff; }
+
+  /* focus visibility */
+  a:focus-visible, button:focus-visible, select:focus-visible, [tabindex]:focus-visible{
+    outline: 3px solid var(--amber);
+    outline-offset: 3px;
+  }
+
+  /* ---------------- NAV ---------------- */
+  .nav{
+    position:sticky; top:0; z-index:100;
+    background:rgba(10,27,44,.86);
+    backdrop-filter: blur(10px);
+    border-bottom:1px solid rgba(255,255,255,.08);
+  }
+  .nav-inner{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 28px;
+    max-width:1180px; margin:0 auto;
+    gap:16px;
+  }
+  .nav-brand{
+    color:#fff; font-weight:800; font-size:1.05rem;
+    display:flex; align-items:center; gap:10px;
+    white-space:nowrap;
+  }
+  .nav-brand .dot{
+    width:12px;height:12px;border-radius:50%;
+    background:linear-gradient(135deg, var(--coral), var(--teal));
+    box-shadow:0 0 14px var(--teal);
+    flex-shrink:0;
+  }
+  .nav-links{
+    display:flex; gap:4px; list-style:none; margin:0; padding:0;
+    overflow-x:auto; scrollbar-width:none;
+  }
+  .nav-links::-webkit-scrollbar{display:none;}
+  .nav-links a{
+    display:block; white-space:nowrap;
+    color:rgba(255,255,255,.72); text-decoration:none;
+    font-size:.88rem; font-weight:600;
+    padding:9px 13px; border-radius:100px;
+    transition:.25s;
+  }
+  .nav-links a:hover, .nav-links a.active{
+    color:var(--navy-deep); background:var(--teal);
+  }
+
+  /* ---------------- HERO ---------------- */
+  .hero{
+    position:relative;
+    background:radial-gradient(120% 140% at 50% -10%, #1a3c58 0%, var(--navy-deep) 60%);
+    color:#fff;
+    padding:64px 0 40px;
+    overflow:hidden;
+  }
+  .hero::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image: radial-gradient(1.5px 1.5px at 20% 30%, rgba(255,255,255,.35) 100%, transparent),
+                       radial-gradient(1.5px 1.5px at 70% 60%, rgba(255,255,255,.25) 100%, transparent),
+                       radial-gradient(1.5px 1.5px at 40% 80%, rgba(255,255,255,.3) 100%, transparent),
+                       radial-gradient(2px 2px at 85% 20%, rgba(255,255,255,.3) 100%, transparent),
+                       radial-gradient(1.5px 1.5px at 55% 15%, rgba(255,255,255,.25) 100%, transparent);
+    pointer-events:none;
+  }
+  .hero-grid{
+    position:relative; z-index:2;
+    display:grid; grid-template-columns: 1.05fr .95fr;
+    gap:36px; align-items:center;
+  }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:.82rem; font-weight:700; letter-spacing:.02em;
+    color:var(--teal); background:rgba(63,208,196,.12);
+    border:1px solid rgba(63,208,196,.35);
+    padding:7px 14px; border-radius:100px;
+  }
+  .hero h1{
+    font-size:clamp(2.4rem, 5vw, 4rem);
+    font-weight:900;
+    margin:18px 0 14px;
+    background:linear-gradient(90deg, #fff 40%, var(--teal) 100%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .hero p.lead{
+    font-size:1.12rem; color:rgba(255,255,255,.78);
+    max-width:52ch; margin-bottom:26px;
+  }
+  .hero-cta-row{ display:flex; gap:12px; flex-wrap:wrap; }
+  .btn{
+    border:none; cursor:pointer; font-family:inherit;
+    font-weight:700; font-size:.95rem;
+    padding:13px 24px; border-radius:100px;
+    transition:transform .2s, box-shadow .2s, background .2s;
+  }
+  .btn:hover{ transform:translateY(-2px); }
+  .btn-primary{ background:var(--coral); color:#fff; box-shadow:0 10px 25px rgba(255,107,122,.35); }
+  .btn-primary:hover{ background:var(--coral-dark); }
+  .btn-ghost{ background:rgba(255,255,255,.08); color:#fff; border:1px solid rgba(255,255,255,.25); }
+  .btn-ghost:hover{ background:rgba(255,255,255,.16); }
+
+  /* ---- 3D breathing scene ---- */
+  .scene-wrap{
+    perspective:1100px;
+    display:flex; justify-content:center;
+  }
+  .scene{
+    position:relative;
+    width:320px; height:380px;
+    transform-style:preserve-3d;
+    transition: transform .3s ease-out;
+  }
+  .chest{
+    position:absolute; inset:0;
+    transform-style:preserve-3d;
+  }
+  .ribs{
+    position:absolute; left:50%; top:6%;
+    width:260px; height:230px;
+    transform:translateX(-50%) translateZ(10px);
+    transform-style:preserve-3d;
+  }
+  .rib{
+    position:absolute; left:0; right:0;
+    height:14px; margin:0 auto;
+    border:3px solid rgba(255,164,92,.55);
+    border-bottom:none;
+    border-radius:120px 120px 0 0;
+    transition: transform 1.1s cubic-bezier(.4,0,.2,1), width 1.1s ease, opacity .6s;
+  }
+  .rib1{ top:0px;  width:230px; }
+  .rib2{ top:34px; width:250px; }
+  .rib3{ top:68px; width:262px; }
+  .rib4{ top:102px;width:262px; }
+  .rib5{ top:136px;width:250px; }
+  .rib6{ top:170px;width:224px; }
+
+  .lungs{
+    position:absolute; left:50%; top:18%;
+    width:210px; height:220px;
+    transform:translateX(-50%) translateZ(30px);
+    transform-style:preserve-3d;
+  }
+  .lung{
+    position:absolute; top:0; width:92px; height:190px;
+    background:linear-gradient(160deg, var(--coral) 0%, var(--coral-dark) 100%);
+    box-shadow: inset -10px -10px 24px rgba(0,0,0,.18), 0 18px 30px rgba(0,0,0,.35);
+    transition: transform 1.1s cubic-bezier(.4,0,.2,1);
+  }
+  .lung.left{
+    right:8px;
+    border-radius: 70% 40% 55% 65% / 55% 45% 65% 45%;
+    transform-origin:top center;
+  }
+  .lung.right{
+    left:8px;
+    border-radius: 40% 70% 65% 55% / 45% 55% 45% 65%;
+    transform-origin:top center;
+  }
+  .trachea{
+    position:absolute; left:50%; top:-14%;
+    width:26px; height:70px;
+    transform:translateX(-50%) translateZ(35px);
+    background:linear-gradient(180deg, #d8e6ea, #b9cdd4);
+    border-radius:10px;
+    box-shadow:inset 0 0 0 3px rgba(10,27,44,.12);
+  }
+  .diaphragm{
+    position:absolute; left:50%; bottom:10%;
+    width:230px; height:60px;
+    transform:translateX(-50%) translateZ(20px);
+    background:linear-gradient(180deg, var(--amber), var(--amber-dark));
+    border-radius:50% 50% 40% 40% / 100% 100% 30% 30%;
+    box-shadow:0 14px 24px rgba(0,0,0,.3);
+    transition: transform 1.1s cubic-bezier(.4,0,.2,1);
+  }
+  .o2tag, .co2tag{
+    position:absolute; font-family:'Tajawal',sans-serif; font-weight:800; font-size:.72rem;
+    color:#fff; background:rgba(0,0,0,.28); padding:3px 9px; border-radius:100px;
+    transform:translateZ(45px); opacity:0; transition:opacity .5s, transform .9s;
+  }
+  .o2tag{ top:10%; left:8%; }
+  .co2tag{ top:10%; right:8%; }
+
+  /* inhale state */
+  .scene.inhale .rib1{ transform:translateY(-8px); width:246px; }
+  .scene.inhale .rib2{ transform:translateY(-8px); width:266px; }
+  .scene.inhale .rib3{ transform:translateY(-9px); width:280px; }
+  .scene.inhale .rib4{ transform:translateY(-9px); width:280px; }
+  .scene.inhale .rib5{ transform:translateY(-8px); width:266px; }
+  .scene.inhale .rib6{ transform:translateY(-6px); width:238px; }
+  .scene.inhale .lung.left{ transform:scale(1.14,1.12) translateX(4px); }
+  .scene.inhale .lung.right{ transform:scale(1.14,1.12) translateX(-4px); }
+  .scene.inhale .diaphragm{ transform:translateX(-50%) translateZ(20px) translateY(14px) scaleY(.55); }
+  .scene.inhale .o2tag{ opacity:1; transform:translateZ(45px) translateY(-6px); }
+
+  .scene.exhale .co2tag{ opacity:1; }
+
+  .breath-controls{
+    display:flex; gap:10px; justify-content:center; margin-top:18px; flex-wrap:wrap;
+  }
+  .chip{
+    background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.25);
+    color:#fff; font-weight:700; font-size:.85rem;
+    padding:9px 16px; border-radius:100px; cursor:pointer; transition:.2s;
+  }
+  .chip:hover{ background:rgba(255,255,255,.18); }
+  .chip.on{ background:var(--teal); color:var(--navy-deep); border-color:var(--teal); }
+  .breath-state{
+    text-align:center; margin-top:10px; font-size:.85rem; color:rgba(255,255,255,.65);
+    min-height:1.4em;
+  }
+
+  @media (max-width: 880px){
+    .hero-grid{ grid-template-columns:1fr; }
+    .scene-wrap{ order:-1; }
+  }
+
+  /* ---------------- SECTION SHELL ---------------- */
+  section.block{ padding:86px 0; }
+  .block.alt{ background:var(--sky-pale); }
+  .section-head{ max-width:640px; margin-bottom:44px; }
+  .section-head .eyebrow{ color:var(--teal-dark); background:rgba(63,208,196,.12); border-color:rgba(63,208,196,.35); }
+  .section-head h2{
+    font-size:clamp(1.7rem,3.4vw,2.5rem); font-weight:800; margin:14px 0 12px; color:var(--navy-deep);
+  }
+  .section-head p{ color:var(--ink-soft); font-size:1.05rem; }
+
+  .reveal{ opacity:0; transform:translateY(28px); transition:opacity .7s ease, transform .7s ease; }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+
+  /* ---------------- AIR JOURNEY ---------------- */
+  .journey{
+    display:flex; overflow-x:auto; gap:0; padding-bottom:14px; scroll-snap-type:x proximity;
+  }
+  .journey::-webkit-scrollbar{ height:8px; }
+  .journey::-webkit-scrollbar-thumb{ background:var(--line); border-radius:10px; }
+  .stop{
+    flex:0 0 200px; scroll-snap-align:start;
+    position:relative; padding:0 26px 0 0; text-align:center;
+  }
+  .stop:not(:last-child)::after{
+    content:""; position:absolute; top:34px; left:0; width:100%; height:3px;
+    background:repeating-linear-gradient(90deg, var(--teal) 0 8px, transparent 8px 16px);
+  }
+  .stop-num{
+    width:68px; height:68px; margin:0 auto 14px; border-radius:50%;
+    background:var(--navy-deep); color:var(--teal); font-family:'Tajawal'; font-weight:900; font-size:1.3rem;
+    display:flex; align-items:center; justify-content:center; position:relative; z-index:2;
+    box-shadow:var(--shadow);
+    transform-style:preserve-3d; transition:transform .4s;
+  }
+  .stop:hover .stop-num{ transform: rotateY(180deg); }
+  .stop-name{ font-weight:800; font-size:1rem; margin-bottom:6px; }
+  .stop-desc{ font-size:.86rem; color:var(--ink-soft); padding:0 4px; }
+
+  /* ---------------- ORGAN CARDS ---------------- */
+  .cards-grid{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:22px;
+  }
+  @media (max-width:1000px){ .cards-grid{ grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:560px){ .cards-grid{ grid-template-columns:1fr;} }
+
+  .flip-card{
+    perspective:1200px; height:270px; cursor:pointer;
+  }
+  .flip-inner{
+    position:relative; width:100%; height:100%;
+    transform-style:preserve-3d; transition:transform .7s cubic-bezier(.4,.2,.2,1);
+  }
+  .flip-card.flipped .flip-inner{ transform:rotateY(180deg); }
+  .flip-face{
+    position:absolute; inset:0; backface-visibility:hidden;
+    border-radius:var(--radius-md); padding:14px;
+    display:flex; flex-direction:column;
+    box-shadow:var(--shadow);
+  }
+  .flip-front{
+    background:linear-gradient(160deg,#fff, var(--sky-pale));
+    border:1px solid var(--line);
+    align-items:stretch; justify-content:flex-start; gap:10px;
+  }
+  .flip-front .card-img{
+    width:100%; height:150px; border-radius:14px; overflow:hidden;
+    box-shadow:inset 0 0 0 1px rgba(10,27,44,.06);
+  }
+  .flip-front .card-img svg{ width:100%; height:100%; display:block; }
+  .flip-front h4{ font-size:1.05rem; font-weight:800; color:var(--navy-deep); margin-top:2px; }
+  .flip-front .hint{ font-size:.76rem; color:var(--ink-soft); margin-top:auto; }
+  .flip-back{
+    background:linear-gradient(160deg, var(--navy-mid), var(--navy-deep));
+    color:#fff; transform:rotateY(180deg);
+    justify-content:center; padding:24px;
+  }
+  .flip-back p{ font-size:.92rem; color:rgba(255,255,255,.88); }
+
+  /* ---------------- MECHANISM ---------------- */
+  .mech-grid{ display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+  @media (max-width:800px){ .mech-grid{ grid-template-columns:1fr; } }
+  .mech-card{
+    background:#fff; border:1px solid var(--line); border-radius:var(--radius-lg);
+    padding:30px; box-shadow:var(--shadow); position:relative; overflow:hidden;
+  }
+  .mech-card.inhale-card::before, .mech-card.exhale-card::before{
+    content:""; position:absolute; inset:0 0 auto 0; height:6px;
+  }
+  .mech-card.inhale-card::before{ background:linear-gradient(90deg, var(--teal), var(--teal-dark)); }
+  .mech-card.exhale-card::before{ background:linear-gradient(90deg, var(--amber), var(--amber-dark)); }
+  .mech-card h3{ font-size:1.3rem; margin-bottom:14px; color:var(--navy-deep); }
+  .mech-card ul{ margin:0; padding-inline-start:22px; color:var(--ink-soft); }
+  .mech-card li{ margin-bottom:9px; }
+  .mini-diaphragm{
+    width:100%; height:64px; margin-top:18px; position:relative;
+  }
+  .mini-diaphragm .dome{
+    position:absolute; bottom:0; left:10%; width:80%; height:40px;
+    background:linear-gradient(180deg, var(--amber), var(--amber-dark));
+    border-radius:50% 50% 6px 6px/100% 100% 6px 6px;
+    transition:transform .5s;
+  }
+  .inhale-card .dome{ transform:scaleY(.5) translateY(10px); }
+
+  /* ---------------- GAS TABLE ---------------- */
+  .gas-table-wrap{
+    margin-top:34px; background:#fff; border:1px solid var(--line);
+    border-radius:var(--radius-lg); padding:28px 30px; box-shadow:var(--shadow);
+  }
+  .gas-table{ width:100%; border-collapse:collapse; font-size:.95rem; min-width:420px; }
+  .gas-table th, .gas-table td{ padding:12px 14px; text-align:center; }
+  .gas-table th{ background:var(--navy-deep); color:var(--teal); font-family:'Tajawal'; font-weight:800; }
+  .gas-table th:first-child, .gas-table td:first-child{ text-align:right; font-weight:700; color:var(--navy-deep); }
+  .gas-table tbody tr:nth-child(odd){ background:var(--sky-pale); }
+  .gas-table td{ color:var(--ink-soft); }
+
+  /* ---------------- GAS EXCHANGE (3D ALVEOLI) ---------------- */
+  .alveolus-wrap{
+    display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:center;
+  }
+  @media (max-width:850px){ .alveolus-wrap{ grid-template-columns:1fr; } }
+
+  .alv-wrap{
+    perspective:1200px;
+    height:340px;
+    display:flex; align-items:center; justify-content:center;
+    position:relative;
+  }
+  .alv-tag{
+    position:absolute; font-family:'Tajawal',sans-serif; font-weight:800; font-size:.74rem;
+    color:#fff; padding:6px 13px; border-radius:100px; z-index:5;
+    opacity:0; animation: alvTagPulse 5.2s ease-in-out infinite;
+  }
+  .alv-tag.o2{ background:var(--teal-dark); top:8%; right:4%; animation-delay:.2s; }
+  .alv-tag.co2{ background:#3a4a58; bottom:10%; left:4%; animation-delay:2.8s; }
+  @keyframes alvTagPulse{
+    0%, 100%{ opacity:0; transform:translateY(6px); }
+    8%, 40%{ opacity:1; transform:translateY(0); }
+    50%{ opacity:0; }
+  }
+  .alv-scene{
+    position:relative;
+    width:280px; height:280px;
+    transform-style:preserve-3d;
+    transition:transform .3s ease-out;
+  }
+  .duct{
+    position:absolute; left:50%; top:-6%;
+    width:22px; height:78px;
+    background:linear-gradient(180deg,#e3edf0,#c3d3d8);
+    border-radius:12px;
+    box-shadow:inset 0 0 0 3px rgba(10,27,44,.1);
+  }
+  .alv-sac{
+    position:absolute; left:50%; top:50%;
+    border-radius:46% 54% 58% 42% / 50% 46% 54% 50%;
+    background:radial-gradient(circle at 32% 28%, #ffe9dc, var(--coral) 68%, var(--coral-dark) 100%);
+    box-shadow:0 14px 26px rgba(225,79,96,.35), inset 0 0 18px rgba(255,255,255,.3);
+  }
+  .alv-sac.dim{ filter:brightness(.82) saturate(.9); }
+  .capvessel{
+    position:absolute; left:50%; top:50%;
+    height:15px;
+    background:linear-gradient(90deg, #C6172C, #8a0f1e);
+    border-radius:100px;
+    box-shadow:0 6px 14px rgba(138,15,30,.4);
+  }
+  .exch{
+    position:absolute; width:10px; height:10px; border-radius:50%;
+  }
+  .exch.o2{ background:var(--teal); box-shadow:0 0 10px var(--teal); animation: exchOut 2.6s ease-in-out infinite; }
+  .exch.co2{ background:#3a4a58; box-shadow:0 0 8px rgba(0,0,0,.35); animation: exchIn 2.6s ease-in-out infinite; }
+  @keyframes exchOut{
+    0%{ transform:translate3d(0,0,0); opacity:0; }
+    20%{ opacity:1; }
+    60%{ transform:translate3d(var(--dx), var(--dy), var(--dz)); opacity:1; }
+    100%{ transform:translate3d(var(--dx), var(--dy), var(--dz)); opacity:0; }
+  }
+  @keyframes exchIn{
+    0%{ transform:translate3d(var(--dx), var(--dy), var(--dz)); opacity:0; }
+    20%{ opacity:1; }
+    60%{ transform:translate3d(0,0,0); opacity:1; }
+    100%{ transform:translate3d(0,0,0); opacity:0; }
+  }
+  .alv-hint{ text-align:center; font-size:.82rem; color:var(--ink-soft); margin-top:8px; }
+  .alveolus-legend{ display:flex; gap:18px; justify-content:center; margin-top:10px; font-size:.85rem; color:var(--ink-soft); }
+  .alveolus-legend span{ display:inline-flex; align-items:center; gap:6px; }
+  .legend-dot{ width:11px;height:11px;border-radius:50%; display:inline-block; }
+
+  /* ---------------- DISEASES ---------------- */
+  .disease-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+  @media (max-width:1000px){ .disease-grid{ grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:560px){ .disease-grid{ grid-template-columns:1fr;} }
+  .disease-card{
+    background:#fff; border:1px solid var(--line); border-radius:var(--radius-md);
+    padding:22px; box-shadow:0 10px 24px rgba(10,27,44,.06);
+    transition:transform .3s, box-shadow .3s;
+  }
+  .disease-card:hover{ transform:translateY(-6px); box-shadow:var(--shadow); }
+  .disease-card h4{ color:var(--coral-dark); font-size:1.05rem; margin-bottom:8px; }
+  .disease-card p{ font-size:.88rem; color:var(--ink-soft); margin:0; }
+  .prevent-box{
+    margin-top:34px; background:linear-gradient(120deg, var(--navy-deep), var(--navy-mid));
+    color:#fff; border-radius:var(--radius-lg); padding:30px 34px;
+  }
+  .prevent-box h4{ color:var(--teal); font-size:1.15rem; margin-bottom:14px; }
+  .prevent-list{ display:grid; grid-template-columns:repeat(2,1fr); gap:10px 26px; list-style:none; margin:0; padding:0; }
+  @media (max-width:650px){ .prevent-list{ grid-template-columns:1fr; } }
+  .prevent-list li{ font-size:.92rem; color:rgba(255,255,255,.85); position:relative; padding-inline-start:24px; }
+  .prevent-list li::before{ content:"✓"; position:absolute; right:0; color:var(--teal); font-weight:800; }
+
+  /* ---------------- WORKSHEET ---------------- */
+  .sheet{
+    background:#fff; border:1px solid var(--line); border-radius:var(--radius-lg);
+    padding:36px; box-shadow:var(--shadow);
+  }
+  .sheet-top{ display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; margin-bottom:26px; }
+  .progress-track{
+    flex:1; min-width:200px; height:10px; background:var(--sky-pale); border-radius:100px; overflow:hidden;
+  }
+  .progress-fill{
+    height:100%; width:0%; background:linear-gradient(90deg, var(--teal), var(--coral));
+    transition:width .4s ease;
+  }
+  .progress-label{ font-size:.85rem; font-weight:700; color:var(--ink-soft); white-space:nowrap; }
+
+  .q{
+    border-top:1px dashed var(--line); padding:26px 0;
+  }
+  .q:first-of-type{ border-top:none; padding-top:0; }
+  .q-head{ display:flex; gap:12px; align-items:flex-start; margin-bottom:14px; }
+  .q-num{
+    flex:0 0 30px; height:30px; border-radius:50%; background:var(--navy-deep); color:var(--teal);
+    font-weight:800; font-size:.85rem; display:flex; align-items:center; justify-content:center;
+  }
+  .q-text{ font-weight:700; color:var(--navy-deep); font-size:1.02rem; }
+  .q-fb{ font-size:.85rem; font-weight:700; margin-inline-start:42px; margin-top:8px; display:none; }
+  .q-fb.show{ display:block; }
+  .q-fb.ok{ color:var(--teal-dark); }
+  .q-fb.bad{ color:var(--coral-dark); }
+
+  .opt-row{ display:flex; gap:10px; flex-wrap:wrap; margin-inline-start:42px; }
+  .opt{
+    position:relative;
+  }
+  .opt input{ position:absolute; opacity:0; inset:0; cursor:pointer; margin:0; }
+  .opt label{
+    display:block; padding:10px 18px; border-radius:100px; border:1.5px solid var(--line);
+    font-size:.92rem; color:var(--ink-soft); cursor:pointer; transition:.2s; background:var(--sky-white);
+  }
+  .opt input:checked + label{ background:var(--navy-deep); color:#fff; border-color:var(--navy-deep); }
+  .opt input:focus-visible + label{ outline:3px solid var(--amber); outline-offset:2px; }
+  .q.correct .opt input:checked + label{ background:var(--teal-dark); border-color:var(--teal-dark); }
+  .q.wrong .opt input:checked + label{ background:var(--coral-dark); border-color:var(--coral-dark); }
+  .q.wrong .opt label.reveal-correct{ outline:2px solid var(--teal-dark); }
+
+  .fill-sentence{ margin-inline-start:42px; font-size:1rem; color:var(--ink-soft); }
+  .fill-sentence select{
+    font-family:'Cairo',sans-serif; font-weight:700; color:var(--navy-deep);
+    border:1.5px solid var(--line); border-radius:10px; padding:6px 12px; background:var(--sky-white);
+    margin:0 4px;
+  }
+  .q.correct .fill-sentence select{ border-color:var(--teal-dark); background:#eafaf8; }
+  .q.wrong .fill-sentence select{ border-color:var(--coral-dark); background:#fdecee; }
+
+  .sheet-actions{ display:flex; gap:12px; margin-top:20px; flex-wrap:wrap; }
+  .btn-dark{ background:var(--navy-deep); color:#fff; }
+  .btn-dark:hover{ background:var(--navy-mid); }
+  .btn-outline{ background:transparent; color:var(--navy-deep); border:1.5px solid var(--line); }
+  .btn-outline:hover{ background:var(--sky-pale); }
+
+  .result-panel{
+    display:none; margin-top:24px; padding:26px; border-radius:var(--radius-md);
+    background:var(--sky-pale); text-align:center;
+  }
+  .result-panel.show{ display:block; }
+  .result-score{ font-family:'Tajawal'; font-weight:900; font-size:2.6rem; color:var(--navy-deep); }
+  .result-msg{ font-weight:700; margin-top:6px; }
+
+  footer{
+    background:var(--navy-deep); color:rgba(255,255,255,.6);
+    text-align:center; padding:30px 20px; font-size:.85rem;
+  }
+  footer strong{ color:var(--teal); }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-brand"><span class="dot"></span> الجهاز التنفسي</div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#hero">البداية</a></li>
+      <li><a href="#journey">رحلة الهواء</a></li>
+      <li><a href="#organs">الأعضاء</a></li>
+      <li><a href="#mechanism">آلية التنفس</a></li>
+      <li><a href="#regulation">تنظيم التنفس</a></li>
+      <li><a href="#exchange">تبادل الغازات</a></li>
+      <li><a href="#health">الوقاية</a></li>
+      <li><a href="#worksheet">ورقة العمل</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero" id="hero">
+  <div class="container hero-grid">
+    <div>
+      <span class="eyebrow">العلوم والحياة · الصف التاسع · فلسطين</span>
+      <h1>الجهاز التنفسي</h1>
+      <p class="lead">تعرّف على رحلة الهواء داخل جسمك، من الأنف إلى الحويصلات الهوائية، وشاهد كيف تتحرك رئتاك أثناء الشهيق والزفير في نموذج ثلاثي الأبعاد تفاعلي.</p>
+      <div class="hero-cta-row">
+        <button class="btn btn-primary" onclick="document.getElementById('journey').scrollIntoView({behavior:'smooth'})">ابدأ رحلة الهواء</button>
+        <button class="btn btn-ghost" onclick="document.getElementById('worksheet').scrollIntoView({behavior:'smooth'})">اذهب إلى ورقة العمل</button>
+      </div>
+    </div>
+
+    <div>
+      <div class="scene-wrap">
+        <div class="scene" id="scene">
+          <div class="chest">
+            <div class="trachea"></div>
+            <div class="ribs" id="ribs">
+              <div class="rib rib1"></div>
+              <div class="rib rib2"></div>
+              <div class="rib rib3"></div>
+              <div class="rib rib4"></div>
+              <div class="rib rib5"></div>
+              <div class="rib rib6"></div>
+            </div>
+            <div class="lungs">
+              <div class="lung left"></div>
+              <div class="lung right"></div>
+              <span class="o2tag">O₂ يدخل</span>
+              <span class="co2tag">CO₂ يخرج</span>
+            </div>
+            <div class="diaphragm"></div>
+          </div>
+        </div>
+      </div>
+      <div class="breath-controls">
+        <button class="chip" id="btnInhale" onclick="setBreath('inhale')">شهيق</button>
+        <button class="chip" id="btnExhale" onclick="setBreath('exhale')">زفير</button>
+        <button class="chip" id="btnAuto" onclick="toggleAuto()">تشغيل تلقائي</button>
+      </div>
+      <p class="breath-state" id="breathState">اسحب الماوس فوق النموذج لتدويره، واضغط شهيق/زفير لمشاهدة الحركة.</p>
+    </div>
+  </div>
+</header>
+
+<!-- AIR JOURNEY -->
+<section class="block" id="journey">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">تسلسل</span>
+      <h2>رحلة الهواء داخل الجسم</h2>
+      <p>يمر الهواء الذي تستنشقه بسبع محطات مرتّبة قبل أن يصل إلى الدم. مرّر مؤشر الفأرة فوق كل رقم لتتعرف على اسم المحطة.</p>
+    </div>
+    <div class="journey reveal">
+      <div class="stop">
+        <div class="stop-num">1</div>
+        <div class="stop-name">الأنف</div>
+        <div class="stop-desc">تنقية الهواء وترطيبه وتدفئته</div>
+      </div>
+      <div class="stop">
+        <div class="stop-num">2</div>
+        <div class="stop-name">البلعوم</div>
+        <div class="stop-desc">ممر مشترك مع الجهاز الهضمي</div>
+      </div>
+      <div class="stop">
+        <div class="stop-num">3</div>
+        <div class="stop-name">الحنجرة</div>
+        <div class="stop-desc">تحتوي الأوتار الصوتية ولسان المزمار</div>
+      </div>
+      <div class="stop">
+        <div class="stop-num">4</div>
+        <div class="stop-name">القصبة الهوائية</div>
+        <div class="stop-desc">مدعمة بحلقات غضروفية</div>
+      </div>
+      <div class="stop">
+        <div class="stop-num">5</div>
+        <div class="stop-name">الشعبتان الهوائيتان</div>
+        <div class="stop-desc">تتفرعان نحو كل رئة</div>
+      </div>
+      <div class="stop">
+        <div class="stop-num">6</div>
+        <div class="stop-name">الشعيبات الهوائية</div>
+        <div class="stop-desc">تفرعات أدق داخل الرئتين</div>
+      </div>
+      <div class="stop">
+        <div class="stop-num">7</div>
+        <div class="stop-name">الحويصلات الهوائية</div>
+        <div class="stop-desc">هنا يتم تبادل الغازات مع الدم</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ORGAN CARDS -->
+<section class="block alt" id="organs">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">بطاقات تفاعلية</span>
+      <h2>تعرّف على أعضاء الجهاز التنفسي</h2>
+      <p>اضغط على أي بطاقة لقلبها ومشاهدة وظيفة العضو. يمكنك أيضًا استخدام مفتاح Enter بعد التنقل بالـ Tab.</p>
+    </div>
+    <div class="cards-grid reveal" id="cardsGrid"></div>
+  </div>
+</section>
+
+<!-- MECHANISM -->
+<section class="block" id="mechanism">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">آلية العمل</span>
+      <h2>كيف يعمل الشهيق والزفير؟</h2>
+      <p>يعتمد التنفس على تغيّر حجم التجويف الصدري بفعل الحجاب الحاجز والعضلات الوربية، مما يُحدث فرق ضغط يدفع الهواء للداخل أو للخارج.</p>
+    </div>
+    <div class="mech-grid reveal">
+      <div class="mech-card inhale-card">
+        <h3>الشهيق (استنشاق الهواء)</h3>
+        <ul>
+          <li>تنقبض العضلات بين ضلوع القفص الصدري، فيرتفع القفص الصدري للأعلى وللخارج.</li>
+          <li>تنقبض عضلة الحجاب الحاجز فتصبح مسطحة (تتحرك للأسفل).</li>
+          <li>يزداد حجم التجويف الصدري نتيجة الأمرين معًا، ويقل الضغط داخله.</li>
+          <li>يصبح الضغط الجوي الخارجي أكبر، فيندفع الهواء إلى داخل الرئتين.</li>
+        </ul>
+        <div class="mini-diaphragm"><div class="dome"></div></div>
+      </div>
+      <div class="mech-card exhale-card">
+        <h3>الزفير (طرد الهواء)</h3>
+        <ul>
+          <li>يرتخي الحجاب الحاجز ويعود لوضعه القبابي المرتفع.</li>
+          <li>ترتخي العضلات الوربية فيهبط القفص الصدري.</li>
+          <li>يقل حجم التجويف الصدري ويزداد الضغط بداخله.</li>
+          <li>يصبح الضغط الداخلي أكبر من الضغط الجوي، فيندفع الهواء إلى الخارج.</li>
+        </ul>
+        <div class="mini-diaphragm"><div class="dome"></div></div>
+      </div>
+    </div>
+
+    <div class="gas-table-wrap reveal">
+      <h3 style="color:var(--navy-deep); font-size:1.15rem; margin-bottom:14px;">مقارنة بين هواء الشهيق وهواء الزفير</h3>
+      <div style="overflow-x:auto;">
+        <table class="gas-table">
+          <thead>
+            <tr><th>وجه المقارنة</th><th>هواء الشهيق</th><th>هواء الزفير</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>الأكسجين O₂</td><td>21%</td><td>16%</td></tr>
+            <tr><td>ثاني أكسيد الكربون CO₂</td><td>0.04%</td><td>4%</td></tr>
+            <tr><td>النيتروجين</td><td>79%</td><td>79.4%</td></tr>
+            <tr><td>بخار الماء</td><td>متغيّر</td><td>مشبع</td></tr>
+            <tr><td>درجة الحرارة</td><td>متغيّرة</td><td>°37 س تقريبًا</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="color:var(--ink-soft); font-size:.9rem; margin-top:12px;">لاحظ أن نسبة الأكسجين تقل ونسبة ثاني أكسيد الكربون ترتفع بشكل كبير بعد مرور الهواء عبر الرئتين، وهذا دليل على حدوث تبادل الغازات.</p>
+    </div>
+  </div>
+</section>
+
+<!-- BREATHING REGULATION -->
+<section class="block alt" id="regulation">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">تنظيم عملية التنفس</span>
+      <h2>من الذي يتحكم بموعد الشهيق والزفير؟</h2>
+      <p>تنقبض العضلات التنفسية أو ترتخي في الوقت المناسب بتأثير عاملين اثنين، يعملان معًا دون أن نفكر بذلك إراديًا.</p>
+    </div>
+    <div class="mech-grid reveal">
+      <div class="mech-card inhale-card">
+        <h3>أولًا: العامل الكيميائي</h3>
+        <ul>
+          <li>يرتفع تركيز ثاني أكسيد الكربون (CO₂) في الدم إلى حد معين.</li>
+          <li>يستثير ذلك مركز التنفس في الدماغ (يقع في النخاع المستطيل).</li>
+          <li>يُصدر المركز إشارات عصبية إلى الحجاب الحاجز والعضلات الوربية فتنقبض.</li>
+          <li>يندفع الهواء الغني بالأكسجين إلى الداخل، فيحدث الشهيق.</li>
+        </ul>
+      </div>
+      <div class="mech-card exhale-card">
+        <h3>ثانيًا: العامل العصبي</h3>
+        <ul>
+          <li>عند امتلاء الرئتين بالهواء، يضغط الهواء على جدران الحويصلات الهوائية.</li>
+          <li>يستثير هذا الضغط مستقبلات عصبية موجودة على جدران الحويصلات.</li>
+          <li>تُرسَل إشارات عصبية إلى مركز التنفس فيتوقف عن تنبيه عضلات الشهيق.</li>
+          <li>ترتخي العضلات ويهبط القفص الصدري، فيحدث الزفير.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GAS EXCHANGE -->
+<section class="block" id="exchange">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">داخل الحويصلة الهوائية</span>
+      <h2>تبادل الغازات بالانتشار</h2>
+      <p>تحاط كل حويصلة هوائية بشبكة من الشعيرات الدموية الدقيقة. ينتقل الأكسجين من الحويصلة إلى الدم ليرتبط بالهيموغلوبين، بينما ينتقل ثاني أكسيد الكربون من الدم إلى الحويصلة ليُطرح مع الزفير. تمنح ملايين الحويصلات الرئتين ملمسًا إسفنجيًا، وتزيد مساحة سطح تبادل الغازات لتصل إلى نحو 70–90 م² — أي ما يقارب مساحة ملعب كرة قدم صغير!</p>
+    </div>
+    <div class="alveolus-wrap reveal">
+      <div class="alv-wrap" id="alvWrap">
+        <span class="alv-tag o2">O₂ ← من الحويصلة إلى الدم</span>
+        <span class="alv-tag co2">CO₂ ← من الدم إلى الحويصلة</span>
+        <div class="alv-scene" id="alvScene">
+          <div class="duct"></div>
+
+          <!-- back sacs -->
+          <div class="alv-sac dim" style="width:70px;height:70px; transform:translate3d(-30px,-20px,-50px) translate(-50%,-50%);"></div>
+          <div class="alv-sac dim" style="width:65px;height:65px; transform:translate3d(40px,-30px,-40px) translate(-50%,-50%);"></div>
+
+          <!-- mid sacs -->
+          <div class="alv-sac" style="width:78px;height:78px; transform:translate3d(-75px,20px,0px) translate(-50%,-50%);"></div>
+          <div class="alv-sac" style="width:80px;height:80px; transform:translate3d(70px,15px,10px) translate(-50%,-50%);"></div>
+
+          <!-- capillary vessels -->
+          <div class="capvessel" style="width:120px; transform:translate3d(-4px,-45px,78px) translate(-50%,-50%) rotate(12deg);"></div>
+          <div class="capvessel" style="width:170px; transform:translate3d(0px,35px,40px) translate(-50%,-50%) rotate(-6deg);"></div>
+          <div class="capvessel" style="width:130px; transform:translate3d(2px,95px,55px) translate(-50%,-50%) rotate(4deg);"></div>
+
+          <!-- front sacs -->
+          <div class="alv-sac" style="width:98px;height:98px; transform:translate3d(0px,-45px,55px) translate(-50%,-50%);"></div>
+          <div class="alv-sac" style="width:70px;height:70px; transform:translate3d(-35px,70px,35px) translate(-50%,-50%);"></div>
+          <div class="alv-sac" style="width:72px;height:72px; transform:translate3d(35px,75px,30px) translate(-50%,-50%);"></div>
+
+          <!-- gas exchange particles -->
+          <div class="exch o2" style="transform:translate3d(-14px,-58px,62px) translate(-50%,-50%); --dx:22px; --dy:6px; --dz:16px; animation-delay:.1s;"></div>
+          <div class="exch co2" style="transform:translate3d(10px,-40px,60px) translate(-50%,-50%); --dx:-18px; --dy:-4px; --dz:-14px; animation-delay:.6s;"></div>
+
+          <div class="exch o2" style="transform:translate3d(-80px,15px,4px) translate(-50%,-50%); --dx:16px; --dy:14px; --dz:20px; animation-delay:1.1s;"></div>
+          <div class="exch co2" style="transform:translate3d(66px,12px,14px) translate(-50%,-50%); --dx:-14px; --dy:12px; --dz:18px; animation-delay:1.6s;"></div>
+
+          <div class="exch o2" style="transform:translate3d(-32px,72px,38px) translate(-50%,-50%); --dx:12px; --dy:16px; --dz:12px; animation-delay:2.1s;"></div>
+          <div class="exch co2" style="transform:translate3d(33px,78px,33px) translate(-50%,-50%); --dx:-10px; --dy:14px; --dz:14px; animation-delay:2.6s;"></div>
+        </div>
+      </div>
+      <p class="alv-hint">حرّك الفأرة فوق العنقود لتدويره في الفضاء ثلاثي الأبعاد</p>
+      <div>
+        <h3 style="color:var(--navy-deep); margin-bottom:12px;">عنقود من الحويصلات الهوائية</h3>
+        <p style="color:var(--ink-soft);">تتجمّع الحويصلات الهوائية في نهاية كل قصيبة على هيئة عنقود يشبه عنقود العنب، وتلتفّ حول كل حويصلة شبكة كثيفة من الشعيرات الدموية. الأكسجين (النقاط الفيروزية) ينتقل من داخل الحويصلة إلى الدم بالانتشار، بينما ينتقل ثاني أكسيد الكربون (النقاط الداكنة) من الدم إلى داخل الحويصلة ليُطرح مع الزفير.</p>
+        <p style="color:var(--ink-soft); margin-top:10px;">ولماذا يسير الغاز في هذا الاتجاه بالذات؟ لأن الغازات تنتقل دائمًا بالانتشار من مكان تركيزها الأعلى إلى مكان تركيزها الأقل: تركيز الأكسجين في الحويصلة أعلى منه في الدم، وتركيز ثاني أكسيد الكربون في الدم أعلى منه في الحويصلة.</p>
+        <div class="alveolus-legend">
+          <span><i class="legend-dot" style="background:var(--teal)"></i> الأكسجين O₂</span>
+          <span><i class="legend-dot" style="background:#3a4a58"></i> ثاني أكسيد الكربون CO₂</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DISEASES / HEALTH -->
+<section class="block alt" id="health">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">صحة وسلامة</span>
+      <h2>أمراض الجهاز التنفسي والوقاية منها</h2>
+      <p>بعض الأمراض الشائعة التي تصيب الجهاز التنفسي، وأهم طرق الوقاية منها.</p>
+    </div>
+    <p class="reveal" style="color:var(--ink-soft); margin-bottom:22px;">يرتبط تلوث الهواء بالجراثيم والغبار (السيليكا) ودخان التدخين والسيارات والمصانع بالعديد من المشكلات الصحية للجهاز التنفسي، ومنها:</p>
+    <div class="disease-grid reveal">
+      <div class="disease-card">
+        <h4>الرشح والإنفلونزا</h4>
+        <p>عدوى فيروسية شائعة تصيب المجاري التنفسية العلوية وتسبب سيلانًا في الأنف وسعالًا.</p>
+      </div>
+      <div class="disease-card">
+        <h4>التهاب القصبات الهوائية</h4>
+        <p>التهاب يصيب بطانة الشعب الهوائية ويسبب سعالًا مصحوبًا بالبلغم وضيقًا في التنفس.</p>
+      </div>
+      <div class="disease-card">
+        <h4>التهاب الرئتين</h4>
+        <p>عدوى تصيب الحويصلات الهوائية فتمتلئ بالسوائل، مما يقلل من كفاءة تبادل الغازات.</p>
+      </div>
+      <div class="disease-card">
+        <h4>السل</h4>
+        <p>مرض بكتيري معدٍ يصيب الرئتين وينتقل عبر الرذاذ المتطاير من الشخص المصاب.</p>
+      </div>
+      <div class="disease-card">
+        <h4>الأزمة الصدرية (الربو)</h4>
+        <p>ضيق مؤقت في الشعب الهوائية يسبب صعوبة في التنفس، وقد يحدث نتيجة الحساسية أو الغبار أو الدخان.</p>
+      </div>
+      <div class="disease-card">
+        <h4>سرطان الرئة</h4>
+        <p>مرض خطير يرتبط بشكل كبير بالتدخين، ينتج عن نمو غير طبيعي لخلايا أنسجة الرئة.</p>
+      </div>
+    </div>
+
+    <div class="prevent-box reveal" style="margin-top:34px; background:linear-gradient(120deg,#3a1420,#5c1b28);">
+      <h4 style="color:var(--coral);">مخاطر التدخين</h4>
+      <p style="color:rgba(255,255,255,.85); font-size:.92rem; margin-bottom:12px;">ضرر التدخين (المباشر وغير المباشر) بطيء الحدوث لكنه تدريجي ومميت في النهاية، وينتج عنه نحو 1000 مادة كيميائية معروفة بسميّتها، منها:</p>
+      <ul class="prevent-list" style="list-style:none;">
+        <li style="padding-inline-start:0;"><strong style="color:var(--coral);">النيكوتين:</strong> يسبب الإدمان، وينبّه القلب فيزيد نبضاته، ويضيّق الأوعية الدموية فيرفع ضغط الدم.</li>
+        <li style="padding-inline-start:0;"><strong style="color:var(--coral);">أول أكسيد الكربون:</strong> يقلل توافر الأكسجين في الدم.</li>
+        <li style="padding-inline-start:0;"><strong style="color:var(--coral);">القطران:</strong> يسبب السرطان وتهيّج الممرات التنفسية، ما يدفع المدخن للسعال باستمرار.</li>
+      </ul>
+    </div>
+
+    <div class="prevent-box reveal">
+      <h4>طرق الوقاية</h4>
+      <ul class="prevent-list">
+        <li>الابتعاد عن التدخين والتدخين السلبي.</li>
+        <li>تجنب الأماكن المزدحمة بالغبار أو الأبخرة الضارة.</li>
+        <li>ممارسة الرياضة بانتظام لتقوية عضلات التنفس.</li>
+        <li>الحرص على التهوية الجيدة للمنزل والمدرسة.</li>
+        <li>تغطية الفم عند السعال أو العطس.</li>
+        <li>مراجعة الطبيب فور ظهور أعراض تنفسية مستمرة.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- WORKSHEET -->
+<section class="block alt" id="worksheet">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">ورقة عمل تفاعلية</span>
+      <h2>اختبر فهمك للدرس</h2>
+      <p>أجب عن الأسئلة التالية، ثم اضغط "تحقق من إجاباتي" لمعرفة نتيجتك فورًا.</p>
+    </div>
+
+    <div class="sheet reveal">
+      <div class="sheet-top">
+        <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="progress-label" id="progressLabel">0 / 11 تمت الإجابة</div>
+      </div>
+
+      <form id="worksheetForm">
+        <!-- Q1 -->
+        <div class="q" data-answer="b" id="q1">
+          <div class="q-head"><div class="q-num">1</div><div class="q-text">وظيفة الأهداب والمخاط الموجودة في الأنف والقصبة الهوائية هي:</div></div>
+          <div class="opt-row">
+            <div class="opt"><input type="radio" name="q1" value="a" id="q1a"><label for="q1a">إنتاج الصوت</label></div>
+            <div class="opt"><input type="radio" name="q1" value="b" id="q1b"><label for="q1b">تنقية الهواء من الأتربة والجراثيم</label></div>
+            <div class="opt"><input type="radio" name="q1" value="c" id="q1c"><label for="q1c">تبادل الغازات</label></div>
+            <div class="opt"><input type="radio" name="q1" value="d" id="q1d"><label for="q1d">ضخ الدم</label></div>
+          </div>
+          <div class="q-fb"></div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="q" data-answer="c" id="q2">
+          <div class="q-head"><div class="q-num">2</div><div class="q-text">يمنع لسان المزمار دخول الطعام إلى:</div></div>
+          <div class="opt-row">
+            <div class="opt"><input type="radio" name="q2" value="a" id="q2a"><label for="q2a">المريء</label></div>
+            <div class="opt"><input type="radio" name="q2" value="b" id="q2b"><label for="q2b">المعدة</label></div>
+            <div class="opt"><input type="radio" name="q2" value="c" id="q2c"><label for="q2c">القصبة الهوائية</label></div>
+            <div class="opt"><input type="radio" name="q2" value="d" id="q2d"><label for="q2d">البلعوم</label></div>
+          </div>
+          <div class="q-fb"></div>
+        </div>
+
+        <!-- Q3 True/False -->
+        <div class="q" data-answer="false" id="q3">
+          <div class="q-head"><div class="q-num">3</div><div class="q-text">تحدث عملية تبادل الغازات في القصبة الهوائية. (صح أم خطأ)</div></div>
+          <div class="opt-row">
+            <div class="opt"><input type="radio" name="q3" value="true" id="q3t"><label for="q3t">صح</label></div>
+            <div class="opt"><input type="radio" name="q3" value="false" id="q3f"><label for="q3f">خطأ</label></div>
+          </div>
+          <div class="q-fb"></div>
+        </div>
+
+        <!-- Q4 True/False -->
+        <div class="q" data-answer="true" id="q4">
+          <div class="q-head"><div class="q-num">4</div><div class="q-text">أثناء الشهيق ينقبض الحجاب الحاجز ويتحرك إلى الأسفل. (صح أم خطأ)</div></div>
+          <div class="opt-row">
+            <div class="opt"><input type="radio" name="q4" value="true" id="q4t"><label for="q4t">صح</label></div>
+            <div class="opt"><input type="radio" name="q4" value="false" id="q4f"><label for="q4f">خطأ</label></div>
+          </div>
+          <div class="q-fb"></div>
+        </div>
+
+        <!-- Q5 fill blank -->
+        <div class="q" data-answer="الزفير" data-select="q5" id="q5">
+          <div class="q-head"><div class="q-num">5</div><div class="q-text">أكمل الفراغ</div></div>
+          <div class="fill-sentence">
+            أثناء
+            <select name="q5" id="q5s">
+              <option value="">اختر...</option>
+              <option value="الشهيق">الشهيق</option>
+              <option value="الزفير">الزفير</option>
+            </select>
+            يرتخي الحجاب الحاجز ويرتفع لأعلى، فيقل حجم التجويف الصدري.
+          </div>
+          <div class="q-fb"></div>
+        </div>
+
+        <!-- Q6 fill blank -->
+        <div class="q" data-answer="الهيموغلوبين" data-select="q6" id="q6">
+          <div class="q-head"><div class="q-num">6</div><div class="q-text">أكمل الفراغ</div></div>
+          <div class="fill-sentence">
+            يرتبط الأكسجين داخل الدم بمادة
+            <select name="q6" id="q6s">
+              <option value="">اختر...</option>
+              <option value="الهيموغلوبين">الهيموغلوبين</option>
+              <option value="البلازما">البلازما</option>
+              <option value="الصفائح الدموية">الصفائح الدموية</option>
+            </select>
+            الموجودة في خلايا الدم الحمراء.
+          </div>
+          <div class="q-fb"></div>
+        </div>
+
+        <!-- Q7 matching -->
+        <div class="q" data-answer="إنتاج الصوت" data-select="q7" id="q7">
+          <div class="q-head"><div class="q-num">7</div><div class="q-text">طابق: وظيفة الحنجرة هي</div></div>
+          <div class="fill-sentence">
+            <select name="q7" id="q7s">
+              <option value="">اختر الوظيفة الصحيحة...</option>
+              <option value="إنتاج الصوت">إنتاج الصوت</option>
+              <option value="تبادل الغازات">تبادل الغازات</option>
+              <option value="ترطيب الهواء">ترطيب الهواء</option>
+            </select>
+          </div>
+          <div class="q-fb"></div>
+        </div>
+
+        <!-- Q8 MC -->
+        <div class="q" data-answer="b" id="q8">
+          <div class="q-head"><div class="q-num">8</div><div class="q-text">من أفضل طرق الوقاية من أمراض الجهاز التنفسي:</div></div>
+          <div class="opt-row">
+            <div class="opt"><input type="radio" name="q8" value="a" id="q8a"><label for="q8a">التدخين بكثرة</label></div>
+            <div class="opt"><input type="radio" name="q8" value="b" id="q8b"><label for="q8b">تجنب التدخين والأماكن المزدحمة بالغبار</label></div>
+            <div class="opt"><input type="radio" name="q8" value="c" id="q8c"><label for="q8c">حبس النفس لفترات طويلة</label></div>
+            <div class="opt"><input type="radio" name="q8" value="d" id="q8d"><label for="q8d">تجنب ممارسة الرياضة</label></div>
+          </div>
+          <div class="q-fb"></div>
+        </div>
+
+        <!-- Q9 -->
+        <div class="q" data-answer="true" id="q9">
+          <div class="q-head"><div class="q-num">9</div><div class="q-text">ارتفاع نسبة ثاني أكسيد الكربون في الدم يستثير مركز التنفس في الدماغ فيحدث الشهيق. (صح أم خطأ)</div></div>
+          <div class="opt-row">
+            <div class="opt"><input type="radio" name="q9" value="true" id="q9t"><label for="q9t">صح</label></div>
+            <div class="opt"><input type="radio" name="q9" value="false" id="q9f"><label for="q9f">خطأ</label></div>
+          </div>
+          <div class="q-fb"></div>
+        </div>
+
+        <!-- Q10 -->
+        <div class="q" data-answer="b" id="q10">
+          <div class="q-head"><div class="q-num">10</div><div class="q-text">بمقارنة هواء الشهيق بهواء الزفير، فإن هواء الزفير يحتوي على:</div></div>
+          <div class="opt-row">
+            <div class="opt"><input type="radio" name="q10" value="a" id="q10a"><label for="q10a">أكسجين أكثر وثاني أكسيد كربون أقل</label></div>
+            <div class="opt"><input type="radio" name="q10" value="b" id="q10b"><label for="q10b">أكسجين أقل وثاني أكسيد كربون أكثر</label></div>
+            <div class="opt"><input type="radio" name="q10" value="c" id="q10c"><label for="q10c">نفس نسبة الغازات في الشهيق تمامًا</label></div>
+            <div class="opt"><input type="radio" name="q10" value="d" id="q10d"><label for="q10d">نيتروجين أقل بكثير</label></div>
+          </div>
+          <div class="q-fb"></div>
+        </div>
+
+        <!-- Q11 -->
+        <div class="q" data-answer="c" id="q11">
+          <div class="q-head"><div class="q-num">11</div><div class="q-text">أي مواد التدخين التالية تقلل توافر الأكسجين في الدم؟</div></div>
+          <div class="opt-row">
+            <div class="opt"><input type="radio" name="q11" value="a" id="q11a"><label for="q11a">النيكوتين</label></div>
+            <div class="opt"><input type="radio" name="q11" value="b" id="q11b"><label for="q11b">القطران</label></div>
+            <div class="opt"><input type="radio" name="q11" value="c" id="q11c"><label for="q11c">أول أكسيد الكربون</label></div>
+            <div class="opt"><input type="radio" name="q11" value="d" id="q11d"><label for="q11d">بخار الماء</label></div>
+          </div>
+          <div class="q-fb"></div>
+        </div>
+
+        <div class="sheet-actions">
+          <button type="button" class="btn btn-dark" onclick="checkAnswers()">تحقق من إجاباتي</button>
+          <button type="button" class="btn btn-outline" onclick="resetSheet()">إعادة المحاولة</button>
+        </div>
+      </form>
+
+      <div class="result-panel" id="resultPanel">
+        <div class="result-score" id="resultScore">0 / 11</div>
+        <div class="result-msg" id="resultMsg"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  مادة العلوم والحياة — الصف التاسع — منهاج فلسطين · <strong>الجهاز التنفسي</strong> · صفحة تعليمية تفاعلية
+</footer>
+
+<script>
+/* ---------------- ORGAN CARDS DATA ---------------- */
+const organs = [
+  {
+    name:"الأنف",
+    desc:"يُنقّي الهواء من الأتربة بواسطة الأهداب والمخاط، ويعمل على ترطيبه وتدفئته قبل دخوله للجسم.",
+    img:`<svg viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
+      <defs><linearGradient id="gN" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#123049"/><stop offset="1" stop-color="#0A1B2C"/></linearGradient></defs>
+      <rect width="200" height="150" fill="url(#gN)"/>
+      <path d="M100,32 C88,55 76,78 74,92 C72,103 80,111 92,113 L108,113 C120,111 128,103 126,92 C124,78 112,55 100,32 Z" fill="#FF6B7A"/>
+      <ellipse cx="90" cy="105" rx="5" ry="3.5" fill="#0A1B2C"/>
+      <ellipse cx="110" cy="105" rx="5" ry="3.5" fill="#0A1B2C"/>
+      <path d="M84,95 Q100,102 116,95" stroke="#E14F60" stroke-width="2" fill="none"/>
+      <text x="100" y="138" text-anchor="middle" font-family="Tajawal,sans-serif" font-weight="800" font-size="16" fill="#fff">الأنف</text>
+    </svg>`
+  },
+  {
+    name:"البلعوم",
+    desc:"ممر مشترك بين الجهازين الهضمي والتنفسي، ينقل الهواء من الأنف باتجاه الحنجرة.",
+    img:`<svg viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
+      <defs><linearGradient id="gP" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#123049"/><stop offset="1" stop-color="#0A1B2C"/></linearGradient></defs>
+      <rect width="200" height="150" fill="url(#gP)"/>
+      <path d="M72,28 L128,28 L114,108 L86,108 Z" fill="#FF6B7A" opacity=".92"/>
+      <line x1="78" y1="46" x2="122" y2="46" stroke="#0A1B2C" stroke-width="2.5" opacity=".5"/>
+      <line x1="82" y1="64" x2="118" y2="64" stroke="#0A1B2C" stroke-width="2.5" opacity=".5"/>
+      <line x1="86" y1="82" x2="114" y2="82" stroke="#0A1B2C" stroke-width="2.5" opacity=".5"/>
+      <path d="M86,108 L114,108 L108,120 L92,120 Z" fill="#4ECDC4"/>
+      <text x="100" y="138" text-anchor="middle" font-family="Tajawal,sans-serif" font-weight="800" font-size="16" fill="#fff">البلعوم</text>
+    </svg>`
+  },
+  {
+    name:"الحنجرة",
+    desc:"تحتوي الأوتار الصوتية المسؤولة عن إنتاج الصوت، ويوجد فيها لسان المزمار الذي يغلق مدخل القصبة أثناء البلع.",
+    img:`<svg viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
+      <defs><linearGradient id="gL" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#123049"/><stop offset="1" stop-color="#0A1B2C"/></linearGradient></defs>
+      <rect width="200" height="150" fill="url(#gL)"/>
+      <ellipse cx="100" cy="38" rx="16" ry="7" fill="#3FD0C4" transform="rotate(-8 100 38)"/>
+      <rect x="68" y="46" width="64" height="62" rx="16" fill="#3FD0C4"/>
+      <line x1="80" y1="72" x2="120" y2="72" stroke="#0A1B2C" stroke-width="3.5"/>
+      <line x1="80" y1="84" x2="120" y2="84" stroke="#0A1B2C" stroke-width="3.5"/>
+      <text x="100" y="138" text-anchor="middle" font-family="Tajawal,sans-serif" font-weight="800" font-size="16" fill="#fff">الحنجرة</text>
+    </svg>`
+  },
+  {
+    name:"القصبة الهوائية",
+    desc:"أنبوب مرن طوله نحو 12 سم وقطره نحو 2.5 سم، مدعم بـ16 إلى 20 حلقة غضروفية على شكل حرف C تحافظ على اتساعه دائمًا دون أن تعيق مرور الطعام في المريء خلفها.",
+    img:`<svg viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
+      <defs><linearGradient id="gT" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#123049"/><stop offset="1" stop-color="#0A1B2C"/></linearGradient></defs>
+      <rect width="200" height="150" fill="url(#gT)"/>
+      <rect x="82" y="26" width="36" height="88" rx="12" fill="#c3d3d8" opacity=".18"/>
+      <path d="M78,32 A22,9 0 1 1 122,32" stroke="#c3d3d8" stroke-width="6" fill="none"/>
+      <path d="M78,48 A22,9 0 1 1 122,48" stroke="#c3d3d8" stroke-width="6" fill="none"/>
+      <path d="M78,64 A22,9 0 1 1 122,64" stroke="#c3d3d8" stroke-width="6" fill="none"/>
+      <path d="M78,80 A22,9 0 1 1 122,80" stroke="#c3d3d8" stroke-width="6" fill="none"/>
+      <path d="M78,96 A22,9 0 1 1 122,96" stroke="#c3d3d8" stroke-width="6" fill="none"/>
+      <text x="100" y="138" text-anchor="middle" font-family="Tajawal,sans-serif" font-weight="800" font-size="15" fill="#fff">القصبة الهوائية</text>
+    </svg>`
+  },
+  {
+    name:"الشعبتان الهوائيتان",
+    desc:"تتفرع كل شعبة من القصبة الهوائية لتدخل إحدى الرئتين، ثم تتفرع داخلها إلى آلاف القنوات الأدق تُسمى القصيبات.",
+    img:`<svg viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
+      <defs><linearGradient id="gB" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#123049"/><stop offset="1" stop-color="#0A1B2C"/></linearGradient></defs>
+      <rect width="200" height="150" fill="url(#gB)"/>
+      <path d="M100,26 L100,64" stroke="#c3d3d8" stroke-width="16" fill="none" stroke-linecap="round"/>
+      <path d="M100,64 L66,112" stroke="#c3d3d8" stroke-width="14" fill="none" stroke-linecap="round"/>
+      <path d="M100,64 L134,112" stroke="#c3d3d8" stroke-width="14" fill="none" stroke-linecap="round"/>
+      <path d="M66,112 L52,124 M66,112 L74,126" stroke="#c3d3d8" stroke-width="8" fill="none" stroke-linecap="round"/>
+      <path d="M134,112 L148,124 M134,112 L126,126" stroke="#c3d3d8" stroke-width="8" fill="none" stroke-linecap="round"/>
+      <text x="100" y="140" text-anchor="middle" font-family="Tajawal,sans-serif" font-weight="800" font-size="14" fill="#fff">الشعبتان الهوائيتان</text>
+    </svg>`
+  },
+  {
+    name:"الحويصلات الهوائية",
+    desc:"أكياس هوائية دقيقة تشبه عنقود العنب، يوجد منها 300 إلى 700 مليون حويصلة في الرئتين، تحيط بها شعيرات دموية ويتم فيها تبادل الأكسجين وثاني أكسيد الكربون.",
+    img:`<svg viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
+      <defs><linearGradient id="gA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#123049"/><stop offset="1" stop-color="#0A1B2C"/></linearGradient></defs>
+      <rect width="200" height="150" fill="url(#gA)"/>
+      <line x1="100" y1="18" x2="100" y2="38" stroke="#c3d3d8" stroke-width="5"/>
+      <line x1="100" y1="38" x2="78" y2="52" stroke="#c3d3d8" stroke-width="3"/>
+      <line x1="100" y1="38" x2="120" y2="50" stroke="#c3d3d8" stroke-width="3"/>
+      <line x1="100" y1="38" x2="100" y2="60" stroke="#c3d3d8" stroke-width="3"/>
+      <circle cx="76" cy="60" r="15" fill="#FF6B7A"/>
+      <circle cx="100" cy="55" r="17" fill="#FF6B7A"/>
+      <circle cx="124" cy="60" r="14" fill="#FF6B7A"/>
+      <circle cx="66" cy="86" r="13" fill="#E14F60"/>
+      <circle cx="92" cy="90" r="16" fill="#FF6B7A"/>
+      <circle cx="118" cy="87" r="14" fill="#E14F60"/>
+      <circle cx="102" cy="108" r="13" fill="#FF6B7A"/>
+      <text x="100" y="138" text-anchor="middle" font-family="Tajawal,sans-serif" font-weight="800" font-size="14" fill="#fff">الحويصلات الهوائية</text>
+    </svg>`
+  },
+  {
+    name:"الرئتان",
+    desc:"عضوان إسفنجيان محاطان بغشاء الجنب الواقي، يحتوي كل منهما ملايين الحويصلات الهوائية.",
+    img:`<svg viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
+      <defs><linearGradient id="gLu" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#123049"/><stop offset="1" stop-color="#0A1B2C"/></linearGradient></defs>
+      <rect width="200" height="150" fill="url(#gLu)"/>
+      <rect x="93" y="20" width="14" height="26" rx="6" fill="#c3d3d8"/>
+      <path d="M97,44 L74,58 M97,44 L120,58" stroke="#c3d3d8" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <path d="M100,46 C80,50 62,66 60,90 C58,108 68,120 82,118 C94,116 98,100 98,88 Z" fill="#FF6B7A"/>
+      <path d="M103,46 C123,50 141,66 143,90 C145,108 135,120 121,118 C109,116 105,100 105,88 Z" fill="#FF6B7A"/>
+      <text x="100" y="138" text-anchor="middle" font-family="Tajawal,sans-serif" font-weight="800" font-size="16" fill="#fff">الرئتان</text>
+    </svg>`
+  },
+  {
+    name:"الحجاب الحاجز",
+    desc:"عضلة قوية تفصل التجويف الصدري عن التجويف البطني، وانقباضها وارتخاؤها هو أساس عملية التنفس.",
+    img:`<svg viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
+      <defs><linearGradient id="gD" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#123049"/><stop offset="1" stop-color="#0A1B2C"/></linearGradient></defs>
+      <rect width="200" height="150" fill="url(#gD)"/>
+      <path d="M40,50 Q100,30 160,50" stroke="#c3d3d8" stroke-width="4" fill="none" opacity=".6"/>
+      <path d="M36,72 Q100,50 164,72" stroke="#c3d3d8" stroke-width="4" fill="none" opacity=".6"/>
+      <path d="M45,108 Q100,72 155,108 L155,116 Q100,84 45,116 Z" fill="#FFA45C"/>
+      <line x1="70" y1="94" x2="70" y2="112" stroke="#E4823A" stroke-width="2.5"/>
+      <line x1="85" y1="86" x2="85" y2="110" stroke="#E4823A" stroke-width="2.5"/>
+      <line x1="100" y1="82" x2="100" y2="109" stroke="#E4823A" stroke-width="2.5"/>
+      <line x1="115" y1="86" x2="115" y2="110" stroke="#E4823A" stroke-width="2.5"/>
+      <line x1="130" y1="94" x2="130" y2="112" stroke="#E4823A" stroke-width="2.5"/>
+      <text x="100" y="138" text-anchor="middle" font-family="Tajawal,sans-serif" font-weight="800" font-size="15" fill="#fff">الحجاب الحاجز</text>
+    </svg>`
+  }
+];
+
+const grid = document.getElementById('cardsGrid');
+organs.forEach((o, i) => {
+  const card = document.createElement('div');
+  card.className = 'flip-card';
+  card.setAttribute('tabindex', '0');
+  card.setAttribute('role', 'button');
+  card.setAttribute('aria-label', 'بطاقة ' + o.name + '، اضغط لعرض الوظيفة');
+  card.innerHTML = `
+    <div class="flip-inner">
+      <div class="flip-face flip-front">
+        <div class="card-img">${o.img}</div>
+        <h4>${o.name}</h4>
+        <div class="hint">اضغط لمعرفة الوظيفة</div>
+      </div>
+      <div class="flip-face flip-back">
+        <p>${o.desc}</p>
+      </div>
+    </div>`;
+  const flip = () => card.classList.toggle('flipped');
+  card.addEventListener('click', flip);
+  card.addEventListener('keydown', (e) => { if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); flip(); } });
+  grid.appendChild(card);
+});
+
+/* ---------------- BREATHING SCENE ---------------- */
+const scene = document.getElementById('scene');
+const breathState = document.getElementById('breathState');
+const btnInhale = document.getElementById('btnInhale');
+const btnExhale = document.getElementById('btnExhale');
+const btnAuto = document.getElementById('btnAuto');
+let autoTimer = null;
+const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function setBreath(state){
+  scene.classList.remove('inhale','exhale');
+  scene.classList.add(state);
+  btnInhale.classList.toggle('on', state === 'inhale');
+  btnExhale.classList.toggle('on', state === 'exhale');
+  breathState.textContent = state === 'inhale'
+    ? 'شهيق: الحجاب الحاجز ينقبض ويهبط، والقفص الصدري يتسع، والأكسجين يندفع للداخل.'
+    : 'زفير: الحجاب الحاجز يرتخي ويرتفع، والقفص الصدري ينكمش، وثاني أكسيد الكربون يخرج.';
+}
+setBreath('exhale');
+
+function toggleAuto(){
+  if(autoTimer){
+    clearInterval(autoTimer);
+    autoTimer = null;
+    btnAuto.classList.remove('on');
+    btnAuto.textContent = 'تشغيل تلقائي';
+    return;
+  }
+  btnAuto.classList.add('on');
+  btnAuto.textContent = 'إيقاف التلقائي';
+  let state = 'exhale';
+  autoTimer = setInterval(() => {
+    state = state === 'exhale' ? 'inhale' : 'exhale';
+    setBreath(state);
+  }, 2000);
+}
+
+if(!reduced){
+  const wrap = document.querySelector('.scene-wrap');
+  wrap.addEventListener('mousemove', (e) => {
+    const rect = wrap.getBoundingClientRect();
+    const px = (e.clientX - rect.left) / rect.width - 0.5;
+    const py = (e.clientY - rect.top) / rect.height - 0.5;
+    scene.style.transform = `rotateY(${px * 26}deg) rotateX(${ -py * 20 }deg)`;
+  });
+  wrap.addEventListener('mouseleave', () => { scene.style.transform = 'rotateY(0deg) rotateX(0deg)'; });
+}
+
+/* ---------------- ALVEOLI 3D SCENE ---------------- */
+const alvWrap = document.getElementById('alvWrap');
+const alvScene = document.getElementById('alvScene');
+let alvAutoAngle = 0;
+let alvAutoTimer = null;
+let alvUserActive = false;
+
+if(alvWrap && alvScene){
+  if(!reduced){
+    alvWrap.addEventListener('mousemove', (e) => {
+      alvUserActive = true;
+      const rect = alvWrap.getBoundingClientRect();
+      const px = (e.clientX - rect.left) / rect.width - 0.5;
+      const py = (e.clientY - rect.top) / rect.height - 0.5;
+      alvScene.style.transform = `rotateY(${px * 50}deg) rotateX(${ -py * 24 }deg)`;
+    });
+    alvWrap.addEventListener('mouseleave', () => { alvUserActive = false; });
+
+    alvAutoTimer = setInterval(() => {
+      if(alvUserActive) return;
+      alvAutoAngle = (alvAutoAngle + 0.4) % 360;
+      alvScene.style.transform = `rotateY(${alvAutoAngle}deg) rotateX(6deg)`;
+    }, 40);
+  } else {
+    alvScene.style.transform = 'rotateY(24deg) rotateX(8deg)';
+  }
+}
+
+/* ---------------- SCROLL REVEAL ---------------- */
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('in'); });
+}, {threshold:.15});
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+/* ---------------- NAV ACTIVE LINK ---------------- */
+const navLinks = document.querySelectorAll('#navLinks a');
+const sections = [...document.querySelectorAll('section.block, header.hero')];
+const navObs = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      const id = entry.target.id;
+      navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + id));
+    }
+  });
+}, {rootMargin:'-45% 0px -50% 0px'});
+sections.forEach(s => navObs.observe(s));
+
+/* ---------------- WORKSHEET LOGIC ---------------- */
+const form = document.getElementById('worksheetForm');
+const progressFill = document.getElementById('progressFill');
+const progressLabel = document.getElementById('progressLabel');
+const totalQuestions = document.querySelectorAll('.q').length;
+
+function countAnswered(){
+  let count = 0;
+  document.querySelectorAll('.q').forEach(q => {
+    const name = q.dataset.select || q.querySelector('input[type=radio]')?.name;
+    if(!name) return;
+    if(q.dataset.select){
+      const sel = document.getElementById(name + 's');
+      if(sel && sel.value !== '') count++;
+    } else {
+      if(form.querySelector(`input[name="${name}"]:checked`)) count++;
+    }
+  });
+  progressFill.style.width = (count / totalQuestions * 100) + '%';
+  progressLabel.textContent = count + ' / ' + totalQuestions + ' تمت الإجابة';
+}
+form.addEventListener('change', countAnswered);
+countAnswered();
+
+function checkAnswers(){
+  let score = 0;
+  document.querySelectorAll('.q').forEach(q => {
+    const fb = q.querySelector('.q-fb');
+    q.classList.remove('correct','wrong');
+    fb.classList.remove('show','ok','bad');
+
+    if(q.dataset.select){
+      const name = q.dataset.select;
+      const sel = document.getElementById(name + 's');
+      const val = sel ? sel.value : '';
+      const correct = q.dataset.answer;
+      if(val === ''){ fb.textContent = 'لم تتم الإجابة على هذا السؤال بعد.'; fb.classList.add('show','bad'); return; }
+      if(val === correct){
+        q.classList.add('correct'); score++;
+        fb.textContent = 'إجابة صحيحة!'; fb.classList.add('show','ok');
+      } else {
+        q.classList.add('wrong');
+        fb.textContent = 'إجابة غير صحيحة. الإجابة الصحيحة: ' + correct;
+        fb.classList.add('show','bad');
+      }
+    } else {
+      const name = q.querySelector('input[type=radio]').name;
+      const checked = form.querySelector(`input[name="${name}"]:checked`);
+      const correct = q.dataset.answer;
+      if(!checked){ fb.textContent = 'لم تتم الإجابة على هذا السؤال بعد.'; fb.classList.add('show','bad'); return; }
+      if(checked.value === correct){
+        q.classList.add('correct'); score++;
+        fb.textContent = 'إجابة صحيحة!'; fb.classList.add('show','ok');
+      } else {
+        q.classList.add('wrong');
+        const correctLabel = q.querySelector(`label[for="${name}${correct}"]`);
+        const correctText = correctLabel ? correctLabel.textContent : (correct === 'true' ? 'صح' : 'خطأ');
+        fb.textContent = 'إجابة غير صحيحة. الإجابة الصحيحة: ' + correctText;
+        fb.classList.add('show','bad');
+        if(correctLabel) correctLabel.classList.add('reveal-correct');
+      }
+    }
+  });
+
+  const panel = document.getElementById('resultPanel');
+  const pct = Math.round(score / totalQuestions * 100);
+  document.getElementById('resultScore').textContent = score + ' / ' + totalQuestions;
+  let msg = '';
+  if(pct >= 90) msg = 'ممتاز! لديك فهم عميق لدرس الجهاز التنفسي 🌟';
+  else if(pct >= 70) msg = 'جيد جدًا! راجع الأسئلة التي أخطأت بها لتثبيت المعلومة.';
+  else if(pct >= 50) msg = 'جيد، لكن يُنصح بمراجعة الدرس مرة أخرى.';
+  else msg = 'يحتاج الأمر مراجعة شاملة للدرس، لا بأس، حاول مرة أخرى!';
+  document.getElementById('resultMsg').textContent = msg;
+  panel.classList.add('show');
+  panel.scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+function resetSheet(){
+  form.reset();
+  document.querySelectorAll('.q').forEach(q => {
+    q.classList.remove('correct','wrong');
+    const fb = q.querySelector('.q-fb');
+    fb.classList.remove('show','ok','bad');
+    q.querySelectorAll('label.reveal-correct').forEach(l => l.classList.remove('reveal-correct'));
+  });
+  document.getElementById('resultPanel').classList.remove('show');
+  countAnswered();
+  document.getElementById('worksheet').scrollIntoView({behavior:'smooth'});
+}
+</script>
+</body>
+</html>

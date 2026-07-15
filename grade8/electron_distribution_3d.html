@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="description" content="درس تفاعلي: التوزيع الإلكتروني للذرّة - العلوم والحياة، الصف الثامن، فلسطين">
+<title>التوزيع الإلكتروني للذرّة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+  :root{
+    --bg:#12352A;
+    --bg2:#0E2B22;
+    --panel:#1B4235;
+    --panel-light:#204A3B;
+    --chalk:#F5F1E3;
+    --chalk-dim:#C9D6C9;
+    --chalk-faint:#96AC9E;
+    --proton:#E2694F;
+    --neutron:#7FA6C9;
+    --electron:#EFC75E;
+    --rule:rgba(245,241,227,0.16);
+    --rule-strong:rgba(245,241,227,0.3);
+    --radius:10px;
+    --shadow:0 14px 34px rgba(0,0,0,0.35);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(ellipse at 20% -10%, rgba(255,255,255,0.05), transparent 45%),
+      var(--bg);
+    color:var(--chalk);
+    font-family:'Tajawal', 'Segoe UI', Tahoma, sans-serif;
+    font-weight:400;
+    line-height:1.9;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3, .display{
+    font-family:'Aref Ruqaa','Tajawal',serif;
+    font-weight:700;
+    letter-spacing:0.3px;
+  }
+  a{color:inherit;}
+  img,canvas{display:block;}
+  .chalk-dots{position:relative;}
+
+  /* ---------- layout shells ---------- */
+  .wrap{max-width:1180px; margin:0 auto; padding:0 22px;}
+  section{padding:88px 0;}
+  .section-head{max-width:720px; margin-bottom:46px;}
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:10px;
+    font-family:'Tajawal',sans-serif; font-weight:700; font-size:13px;
+    letter-spacing:2px; color:var(--electron);
+    text-transform:uppercase;
+    margin-bottom:14px;
+  }
+  .eyebrow::before{
+    content:""; width:26px; height:2px; background:var(--electron); display:inline-block;
+  }
+  .section-head h2{font-size:clamp(26px,4vw,38px); margin:0 0 12px; color:var(--chalk);}
+  .section-head p{color:var(--chalk-dim); font-size:16px; max-width:640px; margin:0;}
+
+  /* dotted atom divider (signature motif) */
+  .atom-divider{display:flex; align-items:center; justify-content:center; gap:10px; margin:0 auto 8px; opacity:0.9;}
+  .atom-divider span{width:7px; height:7px; border-radius:50%;}
+  .atom-divider .p{background:var(--proton);}
+  .atom-divider .n{background:var(--neutron);}
+  .atom-divider .e{background:var(--electron); box-shadow:0 0 8px var(--electron);}
+
+  /* ---------- header / nav ---------- */
+  header.top{
+    position:sticky; top:0; z-index:50;
+    background:rgba(18,53,42,0.86);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--rule);
+  }
+  .nav{display:flex; align-items:center; justify-content:space-between; padding:14px 0;}
+  .brand{display:flex; align-items:center; gap:10px; font-family:'Aref Ruqaa',serif; font-size:20px;}
+  .brand-mark{width:30px; height:30px; position:relative; flex:none;}
+  .navlinks{display:flex; gap:22px; font-size:14px; color:var(--chalk-dim);}
+  .navlinks a{text-decoration:none; padding:6px 2px; border-bottom:2px solid transparent; transition:.2s;}
+  .navlinks a:hover{color:var(--chalk); border-color:var(--electron);}
+  .navlinks{display:none;}
+  @media(min-width:760px){.navlinks{display:flex;}}
+
+  /* ---------- hero ---------- */
+  .hero{padding:60px 0 40px; position:relative; overflow:hidden;}
+  .hero-grid{display:grid; grid-template-columns:1fr; gap:36px; align-items:center;}
+  @media(min-width:900px){.hero-grid{grid-template-columns:1.1fr 0.9fr;}}
+  .hero h1{font-size:clamp(32px,5.4vw,54px); margin:10px 0 18px; color:var(--chalk);}
+  .hero h1 em{font-style:normal; color:var(--electron);}
+  .hero p.lead{color:var(--chalk-dim); font-size:17.5px; max-width:520px; margin:0 0 28px;}
+  .cta-row{display:flex; flex-wrap:wrap; gap:14px;}
+  .btn{
+    font-family:'Tajawal',sans-serif; font-weight:700; font-size:15px;
+    padding:13px 26px; border-radius:8px; border:1px solid transparent;
+    cursor:pointer; transition:.18s ease; text-decoration:none; display:inline-flex; align-items:center; gap:8px;
+  }
+  .btn-primary{background:var(--electron); color:#1B2A17; box-shadow:0 8px 22px rgba(239,199,94,0.25);}
+  .btn-primary:hover{transform:translateY(-2px); box-shadow:0 12px 26px rgba(239,199,94,0.35);}
+  .btn-ghost{background:transparent; color:var(--chalk); border-color:var(--rule-strong);}
+  .btn-ghost:hover{border-color:var(--chalk); background:rgba(245,241,227,0.05);}
+  .hero-canvas-box{
+    position:relative; height:320px; border-radius:14px;
+    background:radial-gradient(circle at 50% 45%, rgba(255,255,255,0.06), transparent 65%), var(--panel);
+    border:1px solid var(--rule); overflow:hidden;
+  }
+  @media(min-width:900px){.hero-canvas-box{height:400px;}}
+  .hero-canvas-box canvas{width:100% !important; height:100% !important;}
+  .hero-tag{position:absolute; bottom:12px; inset-inline-start:14px; font-size:12.5px; color:var(--chalk-faint); background:rgba(0,0,0,0.25); padding:5px 10px; border-radius:20px;}
+
+  /* ---------- cards for particle info ---------- */
+  .particle-grid{display:grid; gap:18px; grid-template-columns:1fr;}
+  @media(min-width:720px){.particle-grid{grid-template-columns:repeat(3,1fr);}}
+  .p-card{
+    background:var(--panel); border:1px solid var(--rule); border-radius:var(--radius);
+    padding:24px; position:relative; overflow:hidden;
+  }
+  .p-card::before{content:""; position:absolute; inset-inline-start:0; top:0; bottom:0; width:4px;}
+  .p-card.proton::before{background:var(--proton);}
+  .p-card.neutron::before{background:var(--neutron);}
+  .p-card.electron::before{background:var(--electron);}
+  .p-dot{width:34px; height:34px; border-radius:50%; margin-bottom:14px; box-shadow:inset 0 4px 8px rgba(0,0,0,0.25);}
+  .p-card.proton .p-dot{background:radial-gradient(circle at 35% 30%, #ffb199, var(--proton));}
+  .p-card.neutron .p-dot{background:radial-gradient(circle at 35% 30%, #cfe4f5, var(--neutron));}
+  .p-card.electron .p-dot{background:radial-gradient(circle at 35% 30%, #fff3c9, var(--electron)); box-shadow:0 0 14px rgba(239,199,94,0.5);}
+  .p-card h3{margin:0 0 6px; font-size:19px;}
+  .p-card .meta{font-size:13px; color:var(--chalk-faint); display:flex; gap:14px; margin-bottom:10px;}
+  .p-card p{margin:0; font-size:14.5px; color:var(--chalk-dim);}
+
+  /* ---------- rule box ---------- */
+  .rule-box{
+    background:var(--panel-light); border:1px dashed var(--rule-strong); border-radius:var(--radius);
+    padding:26px 28px; margin-top:30px;
+  }
+  .rule-box h4{margin:0 0 10px; font-size:17px; color:var(--electron);}
+  .rule-box .formula{
+    font-family:'Tajawal',sans-serif; font-weight:900; font-size:22px; color:var(--chalk);
+    background:rgba(0,0,0,0.2); display:inline-block; padding:6px 16px; border-radius:6px; margin:8px 0;
+  }
+  .shell-table{width:100%; border-collapse:collapse; margin-top:14px; font-size:14.5px;}
+  .shell-table th,.shell-table td{padding:10px 12px; border-bottom:1px solid var(--rule); text-align:center;}
+  .shell-table th{color:var(--chalk-faint); font-weight:700; font-size:13px;}
+
+  /* ---------- lab ---------- */
+  .lab-shell{
+    background:linear-gradient(180deg, var(--panel), var(--bg2));
+    border:1px solid var(--rule); border-radius:16px; overflow:hidden; box-shadow:var(--shadow);
+  }
+  .lab-grid{display:grid; grid-template-columns:1fr; gap:0;}
+  @media(min-width:960px){.lab-grid{grid-template-columns:1fr 380px;}}
+  .lab-canvas-wrap{
+    position:relative; min-height:420px;
+    background:radial-gradient(circle at 50% 40%, rgba(255,255,255,0.05), transparent 60%);
+    touch-action:none;
+  }
+  .lab-canvas-wrap canvas{width:100% !important; height:100% !important; cursor:grab;}
+  .lab-canvas-wrap canvas:active{cursor:grabbing;}
+  .lab-hint{position:absolute; top:14px; inset-inline-start:14px; font-size:12.5px; color:var(--chalk-faint); background:rgba(0,0,0,0.3); padding:6px 12px; border-radius:20px; pointer-events:none;}
+  .readout{position:absolute; bottom:14px; inset-inline-end:14px; inset-inline-start:14px; display:flex; gap:10px; flex-wrap:wrap; pointer-events:none;}
+  .readout .chip{background:rgba(0,0,0,0.35); border:1px solid var(--rule); padding:6px 12px; border-radius:8px; font-size:13px; color:var(--chalk);}
+  .readout .chip b{color:var(--electron); font-weight:900;}
+
+  .lab-controls{padding:26px; border-inline-start:1px solid var(--rule); display:flex; flex-direction:column; gap:20px;}
+  .ctrl-group h4{margin:0 0 10px; font-size:14px; color:var(--chalk-faint); font-weight:700; letter-spacing:0.5px;}
+  .ctrl-row{display:flex; align-items:center; gap:10px; margin-bottom:8px;}
+  .ctrl-row .label{flex:1; font-size:14.5px; display:flex; align-items:center; gap:8px;}
+  .dot{width:12px; height:12px; border-radius:50%; flex:none;}
+  .dot.p{background:var(--proton);}
+  .dot.n{background:var(--neutron);}
+  .dot.e{background:var(--electron); box-shadow:0 0 6px var(--electron);}
+  .stepper{display:flex; align-items:center; gap:8px;}
+  .stepper button{
+    width:30px; height:30px; border-radius:6px; border:1px solid var(--rule-strong);
+    background:var(--panel-light); color:var(--chalk); font-size:16px; cursor:pointer; line-height:1;
+  }
+  .stepper button:hover{background:var(--electron); color:#1B2A17; border-color:var(--electron);}
+  .stepper span{min-width:22px; text-align:center; font-weight:900; font-size:15px;}
+
+  .lab-actions{display:flex; gap:10px; flex-wrap:wrap;}
+  .lab-actions .btn{flex:1; justify-content:center; font-size:13.5px; padding:10px 14px;}
+
+  .lab-summary{
+    background:rgba(0,0,0,0.2); border-radius:8px; padding:16px; font-size:14px;
+  }
+  .lab-summary div{display:flex; justify-content:space-between; padding:5px 0; border-bottom:1px solid var(--rule);}
+  .lab-summary div:last-child{border-bottom:none;}
+  .lab-summary b{color:var(--electron);}
+  #carbonMsg{font-size:13px; padding:10px 12px; border-radius:8px; margin-top:4px; display:none;}
+  #carbonMsg.ok{display:block; background:rgba(120,200,140,0.15); border:1px solid rgba(120,200,140,0.4); color:#BFE8C7;}
+  #carbonMsg.warn{display:block; background:rgba(239,199,94,0.12); border:1px solid rgba(239,199,94,0.35); color:#F3DA9C;}
+
+  /* ---------- quiz ---------- */
+  .quiz-list{display:flex; flex-direction:column; gap:18px;}
+  .q-card{
+    background:var(--panel); border:1px solid var(--rule); border-radius:var(--radius); padding:22px 24px;
+  }
+  .q-card .qnum{font-family:'Aref Ruqaa',serif; color:var(--electron); font-size:15px; margin-bottom:6px; display:block;}
+  .q-card h4{margin:0 0 14px; font-size:16.5px; color:var(--chalk); font-weight:500; line-height:1.7;}
+  .q-body{display:flex; flex-wrap:wrap; gap:12px; align-items:center;}
+  .q-card input[type=text], .q-card input[type=number], .q-card select{
+    background:var(--panel-light); border:1px solid var(--rule-strong); color:var(--chalk);
+    border-radius:6px; padding:9px 12px; font-family:'Tajawal',sans-serif; font-size:14.5px; min-width:90px;
+  }
+  .q-card input:focus, .q-card select:focus{outline:2px solid var(--electron); outline-offset:1px;}
+  .match-row{display:flex; align-items:center; gap:10px; flex-wrap:wrap; padding:8px 0; border-bottom:1px dashed var(--rule);}
+  .match-row:last-child{border-bottom:none;}
+  .match-row .mname{min-width:90px; font-weight:700; display:flex; align-items:center; gap:8px;}
+  .radio-set{display:flex; gap:16px; flex-wrap:wrap;}
+  .radio-set label{display:flex; align-items:center; gap:6px; font-size:14.5px; cursor:pointer;}
+  .check-btn{
+    margin-top:14px; background:var(--panel-light); color:var(--chalk); border:1px solid var(--rule-strong);
+    padding:9px 20px; border-radius:6px; cursor:pointer; font-family:'Tajawal',sans-serif; font-weight:700; font-size:13.5px;
+  }
+  .check-btn:hover{border-color:var(--electron); color:var(--electron);}
+  .feedback{margin-top:12px; font-size:14px; padding:10px 14px; border-radius:6px; display:none;}
+  .feedback.show{display:block;}
+  .feedback.correct{background:rgba(120,200,140,0.14); color:#BFE8C7; border:1px solid rgba(120,200,140,0.35);}
+  .feedback.wrong{background:rgba(226,105,79,0.14); color:#F3B7A6; border:1px solid rgba(226,105,79,0.35);}
+
+  .conclusion{
+    background:var(--panel-light); border-radius:14px; padding:32px; margin-top:36px; border:1px solid var(--rule);
+  }
+  .conclusion h3{margin:0 0 14px; color:var(--electron); font-size:20px;}
+  .conclusion ul{margin:0; padding-inline-start:22px; color:var(--chalk-dim); font-size:15px; line-height:2;}
+
+  footer{padding:40px 0 60px; text-align:center; color:var(--chalk-faint); font-size:13px; border-top:1px solid var(--rule); margin-top:20px;}
+
+  ::selection{background:var(--electron); color:#1B2A17;}
+  :focus-visible{outline:2px solid var(--electron); outline-offset:2px;}
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    .btn, .stepper button{transition:none;}
+  }
+
+  /* ═══ RESPONSIVE MOBILE & TABLET — AUTO-INJECTED ═══ */
+  @media (max-width: 768px) {
+    body { padding: 8px !important; font-size: 15px !important; overflow-x: hidden !important; }
+    .container, [class*="container"], [class*="wrapper"] { padding: 8px !important; max-width: 100% !important; }
+    canvas { width: 100% !important; height: auto !important; display: block !important; touch-action: none; max-width: 100% !important; }
+    svg { max-width: 100% !important; height: auto !important; }
+    h1 { font-size: clamp(18px, 5vw, 32px) !important; }
+    h2 { font-size: clamp(16px, 4vw, 26px) !important; }
+    h3 { font-size: clamp(14px, 3.5vw, 22px) !important; }
+    p, li, td, th, label, span { font-size: clamp(13px, 3.5vw, 16px) !important; }
+    [class*="grid"] { grid-template-columns: 1fr !important; }
+    [class*="flex"] { flex-wrap: wrap !important; }
+    input[type="range"] { width: 100% !important; min-height: 36px; }
+    input[type="number"], input[type="text"], select, textarea { 
+      font-size: 16px !important; width: 100% !important; box-sizing: border-box; padding: 8px !important;
+    }
+    button { min-height: 44px !important; font-size: 14px !important; touch-action: manipulation; padding: 10px 14px !important; }
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 13px !important; }
+    th, td { padding: 6px 4px !important; white-space: nowrap; }
+    [style*="display: grid"], [style*="display:grid"] { display: flex !important; flex-direction: column !important; }
+    .lab-window, [class*="lab-window"] { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+    header { padding: 12px !important; }
+    .controls, [class*="controls"] { flex-direction: column !important; gap: 8px !important; }
+  }
+  @media (max-width: 480px) {
+    body { padding: 4px !important; }
+    h1 { font-size: clamp(16px, 5vw, 24px) !important; }
+    button { width: 100% !important; }
+  }
+  /* ═══ END RESPONSIVE ═══ */
+</style>
+</head>
+<body>
+
+<style>
+.vlab-back-btn {
+  position: fixed; top: 10px; left: 10px; z-index: 99999;
+  background: rgba(10,22,40,0.93); border: 1px solid rgba(0,200,150,0.4);
+  border-radius: 22px; padding: 8px 16px;
+  display: inline-flex; align-items: center; gap: 7px;
+  color: #00C896; font-family: Tajawal, Cairo, Arial, sans-serif;
+  font-size: 13px; font-weight: 700; text-decoration: none;
+  backdrop-filter: blur(8px); box-shadow: 0 4px 18px rgba(0,0,0,0.3);
+  transition: background 0.2s;
+}
+.vlab-back-btn:hover { background: rgba(0,200,150,0.18); color: #00C896; }
+</style>
+
+<a href="../grade8.html" class="vlab-back-btn">&#8594; العودة للصف</a>
+
+
+<header class="top">
+  <div class="wrap nav">
+    <div class="brand">
+      <svg class="brand-mark" viewBox="0 0 40 40"><ellipse cx="20" cy="20" rx="17" ry="7" fill="none" stroke="#7FA6C9" stroke-width="1.6"/><ellipse cx="20" cy="20" rx="17" ry="7" fill="none" stroke="#EFC75E" stroke-width="1.6" transform="rotate(60 20 20)"/><ellipse cx="20" cy="20" rx="17" ry="7" fill="none" stroke="#E2694F" stroke-width="1.6" transform="rotate(120 20 20)"/><circle cx="20" cy="20" r="4" fill="#F5F1E3"/></svg>
+      درس الذرّة
+    </div>
+    <nav class="navlinks">
+      <a href="#lesson">الشرح</a>
+      <a href="#rules">قواعد التوزيع</a>
+      <a href="#lab">المختبر الافتراضي</a>
+      <a href="#quiz">أسئلة النشاط</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">العلوم والحياة · الصف الثامن · الوحدة الأولى</div>
+      <h1>التوزيع <em>الإلكتروني</em><br>لذرّة العنصر</h1>
+      <p class="lead">
+        كل مادة حولك مبنية من ذرّات لا تُرى بالعين المجرّدة، وداخل كل ذرّة عالم منظّم من البروتونات
+        والنيوترونات والإلكترونات. في هذا الدرس ستبني بنفسك نموذجًا ثلاثي الأبعاد لذرّة الكربون،
+        وتُجيب عن أسئلة النشاط كما فعل زملاؤك في الكتاب المدرسي.
+      </p>
+      <div class="cta-row">
+        <a href="#lab" class="btn btn-primary">ابدأ المختبر الافتراضي ⚛</a>
+        <a href="#lesson" class="btn btn-ghost">اقرأ الشرح أولاً</a>
+      </div>
+    </div>
+    <div class="hero-canvas-box" id="heroCanvasBox">
+      <span class="hero-tag">نموذج تفاعلي — اسحب للتدوير</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LESSON EXPLANATION ============ -->
+<section id="lesson">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">الشرح</div>
+      <h2>من ماذا تتكوّن الذرّة؟</h2>
+      <p>
+        تتكوّن كل ذرّة من نواة مركزية موجبة الشحنة، ويدور حولها إلكترونات سالبة الشحنة ضمن
+        مستويات طاقة محدّدة. تعرّف على كل جسيم قبل أن تبدأ بالبناء في المختبر.
+      </p>
+    </div>
+
+    <div class="particle-grid">
+      <div class="p-card proton">
+        <div class="p-dot"></div>
+        <h3>البروتون</h3>
+        <div class="meta"><span>الشحنة: موجبة (+)</span><span>الموقع: داخل النواة</span></div>
+        <p>عدد البروتونات في الذرّة يساوي عددها الذرّي (Z)، وهو ما يحدّد هوية العنصر نفسه.</p>
+      </div>
+      <div class="p-card neutron">
+        <div class="p-dot"></div>
+        <h3>النيوترون</h3>
+        <div class="meta"><span>الشحنة: متعادلة (0)</span><span>الموقع: داخل النواة</span></div>
+        <p>لا يحمل شحنة كهربائية، ويشارك البروتونات في تكوين النواة وإكساب الذرّة كتلتها.</p>
+      </div>
+      <div class="p-card electron">
+        <div class="p-dot"></div>
+        <h3>الإلكترون</h3>
+        <div class="meta"><span>الشحنة: سالبة (−)</span><span>الموقع: مستويات الطاقة</span></div>
+        <p>يدور حول النواة ضمن مستويات طاقة محدّدة، وفي الذرّة المتعادلة يساوي عدده عدد البروتونات.</p>
+      </div>
+    </div>
+
+    <div class="rule-box">
+      <h4>العدد الذرّي والعدد الكتلي</h4>
+      <p style="margin:0 0 6px; color:var(--chalk-dim); font-size:14.5px;">العدد الذرّي لأيّة ذرّة يساوي عدد البروتونات في نواتها، وحتى تكون الذرّة متعادلة كهربائيًا يجب أن يكون عدد الإلكترونات مساويًا لعدد البروتونات.</p>
+      <div class="formula">العدد الكتلي = عدد البروتونات + عدد النيوترونات</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RULES ============ -->
+<section id="rules" style="background:var(--bg2);">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">قواعد التوزيع الإلكتروني</div>
+      <h2>كم إلكترونًا يسع كل مستوى طاقة؟</h2>
+      <p>يمتلئ كل مستوى طاقة بعدد أقصى من الإلكترونات قبل أن تبدأ الإلكترونات بالانتقال إلى المستوى التالي.</p>
+    </div>
+    <div class="rule-box">
+      <div class="formula" style="font-size:20px;">العدد الأقصى للإلكترونات في المستوى = 2n²</div>
+      <p style="color:var(--chalk-dim); font-size:14.5px; margin:6px 0 0;">حيث n هو رقم مستوى الطاقة (1، 2، 3، ...)، ويُملأ المستوى الأول قبل الثاني، والثاني قبل الثالث.</p>
+      <table class="shell-table">
+        <thead><tr><th>مستوى الطاقة (n)</th><th>الرمز</th><th>الحدّ الأقصى للإلكترونات</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>K</td><td>2</td></tr>
+          <tr><td>2</td><td>L</td><td>8</td></tr>
+          <tr><td>3</td><td>M</td><td>8 (في هذا المستوى الدراسي)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LAB ============ -->
+<section id="lab">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">نشاط (١) · إلكتروناتي حول نواتي</div>
+      <h2>المختبر الافتراضي: ابنِ ذرّة الكربون</h2>
+      <p>
+        أضف البروتونات والنيوترونات إلى النواة، ثم وزّع الإلكترونات على مستويات الطاقة كما فعلت
+        مجموعة الطلاب في النشاط. راقب النموذج ثلاثي الأبعاد يتغيّر أمامك في الوقت الحقيقي.
+      </p>
+    </div>
+
+    <div class="lab-shell">
+      <div class="lab-grid">
+        <div class="lab-canvas-wrap" id="labCanvasBox">
+          <span class="lab-hint">اسحب بالفأرة أو الإصبع لتدوير النموذج</span>
+          <div class="readout" id="readoutChips"></div>
+        </div>
+
+        <div class="lab-controls">
+          <div class="ctrl-group">
+            <h4>مكوّنات النواة</h4>
+            <div class="ctrl-row">
+              <div class="label"><span class="dot p"></span> بروتون (+)</div>
+              <div class="stepper">
+                <button data-action="dec" data-target="protons">−</button>
+                <span id="val-protons">0</span>
+                <button data-action="inc" data-target="protons">+</button>
+              </div>
+            </div>
+            <div class="ctrl-row">
+              <div class="label"><span class="dot n"></span> نيوترون (0)</div>
+              <div class="stepper">
+                <button data-action="dec" data-target="neutrons">−</button>
+                <span id="val-neutrons">0</span>
+                <button data-action="inc" data-target="neutrons">+</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="ctrl-group">
+            <h4>الإلكترونات في مستويات الطاقة</h4>
+            <div class="ctrl-row">
+              <div class="label"><span class="dot e"></span> المستوى الأول (K) — الحد ٢</div>
+              <div class="stepper">
+                <button data-action="dec" data-target="shell1">−</button>
+                <span id="val-shell1">0</span>
+                <button data-action="inc" data-target="shell1">+</button>
+              </div>
+            </div>
+            <div class="ctrl-row">
+              <div class="label"><span class="dot e"></span> المستوى الثاني (L) — الحد ٨</div>
+              <div class="stepper">
+                <button data-action="dec" data-target="shell2">−</button>
+                <span id="val-shell2">0</span>
+                <button data-action="inc" data-target="shell2">+</button>
+              </div>
+            </div>
+            <div class="ctrl-row">
+              <div class="label"><span class="dot e"></span> المستوى الثالث (M) — الحد ٨</div>
+              <div class="stepper">
+                <button data-action="dec" data-target="shell3">−</button>
+                <span id="val-shell3">0</span>
+                <button data-action="inc" data-target="shell3">+</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="lab-summary" id="labSummary"></div>
+          <div id="carbonMsg"></div>
+
+          <div class="lab-actions">
+            <button class="btn btn-primary" id="buildCarbonBtn" type="button">بناء نموذج الكربون تلقائيًا</button>
+            <button class="btn btn-ghost" id="resetLabBtn" type="button">إعادة التعيين</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ QUIZ ============ -->
+<section id="quiz" style="background:var(--bg2);">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">أجب بناءً على النشاط</div>
+      <h2>أسئلة نشاط (١): إلكتروناتي حول نواتي</h2>
+      <p>بعد أن بنيت نموذج ذرّة الكربون في المختبر، أجب عن الأسئلة التالية كما وردت في الكتاب المدرسي.</p>
+    </div>
+
+    <div class="quiz-list">
+
+      <div class="q-card">
+        <span class="qnum">السؤال ١</span>
+        <h4>ما رمز عنصر الكربون؟</h4>
+        <div class="q-body">
+          <input type="text" id="q1" maxlength="3" placeholder="اكتب الرمز">
+        </div>
+        <button class="check-btn" data-check="q1">تحقق من إجابتي</button>
+        <div class="feedback" id="fb-q1"></div>
+      </div>
+
+      <div class="q-card">
+        <span class="qnum">السؤال ٢</span>
+        <h4>سمِّ الجسيمات التي تظهر في الشكل، وحدّد شحنة كلٍّ منها وأين تتواجد.</h4>
+        <div class="match-row">
+          <div class="mname"><span class="dot p"></span> البروتون</div>
+          <select id="q2p-charge"><option value="">الشحنة</option><option value="+">موجبة (+)</option><option value="-">سالبة (−)</option><option value="0">متعادلة (0)</option></select>
+          <select id="q2p-loc"><option value="">الموقع</option><option value="nucleus">داخل النواة</option><option value="shell">في مستويات الطاقة</option></select>
+        </div>
+        <div class="match-row">
+          <div class="mname"><span class="dot n"></span> النيوترون</div>
+          <select id="q2n-charge"><option value="">الشحنة</option><option value="+">موجبة (+)</option><option value="-">سالبة (−)</option><option value="0">متعادلة (0)</option></select>
+          <select id="q2n-loc"><option value="">الموقع</option><option value="nucleus">داخل النواة</option><option value="shell">في مستويات الطاقة</option></select>
+        </div>
+        <div class="match-row">
+          <div class="mname"><span class="dot e"></span> الإلكترون</div>
+          <select id="q2e-charge"><option value="">الشحنة</option><option value="+">موجبة (+)</option><option value="-">سالبة (−)</option><option value="0">متعادلة (0)</option></select>
+          <select id="q2e-loc"><option value="">الموقع</option><option value="nucleus">داخل النواة</option><option value="shell">في مستويات الطاقة</option></select>
+        </div>
+        <button class="check-btn" data-check="q2">تحقق من إجابتي</button>
+        <div class="feedback" id="fb-q2"></div>
+      </div>
+
+      <div class="q-card">
+        <span class="qnum">السؤال ٣</span>
+        <h4>ما شحنة النواة؟</h4>
+        <div class="radio-set">
+          <label><input type="radio" name="q3" value="+"> موجبة</label>
+          <label><input type="radio" name="q3" value="-"> سالبة</label>
+          <label><input type="radio" name="q3" value="0"> متعادلة</label>
+        </div>
+        <button class="check-btn" data-check="q3">تحقق من إجابتي</button>
+        <div class="feedback" id="fb-q3"></div>
+      </div>
+
+      <div class="q-card">
+        <span class="qnum">السؤال ٤</span>
+        <h4>ما العدد الذرّي والعدد الكتلي للذرّة (ذرّة الكربون المتعادلة)؟</h4>
+        <div class="q-body">
+          <label style="font-size:14px; color:var(--chalk-dim);">العدد الذرّي: <input type="number" id="q4a" min="0" style="width:80px;"></label>
+          <label style="font-size:14px; color:var(--chalk-dim);">العدد الكتلي: <input type="number" id="q4b" min="0" style="width:80px;"></label>
+        </div>
+        <button class="check-btn" data-check="q4">تحقق من إجابتي</button>
+        <div class="feedback" id="fb-q4"></div>
+      </div>
+
+      <div class="q-card">
+        <span class="qnum">السؤال ٥</span>
+        <h4>ما عدد الإلكترونات في مستوى الطاقة الأوّل؟</h4>
+        <div class="q-body">
+          <input type="number" id="q5" min="0" style="width:80px;">
+        </div>
+        <button class="check-btn" data-check="q5">تحقق من إجابتي</button>
+        <div class="feedback" id="fb-q5"></div>
+      </div>
+
+      <div class="q-card">
+        <span class="qnum">السؤال ٦</span>
+        <h4>ما عدد الإلكترونات في مستوى الطاقة الثاني؟</h4>
+        <div class="q-body">
+          <input type="number" id="q6" min="0" style="width:80px;">
+        </div>
+        <button class="check-btn" data-check="q6">تحقق من إجابتي</button>
+        <div class="feedback" id="fb-q6"></div>
+      </div>
+
+    </div>
+
+    <div class="conclusion">
+      <div class="atom-divider"><span class="p"></span><span class="n"></span><span class="e"></span></div>
+      <h3>الاستنتاج</h3>
+      <ul>
+        <li>العدد الذرّي لأيّة ذرّة يساوي عدد البروتونات في نواتها.</li>
+        <li>حتى تكون الذرّة متعادلة كهربائيًا، يجب أن يكون عدد الإلكترونات مساويًا لعدد البروتونات.</li>
+        <li>العدد الكتلي للذرّة يساوي مجموع عدد البروتونات والنيوترونات.</li>
+        <li>يمتلئ كل مستوى طاقة بحدّ أقصى قدره 2n² إلكترون قبل أن تبدأ الإلكترونات التالية بالمستوى الذي يليه.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer>
+  درس تفاعلي — التوزيع الإلكتروني للذرّة · منهاج العلوم والحياة · الصف الثامن · فلسطين
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------------- element symbols 1-20 ---------------- */
+  const SYMBOLS = ["","H","He","Li","Be","B","C","N","O","F","Ne","Na","Mg","Al","Si","P","S","Cl","Ar","K","Ca"];
+
+  /* ---------------- shared 3D atom builder ---------------- */
+  function fibonacciPoints(n, radius){
+    const pts = [];
+    if(n <= 0) return pts;
+    const golden = Math.PI * (3 - Math.sqrt(5));
+    for(let i=0;i<n;i++){
+      const y = n === 1 ? 0 : 1 - (i/(n-1))*2;
+      const r = Math.sqrt(Math.max(0,1-y*y));
+      const theta = golden * i;
+      const x = Math.cos(theta) * r;
+      const z = Math.sin(theta) * r;
+      pts.push(new THREE.Vector3(x*radius, y*radius, z*radius));
+    }
+    return pts;
+  }
+
+  function createAtomScene(container, opts){
+    opts = opts || {};
+    const interactive = !!opts.interactive;
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+    camera.position.set(0, 2.4, 13);
+
+    const renderer = new THREE.WebGLRenderer({antialias:true, alpha:true});
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio||1, 2));
+    container.appendChild(renderer.domElement);
+
+    scene.add(new THREE.AmbientLight(0xffffff, 0.55));
+    const key = new THREE.PointLight(0xfff3d6, 1.1);
+    key.position.set(8,10,10);
+    scene.add(key);
+    const fill = new THREE.PointLight(0x7fa6c9, 0.5);
+    fill.position.set(-8,-6,-6);
+    scene.add(fill);
+
+    const atomGroup = new THREE.Group();
+    scene.add(atomGroup);
+
+    const nucleusGroup = new THREE.Group();
+    atomGroup.add(nucleusGroup);
+
+    const shellRadii = [3.0, 4.8, 6.5];
+    const shellTilts = [0.15, -0.5, 0.9];
+    const shells = shellRadii.map((r,i)=>{
+      const g = new THREE.Group();
+      g.rotation.x = shellTilts[i];
+      const ringGeo = new THREE.TorusGeometry(r, 0.012, 8, 96);
+      const ringMat = new THREE.MeshBasicMaterial({color:0xF5F1E3, transparent:true, opacity:0.22});
+      const ring = new THREE.Mesh(ringGeo, ringMat);
+      ring.rotation.x = Math.PI/2;
+      g.add(ring);
+      const eGroup = new THREE.Group();
+      g.add(eGroup);
+      atomGroup.add(g);
+      return {group:g, eGroup:eGroup, radius:r, speed:(i%2===0?1:-1)*(0.28-i*0.05)};
+    });
+
+    const protonMat = new THREE.MeshStandardMaterial({color:0xE2694F, roughness:0.4, metalness:0.1});
+    const neutronMat = new THREE.MeshStandardMaterial({color:0x7FA6C9, roughness:0.4, metalness:0.1});
+    const electronMat = new THREE.MeshStandardMaterial({color:0xEFC75E, roughness:0.25, metalness:0.2, emissive:0x6b5215, emissiveIntensity:0.6});
+
+    let nucleonMeshes = [];
+    let electronMeshes = [];
+
+    function seededShuffle(arr, seed){
+      const a = arr.slice();
+      let s = seed || 1;
+      for(let i=a.length-1;i>0;i--){
+        s = (s*9301+49297) % 233280;
+        const j = Math.floor((s/233280)*(i+1));
+        [a[i],a[j]] = [a[j],a[i]];
+      }
+      return a;
+    }
+
+    function rebuild(protons, neutrons, shellCounts){
+      nucleonMeshes.forEach(m=>nucleusGroup.remove(m));
+      nucleonMeshes = [];
+      const total = protons + neutrons;
+      const nucRadius = total > 0 ? Math.min(0.9 + Math.cbrt(total)*0.55, 3.2) : 0.9;
+      const types = seededShuffle(
+        Array(protons).fill('p').concat(Array(neutrons).fill('n')), 7
+      );
+      const pts = fibonacciPoints(total, nucRadius);
+      const size = total > 12 ? 0.34 : 0.46;
+      const geo = new THREE.SphereGeometry(size, 20, 20);
+      pts.forEach((p, i)=>{
+        const mesh = new THREE.Mesh(geo, types[i]==='p' ? protonMat : neutronMat);
+        mesh.position.copy(p);
+        nucleusGroup.add(mesh);
+        nucleonMeshes.push(mesh);
+      });
+
+      electronMeshes.forEach(m=>m.parent && m.parent.remove(m));
+      electronMeshes = [];
+      const eGeo = new THREE.SphereGeometry(0.26, 16, 16);
+      shellCounts.forEach((count, si)=>{
+        const shell = shells[si];
+        for(let i=0;i<count;i++){
+          const angle = (i / count) * Math.PI * 2;
+          const mesh = new THREE.Mesh(eGeo, electronMat);
+          mesh.userData.angle = angle;
+          mesh.userData.radius = shell.radius;
+          mesh.position.set(Math.cos(angle)*shell.radius, 0, Math.sin(angle)*shell.radius);
+          shell.eGroup.add(mesh);
+          electronMeshes.push(mesh);
+        }
+      });
+    }
+
+    // interaction: drag to rotate
+    let dragging = false, lastX=0, lastY=0;
+    let rotY = 0.5, rotX = 0.25;
+    function pointerDown(e){
+      dragging = true; lastX = (e.touches?e.touches[0].clientX:e.clientX); lastY = (e.touches?e.touches[0].clientY:e.clientY);
+    }
+    function pointerMove(e){
+      if(!dragging) return;
+      const x = (e.touches?e.touches[0].clientX:e.clientX);
+      const y = (e.touches?e.touches[0].clientY:e.clientY);
+      rotY += (x-lastX)*0.007;
+      rotX += (y-lastY)*0.007;
+      rotX = Math.max(-1.1, Math.min(1.1, rotX));
+      lastX=x; lastY=y;
+      if(e.cancelable) e.preventDefault();
+    }
+    function pointerUp(){ dragging = false; }
+    if(interactive){
+      const el = renderer.domElement;
+      el.addEventListener('mousedown', pointerDown);
+      window.addEventListener('mousemove', pointerMove);
+      window.addEventListener('mouseup', pointerUp);
+      el.addEventListener('touchstart', pointerDown, {passive:true});
+      el.addEventListener('touchmove', pointerMove, {passive:false});
+      el.addEventListener('touchend', pointerUp);
+    }
+
+    function resize(){
+      const w = container.clientWidth, h = container.clientHeight;
+      if(w===0||h===0) return;
+      camera.aspect = w/h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w,h);
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    let t = 0;
+    function animate(){
+      t += reduceMotion ? 0.003 : 0.01;
+      shells.forEach(s=>{ s.eGroup.rotation.y += (reduceMotion?0.15:1) * s.speed * 0.02; });
+      if(!dragging){
+        rotY += reduceMotion ? 0.0005 : 0.0022;
+      }
+      atomGroup.rotation.y = rotY;
+      atomGroup.rotation.x = rotX;
+      renderer.render(scene, camera);
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    return { rebuild, resize };
+  }
+
+  /* ---------------- hero decorative atom (fixed helium-like) ---------------- */
+  const heroBox = document.getElementById('heroCanvasBox');
+  const heroAtom = createAtomScene(heroBox, {interactive:false});
+  heroAtom.rebuild(2, 2, [2]);
+
+  /* ---------------- lab atom (interactive, driven by state) ---------------- */
+  const labBox = document.getElementById('labCanvasBox');
+  const labAtom = createAtomScene(labBox, {interactive:true});
+
+  const MAX = {shell1:2, shell2:8, shell3:8};
+  const state = {protons:0, neutrons:0, shell1:0, shell2:0, shell3:0};
+
+  const valEls = {
+    protons: document.getElementById('val-protons'),
+    neutrons: document.getElementById('val-neutrons'),
+    shell1: document.getElementById('val-shell1'),
+    shell2: document.getElementById('val-shell2'),
+    shell3: document.getElementById('val-shell3'),
+  };
+
+  function clampShellChange(key){
+    if(key==='shell2' && state.shell2>0 && state.shell1 < MAX.shell1){
+      // allow, curriculum simplification: don't force strict blocking, just guide via message
+    }
+  }
+
+  function render(){
+    Object.keys(valEls).forEach(k=> valEls[k].textContent = state[k]);
+    const totalE = state.shell1+state.shell2+state.shell3;
+    const A = state.protons + state.neutrons;
+    const Z = state.protons;
+    const charge = state.protons - totalE;
+    const symbol = SYMBOLS[Z] || "؟";
+
+    document.getElementById('labSummary').innerHTML = `
+      <div><span>رمز العنصر</span><b>${symbol}</b></div>
+      <div><span>العدد الذرّي (Z)</span><b>${Z}</b></div>
+      <div><span>العدد الكتلي (A)</span><b>${A}</b></div>
+      <div><span>مجموع الإلكترونات</span><b>${totalE}</b></div>
+      <div><span>شحنة الذرّة</span><b>${charge===0 ? "متعادلة" : (charge>0 ? "موجبة (+"+charge+")" : "سالبة ("+charge+")")}</b></div>
+    `;
+
+    document.getElementById('readoutChips').innerHTML = `
+      <div class="chip">Z = <b>${Z}</b></div>
+      <div class="chip">A = <b>${A}</b></div>
+      <div class="chip">e⁻ = <b>${totalE}</b></div>
+    `;
+
+    const msg = document.getElementById('carbonMsg');
+    if(state.protons===6 && state.neutrons===6 && state.shell1===2 && state.shell2===4 && state.shell3===0){
+      msg.className = 'ok';
+      msg.textContent = 'أحسنت! هذا نموذج صحيح ومتعادل لذرّة الكربون (C): 6 بروتونات، 6 نيوترونات، وإلكترونان في المستوى الأول وأربعة في المستوى الثاني.';
+    } else if(totalE>0 || state.protons>0 || state.neutrons>0){
+      msg.className = 'warn';
+      msg.textContent = 'واصل البناء: هدف النشاط هو الوصول إلى 6 بروتونات، 6 نيوترونات، وتوزيع إلكتروني 2 ثم 4.';
+    } else {
+      msg.className = '';
+      msg.textContent = '';
+      msg.style.display = 'none';
+    }
+
+    labAtom.rebuild(state.protons, state.neutrons, [state.shell1, state.shell2, state.shell3]);
+  }
+
+  document.querySelectorAll('.stepper button').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const key = btn.dataset.target;
+      const action = btn.dataset.action;
+      const max = MAX[key];
+      if(action==='inc'){
+        if(max !== undefined && state[key] >= max) return;
+        if((key==='protons'||key==='neutrons') && state[key] >= 20) return;
+        state[key]++;
+      } else {
+        if(state[key] > 0) state[key]--;
+      }
+      render();
+    });
+  });
+
+  document.getElementById('resetLabBtn').addEventListener('click', ()=>{
+    state.protons=0; state.neutrons=0; state.shell1=0; state.shell2=0; state.shell3=0;
+    render();
+  });
+  document.getElementById('buildCarbonBtn').addEventListener('click', ()=>{
+    state.protons=6; state.neutrons=6; state.shell1=2; state.shell2=4; state.shell3=0;
+    render();
+  });
+
+  render();
+
+  /* ---------------- quiz logic ---------------- */
+  function showFeedback(id, ok, correctText){
+    const el = document.getElementById('fb-'+id);
+    el.className = 'feedback show ' + (ok ? 'correct' : 'wrong');
+    el.textContent = ok ? 'إجابة صحيحة! أحسنت.' : ('إجابة غير دقيقة. تلميح: ' + correctText);
+  }
+
+  document.querySelector('[data-check="q1"]').addEventListener('click', ()=>{
+    const v = document.getElementById('q1').value.trim().toLowerCase();
+    showFeedback('q1', v === 'c', 'رمز الكربون هو الحرف C.');
+  });
+
+  document.querySelector('[data-check="q2"]').addEventListener('click', ()=>{
+    const pc = document.getElementById('q2p-charge').value, pl = document.getElementById('q2p-loc').value;
+    const nc = document.getElementById('q2n-charge').value, nl = document.getElementById('q2n-loc').value;
+    const ec = document.getElementById('q2e-charge').value, el_ = document.getElementById('q2e-loc').value;
+    const ok = pc==='+' && pl==='nucleus' && nc==='0' && nl==='nucleus' && ec==='-' && el_==='shell';
+    showFeedback('q2', ok, 'البروتون (+) والنيوترون (0) داخل النواة، والإلكترون (−) في مستويات الطاقة.');
+  });
+
+  document.querySelector('[data-check="q3"]').addEventListener('click', ()=>{
+    const sel = document.querySelector('input[name="q3"]:checked');
+    showFeedback('q3', !!sel && sel.value==='+', 'شحنة النواة موجبة لأنها تحتوي على البروتونات فقط.');
+  });
+
+  document.querySelector('[data-check="q4"]').addEventListener('click', ()=>{
+    const a = Number(document.getElementById('q4a').value);
+    const b = Number(document.getElementById('q4b').value);
+    showFeedback('q4', a===6 && b===12, 'العدد الذرّي للكربون 6، والعدد الكتلي 12 (6 بروتونات + 6 نيوترونات).');
+  });
+
+  document.querySelector('[data-check="q5"]').addEventListener('click', ()=>{
+    const v = Number(document.getElementById('q5').value);
+    showFeedback('q5', v===2, 'المستوى الأول يمتلئ بإلكترونين اثنين كحدّ أقصى.');
+  });
+
+  document.querySelector('[data-check="q6"]').addEventListener('click', ()=>{
+    const v = Number(document.getElementById('q6').value);
+    showFeedback('q6', v===4, 'الإلكترونات المتبقية بعد امتلاء المستوى الأول هي 4، فتوضع في المستوى الثاني.');
+  });
+
+})();
+</script>
+</body>
+</html>

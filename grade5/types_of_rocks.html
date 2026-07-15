@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>أنواع الصخور | مختبر افتراضي تفاعلي — الصف الخامس</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Changa:wght@400;600;700;800&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EDE5D2;
+  --bg-deep:#E1D6BC;
+  --paper:#FFFCF5;
+  --ink:#2B2420;
+  --ink-soft:#5B5044;
+
+  --igneous:#D9502E;
+  --igneous-dark:#7A2A1B;
+  --igneous-glow:#FF9142;
+
+  --sedimentary:#B98A34;
+  --sedimentary-dark:#7A5A20;
+  --sedimentary-light:#E9D4A0;
+
+  --metamorphic:#665C93;
+  --metamorphic-dark:#3D3760;
+  --metamorphic-light:#B9AFD9;
+
+  --radius:18px;
+  --shadow:0 14px 34px -14px rgba(43,36,32,.35);
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:
+    radial-gradient(circle at 12% 8%, rgba(217,80,46,.07), transparent 40%),
+    radial-gradient(circle at 88% 15%, rgba(102,92,147,.08), transparent 40%),
+    var(--bg);
+  color:var(--ink);
+  font-family:'Tajawal', sans-serif;
+  line-height:1.8;
+  overflow-x:hidden;
+}
+h1,h2,h3,.display{ font-family:'Changa', sans-serif; }
+img,svg{max-width:100%;}
+button{font-family:inherit;cursor:pointer;}
+input{font-family:inherit;}
+
+/* ===== Texture strip ===== */
+.strata-strip{
+  height:10px;
+  background:repeating-linear-gradient(90deg,
+    var(--igneous) 0 6%, var(--sedimentary) 6% 12%, var(--metamorphic) 12% 18%);
+}
+
+/* ===== NAV ===== */
+nav.pillnav{
+  position:sticky; top:0; z-index:50;
+  background:rgba(237,229,210,.92);
+  backdrop-filter:blur(8px);
+  border-bottom:1px solid rgba(43,36,32,.1);
+  padding:10px 16px;
+  display:flex; gap:8px; justify-content:center; flex-wrap:wrap;
+}
+nav.pillnav a{
+  text-decoration:none; color:var(--ink);
+  font-size:.92rem; font-weight:700;
+  padding:8px 16px; border-radius:999px;
+  border:1.5px solid rgba(43,36,32,.15);
+  transition:.25s;
+  white-space:nowrap;
+}
+nav.pillnav a:hover{ background:var(--ink); color:var(--paper); border-color:var(--ink); transform:translateY(-2px); }
+
+/* ===== HERO ===== */
+.hero{
+  padding:56px 20px 40px;
+  max-width:1100px; margin:0 auto;
+  display:grid; grid-template-columns:1.1fr .9fr; gap:36px; align-items:center;
+}
+.eyebrow{
+  display:inline-flex; align-items:center; gap:8px;
+  font-size:.82rem; font-weight:900; letter-spacing:.5px;
+  color:var(--igneous-dark);
+  background:rgba(217,80,46,.12);
+  padding:6px 14px; border-radius:999px; margin-bottom:14px;
+}
+.hero h1{
+  font-size:clamp(2.2rem, 5vw, 3.4rem);
+  margin:0 0 14px; font-weight:800; line-height:1.15;
+}
+.hero h1 span{ color:var(--igneous); }
+.hero p.lead{ font-size:1.08rem; color:var(--ink-soft); margin-bottom:18px; max-width:52ch; }
+.quote-card{
+  background:var(--paper); border-right:5px solid var(--metamorphic);
+  border-radius:14px; padding:16px 20px; box-shadow:var(--shadow);
+  font-size:.98rem; color:var(--ink-soft); font-style:normal;
+}
+
+/* ===== 3D ROCK CYCLE (signature element) ===== */
+.cycle-wrap{
+  position:relative; width:100%; aspect-ratio:1/1; max-width:380px; margin:0 auto;
+  perspective:1000px;
+}
+.cycle-stage{
+  position:absolute; inset:0;
+  transform-style:preserve-3d;
+  animation:spinCycle 22s linear infinite;
+}
+@keyframes spinCycle{ from{transform:rotateY(0deg) rotateX(8deg);} to{transform:rotateY(360deg) rotateX(8deg);} }
+.rock-orb{
+  position:absolute; top:50%; left:50%; width:112px; height:112px; border-radius:50%;
+  margin:-56px 0 0 -56px;
+  display:flex; align-items:center; justify-content:center;
+  text-align:center; font-family:'Changa'; font-weight:700; font-size:.95rem; color:#fff;
+  box-shadow: inset -10px -14px 22px rgba(0,0,0,.35), inset 8px 10px 18px rgba(255,255,255,.25), 0 10px 26px rgba(0,0,0,.3);
+  cursor:pointer; border:none;
+}
+.rock-orb small{display:block; font-size:.68rem; font-weight:400; opacity:.9; margin-top:2px;}
+.orb-igneous{ background:radial-gradient(circle at 35% 30%, var(--igneous-glow), var(--igneous) 55%, var(--igneous-dark) 100%); transform: translateZ(150px);}
+.orb-sedimentary{ background:radial-gradient(circle at 35% 30%, var(--sedimentary-light), var(--sedimentary) 55%, var(--sedimentary-dark) 100%); transform: rotateY(120deg) translateZ(150px);}
+.orb-metamorphic{ background:radial-gradient(circle at 35% 30%, var(--metamorphic-light), var(--metamorphic) 55%, var(--metamorphic-dark) 100%); transform: rotateY(240deg) translateZ(150px);}
+.cycle-center{
+  position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+  font-family:'Changa'; font-weight:800; font-size:1.15rem; color:var(--ink);
+  background:var(--paper); padding:14px 10px; border-radius:50%;
+  width:96px; height:96px; display:flex; align-items:center; justify-content:center;
+  box-shadow:var(--shadow); z-index:5; text-align:center; line-height:1.2;
+}
+.cycle-hint{ text-align:center; font-size:.82rem; color:var(--ink-soft); margin-top:10px; }
+
+/* ===== SECTION shell ===== */
+section{ max-width:1100px; margin:0 auto; padding:50px 20px; }
+.section-head{ text-align:center; margin-bottom:34px; }
+.section-head h2{ font-size:clamp(1.6rem,3.4vw,2.3rem); margin:0 0 8px; }
+.section-head p{ color:var(--ink-soft); max-width:60ch; margin:0 auto; }
+
+/* ===== TYPE CARDS (flip, 3D) ===== */
+.cards-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+@media(max-width:860px){ .cards-grid{grid-template-columns:1fr;} .hero{grid-template-columns:1fr;} }
+.flip-card{ perspective:1400px; height:320px; }
+.flip-inner{
+  position:relative; width:100%; height:100%; transition:transform .7s cubic-bezier(.4,.2,.2,1);
+  transform-style:preserve-3d; border-radius:var(--radius); box-shadow:var(--shadow);
+}
+.flip-card.flipped .flip-inner{ transform:rotateY(180deg); }
+.flip-face{
+  position:absolute; inset:0; backface-visibility:hidden; border-radius:var(--radius);
+  padding:22px; display:flex; flex-direction:column; justify-content:center; color:#fff;
+}
+.flip-front{ align-items:center; text-align:center; gap:10px; }
+.flip-front .icon-rock{ width:74px; height:74px; border-radius:50%; margin-bottom:8px;
+  box-shadow: inset -8px -10px 16px rgba(0,0,0,.35), inset 6px 8px 14px rgba(255,255,255,.25);}
+.flip-front h3{ font-size:1.3rem; margin:0; }
+.flip-front .tap-hint{ font-size:.78rem; opacity:.85; margin-top:auto; }
+.flip-back{ transform:rotateY(180deg); background:var(--paper); color:var(--ink); overflow:auto; }
+.flip-back h4{ margin:0 0 8px; font-family:'Changa'; font-size:1.05rem; }
+.flip-back p{ font-size:.9rem; margin:0 0 10px; color:var(--ink-soft); }
+.tag-row{ display:flex; flex-wrap:wrap; gap:6px; }
+.tag{ font-size:.78rem; font-weight:700; padding:4px 10px; border-radius:999px; background:rgba(43,36,32,.08); }
+
+.card-igneous .flip-front{ background:linear-gradient(160deg, var(--igneous), var(--igneous-dark)); }
+.card-sedimentary .flip-front{ background:linear-gradient(160deg, var(--sedimentary), var(--sedimentary-dark)); }
+.card-metamorphic .flip-front{ background:linear-gradient(160deg, var(--metamorphic), var(--metamorphic-dark)); }
+
+/* ===== LAB TABS ===== */
+.lab-shell{ background:var(--paper); border-radius:24px; box-shadow:var(--shadow); padding:26px; }
+.lab-tabs{ display:flex; gap:10px; margin-bottom:22px; flex-wrap:wrap; justify-content:center; }
+.lab-tab{
+  border:2px solid transparent; background:rgba(43,36,32,.06); border-radius:14px;
+  padding:12px 18px; font-weight:800; font-size:.95rem; color:var(--ink-soft); transition:.25s;
+  display:flex; align-items:center; gap:8px;
+}
+.lab-tab.active{ color:#fff; }
+.lab-tab[data-lab="igneous"].active{ background:var(--igneous); }
+.lab-tab[data-lab="sedimentary"].active{ background:var(--sedimentary); }
+.lab-tab[data-lab="metamorphic"].active{ background:var(--metamorphic); }
+.lab-panel{ display:none; }
+.lab-panel.active{ display:grid; grid-template-columns:1fr 1fr; gap:28px; align-items:start;}
+@media(max-width:800px){ .lab-panel.active{ grid-template-columns:1fr; } }
+
+.stage{
+  background:var(--bg-deep); border-radius:18px; padding:24px;
+  min-height:300px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px;
+  position:relative; overflow:hidden; perspective:900px;
+}
+.controls{ display:flex; flex-direction:column; gap:16px; }
+.control-row label{ display:block; font-weight:700; margin-bottom:6px; font-size:.92rem; }
+input[type=range]{ width:100%; accent-color:var(--igneous); }
+.btn{
+  border:none; border-radius:12px; padding:12px 18px; font-weight:800; font-size:.95rem;
+  color:#fff; background:var(--ink); transition:.2s; box-shadow:0 8px 18px -8px rgba(0,0,0,.4);
+}
+.btn:hover{ transform:translateY(-2px); }
+.btn:disabled{ opacity:.4; cursor:not-allowed; transform:none; }
+.btn-igneous{ background:var(--igneous); }
+.btn-sedimentary{ background:var(--sedimentary); }
+.btn-metamorphic{ background:var(--metamorphic); }
+.choice-row{ display:flex; gap:10px; flex-wrap:wrap; }
+.choice-btn{
+  border:2px solid rgba(43,36,32,.18); background:transparent; border-radius:10px;
+  padding:9px 14px; font-weight:700; font-size:.88rem; color:var(--ink); transition:.2s;
+}
+.choice-btn.selected{ background:var(--ink); color:#fff; border-color:var(--ink); }
+.conclusion-box{
+  margin-top:6px; background:rgba(102,92,147,.1); border-right:4px solid var(--metamorphic);
+  border-radius:10px; padding:14px 16px; font-size:.92rem; min-height:52px;
+}
+.conclusion-box.empty{ color:var(--ink-soft); font-style:normal; opacity:.7; }
+
+/* --- igneous visuals --- */
+.magma-blob{
+  width:150px; height:150px; border-radius:46% 54% 60% 40%/50% 45% 55% 50%;
+  background:radial-gradient(circle at 40% 35%, #ffd9a0, var(--sedimentary-dark) 70%);
+  transition:all .5s ease; transform-style:preserve-3d;
+  box-shadow: inset -14px -18px 30px rgba(0,0,0,.4), inset 10px 14px 24px rgba(255,255,255,.2), 0 18px 30px -10px rgba(0,0,0,.4);
+}
+.crystal-field{ display:grid; grid-template-columns:repeat(6,1fr); gap:6px; width:100%; max-width:220px; }
+.crystal{ background:linear-gradient(160deg,#fff,var(--igneous)); clip-path:polygon(50% 0,100% 38%,80% 100%,20% 100%,0 38%); }
+
+/* --- sedimentary visuals --- */
+.beaker{
+  width:150px; height:220px; border:4px solid var(--ink); border-top:none;
+  border-radius:0 0 16px 16px; display:flex; flex-direction:column-reverse; overflow:hidden;
+  background:rgba(255,255,255,.35);
+}
+.layer{ width:100%; flex-shrink:0; transition:all .6s ease; }
+.rock-block{
+  width:150px; height:80px; border-radius:8px; box-shadow:var(--shadow);
+  background:repeating-linear-gradient(0deg, var(--sedimentary) 0 8px, var(--sedimentary-light) 8px 16px);
+  display:none; align-items:center; justify-content:center; color:var(--ink); font-weight:800;
+}
+
+/* --- metamorphic visuals --- */
+.proto-rock{
+  width:150px; height:110px; border-radius:14px; transition:all .6s ease;
+  display:flex; align-items:center; justify-content:center; color:#fff; font-weight:800;
+  box-shadow: inset -10px -12px 20px rgba(0,0,0,.3), inset 8px 8px 16px rgba(255,255,255,.15), var(--shadow);
+}
+
+/* ===== QUIZ ===== */
+.quiz-list{ display:flex; flex-direction:column; gap:22px; }
+.quiz-item{ background:var(--paper); border-radius:16px; padding:20px 22px; box-shadow:var(--shadow); }
+.quiz-item h4{ margin:0 0 10px; font-size:1.02rem; }
+.quiz-item input, .quiz-item textarea{
+  width:100%; border:2px solid rgba(43,36,32,.15); border-radius:10px; padding:10px 12px;
+  font-size:.95rem; margin-bottom:8px; background:#fff; color:var(--ink);
+}
+.quiz-item textarea{ min-height:70px; resize:vertical; }
+.check-row{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.feedback{ font-size:.88rem; font-weight:700; padding:6px 12px; border-radius:8px; display:none; }
+.feedback.ok{ background:rgba(76,140,74,.15); color:#3a6b38; display:inline-block; }
+.feedback.no{ background:rgba(217,80,46,.15); color:var(--igneous-dark); display:inline-block; }
+
+footer{ text-align:center; padding:34px 20px 50px; color:var(--ink-soft); font-size:.85rem; }
+.sr-only{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); }
+
+@media (prefers-reduced-motion: reduce){
+  .cycle-stage{ animation:none; }
+  *{ transition-duration:.01ms !important; }
+}
+
+  /* ══ RESPONSIVE MOBILE & TABLET ══ */
+  @media (max-width: 768px) {
+    body { padding: 8px !important; font-size: 15px !important; overflow-x: hidden !important; }
+    .container, [class*="container"], [class*="wrapper"] { padding: 8px !important; max-width: 100% !important; }
+    canvas { width: 100% !important; height: auto !important; display: block !important; touch-action: none; max-width: 100% !important; }
+    svg { max-width: 100% !important; height: auto !important; }
+    h1 { font-size: clamp(18px,5vw,32px) !important; }
+    h2 { font-size: clamp(15px,4vw,26px) !important; }
+    h3 { font-size: clamp(13px,3.5vw,20px) !important; }
+    [class*="grid"] { grid-template-columns: 1fr !important; }
+    [class*="flex"] { flex-wrap: wrap !important; }
+    input[type="range"] { width: 100% !important; min-height: 36px; }
+    input[type="number"], input[type="text"], select, textarea {
+      font-size: 16px !important; width: 100% !important; box-sizing: border-box; padding: 8px !important; }
+    button { min-height: 44px !important; font-size: 14px !important; touch-action: manipulation; padding: 10px 14px !important; }
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 13px !important; }
+    th, td { padding: 6px 4px !important; }
+    header { padding: 10px 12px !important; }
+    .controls, [class*="controls"] { flex-direction: column !important; gap: 8px !important; }
+    .lab-window, [class*="lab-window"] { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+  }
+  @media (max-width: 480px) {
+    body { padding: 4px !important; }
+    button { width: 100% !important; }
+  }
+  /* ══ END RESPONSIVE ══ */
+</style>
+</head>
+<body>
+<style>
+.vlab-back{position:fixed;top:10px;left:10px;z-index:99999;
+background:rgba(10,22,40,0.93);border:1px solid rgba(0,200,150,0.4);
+border-radius:22px;padding:8px 16px;display:inline-flex;align-items:center;gap:7px;
+color:#00C896;font-family:Tajawal,Cairo,Arial,sans-serif;font-size:13px;font-weight:700;
+text-decoration:none;backdrop-filter:blur(8px);box-shadow:0 4px 18px rgba(0,0,0,0.3);
+transition:background 0.2s;}
+.vlab-back:hover{background:rgba(0,200,150,0.18);}
+</style>
+<a href="../grade5.html" class="vlab-back">&#8594; العودة للصف</a>
+
+
+<div class="strata-strip"></div>
+
+<nav class="pillnav">
+  <a href="#intro">مقدمة</a>
+  <a href="#types">الأنواع الثلاثة</a>
+  <a href="#lab">المختبر الافتراضي</a>
+  <a href="#quiz">التقييم</a>
+</nav>
+
+<header class="hero" id="intro">
+  <div>
+    <span class="eyebrow">🪨 نشاط (٧) — العلوم والحياة، الصف الخامس</span>
+    <h1>أنواع <span>الصّخور</span> ودورة تكوّنها</h1>
+    <p class="lead">الصخور من حولنا مختلفة تمامًا في شكلها وملمسها وصلابتها. في هذا الدرس نكتشف لماذا، ثم ندخل المختبر الافتراضي لنصنع كل نوع بأيدينا!</p>
+    <blockquote class="quote-card">
+      "تختلف الصّخور في تركيبها وطريقة تكوّنها، مما يؤدي إلى اختلاف صفاتها وخصائصها."
+    </blockquote>
+  </div>
+  <div>
+    <div class="cycle-wrap">
+      <div class="cycle-stage" id="cycleStage">
+        <button class="rock-orb orb-igneous" onclick="jumpTo('igneous')">النارية<small>تصلّب الصّهارة</small></button>
+        <button class="rock-orb orb-sedimentary" onclick="jumpTo('sedimentary')">الرسوبية<small>ترسّب وتماسك</small></button>
+        <button class="rock-orb orb-metamorphic" onclick="jumpTo('metamorphic')">المتحوّلة<small>حرارة وضغط</small></button>
+      </div>
+      <div class="cycle-center">دورة<br>الصخور</div>
+    </div>
+    <p class="cycle-hint">👆 اضغط على أي كرة صخرية للانتقال إلى مختبرها</p>
+  </div>
+</header>
+
+<section id="types">
+  <div class="section-head">
+    <h2>الأنواع الثلاثة الرئيسة للصخور</h2>
+    <p>اضغط على كل بطاقة لتدور وتكشف عن تعريفها وأمثلتها.</p>
+  </div>
+  <div class="cards-grid">
+
+    <div class="flip-card card-igneous" onclick="this.classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-face flip-front">
+          <div class="icon-rock" style="background:radial-gradient(circle at 35% 30%, var(--igneous-glow), var(--igneous-dark));"></div>
+          <h3>الصخور النارية</h3>
+          <span class="tap-hint">اضغط لعرض التعريف والأمثلة ↺</span>
+        </div>
+        <div class="flip-face flip-back">
+          <h4>كيف تتكوّن؟</h4>
+          <p>تتكوّن من تصلّب الصخور المنصهرة (الصهارة) الموجودة في باطن الأرض، أو المنصهرة التي تخرج من البراكين وتبرد على سطحها.</p>
+          <h4>أمثلة</h4>
+          <div class="tag-row"><span class="tag">جرانيت</span><span class="tag">بازلت</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flip-card card-sedimentary" onclick="this.classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-face flip-front">
+          <div class="icon-rock" style="background:radial-gradient(circle at 35% 30%, var(--sedimentary-light), var(--sedimentary-dark));"></div>
+          <h3>الصخور الرسوبية</h3>
+          <span class="tap-hint">اضغط لعرض التعريف والأمثلة ↺</span>
+        </div>
+        <div class="flip-face flip-back">
+          <h4>كيف تتكوّن؟</h4>
+          <p>تتكوّن من ترسّب فتات الصخور، وبقايا حيوانات ونباتات، وأملاح؛ ثم تتماسك هذه الطبقات وتتصلّب مع مرور الزمن تحت تأثير الضغط.</p>
+          <h4>أمثلة</h4>
+          <div class="tag-row"><span class="tag">الصخر الرملي</span><span class="tag">الحجر الجيري</span><span class="tag">الملح الصخري</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flip-card card-metamorphic" onclick="this.classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-face flip-front">
+          <div class="icon-rock" style="background:radial-gradient(circle at 35% 30%, var(--metamorphic-light), var(--metamorphic-dark));"></div>
+          <h3>الصخور المتحوّلة</h3>
+          <span class="tap-hint">اضغط لعرض التعريف والأمثلة ↺</span>
+        </div>
+        <div class="flip-face flip-back">
+          <h4>كيف تتكوّن؟</h4>
+          <p>تنشأ عن تعرّض الصخور النارية أو الرسوبية لضغط شديد وحرارة عالية في باطن الأرض، فتتغيّر خصائصها وتركيبها دون أن تنصهر بالكامل.</p>
+          <h4>أمثلة</h4>
+          <div class="tag-row"><span class="tag">الرخام (من حجر جيري)</span><span class="tag">الأردواز (من طين)</span><span class="tag">النايس</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="lab">
+  <div class="section-head">
+    <h2>🧪 المختبر الافتراضي: اصنع الصخور بنفسك</h2>
+    <p>اختر نوع الصخر، ونفّذ التجربة خطوة بخطوة لتصل إلى الاستنتاج العلمي.</p>
+  </div>
+
+  <div class="lab-shell">
+    <div class="lab-tabs">
+      <button class="lab-tab active" data-lab="igneous" onclick="switchLab('igneous')">🌋 مختبر الصخور النارية</button>
+      <button class="lab-tab" data-lab="sedimentary" onclick="switchLab('sedimentary')">🏖️ مختبر الصخور الرسوبية</button>
+      <button class="lab-tab" data-lab="metamorphic" onclick="switchLab('metamorphic')">⛰️ مختبر الصخور المتحوّلة</button>
+    </div>
+
+    <!-- IGNEOUS LAB -->
+    <div class="lab-panel active" id="panel-igneous">
+      <div class="stage">
+        <div class="magma-blob" id="magmaBlob"></div>
+        <div class="crystal-field" id="crystalField" style="display:none;"></div>
+      </div>
+      <div class="controls">
+        <div class="control-row">
+          <label for="heatRange">🔥 الخطوة ١: سخّن الصخر حتى ينصهر ويصبح صهارة (<span id="heatVal">0</span>°)</label>
+          <input type="range" id="heatRange" min="0" max="100" value="0" oninput="updateHeat(this.value)">
+        </div>
+        <div class="control-row" id="coolingChoice" style="display:none;">
+          <label>❄️ الخطوة ٢: اختر معدّل التبريد</label>
+          <div class="choice-row">
+            <button class="choice-btn" onclick="cool('slow')">تبريد بطيء (تحت السطح)</button>
+            <button class="choice-btn" onclick="cool('fast')">تبريد سريع (على السطح/بركان)</button>
+          </div>
+        </div>
+        <div class="conclusion-box empty" id="igneousConclusion">سيظهر استنتاجك هنا بعد إتمام الخطوتين.</div>
+        <button class="btn btn-igneous" onclick="resetIgneous()">إعادة التجربة 🔄</button>
+      </div>
+    </div>
+
+    <!-- SEDIMENTARY LAB -->
+    <div class="lab-panel" id="panel-sedimentary">
+      <div class="stage">
+        <div class="beaker" id="beaker"></div>
+        <div class="rock-block" id="sedRock">صخر رسوبي متماسك</div>
+      </div>
+      <div class="controls">
+        <div class="control-row">
+          <label>الخطوة ١: أضف طبقات من الرواسب (رمل، طين، بقايا كائنات)</label>
+          <button class="btn btn-sedimentary" onclick="addLayer()">أضف طبقة رواسب ⬇️</button>
+          <p id="layerCount" style="font-size:.85rem;color:var(--ink-soft);margin-top:6px;">عدد الطبقات: 0</p>
+        </div>
+        <div class="control-row">
+          <label>الخطوة ٢: بعد تراكم عدّة طبقات، اضغط عليها زمنًا طويلًا</label>
+          <button class="btn btn-sedimentary" id="compressBtn" onclick="compressLayers()" disabled>اضغط الطبقات (تماسك وتصلّب) 🪨</button>
+        </div>
+        <div class="conclusion-box empty" id="sedConclusion">سيظهر استنتاجك هنا بعد ضغط الطبقات.</div>
+        <button class="btn btn-sedimentary" onclick="resetSedimentary()">إعادة التجربة 🔄</button>
+      </div>
+    </div>
+
+    <!-- METAMORPHIC LAB -->
+    <div class="lab-panel" id="panel-metamorphic">
+      <div class="stage">
+        <div class="proto-rock" id="protoRock" style="background:linear-gradient(160deg,#E9D4A0,#8A6B2E);">حجر جيري (رسوبي)</div>
+      </div>
+      <div class="controls">
+        <div class="control-row">
+          <label>الخطوة ١: اختر الصخر الأصلي</label>
+          <div class="choice-row">
+            <button class="choice-btn selected" onclick="pickProto('limestone')">حجر جيري (رسوبي)</button>
+            <button class="choice-btn" onclick="pickProto('clay')">طين متصلّب (رسوبي)</button>
+          </div>
+        </div>
+        <div class="control-row">
+          <label for="heatMeta">🔥 الحرارة (<span id="heatMetaVal">0</span>°)</label>
+          <input type="range" id="heatMeta" min="0" max="100" value="0" oninput="updateMeta()">
+        </div>
+        <div class="control-row">
+          <label for="pressMeta">⬇️ الضغط (<span id="pressMetaVal">0</span>%)</label>
+          <input type="range" id="pressMeta" min="0" max="100" value="0" oninput="updateMeta()">
+        </div>
+        <div class="conclusion-box empty" id="metaConclusion">زد الحرارة والضغط معًا لترى التحوّل.</div>
+        <button class="btn btn-metamorphic" onclick="resetMeta()">إعادة التجربة 🔄</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="quiz">
+  <div class="section-head">
+    <h2>📝 التقييم — أجب كما وردت الأسئلة في نشاطك</h2>
+    <p>اكتب إجاباتك ثم اضغط "تحقّق" للحصول على تلميح فوري.</p>
+  </div>
+  <div class="quiz-list">
+
+    <div class="quiz-item">
+      <h4>١. ما أنواع الصخور الرئيسة الثلاثة؟</h4>
+      <input type="text" id="q1" placeholder="مثال: النارية، الرسوبية، ...">
+      <div class="check-row">
+        <button class="btn" onclick="checkQ1()">تحقّق ✅</button>
+        <span class="feedback" id="fb1"></span>
+      </div>
+    </div>
+
+    <div class="quiz-item">
+      <h4>٢. لماذا سُمّيت الصخور النارية بهذا الاسم؟</h4>
+      <textarea id="q2" placeholder="اكتب إجابتك هنا..."></textarea>
+      <div class="check-row">
+        <button class="btn" onclick="checkQ2()">تحقّق ✅</button>
+        <span class="feedback" id="fb2"></span>
+      </div>
+    </div>
+
+    <div class="quiz-item">
+      <h4>٣. أعطِ أمثلة على صخور رسوبية</h4>
+      <input type="text" id="q3" placeholder="مثال: الصخر الرملي، ...">
+      <div class="check-row">
+        <button class="btn" onclick="checkQ3()">تحقّق ✅</button>
+        <span class="feedback" id="fb3"></span>
+      </div>
+    </div>
+
+    <div class="quiz-item">
+      <h4>٤. اكتب جملة علمية حول الصخور المتحوّلة</h4>
+      <textarea id="q4" placeholder="اكتب جملتك العلمية هنا..."></textarea>
+      <div class="check-row">
+        <button class="btn" onclick="checkQ4()">تحقّق ✅</button>
+        <span class="feedback" id="fb4"></span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  صمّم لدرس «أنواع الصخور» — منهاج العلوم والحياة، الصف الخامس، فلسطين 🇵🇸
+</footer>
+
+<script>
+/* ---------- utility: normalize Arabic text for lenient matching ---------- */
+function normalize(str){
+  return (str||'')
+    .replace(/[\u064B-\u065F]/g,'')      // remove tashkeel
+    .replace(/[إأآا]/g,'ا')
+    .replace(/ى/g,'ي')
+    .replace(/ة/g,'ه')
+    .replace(/[^\u0621-\u064A0-9a-zA-Z ]/g,'')
+    .replace(/\s+/g,' ')
+    .trim()
+    .toLowerCase();
+}
+function jumpTo(labId){
+  document.getElementById('lab').scrollIntoView({behavior:'smooth'});
+  setTimeout(()=>switchLab(labId), 400);
+}
+
+/* ---------- lab tab switching ---------- */
+function switchLab(name){
+  document.querySelectorAll('.lab-tab').forEach(b=>b.classList.toggle('active', b.dataset.lab===name));
+  document.querySelectorAll('.lab-panel').forEach(p=>p.classList.toggle('active', p.id==='panel-'+name));
+}
+
+/* ================= IGNEOUS LAB ================= */
+let igneousMelted = false;
+function updateHeat(val){
+  document.getElementById('heatVal').textContent = val;
+  const blob = document.getElementById('magmaBlob');
+  const t = val/100;
+  const r = Math.round(200 + 55*t);
+  blob.style.background = `radial-gradient(circle at 40% 35%, #ffe9c2, hsl(${18-10*t} 85% ${35+20*t}%) 70%)`;
+  blob.style.boxShadow = `0 0 ${20+t*40}px ${t*20}px rgba(255,140,40,${t*.7}), inset -14px -18px 30px rgba(0,0,0,.4)`;
+  blob.style.transform = `scale(${1+t*.15}) rotate(${t*15}deg)`;
+  if(val >= 70 && !igneousMelted){
+    igneousMelted = true;
+    document.getElementById('coolingChoice').style.display = 'block';
+  }
+  if(val < 70 && igneousMelted){
+    igneousMelted = false;
+    document.getElementById('coolingChoice').style.display = 'none';
+  }
+}
+function cool(rate){
+  document.querySelectorAll('#coolingChoice .choice-btn').forEach(b=>b.classList.remove('selected'));
+  event.target.classList.add('selected');
+  const blob = document.getElementById('magmaBlob');
+  const field = document.getElementById('crystalField');
+  blob.style.display = 'none';
+  field.style.display = 'grid';
+  field.innerHTML = '';
+  const n = rate==='fast' ? 24 : 8;
+  const size = rate==='fast' ? 14 : 34;
+  for(let i=0;i<n;i++){
+    const c = document.createElement('div');
+    c.className = 'crystal';
+    c.style.height = size+'px';
+    c.style.gridColumn = rate==='fast' ? 'span 1' : 'span 2';
+    field.appendChild(c);
+  }
+  const box = document.getElementById('igneousConclusion');
+  box.classList.remove('empty');
+  if(rate==='fast'){
+    box.innerHTML = '<b>الاستنتاج:</b> عندما تبرد الصهارة بسرعة على سطح الأرض (كما في البراكين)، لا يكون هناك وقت كافٍ لتكوّن بلورات كبيرة، فتنتج صخور نارية بركانية ذات بلورات <b>صغيرة جدًا</b> مثل البازلت.';
+  } else {
+    box.innerHTML = '<b>الاستنتاج:</b> عندما تبرد الصهارة ببطء في باطن الأرض، يتوفّر وقت كافٍ لنمو البلورات، فتنتج صخور نارية جوفية ذات بلورات <b>كبيرة وواضحة</b> مثل الجرانيت.';
+  }
+}
+function resetIgneous(){
+  igneousMelted = false;
+  document.getElementById('heatRange').value = 0;
+  updateHeat(0);
+  document.getElementById('magmaBlob').style.display = 'block';
+  document.getElementById('crystalField').style.display = 'none';
+  document.getElementById('coolingChoice').style.display = 'none';
+  const box = document.getElementById('igneousConclusion');
+  box.classList.add('empty');
+  box.textContent = 'سيظهر استنتاجك هنا بعد إتمام الخطوتين.';
+}
+
+/* ================= SEDIMENTARY LAB ================= */
+let layerCount = 0;
+const sedColors = ['#E9D4A0','#C9A24B','#8A6B2E','#D9C08A','#B9925A'];
+function addLayer(){
+  if(layerCount >= 6) return;
+  layerCount++;
+  const beaker = document.getElementById('beaker');
+  const layer = document.createElement('div');
+  layer.className = 'layer';
+  layer.style.height = '30px';
+  layer.style.background = sedColors[layerCount % sedColors.length];
+  beaker.appendChild(layer);
+  document.getElementById('layerCount').textContent = 'عدد الطبقات: ' + layerCount;
+  if(layerCount >= 4){
+    document.getElementById('compressBtn').disabled = false;
+  }
+}
+function compressLayers(){
+  const beaker = document.getElementById('beaker');
+  document.querySelectorAll('#beaker .layer').forEach(l=>{ l.style.height='10px'; });
+  setTimeout(()=>{
+    beaker.style.display = 'none';
+    document.getElementById('sedRock').style.display = 'flex';
+    const box = document.getElementById('sedConclusion');
+    box.classList.remove('empty');
+    box.innerHTML = '<b>الاستنتاج:</b> تتراكم الرواسب في طبقات فوق بعضها، ومع مرور الزمن يضغط وزن الطبقات العلوية على السفلية، وتترسّب المواد الرابطة (الأسمنت الطبيعي) بينها، فتتماسك وتتحوّل إلى صخر رسوبي صلب مثل الحجر الجيري أو الصخر الرملي.';
+  }, 500);
+}
+function resetSedimentary(){
+  layerCount = 0;
+  const beaker = document.getElementById('beaker');
+  beaker.innerHTML = '';
+  beaker.style.display = 'flex';
+  document.getElementById('sedRock').style.display = 'none';
+  document.getElementById('layerCount').textContent = 'عدد الطبقات: 0';
+  document.getElementById('compressBtn').disabled = true;
+  const box = document.getElementById('sedConclusion');
+  box.classList.add('empty');
+  box.textContent = 'سيظهر استنتاجك هنا بعد ضغط الطبقات.';
+}
+
+/* ================= METAMORPHIC LAB ================= */
+let protoType = 'limestone';
+function pickProto(type){
+  protoType = type;
+  document.querySelectorAll('#panel-metamorphic .choice-row .choice-btn').forEach(b=>b.classList.remove('selected'));
+  event.target.classList.add('selected');
+  resetMeta(true);
+}
+function updateMeta(){
+  const heat = +document.getElementById('heatMeta').value;
+  const press = +document.getElementById('pressMeta').value;
+  document.getElementById('heatMetaVal').textContent = heat;
+  document.getElementById('pressMetaVal').textContent = press;
+  const rock = document.getElementById('protoRock');
+  const t = (heat+press)/200;
+  rock.style.transform = `scaleY(${1-t*0.35}) scaleX(${1+t*0.15}) skewX(${-t*8}deg)`;
+
+  if(heat >= 55 && press >= 55){
+    if(protoType==='limestone'){
+      rock.style.background = 'repeating-linear-gradient(115deg,#f4f1ea 0 8px,#c9c2b0 8px 16px)';
+      rock.textContent = 'رخام (متحوّل)';
+    } else {
+      rock.style.background = 'repeating-linear-gradient(115deg,#5c5470 0 6px,#847a9c 6px 12px)';
+      rock.textContent = 'أردواز (متحوّل)';
+    }
+    const box = document.getElementById('metaConclusion');
+    box.classList.remove('empty');
+    if(protoType==='limestone'){
+      box.innerHTML = '<b>الاستنتاج:</b> عند تعرّض الحجر الجيري (صخر رسوبي) لحرارة وضغط شديدين في باطن الأرض دون أن ينصهر، تتغيّر بلوراته ويتحوّل إلى صخر متحوّل هو <b>الرخام</b>.';
+    } else {
+      box.innerHTML = '<b>الاستنتاج:</b> عند تعرّض الطين (صخر رسوبي) لحرارة وضغط شديدين، تترتّب دقائقه في طبقات رفيعة متوازية، فيتحوّل إلى صخر متحوّل هو <b>الأردواز</b>.';
+    }
+  } else {
+    rock.style.background = protoType==='limestone'
+      ? 'linear-gradient(160deg,#E9D4A0,#8A6B2E)'
+      : 'linear-gradient(160deg,#c9b98a,#6b5a35)';
+    rock.textContent = protoType==='limestone' ? 'حجر جيري (رسوبي)' : 'طين متصلّب (رسوبي)';
+  }
+}
+function resetMeta(keepChoice){
+  document.getElementById('heatMeta').value = 0;
+  document.getElementById('pressMeta').value = 0;
+  updateMeta();
+  const box = document.getElementById('metaConclusion');
+  box.classList.add('empty');
+  box.textContent = 'زد الحرارة والضغط معًا لترى التحوّل.';
+}
+
+/* ================= QUIZ CHECKING ================= */
+function flash(id, ok, msgOk, msgNo){
+  const el = document.getElementById(id);
+  el.className = 'feedback ' + (ok?'ok':'no');
+  el.textContent = ok ? msgOk : msgNo;
+}
+function checkQ1(){
+  const v = normalize(document.getElementById('q1').value);
+  const need = ['نار','رسوب','متحول'];
+  const ok = need.every(k=>v.includes(k));
+  flash('fb1', ok, 'ممتاز! النارية، الرسوبية، المتحوّلة ✅', 'تلميح: فكّر في الخريطة المفاهيمية — ثلاث كلمات: النارية / الرسوبية / المتحوّلة');
+}
+function checkQ2(){
+  const v = normalize(document.getElementById('q2').value);
+  const ok = (v.includes('صهار') || v.includes('منصهر') || v.includes('نار') || v.includes('حمم') || v.includes('بركان'));
+  flash('fb2', ok, 'إجابة صحيحة! لأنها تتكوّن من تصلّب المواد المنصهرة (الصهارة) الساخنة كالنار 🔥', 'تلميح: تذكّر تجربة المختبر — من أي مادة ساخنة تتكوّن هذه الصخور؟');
+}
+function checkQ3(){
+  const v = normalize(document.getElementById('q3').value);
+  const options = ['رمل','جير','ملح'];
+  const count = options.filter(o=>v.includes(o)).length;
+  flash('fb3', count>=1, 'صحيح، من أمثلتها: الصخر الرملي، الحجر الجيري، الملح الصخري ✅', 'تلميح: عد إلى الخريطة المفاهيمية أسفل «الصخور الرسوبية»');
+}
+function checkQ4(){
+  const v = normalize(document.getElementById('q4').value);
+  const ok = (v.includes('حرار') && v.includes('ضغط')) || v.includes('تحول');
+  flash('fb4', ok, 'رائع! جملتك تتضمّن فكرة الحرارة والضغط اللذين يحوّلان الصخر 👏', 'تلميح: اذكر كلمتي «الحرارة» و«الضغط» وأثرهما في تحويل الصخر الأصلي');
+}
+</script>
+</body>
+</html>

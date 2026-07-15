@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta http-equiv="Content-Language" content="ar">
+<title>الترمّم | مختبر عفن الخبز الافتراضي</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700;800;900&family=Tajawal:wght@400;500;700;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --crust:#4a2e1e;
+  --crust-dark:#2e1c12;
+  --bread:#e8c989;
+  --bread-light:#f3ddab;
+  --mold-green:#5b7a3a;
+  --mold-dark:#31431f;
+  --mold-white:#d9d3c2;
+  --decay:#b5651d;
+  --ink:#2b1d12;
+  --paper:#fbf6ea;
+  --paper-2:#f2e9d6;
+  --line:#d8c9a3;
+  --salt:#eef3f6;
+  --sun:#e8a23b;
+  --bag:rgba(190,215,222,.28);
+  --shadow: 0 18px 40px -18px rgba(43,29,18,.45);
+  --radius:22px;
+  --disp:'Cairo',sans-serif;
+  --body:'Tajawal',sans-serif;
+  --mono:'IBM Plex Sans Arabic',sans-serif;
+}
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:var(--body); line-height:1.9; font-size:17px;
+  overflow-x:hidden;
+}
+::selection{background:var(--mold-green); color:#fff;}
+h1,h2,h3{font-family:var(--disp); margin:0; color:var(--crust-dark);}
+p{margin:0 0 14px;}
+img{max-width:100%; display:block;}
+.wrap{max-width:1100px; margin:0 auto; padding:0 22px;}
+.eyebrow{
+  display:inline-flex; align-items:center; gap:8px;
+  font-family:var(--mono); font-weight:600; font-size:13px;
+  color:var(--decay); background:#fff4e4; border:1px solid #f0d6ad;
+  padding:6px 14px; border-radius:999px; letter-spacing:.3px;
+}
+.eyebrow::before{content:"●"; color:var(--mold-green); font-size:9px;}
+
+/* ---------- NAV ---------- */
+nav.topnav{
+  position:sticky; top:0; z-index:60;
+  background:rgba(251,246,234,.9); backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+}
+nav.topnav .wrap{display:flex; align-items:center; justify-content:space-between; padding:10px 22px; gap:12px;}
+.brand{display:flex; align-items:center; gap:10px; font-family:var(--disp); font-weight:900; color:var(--crust-dark); font-size:19px;}
+.brand .dot{width:14px; height:14px; border-radius:50%; background:radial-gradient(circle at 30% 30%, var(--mold-green), var(--mold-dark)); box-shadow:0 0 0 3px #fff, 0 0 0 4px var(--line);}
+.navlinks{display:flex; gap:4px; list-style:none; margin:0; padding:0; flex-wrap:wrap; justify-content:flex-end;}
+.navlinks a{
+  font-family:var(--mono); font-size:13.5px; font-weight:600; color:var(--ink);
+  text-decoration:none; padding:8px 12px; border-radius:10px; transition:.2s;
+  white-space:nowrap;
+}
+.navlinks a:hover, .navlinks a:focus-visible{background:var(--paper-2); color:var(--decay); outline:none;}
+
+/* ---------- HERO ---------- */
+.hero{
+  position:relative; padding:64px 0 46px; overflow:hidden;
+  background:
+    radial-gradient(circle at 85% -10%, #fff 0%, transparent 45%),
+    linear-gradient(180deg, var(--paper) 0%, #f7efdc 100%);
+}
+.hero .wrap{display:grid; grid-template-columns:1.15fr .85fr; gap:46px; align-items:center;}
+.hero h1{font-size:clamp(32px,4.6vw,54px); line-height:1.18; margin:16px 0 18px; letter-spacing:-.5px;}
+.hero h1 span{color:var(--mold-green); position:relative;}
+.hero p.lead{font-size:18.5px; color:#4a3a26; max-width:52ch;}
+.hero .cta-row{display:flex; gap:12px; margin-top:26px; flex-wrap:wrap;}
+.btn{
+  font-family:var(--disp); font-weight:800; font-size:15.5px; cursor:pointer;
+  border-radius:14px; padding:14px 26px; border:none; transition:.18s transform,.18s box-shadow;
+  display:inline-flex; align-items:center; gap:8px;
+}
+.btn:active{transform:translateY(1px) scale(.98);}
+.btn-primary{background:linear-gradient(135deg,var(--mold-green),var(--mold-dark)); color:#fff; box-shadow:0 12px 24px -10px rgba(58,82,37,.6);}
+.btn-primary:hover{box-shadow:0 16px 30px -10px rgba(58,82,37,.75); transform:translateY(-2px);}
+.btn-ghost{background:#fff; color:var(--crust-dark); border:1.5px solid var(--line);}
+.btn-ghost:hover{border-color:var(--decay); color:var(--decay);}
+.btn:focus-visible{outline:3px solid var(--sun); outline-offset:2px;}
+
+/* Hero 3D bread scene */
+.hero-scene{perspective:1000px; display:flex; justify-content:center;}
+.timeline-bread{
+  width:230px; height:230px; position:relative; transform-style:preserve-3d;
+  transform:rotateX(18deg) rotateY(-22deg);
+  animation:heroSpin 16s ease-in-out infinite;
+}
+@keyframes heroSpin{
+  0%,100%{transform:rotateX(18deg) rotateY(-22deg);}
+  50%{transform:rotateX(14deg) rotateY(18deg);}
+}
+.slice-face{
+  position:absolute; inset:0; border-radius:20px;
+  background:
+    radial-gradient(ellipse at 30% 25%, var(--bread-light), var(--bread) 60%);
+  border:14px solid var(--crust);
+  box-shadow:inset 0 0 0 3px rgba(0,0,0,.08), var(--shadow);
+}
+.hero-badge{
+  position:absolute; bottom:-14px; right:-14px; background:#fff; border-radius:16px;
+  padding:10px 14px; box-shadow:var(--shadow); font-family:var(--mono); font-size:13px; font-weight:700;
+  display:flex; align-items:center; gap:8px; border:1px solid var(--line);
+}
+.hero-badge .pulse{width:9px; height:9px; border-radius:50%; background:var(--mold-green); animation:pulse 1.6s infinite;}
+@keyframes pulse{0%,100%{opacity:1; transform:scale(1);} 50%{opacity:.4; transform:scale(1.4);}}
+
+/* ---------- SECTION SHELL ---------- */
+section{padding:78px 0;}
+.section-head{max-width:680px; margin:0 auto 40px; text-align:center;}
+.section-head h2{font-size:clamp(26px,3.4vw,38px); margin-top:14px;}
+.section-head p{color:#5a4832; font-size:16.5px; margin-top:12px;}
+.alt{background:var(--paper-2);}
+
+/* ---------- LESSON CARDS ---------- */
+.grid-3{display:grid; grid-template-columns:repeat(3,1fr); gap:22px;}
+.card{
+  background:#fff; border-radius:var(--radius); padding:26px 24px; border:1px solid var(--line);
+  box-shadow:0 10px 24px -18px rgba(43,29,18,.3); transition:.25s transform,.25s box-shadow;
+}
+.card:hover{transform:translateY(-4px); box-shadow:var(--shadow);}
+.card .icon{
+  width:52px; height:52px; border-radius:14px; display:flex; align-items:center; justify-content:center;
+  font-size:24px; margin-bottom:14px;
+}
+.card h3{font-size:19px; margin-bottom:10px;}
+.card p{color:#5a4832; font-size:15.3px; margin:0;}
+.icon-a{background:#eaf1e0; }
+.icon-b{background:#fde9d2;}
+.icon-c{background:#e6eef6;}
+
+.definition-block{
+  display:grid; grid-template-columns:.9fr 1.1fr; gap:34px; align-items:center; margin-top:48px;
+}
+.definition-block .visual{
+  background:var(--crust-dark); border-radius:26px; padding:30px; position:relative; overflow:hidden;
+  min-height:280px; display:flex; align-items:center; justify-content:center;
+}
+.definition-block .visual svg{width:100%; max-width:320px;}
+.definition-block .text h3{font-size:24px; margin-bottom:14px;}
+.definition-block .text p{color:#4a3a26;}
+.chip-row{display:flex; gap:10px; flex-wrap:wrap; margin-top:16px;}
+.chip{font-family:var(--mono); font-size:12.8px; font-weight:600; background:#fff; border:1px solid var(--line); border-radius:999px; padding:7px 13px; color:var(--crust-dark);}
+
+/* ---------- LAB ---------- */
+.lab-shell{
+  background:linear-gradient(180deg, var(--crust-dark), #1c120b);
+  border-radius:30px; padding:38px 26px 44px; color:#f4ead4; position:relative; overflow:hidden;
+}
+.lab-shell::before{
+  content:""; position:absolute; inset:0; opacity:.06; pointer-events:none;
+  background-image:radial-gradient(circle, #fff 1px, transparent 1.4px);
+  background-size:26px 26px;
+}
+.lab-head{text-align:center; margin-bottom:8px; position:relative;}
+.lab-head .eyebrow{background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.18); color:var(--sun);}
+.lab-head h2{color:#fdf6e6; margin-top:14px;}
+.lab-head p{color:#d8c9a8; max-width:640px; margin:12px auto 0;}
+
+.lab-controls-intro{
+  display:flex; gap:14px; flex-wrap:wrap; justify-content:center; margin:26px 0 8px;
+}
+.pill-btn{
+  font-family:var(--mono); font-weight:700; font-size:13.5px; color:#fdf6e6;
+  background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.2);
+  border-radius:12px; padding:10px 16px; cursor:pointer; transition:.2s;
+}
+.pill-btn:hover{background:rgba(255,255,255,.14);}
+.pill-btn.active{background:var(--mold-green); border-color:var(--mold-green); color:#fff;}
+
+.dashboard{
+  display:flex; align-items:center; justify-content:center; gap:22px; flex-wrap:wrap;
+  background:rgba(0,0,0,.22); border:1px solid rgba(255,255,255,.1); border-radius:18px;
+  padding:16px 22px; margin:26px 0 34px;
+}
+.day-counter{font-family:var(--disp); font-size:15px; display:flex; align-items:center; gap:10px;}
+.day-counter b{font-size:26px; color:var(--sun); font-family:var(--mono);}
+.dashboard .actions{display:flex; gap:10px; flex-wrap:wrap;}
+
+.bags-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:26px;}
+.bag-card{
+  background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.12);
+  border-radius:22px; padding:18px; display:flex; flex-direction:column; align-items:center; gap:14px;
+}
+.bag-card h4{font-family:var(--disp); font-size:16.5px; color:#fdf6e6; text-align:center;}
+.bag-stage{
+  perspective:900px; width:100%; display:flex; justify-content:center; touch-action:none;
+}
+.bag-3d{
+  width:190px; height:230px; position:relative; transform-style:preserve-3d; cursor:grab;
+  transition:transform .06s linear;
+}
+.bag-3d:active{cursor:grabbing;}
+.bag-face{
+  position:absolute; inset:0; border-radius:18px; overflow:hidden;
+  box-shadow:0 20px 40px -16px rgba(0,0,0,.55);
+}
+.bag-face canvas{width:100%; height:100%; display:block;}
+.bag-plastic{
+  position:absolute; inset:-8px; border-radius:24px; border:2px solid rgba(255,255,255,.35);
+  background:linear-gradient(135deg, rgba(255,255,255,.18), rgba(255,255,255,.02));
+  pointer-events:none; transform:translateZ(14px);
+}
+.bag-tie{
+  position:absolute; top:-10px; left:50%; transform:translateX(-50%) translateZ(16px);
+  width:44px; height:14px; background:#8a6a3a; border-radius:8px;
+}
+.hint-rotate{font-family:var(--mono); font-size:10.5px; color:#a89a7c; text-align:center;}
+
+.bag-options{width:100%; display:flex; flex-direction:column; gap:8px;}
+.opt-row{
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+  background:rgba(0,0,0,.2); border-radius:10px; padding:8px 12px; font-size:13.6px;
+}
+.opt-row label{display:flex; align-items:center; gap:8px; cursor:pointer; font-family:var(--mono);}
+.switch{
+  position:relative; width:38px; height:21px; background:rgba(255,255,255,.15); border-radius:20px; cursor:pointer; border:none; flex-shrink:0;
+}
+.switch::after{content:""; position:absolute; top:2px; right:2px; width:17px; height:17px; border-radius:50%; background:#cfc4a9; transition:.2s;}
+.switch.on{background:var(--mold-green);}
+.switch.on::after{background:#fff; transform:translateX(-17px);}
+
+.bag-status{
+  font-family:var(--mono); font-size:12.6px; color:#d8c9a8; text-align:center; min-height:54px;
+  background:rgba(0,0,0,.18); border-radius:10px; padding:10px; width:100%;
+}
+.bag-status b{color:var(--sun); display:block; margin-bottom:3px; font-size:12px;}
+
+.log-box{
+  margin-top:34px; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.12);
+  border-radius:18px; padding:20px 22px;
+}
+.log-box h4{color:#fdf6e6; font-family:var(--disp); margin-bottom:12px; font-size:16px;}
+#logList{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px; max-height:220px; overflow-y:auto;}
+#logList li{font-family:var(--mono); font-size:13px; color:#e6dcc4; border-right:3px solid var(--mold-green); padding:6px 12px; background:rgba(0,0,0,.15); border-radius:6px;}
+#logList li.warn{border-color:var(--sun);}
+
+/* ---------- QUESTIONS ---------- */
+.q-list{display:flex; flex-direction:column; gap:16px;}
+.q-item{background:#fff; border:1px solid var(--line); border-radius:18px; padding:20px 22px; box-shadow:0 8px 20px -18px rgba(0,0,0,.3);}
+.q-item .q-title{display:flex; gap:12px; align-items:flex-start; font-family:var(--disp); font-weight:800; font-size:16.5px; color:var(--crust-dark);}
+.q-num{
+  flex-shrink:0; width:30px; height:30px; border-radius:9px; background:var(--paper-2);
+  display:flex; align-items:center; justify-content:center; font-family:var(--mono); font-size:14px; color:var(--decay); border:1px solid var(--line);
+}
+.q-item textarea{
+  width:100%; margin-top:14px; border:1.5px dashed var(--line); border-radius:12px; padding:12px 14px;
+  font-family:var(--body); font-size:15px; resize:vertical; min-height:64px; background:var(--paper); color:var(--ink);
+}
+.q-item textarea:focus{outline:none; border-color:var(--mold-green); border-style:solid;}
+.reveal-btn{
+  margin-top:10px; font-family:var(--mono); font-size:13px; font-weight:700; color:var(--mold-dark);
+  background:#eaf1e0; border:1px solid #cfe0b8; border-radius:10px; padding:8px 14px; cursor:pointer;
+}
+.reveal-btn:hover{background:#dcebc9;}
+.model-answer{
+  display:none; margin-top:12px; background:#fbf6ea; border-right:4px solid var(--mold-green);
+  padding:12px 16px; border-radius:8px; font-size:14.8px; color:#42391f;
+}
+.model-answer.show{display:block; animation:fadeIn .3s ease;}
+@keyframes fadeIn{from{opacity:0; transform:translateY(-4px);} to{opacity:1; transform:translateY(0);}}
+
+/* ---------- CONCLUSION ---------- */
+.conclusion-box{
+  background:linear-gradient(135deg,#eaf1e0,#fdf3df); border-radius:26px; padding:38px 34px;
+  border:1px solid #e3d5ac; display:grid; grid-template-columns:1fr auto; gap:26px; align-items:center;
+}
+.conclusion-box h3{font-size:22px; margin-bottom:10px;}
+.conclusion-box p{color:#4a3a26; margin-bottom:0;}
+.badge-final{
+  width:118px; height:118px; border-radius:50%; background:radial-gradient(circle at 30% 30%, var(--mold-green), var(--mold-dark));
+  display:flex; align-items:center; justify-content:center; color:#fff; font-family:var(--disp); font-weight:900; font-size:14px; text-align:center; padding:10px; box-shadow:var(--shadow); flex-shrink:0;
+}
+
+footer{background:var(--crust-dark); color:#cbb98f; padding:30px 0; text-align:center; font-family:var(--mono); font-size:13px;}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width:900px){
+  .hero .wrap{grid-template-columns:1fr; text-align:center;}
+  .hero p.lead{margin-inline:auto;}
+  .hero .cta-row{justify-content:center;}
+  .grid-3{grid-template-columns:1fr;}
+  .definition-block{grid-template-columns:1fr;}
+  .bags-grid{grid-template-columns:1fr; max-width:340px; margin:0 auto;}
+  .conclusion-box{grid-template-columns:1fr; text-align:center;}
+  .conclusion-box .badge-final{margin:0 auto;}
+  .navlinks{display:none;}
+}
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:.001s !important; animation-iteration-count:1 !important; transition-duration:.001s !important;}
+}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="wrap">
+    <div class="brand"><span class="dot"></span> مختبر الترمّم</div>
+    <ul class="navlinks">
+      <li><a href="#lesson">الدرس</a></li>
+      <li><a href="#lab">المختبر الافتراضي</a></li>
+      <li><a href="#questions">الاستنتاج</a></li>
+      <li><a href="#conclusion">الخلاصة</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">علوم وحياة · الصف السابع · فلسطين</span>
+      <h1>كيف تتغذّى الكائنات على <span>بقايا</span> غيرها؟</h1>
+      <p class="lead">رحلة تفاعلية في التغذية غير الذاتية، نتوقف فيها عند نمط الترمّم، ونعيد تنفيذ نشاط «عفن الخبز» داخل مختبر افتراضي ثلاثي الأبعاد نتحكّم فيه بالملح والضوء والزمن، لنصل بأنفسنا إلى الاستنتاجات.</p>
+      <div class="cta-row">
+        <button class="btn btn-primary" onclick="document.getElementById('lab').scrollIntoView({behavior:'smooth'})">🧪 ابدأ التجربة الآن</button>
+        <button class="btn btn-ghost" onclick="document.getElementById('lesson').scrollIntoView({behavior:'smooth'})">📖 اقرأ الدرس أولاً</button>
+      </div>
+    </div>
+    <div class="hero-scene">
+      <div class="timeline-bread">
+        <div class="slice-face" id="heroCanvasHolder">
+          <canvas id="heroCanvas" width="230" height="230" style="border-radius:8px;"></canvas>
+        </div>
+        <div class="hero-badge"><span class="pulse"></span> عيّنة حيّة داخل المختبر</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- LESSON -->
+<section id="lesson">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">المفهوم العلمي</span>
+      <h2>التغذية غير الذاتية… والترمّم أحد أنماطها</h2>
+      <p>ليست كل الكائنات الحية قادرة على صنع غذائها كما تفعل النباتات الخضراء بالبناء الضوئي. كثير من الكائنات تحصل على غذائها الجاهز من كائنات أخرى، وهذا ما يُعرف بالتغذية غير الذاتية، ولها أكثر من نمط.</p>
+    </div>
+
+    <div class="grid-3">
+      <div class="card">
+        <div class="icon icon-a">🦌</div>
+        <h3>الافتراس</h3>
+        <p>كائن (المفترس) يصطاد كائناً آخر حيّاً (الفريسة) ويتغذّى عليه مباشرة، كالأسد الذي يفترس الغزال.</p>
+      </div>
+      <div class="card">
+        <div class="icon icon-b">🦟</div>
+        <h3>التطفل</h3>
+        <p>كائن (الطفيلي) يعيش على كائن حيّ آخر (العائل) ويتغذّى عليه دون أن يقتله غالباً، وقد يسبّب له ضرراً أو مرضاً.</p>
+      </div>
+      <div class="card">
+        <div class="icon icon-c">🍞</div>
+        <h3>الترمّم <span style="color:var(--mold-green); font-size:12px;">(محور درسنا)</span></h3>
+        <p>كائن (المترمّم) يتغذّى على بقايا كائنات ميّتة أو فضلاتها، كالفطريات والبكتيريا التي تنمو على الخبز والفواكه الفاسدة.</p>
+      </div>
+    </div>
+
+    <div class="definition-block">
+      <div class="visual">
+        <svg viewBox="0 0 320 260" xmlns="http://www.w3.org/2000/svg">
+          <rect x="60" y="70" width="200" height="150" rx="18" fill="#e8c989" stroke="#4a2e1e" stroke-width="10"/>
+          <circle cx="150" cy="150" r="14" fill="#5b7a3a" opacity="0.9"/>
+          <circle cx="180" cy="130" r="9" fill="#31431f" opacity="0.85"/>
+          <circle cx="130" cy="175" r="7" fill="#5b7a3a" opacity="0.8"/>
+          <circle cx="200" cy="175" r="11" fill="#6f8f4a" opacity="0.85"/>
+          <g id="svgHyphae" stroke="#8fae63" stroke-width="1.4" fill="none" opacity="0.8"></g>
+          <text x="160" y="245" text-anchor="middle" fill="#f4ead4" font-size="13" font-family="IBM Plex Sans Arabic">إفراز إنزيمات ← تحليل ← امتصاص</text>
+        </svg>
+      </div>
+      <div class="text">
+        <h3>كيف يتغذّى المترمّم فعليّاً؟</h3>
+        <p>لا تلتهم فطريات العفن الخبز كما نفعل نحن؛ فهي تفرز <b>إنزيمات هاضمة</b> على سطح الغذاء، فتُحلّل النشا والبروتينات إلى موادّ بسيطة قابلة للذوبان، ثم تمتصّها الفطريات عبر خيوطها الدقيقة (الهيفا). هذه العملية تُسمّى <b>الهضم الخارجي</b>، وهي أساس التغذية الرمّية.</p>
+        <p>لهذا تُسمّى الفطريات والبكتيريا المترمّمة أيضاً باسم <b>المحلِّلات</b>: فهي تعيد تحليل جثث الكائنات وفضلاتها إلى عناصر أساسية (كالكربون والنيتروجين) تعود إلى التربة، ليستفيد منها النبات من جديد — دون محلِّلات، تتراكم البقايا ولا تكتمل الدورة الحيوية في النظام البيئي.</p>
+        <div class="chip-row">
+          <span class="chip">إنزيمات هاضمة</span>
+          <span class="chip">هضم خارجي</span>
+          <span class="chip">محلِّلات</span>
+          <span class="chip">إعادة تدوير العناصر</span>
+          <span class="chip">الرطوبة + الدفء + الظلام</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LAB -->
+<section class="alt" id="lab">
+  <div class="wrap">
+    <div class="lab-shell">
+      <div class="lab-head">
+        <span class="eyebrow">نشاط (٥) — تنفيذ افتراضي</span>
+        <h2>مختبر عفن الخبز</h2>
+        <p>أعِد تنفيذ تجربة ليلى بنفسك: ثلاث قطع خبز، ثلاث بيئات مختلفة. اضبط الملح والضوء، ثم قدِّم الأيام وراقب ماذا يحدث لكل عيّنة على مدار ٢١ يوماً. اسحب أي كيس بإصبعك أو الفأرة لتدويره ورؤيته من كل الجهات.</p>
+      </div>
+
+      <div class="dashboard">
+        <div class="day-counter">اليوم: <b id="dayLabel">٠</b> <span style="color:#a89a7c;">من ٢١</span></div>
+        <div class="actions">
+          <button class="pill-btn" onclick="Lab.spray()">💧 رشّ الماء على العيّنات</button>
+          <button class="pill-btn" onclick="Lab.advance(1)">⏭️ اليوم التالي</button>
+          <button class="pill-btn" onclick="Lab.advance(7)">📅 قفزة أسبوع</button>
+          <button class="pill-btn" onclick="Lab.reset()">🔄 إعادة التجربة</button>
+        </div>
+      </div>
+
+      <div class="bags-grid" id="bagsGrid">
+        <!-- bags injected by JS -->
+      </div>
+
+      <div class="log-box">
+        <h4>📓 سجلّ الملاحظات اليومي</h4>
+        <ul id="logList"></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUESTIONS -->
+<section id="questions">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">حان دور الاستنتاج</span>
+      <h2>أجب عن أسئلة النشاط</h2>
+      <p>بعد أن راقبت العيّنات الثلاث لمدّة ٢١ يوماً افتراضياً، دوِّن استنتاجاتك بأسلوبك، ثم اضغط لإظهار إجابة نموذجية والمقارنة.</p>
+    </div>
+    <div class="q-list" id="qList"></div>
+  </div>
+</section>
+
+<!-- CONCLUSION -->
+<section class="alt" id="conclusion">
+  <div class="wrap">
+    <div class="conclusion-box">
+      <div>
+        <h3>الخلاصة التي وصلنا إليها</h3>
+        <p>الترمّم نمط من التغذية غير الذاتية تعتمد فيه الفطريات والبكتيريا على إفراز إنزيمات هاضمة لتحليل بقايا الكائنات الحية وفضلاتها وامتصاص نواتج التحلُّل. تزدهر هذه الكائنات في الرطوبة والدفء والظلام، بينما يبطئها الملح ويقتلها ضوء الشمس المباشر وحرارته. ولأنها تحلّل الموادّ العضوية إلى عناصر أساسية تعود للتربة، فهي جزء لا يُستغنى عنه من دورة المادة في الطبيعة — رغم أنها السبب في فساد طعامنا إن لم نُحسن حفظه.</p>
+      </div>
+      <div class="badge-final">محلِّلات<br>الطبيعة</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  صُمِّمت هذه الصفحة التفاعلية لتيسير درس «الترمّم» — منهاج العلوم والحياة، الصف السابع، فلسطين · تعمل على الهاتف والحاسوب
+</footer>
+
+<script>
+/* ===================== ترميز واستعداد عربي ===================== */
+document.documentElement.setAttribute('lang','ar');
+document.documentElement.setAttribute('dir','rtl');
+
+/* ===================== أرقام عربية ===================== */
+function toArabicDigits(n){
+  const map=['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
+  return String(n).replace(/[0-9]/g, d=>map[d]);
+}
+
+/* ===================== مولد أرقام عشوائي قابل للتكرار (Seeded RNG) ===================== */
+function mulberry32(a){
+  return function(){
+    a |= 0; a = a + 0x6D2B79F5 | 0;
+    let t = Math.imul(a ^ a >>> 15, 1 | a);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  }
+}
+
+/* ===================== رسم الخبز + العفن على Canvas ===================== */
+function drawBread(ctx, w, h){
+  ctx.clearRect(0,0,w,h);
+  const r=18;
+  ctx.fillStyle = '#4a2e1e';
+  roundRect(ctx,4,4,w-8,h-8,r); ctx.fill();
+  const grad = ctx.createRadialGradient(w*0.35,h*0.3,10,w*0.5,h*0.5,w*0.7);
+  grad.addColorStop(0,'#f3ddab');
+  grad.addColorStop(1,'#e0bd7c');
+  ctx.fillStyle = grad;
+  roundRect(ctx,16,16,w-32,h-32,r-6); ctx.fill();
+  // بعض المسامات الطبيعية
+  ctx.fillStyle='rgba(160,120,60,0.18)';
+  for(let i=0;i<14;i++){
+    const rx = (i*53%  (w-40))+20, ry=(i*97 % (h-40))+20;
+    ctx.beginPath(); ctx.ellipse(rx,ry, 2+ (i%3), 1.5+(i%2), 0,0,Math.PI*2); ctx.fill();
+  }
+}
+function roundRect(ctx,x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.arcTo(x+w,y,x+w,y+h,r);
+  ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r);
+  ctx.arcTo(x,y,x+w,y,r);
+  ctx.closePath();
+}
+
+function drawMold(canvas, day, settings, seed){
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+  drawBread(ctx,w,h);
+  if(!settings.sprayed || day<=0) return {growth:0};
+
+  const rand = mulberry32(seed*1000+day);
+  let base = Math.min(day/21,1);
+  let mult = 1;
+  if(settings.salt) mult *= 0.32;
+  if(settings.sunlight) mult *= 0.22;
+  if(!settings.sunlight && settings.dark) mult *= 1.2;
+  const growth = Math.min(base*mult,1);
+
+  const spotCount = Math.floor(growth*46);
+  for(let i=0;i<spotCount;i++){
+    const rx = 24 + rand()*(w-48);
+    const ry = 24 + rand()*(h-48);
+    const radius = 3 + rand()* (6+growth*10);
+    let colorSet;
+    if(settings.sunlight){
+      // تعرض للشمس: بقع باهتة بيضاء/رمادية جافة، أقل انتشاراً
+      colorSet = ['rgba(217,211,194,0.75)','rgba(190,180,155,0.6)'];
+    } else if (settings.salt){
+      // ملح: بقع بيضاء خفيفة متفرقة (خميرة سطحية بسيطة) بدل الأخضر الكثيف
+      colorSet = ['rgba(210,205,180,0.6)','rgba(107,138,78,0.35)'];
+    } else {
+      // الحالة المثالية: أخضر-أسود كثيف يتغمق مع الأيام
+      const dark = 0.35+growth*0.5;
+      colorSet = [`rgba(91,122,58,${0.55+growth*0.35})`, `rgba(49,67,31,${dark})`];
+    }
+    const c = colorSet[Math.floor(rand()*colorSet.length)];
+    const grad = ctx.createRadialGradient(rx,ry,0,rx,ry,radius);
+    grad.addColorStop(0,c);
+    grad.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle = grad;
+    ctx.beginPath(); ctx.arc(rx,ry,radius,0,Math.PI*2); ctx.fill();
+  }
+  return {growth, spotCount};
+}
+
+/* ===================== الخبز في الترويسة (تحلّل تلقائي بطيء للعرض) ===================== */
+(function heroLoop(){
+  const c = document.getElementById('heroCanvas');
+  let t = 0;
+  function loop(){
+    t += 0.012;
+    const day = 4 + Math.sin(t)*3.9 + 4;
+    drawMold(c, Math.max(day,0), {sprayed:true, salt:false, sunlight:false, dark:true}, 7);
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
+
+/* ===================== منطق المختبر ===================== */
+const Lab = (function(){
+  const bagsData = [
+    {id:'a', title:'الكيس الأوّل — ملح + مكان مظلم', salt:true, sunlight:false, dark:true, sprayed:false, seed:11},
+    {id:'b', title:'الكيس الثاني — بلا ملح + مكان مظلم', salt:false, sunlight:false, dark:true, sprayed:false, seed:22},
+    {id:'c', title:'الكيس الثالث — بلا ملح + أشعة الشمس', salt:false, sunlight:true, dark:false, sprayed:false, seed:33},
+  ];
+  let day = 0;
+
+  const grid = document.getElementById('bagsGrid');
+  const dragState = {};
+
+  function build(){
+    grid.innerHTML = '';
+    bagsData.forEach(b=>{
+      const card = document.createElement('div');
+      card.className='bag-card';
+      card.innerHTML = `
+        <h4>${b.title}</h4>
+        <div class="bag-stage">
+          <div class="bag-3d" id="bag3d-${b.id}">
+            <div class="bag-face"><canvas id="canvas-${b.id}" width="180" height="220"></canvas></div>
+            <div class="bag-plastic"></div>
+            <div class="bag-tie"></div>
+          </div>
+        </div>
+        <div class="hint-rotate">↔ اسحب الكيس لتدويره وفحصه من الجوانب</div>
+        <div class="bag-options">
+          <div class="opt-row">
+            <label>🧂 إضافة ملح
+              <button class="switch ${b.salt?'on':''}" data-role="salt" data-bag="${b.id}" aria-label="تبديل الملح"></button>
+            </label>
+          </div>
+          <div class="opt-row">
+            <label>☀️ التعرّض لأشعة الشمس
+              <button class="switch ${b.sunlight?'on':''}" data-role="sunlight" data-bag="${b.id}" aria-label="تبديل الشمس"></button>
+            </label>
+          </div>
+        </div>
+        <div class="bag-status" id="status-${b.id}"><b>الحالة</b>لم يُرشّ الماء بعد. اضغط «رشّ الماء» للبدء.</div>
+      `;
+      grid.appendChild(card);
+    });
+
+    // ربط أزرار التبديل
+    grid.querySelectorAll('.switch').forEach(sw=>{
+      sw.addEventListener('click', ()=>{
+        const bagId = sw.dataset.bag, role = sw.dataset.role;
+        const bag = bagsData.find(x=>x.id===bagId);
+        bag[role] = !bag[role];
+        if(role==='sunlight' && bag.sunlight) bag.dark = false;
+        if(role==='sunlight' && !bag.sunlight) bag.dark = true;
+        sw.classList.toggle('on', bag[role]);
+        render();
+        logEvent(`تم ${bag[role]?'تفعيل':'إيقاف'} «${role==='salt'?'الملح':'أشعة الشمس'}» في ${bag.title}`);
+      });
+    });
+
+    // السحب ثلاثي الأبعاد
+    bagsData.forEach(b=>{
+      const el = document.getElementById('bag3d-'+b.id);
+      attachDrag(el, b.id);
+    });
+  }
+
+  function attachDrag(el, id){
+    dragState[id] = {rx:8, ry:-14, dragging:false, lastX:0, lastY:0};
+    applyRotation(el, id);
+    function start(x,y){ dragState[id].dragging=true; dragState[id].lastX=x; dragState[id].lastY=y; }
+    function move(x,y){
+      if(!dragState[id].dragging) return;
+      const dx = x - dragState[id].lastX, dy = y - dragState[id].lastY;
+      dragState[id].ry += dx*0.5;
+      dragState[id].rx -= dy*0.5;
+      dragState[id].rx = Math.max(-60, Math.min(60, dragState[id].rx));
+      dragState[id].lastX = x; dragState[id].lastY = y;
+      applyRotation(el, id);
+    }
+    function end(){ dragState[id].dragging=false; }
+
+    el.addEventListener('pointerdown', e=>{ el.setPointerCapture(e.pointerId); start(e.clientX,e.clientY); });
+    el.addEventListener('pointermove', e=> move(e.clientX,e.clientY));
+    el.addEventListener('pointerup', end);
+    el.addEventListener('pointercancel', end);
+  }
+  function applyRotation(el,id){
+    const s = dragState[id];
+    el.style.transform = `rotateX(${s.rx}deg) rotateY(${s.ry}deg)`;
+  }
+
+  function render(){
+    bagsData.forEach(b=>{
+      const canvas = document.getElementById('canvas-'+b.id);
+      const {growth} = drawMold(canvas, day, b, b.seed) || {growth:0};
+      const statusEl = document.getElementById('status-'+b.id);
+      statusEl.innerHTML = `<b>الحالة</b>${describe(day,b,growth)}`;
+    });
+    document.getElementById('dayLabel').textContent = toArabicDigits(day);
+  }
+
+  function describe(day,b,growth){
+    if(!b.sprayed) return 'لم يُرشّ الماء بعد. اضغط «رشّ الماء» للبدء.';
+    if(day===0) return 'قطعة خبز طازجة، لا تغيّر ظاهر بعد.';
+    const pct = Math.round(growth*100);
+    let stage;
+    if(growth < 0.08) stage = 'لا يوجد تغيّر يُذكر حتى الآن.';
+    else if(growth < 0.25) stage = 'بدأت تظهر بقع خفيفة صغيرة على السطح.';
+    else if(growth < 0.55) stage = 'نموّ واضح للعفن، رائحة عفن بدأت تظهر.';
+    else if(growth < 0.85) stage = 'تغطية كثيفة تقريباً لسطح الخبز بالعفن.';
+    else stage = 'تحلّل شبه كامل — الخبز فاسد تماماً.';
+    return `${stage} (نسبة النمو التقديرية: ${toArabicDigits(pct)}٪)`;
+  }
+
+  function spray(){
+    let already = bagsData.every(b=>b.sprayed);
+    if(already){ logEvent('تمّ رشّ الماء مسبقاً على جميع العيّنات.', true); return; }
+    bagsData.forEach(b=> b.sprayed = true);
+    render();
+    logEvent('تمّ رشّ قليل من الماء على العيّنات الثلاث، وإغلاق الأكياس. بدأت التجربة رسمياً 🧪');
+  }
+
+  function advance(n){
+    if(!bagsData.some(b=>b.sprayed)){ logEvent('يجب رشّ الماء أوّلاً قبل تقديم الأيام!', true); return; }
+    day = Math.min(21, day+n);
+    render();
+    logEvent(`مرّ ${n===1?'يوم واحد':'أسبوع (٧ أيام)'} — أصبحنا في اليوم ${toArabicDigits(day)}.`);
+    if(day===21) logEvent('انتهت مدّة الملاحظة (٣ أسابيع). سجّل استنتاجاتك في القسم التالي ⬇️', true);
+  }
+
+  function reset(){
+    day = 0;
+    bagsData.forEach(b=>{ b.sprayed=false; });
+    render();
+    document.getElementById('logList').innerHTML='';
+    logEvent('تمّت إعادة ضبط التجربة من جديد.');
+  }
+
+  function logEvent(text, warn){
+    const li = document.createElement('li');
+    if(warn) li.className='warn';
+    li.textContent = `[اليوم ${toArabicDigits(day)}] ${text}`;
+    const list = document.getElementById('logList');
+    list.prepend(li);
+  }
+
+  build();
+  render();
+
+  return {spray, advance, reset};
+})();
+
+/* ===================== أسئلة الاستنتاج ===================== */
+const QUESTIONS = [
+  {
+    q:'أيّ من قطع الخبز ظهر عليها العفن بشكل أوضح؟ ولماذا؟',
+    a:'القطعة التي وُضعت بلا ملح في مكان مظلم رطب (الكيس الثاني) هي الأكثر تعفّناً؛ لأنّ الرطوبة والدفء والظلام بيئة مثالية لنمو فطريات العفن، في حين يقاوم الملح النمو ويقتل ضوء الشمس المباشر معظم الفطريات أو يُبطئها كثيراً.'
+  },
+  {
+    q:'كيف حصل فطر العفن على غذائه من الخبز؟',
+    a:'بطريقة الترمّم: يُفرز الفطر إنزيمات هاضمة على سطح الخبز تُحلّل النشا والموادّ العضوية إلى موادّ بسيطة قابلة للذوبان، ثم يمتصّها عبر خيوطه الدقيقة (الهيفا) — وهو ما يُعرف بالهضم الخارجي.'
+  },
+  {
+    q:'ما العلاقة بين فطر العفن والخبز؟',
+    a:'علاقة تغذية رمّية (ترمّم): الخبز يوفّر للفطر الغذاء والرطوبة والدفء اللازمين للنمو، بينما يتسبّب الفطر بتحليل مكوّناته العضوية، فيفسد الخبز ويتلف.'
+  },
+  {
+    q:'هل جميع أنواع فطر العفن ضارّة بالصحة؟ ولماذا؟',
+    a:'لا؛ فبعض أنواع العفن مفيدة وتُستخدم في صناعة بعض الأدوية (كالبنسلين) وبعض أنواع الجبن، لكنّ معظم الأنواع الأخرى ضارّة لأنها قد تُنتج سموماً فطرية تسبّب تسمّماً غذائياً أو حساسية أو مشكلات تنفّسية عند تناولها أو استنشاقها، لذلك يُنصح دوماً بتجنّب الأطعمة المتعفّنة كلياً.'
+  },
+  {
+    q:'ما أثر الملح الذي أُضيف إلى قطعة الخبز الأولى؟',
+    a:'يمتصّ الملح الرطوبة من سطح الخبز بعملية شبيهة بالتناضح، فيقلّل الماء المتاح لنمو الفطريات، ما يُبطئ ظهور العفن أو يمنعه لفترة أطول مقارنةً بالقطع غير المملّحة — ولهذا استُخدم الملح تاريخياً كوسيلة لحفظ الأطعمة.'
+  },
+  {
+    q:'كيف توظّف ليلى نتائج هذا النشاط في المحافظة على الموادّ الغذائية من التعفّن؟',
+    a:'يمكنها تقليل الرطوبة المتاحة للفطريات والبكتيريا عبر: التمليح أو التجفيف أو التبريد والتجميد، وإحكام إغلاق العبوات لمنع دخول الهواء والرطوبة، وتعريض بعض الأطعمة للحرارة (كالبسترة أو التعقيم)، ما يُطيل عمرها الافتراضي ويمنع فسادها.'
+  },
+];
+
+(function buildQuestions(){
+  const wrap = document.getElementById('qList');
+  QUESTIONS.forEach((item, idx)=>{
+    const div = document.createElement('div');
+    div.className='q-item';
+    div.innerHTML = `
+      <div class="q-title"><span class="q-num">${toArabicDigits(idx+1)}</span> ${item.q}</div>
+      <textarea placeholder="اكتب إجابتك هنا بأسلوبك..."></textarea>
+      <button class="reveal-btn" type="button">👁️ إظهار الإجابة النموذجية</button>
+      <div class="model-answer">${item.a}</div>
+    `;
+    const btn = div.querySelector('.reveal-btn');
+    const ans = div.querySelector('.model-answer');
+    btn.addEventListener('click', ()=>{
+      const showing = ans.classList.toggle('show');
+      btn.textContent = showing ? '🙈 إخفاء الإجابة' : '👁️ إظهار الإجابة النموذجية';
+    });
+    wrap.appendChild(div);
+  });
+})();
+</script>
+</body>
+</html>

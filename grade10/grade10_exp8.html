@@ -1,0 +1,1766 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>قانون نيوتن الثالث – قوة الفعل ورد الفعل | فيزياء الصف العاشر</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Cairo:wght@400;600;700;900&display=swap');
+
+  :root {
+    --bg: #0a0e1a;
+    --surface: #111827;
+    --surface2: #1a2235;
+    --border: #1e3a5f;
+    --accent1: #00d4ff;
+    --accent2: #ff6b35;
+    --accent3: #7c3aed;
+    --gold: #fbbf24;
+    --green: #10b981;
+    --red: #ef4444;
+    --text: #e2e8f0;
+    --text-muted: #94a3b8;
+    --glow1: rgba(0,212,255,0.15);
+    --glow2: rgba(255,107,53,0.15);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family: 'Cairo', 'Tajawal', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── Stars background ── */
+  body::before {
+    content:'';
+    position:fixed; inset:0; z-index:0;
+    background:
+      radial-gradient(1px 1px at 10% 20%, #fff 0%, transparent 100%),
+      radial-gradient(1px 1px at 30% 60%, #fff 0%, transparent 100%),
+      radial-gradient(1px 1px at 50% 10%, #fff 0%, transparent 100%),
+      radial-gradient(1px 1px at 70% 80%, #fff 0%, transparent 100%),
+      radial-gradient(1px 1px at 90% 40%, #fff 0%, transparent 100%),
+      radial-gradient(2px 2px at 20% 90%, rgba(0,212,255,0.6) 0%, transparent 100%),
+      radial-gradient(2px 2px at 60% 50%, rgba(124,58,237,0.4) 0%, transparent 100%),
+      radial-gradient(2px 2px at 80% 20%, rgba(255,107,53,0.4) 0%, transparent 100%);
+    pointer-events:none;
+  }
+
+  .container { position:relative; z-index:1; max-width:1100px; margin:0 auto; padding:0 20px; }
+
+  /* ── HERO ── */
+  .hero {
+    text-align:center;
+    padding:60px 20px 40px;
+    position:relative;
+  }
+  .hero-badge {
+    display:inline-block;
+    background:linear-gradient(135deg, var(--accent3), var(--accent1));
+    color:#fff;
+    font-size:0.8rem;
+    font-weight:700;
+    letter-spacing:2px;
+    padding:6px 20px;
+    border-radius:30px;
+    margin-bottom:20px;
+    text-transform:uppercase;
+  }
+  .hero h1 {
+    font-family:'Tajawal', sans-serif;
+    font-size:clamp(2rem,6vw,3.8rem);
+    font-weight:900;
+    line-height:1.2;
+    background:linear-gradient(135deg, var(--accent1) 0%, #fff 50%, var(--accent2) 100%);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    background-clip:text;
+    margin-bottom:12px;
+  }
+  .hero p {
+    color:var(--text-muted);
+    font-size:1.1rem;
+    max-width:600px;
+    margin:0 auto;
+  }
+
+  /* ── Section titles ── */
+  .section-title {
+    font-family:'Tajawal',sans-serif;
+    font-size:1.6rem;
+    font-weight:800;
+    margin-bottom:6px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  .section-title .icon {
+    width:40px; height:40px;
+    background:linear-gradient(135deg,var(--accent1),var(--accent3));
+    border-radius:10px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.2rem;
+    flex-shrink:0;
+    box-shadow:0 0 20px var(--glow1);
+  }
+  .section-sub {
+    color:var(--text-muted);
+    font-size:0.95rem;
+    margin-bottom:28px;
+    padding-right:52px;
+  }
+
+  /* ── Cards ── */
+  .card {
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:28px;
+    margin-bottom:28px;
+    position:relative;
+    overflow:hidden;
+    transition:border-color 0.3s, box-shadow 0.3s;
+  }
+  .card::before {
+    content:'';
+    position:absolute;
+    top:0; right:0;
+    width:200px; height:2px;
+    background:linear-gradient(90deg,transparent,var(--accent1));
+  }
+  .card:hover { border-color:var(--accent1); box-shadow:0 0 30px var(--glow1); }
+
+  /* ── Concept grid ── */
+  .concept-grid {
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:20px;
+    margin-bottom:28px;
+  }
+  .concept-card {
+    background:var(--surface2);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:24px;
+    position:relative;
+    transition:transform 0.3s, box-shadow 0.3s;
+  }
+  .concept-card:hover { transform:translateY(-4px); box-shadow:0 8px 30px rgba(0,212,255,0.1); }
+  .concept-card .num {
+    font-size:3rem;
+    font-weight:900;
+    font-family:'Tajawal',sans-serif;
+    opacity:0.1;
+    position:absolute;
+    top:10px; left:16px;
+    line-height:1;
+    background:linear-gradient(135deg,var(--accent1),var(--accent2));
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    background-clip:text;
+    opacity:0.25;
+  }
+  .concept-card h3 { font-size:1.1rem; font-weight:700; margin-bottom:10px; color:var(--accent1); }
+  .concept-card p { font-size:0.92rem; color:var(--text-muted); line-height:1.7; }
+
+  /* ── 3D Force Visualization ── */
+  .force-viz {
+    background:var(--surface2);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:30px;
+    margin-bottom:28px;
+    position:relative;
+    overflow:hidden;
+  }
+  .force-viz-title {
+    text-align:center;
+    font-size:1.1rem;
+    font-weight:700;
+    color:var(--accent1);
+    margin-bottom:20px;
+  }
+  .force-scene {
+    position:relative;
+    height:160px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:0;
+  }
+  .force-body {
+    width:80px; height:80px;
+    border-radius:12px;
+    display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    font-size:0.75rem;
+    font-weight:700;
+    transform: perspective(400px) rotateY(var(--ry,0deg)) rotateX(var(--rx,5deg));
+    transition: transform 0.3s;
+    box-shadow:0 10px 30px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.2);
+    z-index:2;
+  }
+  .body-a { background:linear-gradient(135deg,#1e40af,#3b82f6); --ry:-8deg; }
+  .body-b { background:linear-gradient(135deg,#991b1b,#ef4444); --ry:8deg; }
+  .body-a span, .body-b span { font-size:1.8rem; }
+
+  .force-connector {
+    flex:1; height:4px;
+    position:relative;
+    display:flex; align-items:center; justify-content:center;
+    max-width:200px;
+  }
+  .force-track {
+    width:100%; height:4px;
+    background:linear-gradient(90deg,#3b82f6,var(--accent1),var(--accent2),#ef4444);
+    border-radius:2px;
+    position:relative;
+  }
+  .force-arrow {
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    font-size:1.6rem;
+    transition:all 0.3s;
+  }
+  .arrow-action { color:var(--accent2); left:-40px; animation:pulseArrow 1.5s infinite; }
+  .arrow-reaction { color:var(--accent1); right:-40px; animation:pulseArrow 1.5s infinite reverse; }
+  .force-label {
+    position:absolute; bottom:-28px; width:100%;
+    text-align:center; font-size:0.75rem;
+    color:var(--text-muted); font-weight:600;
+  }
+
+  @keyframes pulseArrow {
+    0%,100% { transform:translateY(-50%) scale(1); opacity:1; }
+    50% { transform:translateY(-50%) scale(1.3); opacity:0.7; }
+  }
+
+  .force-values {
+    display:flex; justify-content:center; gap:40px;
+    margin-top:40px; flex-wrap:wrap;
+  }
+  .fval {
+    text-align:center;
+    padding:12px 24px;
+    background:var(--surface);
+    border-radius:10px;
+    border:1px solid var(--border);
+  }
+  .fval .fnum {
+    font-size:1.8rem; font-weight:900;
+    font-family:'Tajawal',sans-serif;
+  }
+  .fval .flabel { font-size:0.75rem; color:var(--text-muted); margin-top:4px; }
+  .fval.action .fnum { color:var(--accent2); }
+  .fval.reaction .fnum { color:var(--accent1); }
+
+  /* ── VIRTUAL LAB ── */
+  .lab-container {
+    background:linear-gradient(135deg, #0d1b2a 0%, #0f2a1f 100%);
+    border:2px solid var(--border);
+    border-radius:20px;
+    padding:30px;
+    margin-bottom:28px;
+    position:relative;
+    overflow:hidden;
+  }
+  .lab-container::before {
+    content:'🔬 مختبر افتراضي تفاعلي';
+    position:absolute; top:12px; right:20px;
+    font-size:0.8rem; font-weight:700;
+    background:linear-gradient(90deg,var(--green),var(--accent1));
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    background-clip:text;
+    letter-spacing:1px;
+  }
+
+  .lab-title {
+    text-align:center;
+    font-family:'Tajawal',sans-serif;
+    font-size:1.5rem;
+    font-weight:800;
+    color:var(--accent1);
+    margin-bottom:6px;
+    margin-top:10px;
+  }
+  .lab-subtitle { text-align:center; color:var(--text-muted); font-size:0.9rem; margin-bottom:28px; }
+
+  /* Spring scales */
+  .scales-scene {
+    display:flex; align-items:center; justify-content:center; gap:0;
+    margin:20px 0 30px;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+
+  .spring-scale {
+    display:flex; flex-direction:column; align-items:center;
+    position:relative;
+  }
+  .spring-scale canvas {
+    width:80px; height:220px;
+    border-radius:10px;
+    box-shadow:0 8px 25px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+  }
+  .scale-value-display {
+    margin-top:8px;
+    font-size:1.3rem; font-weight:900;
+    font-family:'Tajawal',sans-serif;
+    padding:6px 16px;
+    border-radius:8px;
+    min-width:90px; text-align:center;
+  }
+  .scale-a-val { background:rgba(59,130,246,0.2); color:#60a5fa; border:1px solid rgba(59,130,246,0.4); }
+  .scale-b-val { background:rgba(239,68,68,0.2); color:#f87171; border:1px solid rgba(239,68,68,0.4); }
+
+  .chain-connector {
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:0 8px;
+  }
+  .chain-link {
+    width:32px; height:16px;
+    border:3px solid #888;
+    border-radius:50%;
+    margin:-3px 0;
+    background:linear-gradient(135deg,#999,#555);
+    box-shadow:0 2px 5px rgba(0,0,0,0.4);
+  }
+  .chain-link:nth-child(odd) { transform:rotate(90deg); }
+
+  /* Controls */
+  .lab-controls {
+    display:flex; flex-wrap:wrap; gap:16px;
+    justify-content:center; margin-bottom:20px;
+  }
+  .ctrl-group {
+    background:var(--surface2);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:16px 20px;
+    display:flex; flex-direction:column; gap:10px;
+    min-width:200px;
+  }
+  .ctrl-group label {
+    font-size:0.85rem; font-weight:700;
+    color:var(--text-muted);
+  }
+  .ctrl-group input[type=range] {
+    width:100%;
+    accent-color:var(--accent1);
+    cursor:pointer;
+  }
+  .ctrl-val {
+    text-align:center;
+    font-size:1.1rem; font-weight:700;
+    color:var(--accent1);
+    font-family:'Tajawal',sans-serif;
+  }
+
+  .lab-btn {
+    display:inline-flex; align-items:center; gap:8px;
+    padding:12px 28px;
+    border-radius:10px;
+    border:none; cursor:pointer;
+    font-family:'Cairo',sans-serif;
+    font-size:1rem; font-weight:700;
+    transition:all 0.2s;
+  }
+  .btn-primary {
+    background:linear-gradient(135deg,var(--accent1),var(--accent3));
+    color:#fff;
+    box-shadow:0 4px 20px var(--glow1);
+  }
+  .btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 30px var(--glow1); }
+  .btn-reset {
+    background:var(--surface2);
+    color:var(--text-muted);
+    border:1px solid var(--border);
+  }
+  .btn-reset:hover { border-color:var(--accent2); color:var(--accent2); }
+
+  .lab-actions { display:flex; gap:12px; justify-content:center; margin-bottom:20px; flex-wrap:wrap; }
+
+  /* Data table */
+  .data-table-wrap {
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:12px;
+    overflow:hidden;
+    margin-bottom:20px;
+  }
+  .data-table-header {
+    background:var(--surface2);
+    padding:12px 20px;
+    font-size:0.9rem; font-weight:700;
+    color:var(--accent1);
+    border-bottom:1px solid var(--border);
+    display:flex; align-items:center; gap:8px;
+  }
+  .data-table {
+    width:100%; border-collapse:collapse;
+  }
+  .data-table th {
+    padding:10px 16px;
+    text-align:center;
+    font-size:0.8rem;
+    color:var(--text-muted);
+    border-bottom:1px solid var(--border);
+    background:var(--surface2);
+  }
+  .data-table td {
+    padding:10px 16px;
+    text-align:center;
+    font-size:0.9rem;
+    border-bottom:1px solid rgba(30,58,95,0.4);
+    transition:background 0.2s;
+  }
+  .data-table tr:hover td { background:rgba(0,212,255,0.03); }
+  .data-table tr:last-child td { border-bottom:none; }
+  .data-table .equal-cell { color:var(--green); font-weight:700; }
+  .data-table .diff-cell { color:var(--red); font-weight:700; }
+  .data-table .equal-row td:first-child { border-right:3px solid var(--green); }
+
+  /* Graph */
+  .graph-wrap {
+    background:var(--surface2);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:20px;
+    margin-bottom:20px;
+  }
+  .graph-title { font-size:0.9rem; font-weight:700; color:var(--accent1); margin-bottom:12px; text-align:center; }
+  #labGraph { width:100%; border-radius:8px; }
+
+  /* Lab status */
+  .lab-status {
+    text-align:center;
+    padding:14px;
+    border-radius:10px;
+    font-weight:700;
+    font-size:1rem;
+    margin-bottom:16px;
+    transition:all 0.4s;
+  }
+  .status-idle { background:rgba(148,163,184,0.1); color:var(--text-muted); border:1px dashed var(--border); }
+  .status-running { background:rgba(0,212,255,0.1); color:var(--accent1); border:1px solid var(--accent1); }
+  .status-done { background:rgba(16,185,129,0.1); color:var(--green); border:1px solid var(--green); }
+
+  /* ── CONCLUSIONS ── */
+  .conclusion-card {
+    background:linear-gradient(135deg, rgba(0,212,255,0.05), rgba(124,58,237,0.05));
+    border:1px solid var(--border);
+    border-right:4px solid var(--accent1);
+    border-radius:14px;
+    padding:20px 24px;
+    margin-bottom:16px;
+    transition:transform 0.2s;
+  }
+  .conclusion-card:hover { transform:translateX(-4px); }
+  .conclusion-card h4 {
+    font-size:1rem; font-weight:700; margin-bottom:8px;
+    color:var(--accent1);
+    display:flex; align-items:center; gap:8px;
+  }
+  .conclusion-card p { font-size:0.9rem; color:var(--text-muted); line-height:1.7; }
+  .conclusion-card .badge {
+    display:inline-block; padding:2px 10px;
+    background:rgba(0,212,255,0.15); color:var(--accent1);
+    border-radius:20px; font-size:0.7rem; font-weight:700;
+    border:1px solid rgba(0,212,255,0.3);
+  }
+  .law-box {
+    background:linear-gradient(135deg, rgba(251,191,36,0.1), rgba(255,107,53,0.1));
+    border:1px solid rgba(251,191,36,0.4);
+    border-radius:16px;
+    padding:28px;
+    text-align:center;
+    margin:24px 0;
+  }
+  .law-box .law-text {
+    font-family:'Tajawal',sans-serif;
+    font-size:1.25rem;
+    font-weight:800;
+    color:var(--gold);
+    line-height:1.8;
+  }
+
+  /* ── QUIZ ── */
+  .quiz-section {
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:30px;
+    margin-bottom:28px;
+  }
+  .quiz-progress {
+    display:flex; gap:6px; margin-bottom:24px;
+  }
+  .quiz-dot {
+    flex:1; height:6px; border-radius:3px;
+    background:var(--surface2);
+    transition:background 0.4s;
+  }
+  .quiz-dot.done { background:var(--green); }
+  .quiz-dot.active { background:var(--accent1); }
+
+  .quiz-card {
+    display:none;
+    animation:fadeIn 0.4s ease;
+  }
+  .quiz-card.active { display:block; }
+
+  @keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+
+  .quiz-num {
+    font-size:0.8rem; font-weight:700; letter-spacing:2px;
+    color:var(--accent1); margin-bottom:10px;
+  }
+  .quiz-q {
+    font-size:1.1rem; font-weight:700; margin-bottom:20px;
+    line-height:1.6; color:var(--text);
+  }
+  .quiz-options { display:flex; flex-direction:column; gap:10px; margin-bottom:20px; }
+  .quiz-opt {
+    padding:14px 20px;
+    background:var(--surface2);
+    border:1px solid var(--border);
+    border-radius:10px;
+    cursor:pointer;
+    font-size:0.95rem;
+    transition:all 0.2s;
+    display:flex; align-items:center; gap:10px;
+  }
+  .quiz-opt:hover { border-color:var(--accent1); background:rgba(0,212,255,0.05); }
+  .quiz-opt.correct { border-color:var(--green) !important; background:rgba(16,185,129,0.12) !important; color:var(--green); }
+  .quiz-opt.wrong { border-color:var(--red) !important; background:rgba(239,68,68,0.12) !important; color:var(--red); }
+  .quiz-opt .opt-icon { width:28px; height:28px; border-radius:50%; background:var(--surface); display:flex; align-items:center; justify-content:center; font-size:0.8rem; font-weight:700; border:1px solid var(--border); flex-shrink:0; }
+  .quiz-feedback {
+    padding:14px 20px;
+    border-radius:10px;
+    font-size:0.92rem;
+    font-weight:600;
+    display:none;
+    margin-bottom:16px;
+    line-height:1.6;
+  }
+  .quiz-feedback.correct { background:rgba(16,185,129,0.1); border:1px solid var(--green); color:#6ee7b7; display:block; }
+  .quiz-feedback.wrong { background:rgba(239,68,68,0.1); border:1px solid var(--red); color:#fca5a5; display:block; }
+  .quiz-nav { display:flex; gap:12px; justify-content:flex-start; align-items:center; flex-wrap:wrap; }
+  .quiz-score-panel {
+    display:none; text-align:center; padding:30px;
+  }
+  .score-circle {
+    width:120px; height:120px;
+    border-radius:50%;
+    background:conic-gradient(var(--green) 0deg, var(--surface2) 0deg);
+    display:flex; align-items:center; justify-content:center;
+    margin:0 auto 20px;
+    font-size:2rem; font-weight:900;
+    font-family:'Tajawal',sans-serif;
+    position:relative;
+    box-shadow:0 0 30px rgba(16,185,129,0.3);
+  }
+  .score-circle::before {
+    content:'';
+    position:absolute; inset:8px;
+    border-radius:50%;
+    background:var(--surface);
+    z-index:0;
+  }
+  .score-num { position:relative; z-index:1; }
+
+  /* ── EXAMPLES ── */
+  .examples-grid {
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:16px;
+    margin-bottom:28px;
+  }
+  .example-card {
+    background:var(--surface2);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:20px;
+    text-align:center;
+    transition:transform 0.2s, border-color 0.2s;
+    cursor:default;
+  }
+  .example-card:hover { transform:translateY(-4px); border-color:var(--accent1); }
+  .example-card .emoji { font-size:2.8rem; margin-bottom:12px; display:block; }
+  .example-card h4 { font-size:0.95rem; font-weight:700; margin-bottom:8px; color:var(--accent1); }
+  .example-card .action { color:var(--accent2); font-size:0.82rem; margin-bottom:4px; }
+  .example-card .reaction { color:var(--accent1); font-size:0.82rem; }
+
+  /* ── SEESAW ── */
+  .seesaw-demo {
+    background:var(--surface2);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:20px;
+    margin-bottom:20px;
+    text-align:center;
+  }
+  #seesawCanvas { max-width:100%; border-radius:8px; }
+
+  /* ── scroll animate ── */
+  .reveal {
+    opacity:0; transform:translateY(30px);
+    transition:opacity 0.6s, transform 0.6s;
+  }
+  .reveal.visible { opacity:1; transform:translateY(0); }
+
+  /* ── TOC ── */
+  .toc {
+    background:var(--surface2);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:20px 28px;
+    margin-bottom:32px;
+  }
+  .toc h3 { font-size:1rem; font-weight:700; color:var(--accent1); margin-bottom:14px; }
+  .toc ul { list-style:none; display:flex; flex-wrap:wrap; gap:8px; }
+  .toc li a {
+    display:inline-block;
+    padding:6px 16px;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:20px;
+    color:var(--text-muted);
+    text-decoration:none;
+    font-size:0.85rem;
+    transition:all 0.2s;
+  }
+  .toc li a:hover { border-color:var(--accent1); color:var(--accent1); }
+
+  hr.divider {
+    border:none;
+    border-top:1px solid var(--border);
+    margin:36px 0;
+  }
+
+  /* ── Utility ── */
+  .text-center { text-align:center; }
+  .mb-8 { margin-bottom:8px; }
+  .mt-16 { margin-top:16px; }
+  .mb-20 { margin-bottom:20px; }
+  .flex-center { display:flex; align-items:center; justify-content:center; gap:12px; flex-wrap:wrap; }
+
+  @media(max-width:600px) {
+    .scales-scene { flex-direction:column; }
+    .chain-connector { flex-direction:row; }
+    .chain-link { margin:-2px; }
+    .concept-grid { grid-template-columns:1fr; }
+    .examples-grid { grid-template-columns:1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<style>
+.back-to-lab {
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    z-index: 9999;
+    background: rgba(10,22,40,0.92);
+    border: 1px solid rgba(0,200,150,0.35);
+    border-radius: 24px;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: #00C896;
+    font-family: Tajawal, Cairo, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+    transition: background 0.2s;
+}
+.back-to-lab:hover { background: rgba(0,200,150,0.15); }
+</style>
+<a href="../grade10.html" class="back-to-lab">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+  العودة للصف العاشر
+</a>
+
+
+<div class="container">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge">فيزياء الصف العاشر – فلسطين</div>
+    <h1>قانون نيوتن الثالث<br>قوة الفعل ورد الفعل</h1>
+    <p>استكشف القانون الأعمق في الطبيعة: لكل فعل رد فعل مساوٍ له في المقدار ومعاكس في الاتجاه</p>
+  </div>
+
+  <!-- TOC -->
+  <div class="toc reveal">
+    <h3>📚 محتويات الدرس</h3>
+    <ul>
+      <li><a href="#concepts">المفاهيم الأساسية</a></li>
+      <li><a href="#visualization">التصور التفاعلي</a></li>
+      <li><a href="#lab">المختبر الافتراضي</a></li>
+      <li><a href="#conclusions">الاستنتاجات</a></li>
+      <li><a href="#examples">أمثلة من الحياة</a></li>
+      <li><a href="#quiz">الأسئلة والتقييم</a></li>
+    </ul>
+  </div>
+
+  <!-- ══════════════ 1. CONCEPTS ══════════════ -->
+  <section id="concepts">
+    <div class="section-title reveal">
+      <div class="icon">💡</div>
+      المفاهيم الأساسية
+    </div>
+    <p class="section-sub reveal">قبل أن ندخل المختبر، لنفهم المبادئ التي يقوم عليها القانون</p>
+
+    <div class="concept-grid">
+      <div class="concept-card reveal">
+        <div class="num">01</div>
+        <h3>قوة الفعل</h3>
+        <p>هي القوة التي يؤثر بها جسم ما على جسم آخر. وهي دائماً تنشأ أولاً وتُسبّب رد الفعل.</p>
+      </div>
+      <div class="concept-card reveal">
+        <div class="num">02</div>
+        <h3>قوة ردّ الفعل</h3>
+        <p>هي القوة التي يرد بها الجسم الثاني على الجسم الأول. تساوي الفعل في المقدار وتعاكسه في الاتجاه.</p>
+      </div>
+      <div class="concept-card reveal">
+        <div class="num">03</div>
+        <h3>شرط الاقتران</h3>
+        <p>الفعل ورد الفعل دائماً يؤثران على جسمَين مختلفَين، ولا يمكن أن يؤثرا على نفس الجسم.</p>
+      </div>
+      <div class="concept-card reveal">
+        <div class="num">04</div>
+        <h3>التزامن والخط المشترك</h3>
+        <p>يحدث الفعل ورد الفعل في نفس اللحظة، ويقعان على نفس الخط، ويكون عملهما مشتركاً.</p>
+      </div>
+    </div>
+
+    <!-- Law box -->
+    <div class="law-box reveal">
+      <div style="font-size:0.85rem;color:var(--text-muted);margin-bottom:12px;letter-spacing:1px;">🏆 القانون الثالث لنيوتن</div>
+      <div class="law-text">
+        " لكل قوة فعل يوجد قوة رد فعل مساوية لها في المقدار<br>
+        ومعاكسة لها في الاتجاه وتتوزعان على جسمين مختلفين "
+      </div>
+      <div style="margin-top:16px; font-size:0.9rem; color:var(--text-muted);">
+        رياضياً: <span style="color:var(--accent1);font-weight:700;font-family:monospace;font-size:1.1rem;">F<sub>12</sub> = – F<sub>21</sub></span>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ══════════════ 2. INTERACTIVE VISUALIZATION ══════════════ -->
+  <section id="visualization">
+    <div class="section-title reveal">
+      <div class="icon">🎯</div>
+      التصور التفاعلي للقوى
+    </div>
+    <p class="section-sub reveal">اضغط على الأجسام أو حرّك المتحكمات لترى كيف تتفاعل القوى</p>
+
+    <div class="force-viz reveal">
+      <div class="force-viz-title">نظام الفعل ورد الفعل بين جسمَين</div>
+      <div class="force-scene">
+        <div class="force-body body-a" id="bodyA">
+          <span>🔵</span>
+          <div style="font-size:0.7rem;margin-top:4px">الجسم أ</div>
+        </div>
+        <div class="force-connector">
+          <div class="force-track"></div>
+          <span class="force-arrow arrow-action" id="arrowAction">←</span>
+          <span class="force-arrow arrow-reaction" id="arrowReaction">→</span>
+          <div class="force-label">الفعل ↔ ردّ الفعل</div>
+        </div>
+        <div class="force-body body-b" id="bodyB">
+          <span>🔴</span>
+          <div style="font-size:0.7rem;margin-top:4px">الجسم ب</div>
+        </div>
+      </div>
+
+      <div class="force-values">
+        <div class="fval action">
+          <div class="fnum" id="vizF1">5.0</div>
+          <div class="flabel">قوة الفعل (نيوتن)</div>
+        </div>
+        <div style="display:flex;align-items:center;font-size:1.5rem;color:var(--green);font-weight:900;">=</div>
+        <div class="fval reaction">
+          <div class="fnum" id="vizF2">5.0</div>
+          <div class="flabel">قوة ردّ الفعل (نيوتن)</div>
+        </div>
+      </div>
+
+      <div style="margin-top:20px;display:flex;align-items:center;gap:16px;justify-content:center;flex-wrap:wrap;">
+        <label style="color:var(--text-muted);font-size:0.9rem;">حجم القوة:</label>
+        <input type="range" id="forceSlider" min="1" max="20" value="5" style="width:200px;accent-color:var(--accent1);">
+        <span id="forceSliderVal" style="color:var(--accent1);font-weight:700;min-width:50px;">5 N</span>
+      </div>
+    </div>
+
+    <!-- Seesaw demo -->
+    <div class="seesaw-demo reveal">
+      <div class="force-viz-title">🎠 مثال: لعبة السيسو (النقلة)</div>
+      <p style="color:var(--text-muted);font-size:0.85rem;margin-bottom:16px;">حرّك الأوزان لترى كيف تتغير القوى بينهما</p>
+      <canvas id="seesawCanvas" width="700" height="260"></canvas>
+      <div style="margin-top:12px;display:flex;gap:20px;justify-content:center;flex-wrap:wrap;">
+        <div>
+          <label style="color:var(--text-muted);font-size:0.85rem;">وزن الطفل الأيمن: <span id="weightRVal" style="color:var(--accent2);font-weight:700;">50</span> كغ</label><br>
+          <input type="range" id="weightR" min="20" max="100" value="50" style="width:160px;accent-color:var(--accent2);">
+        </div>
+        <div>
+          <label style="color:var(--text-muted);font-size:0.85rem;">وزن الطفل الأيسر: <span id="weightLVal" style="color:var(--accent1);font-weight:700;">50</span> كغ</label><br>
+          <input type="range" id="weightL" min="20" max="100" value="50" style="width:160px;accent-color:var(--accent1);">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ══════════════ 3. VIRTUAL LAB ══════════════ -->
+  <section id="lab">
+    <div class="section-title reveal">
+      <div class="icon">🔬</div>
+      نشاط (١١): قوتا الفعل وردّ الفعل
+    </div>
+    <p class="section-sub reveal">المواد والأدوات: ميزان نابض عدد ٢ – نفّذ التجربة خطوة بخطوة</p>
+
+    <div class="lab-container reveal">
+      <div class="lab-title">⚗️ المختبر الافتراضي التفاعلي</div>
+      <div class="lab-subtitle">اشبك الميزانين معاً وسجّل قراءة كل ميزان</div>
+
+      <!-- Spring scales visualization -->
+      <div class="scales-scene">
+        <!-- Scale A -->
+        <div class="spring-scale">
+          <div style="font-size:0.8rem;color:#60a5fa;font-weight:700;margin-bottom:6px;text-align:center;">ميزان أ</div>
+          <canvas id="scaleA" width="80" height="220"></canvas>
+          <div class="scale-value-display scale-a-val" id="scaleAVal">0.0 N</div>
+        </div>
+
+        <!-- Chain connector -->
+        <div class="chain-connector" id="chainConnector">
+          <div class="chain-link"></div>
+          <div class="chain-link"></div>
+          <div class="chain-link"></div>
+          <div class="chain-link"></div>
+          <div class="chain-link"></div>
+          <div class="chain-link"></div>
+        </div>
+
+        <!-- Scale B -->
+        <div class="spring-scale">
+          <div style="font-size:0.8rem;color:#f87171;font-weight:700;margin-bottom:6px;text-align:center;">ميزان ب</div>
+          <canvas id="scaleB" width="80" height="220"></canvas>
+          <div class="scale-value-display scale-b-val" id="scaleBVal">0.0 N</div>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="lab-controls">
+        <div class="ctrl-group">
+          <label>⬅️ قوة السحب (تجربة ١)</label>
+          <input type="range" id="pullForce" min="0" max="50" value="0" step="0.5">
+          <div class="ctrl-val" id="pullForceVal">0.0 N</div>
+        </div>
+        <div class="ctrl-group">
+          <label>📊 التجربة رقم</label>
+          <input type="range" id="expNum" min="1" max="5" value="1" step="1">
+          <div class="ctrl-val" id="expNumVal">التجربة ١</div>
+        </div>
+      </div>
+
+      <div class="lab-status status-idle" id="labStatus">
+        🔵 اضبط قوة السحب ثم اضغط "تسجيل القراءة" لإضافة نقطة بيانات
+      </div>
+
+      <div class="lab-actions">
+        <button class="lab-btn btn-primary" onclick="recordReading()">📝 تسجيل القراءة</button>
+        <button class="lab-btn btn-reset" onclick="resetLab()">🔄 إعادة التجربة</button>
+        <button class="lab-btn btn-reset" onclick="autoDemo()">▶️ عرض تلقائي</button>
+      </div>
+
+      <!-- Data table -->
+      <div class="data-table-wrap">
+        <div class="data-table-header">📊 جدول البيانات المسجّلة</div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>التجربة</th>
+              <th>قراءة ميزان أ (N)</th>
+              <th>قراءة ميزان ب (N)</th>
+              <th>الفرق</th>
+              <th>النتيجة</th>
+            </tr>
+          </thead>
+          <tbody id="dataTableBody">
+            <tr>
+              <td colspan="5" style="color:var(--text-muted);padding:20px;">لا توجد بيانات بعد – ابدأ التجربة</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Graph -->
+      <div class="graph-wrap">
+        <div class="graph-title">📈 رسم بياني: قوة الفعل مقابل ردّ الفعل</div>
+        <canvas id="labGraph" height="220"></canvas>
+      </div>
+
+      <!-- Live observation -->
+      <div id="liveObs" style="background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.2);border-radius:10px;padding:16px;margin-top:16px;display:none;">
+        <div style="font-weight:700;color:var(--accent1);margin-bottom:8px;">🔎 الملاحظة اللحظية</div>
+        <div id="liveObsText" style="font-size:0.9rem;color:var(--text-muted);line-height:1.7;"></div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ══════════════ 4. CONCLUSIONS ══════════════ -->
+  <section id="conclusions">
+    <div class="section-title reveal">
+      <div class="icon">✅</div>
+      الاستنتاجات العلمية
+    </div>
+    <p class="section-sub reveal">بعد تنفيذ التجربة، نصل إلى هذه الاستنتاجات المهمة</p>
+
+    <div class="conclusion-card reveal">
+      <h4><span class="badge">الاستنتاج ١</span> التساوي في المقدار</h4>
+      <p>لاحظنا من التجربة أن قراءتَي الميزانَين كانتا متساويتَين في جميع الحالات، مما يعني أن قوة الفعل ورد الفعل دائماً متساويتان في المقدار (القيمة العددية).</p>
+    </div>
+    <div class="conclusion-card reveal">
+      <h4><span class="badge">الاستنتاج ٢</span> التعاكس في الاتجاه</h4>
+      <p>قوة الفعل ورد الفعل تعملان في اتجاهَين متعاكسَين تماماً، ويمكن التحقق من ذلك بملاحظة اتجاه سحب كل ميزان للآخر.</p>
+    </div>
+    <div class="conclusion-card reveal">
+      <h4><span class="badge">الاستنتاج ٣</span> اختلاف الجسمَين</h4>
+      <p>لاحظنا أن قوة الفعل تؤثر على الجسم أ، بينما تؤثر قوة رد الفعل على الجسم ب، وهما جسمان مختلفان – لذا لا يمكنهما إلغاء بعضهما البعض.</p>
+    </div>
+    <div class="conclusion-card reveal">
+      <h4><span class="badge">الاستنتاج ٤</span> خط العمل المشترك</h4>
+      <p>قوتا الفعل ورد الفعل تقعان على نفس الخط المستقيم ويكون عملهما مشتركاً، مما يعني أنهما تعملان على نفس الخط لكن بعكس اتجاه بعضهما.</p>
+    </div>
+
+    <div class="law-box reveal">
+      <div style="font-size:0.85rem;color:var(--text-muted);margin-bottom:12px;">📌 ملخص مما سبق نستنتج أنه:</div>
+      <div class="law-text" style="font-size:1.1rem;">
+        لكل قوة فعل يوجد قوة رد فعل مساوية لها في المقدار<br>
+        ومعاكسة لها في الاتجاه وتتوزعان على جسمين مختلفين ومنطبقَين
+      </div>
+      <div style="margin-top:16px;color:var(--text-muted);font-size:0.85rem;">
+        هذه النتيجة تسمى بالقانون الثالث لنيوتن ويلاحظ أن القوتين (الفعل ورد الفعل):
+        <div style="margin-top:8px;display:flex;flex-direction:column;gap:4px;color:#e2e8f0;font-size:0.88rem;">
+          <span>١. تكونان على شكل زوج من قوة الفعل وقوة رد الفعل وتتوزعان على جسمين مختلفين.</span>
+          <span>٢. تكون قوة رد الفعل مساوية لقوة الفعل وقوة مساوية ومعاكسة لها في الاتجاه.</span>
+          <span>٣. يكون خط عمل قوة الفعل ورد الفعل منطبقَين ومشتركَين.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ══════════════ 5. REAL-LIFE EXAMPLES ══════════════ -->
+  <section id="examples">
+    <div class="section-title reveal">
+      <div class="icon">🌍</div>
+      أمثلة من الحياة اليومية
+    </div>
+    <p class="section-sub reveal">قانون نيوتن الثالث يعمل في كل مكان حولنا</p>
+
+    <div class="examples-grid">
+      <div class="example-card reveal">
+        <span class="emoji">🚀</span>
+        <h4>الصاروخ</h4>
+        <div class="action">الفعل: دفع الغازات للأسفل</div>
+        <div class="reaction">ردّ الفعل: الصاروخ يتحرك للأعلى</div>
+      </div>
+      <div class="example-card reveal">
+        <span class="emoji">🏊</span>
+        <h4>السباح</h4>
+        <div class="action">الفعل: يدفع الماء للخلف بيديه</div>
+        <div class="reaction">ردّ الفعل: الماء يدفعه للأمام</div>
+      </div>
+      <div class="example-card reveal">
+        <span class="emoji">🔫</span>
+        <h4>المسدس</h4>
+        <div class="action">الفعل: يدفع الرصاصة للأمام</div>
+        <div class="reaction">ردّ الفعل: ارتداد المسدس للخلف</div>
+      </div>
+      <div class="example-card reveal">
+        <span class="emoji">🚶</span>
+        <h4>المشي</h4>
+        <div class="action">الفعل: القدم تدفع الأرض للخلف</div>
+        <div class="reaction">ردّ الفعل: الأرض تدفعك للأمام</div>
+      </div>
+      <div class="example-card reveal">
+        <span class="emoji">⛵</span>
+        <h4>القارب والمجذاف</h4>
+        <div class="action">الفعل: المجذاف يدفع الماء</div>
+        <div class="reaction">ردّ الفعل: الماء يدفع القارب</div>
+      </div>
+      <div class="example-card reveal">
+        <span class="emoji">🧱</span>
+        <h4>الكتاب على الطاولة</h4>
+        <div class="action">الفعل: الكتاب يضغط الطاولة بوزنه</div>
+        <div class="reaction">ردّ الفعل: الطاولة تدفع الكتاب للأعلى</div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ══════════════ 6. QUIZ ══════════════ -->
+  <section id="quiz">
+    <div class="section-title reveal">
+      <div class="icon">✏️</div>
+      الأسئلة والتقييم
+    </div>
+    <p class="section-sub reveal">أجب عن الأسئلة التالية للتحقق من فهمك – حصة كاملة من التفكير والاستنتاج</p>
+
+    <div class="quiz-section reveal">
+      <div class="quiz-progress" id="quizProgress"></div>
+
+      <!-- Q1 -->
+      <div class="quiz-card active" id="q1">
+        <div class="quiz-num">السؤال ١ من ١٠</div>
+        <div class="quiz-q">وفقاً لقانون نيوتن الثالث، إذا دفعت حائطاً بقوة 30 نيوتن، فإن قوة رد الفعل التي يؤثرها الحائط عليك هي:</div>
+        <div class="quiz-options">
+          <div class="quiz-opt" onclick="answer(1,0,'a')"><div class="opt-icon">أ</div> 15 نيوتن في نفس الاتجاه</div>
+          <div class="quiz-opt" onclick="answer(1,1,'b')"><div class="opt-icon">ب</div> 30 نيوتن في الاتجاه المعاكس ✓</div>
+          <div class="quiz-opt" onclick="answer(1,0,'c')"><div class="opt-icon">ج</div> 60 نيوتن في الاتجاه المعاكس</div>
+          <div class="quiz-opt" onclick="answer(1,0,'d')"><div class="opt-icon">د</div> صفر لأن الحائط ساكن</div>
+        </div>
+        <div class="quiz-feedback" id="fb1"></div>
+        <div class="quiz-nav"><button class="lab-btn btn-primary" onclick="nextQ(2)" id="next1" style="display:none">التالي ←</button></div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="quiz-card" id="q2">
+        <div class="quiz-num">السؤال ٢ من ١٠</div>
+        <div class="quiz-q">ما الشرط الأساسي الذي يجب أن تحققه قوتا الفعل ورد الفعل؟</div>
+        <div class="quiz-options">
+          <div class="quiz-opt" onclick="answer(2,0,'a')"><div class="opt-icon">أ</div> أن تؤثرا على نفس الجسم</div>
+          <div class="quiz-opt" onclick="answer(2,0,'b')"><div class="opt-icon">ب</div> أن تؤثرا في نفس الاتجاه</div>
+          <div class="quiz-opt" onclick="answer(2,1,'c')"><div class="opt-icon">ج</div> أن تؤثرا على جسمَين مختلفَين ✓</div>
+          <div class="quiz-opt" onclick="answer(2,0,'d')"><div class="opt-icon">د</div> أن تكون إحداهما أكبر من الأخرى</div>
+        </div>
+        <div class="quiz-feedback" id="fb2"></div>
+        <div class="quiz-nav"><button class="lab-btn btn-primary" onclick="nextQ(3)" id="next2" style="display:none">التالي ←</button></div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="quiz-card" id="q3">
+        <div class="quiz-num">السؤال ٣ من ١٠</div>
+        <div class="quiz-q">في تجربة الميزانَين، إذا كانت قراءة الميزان الأول 8.5 نيوتن، فما قراءة الميزان الثاني؟</div>
+        <div class="quiz-options">
+          <div class="quiz-opt" onclick="answer(3,0,'a')"><div class="opt-icon">أ</div> 4.25 نيوتن</div>
+          <div class="quiz-opt" onclick="answer(3,1,'b')"><div class="opt-icon">ب</div> 8.5 نيوتن ✓</div>
+          <div class="quiz-opt" onclick="answer(3,0,'c')"><div class="opt-icon">ج</div> 17 نيوتن</div>
+          <div class="quiz-opt" onclick="answer(3,0,'d')"><div class="opt-icon">د</div> يعتمد على الكتلة</div>
+        </div>
+        <div class="quiz-feedback" id="fb3"></div>
+        <div class="quiz-nav"><button class="lab-btn btn-primary" onclick="nextQ(4)" id="next3" style="display:none">التالي ←</button></div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="quiz-card" id="q4">
+        <div class="quiz-num">السؤال ٤ من ١٠</div>
+        <div class="quiz-q">طفل كتلته 40 كغ يجلس على سيسو (نقلة). ما القوة التي تؤثرها الأرض (من خلال المحور) على الطفل لتحافظ على توازنه؟</div>
+        <div class="quiz-options">
+          <div class="quiz-opt" onclick="answer(4,0,'a')"><div class="opt-icon">أ</div> 40 نيوتن للأسفل</div>
+          <div class="quiz-opt" onclick="answer(4,0,'b')"><div class="opt-icon">ب</div> 400 نيوتن للأسفل</div>
+          <div class="quiz-opt" onclick="answer(4,1,'c')"><div class="opt-icon">ج</div> 400 نيوتن للأعلى ✓</div>
+          <div class="quiz-opt" onclick="answer(4,0,'d')"><div class="opt-icon">د</div> صفر لأنه ساكن</div>
+        </div>
+        <div class="quiz-feedback" id="fb4"></div>
+        <div class="quiz-nav"><button class="lab-btn btn-primary" onclick="nextQ(5)" id="next4" style="display:none">التالي ←</button></div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="quiz-card" id="q5">
+        <div class="quiz-num">السؤال ٥ من ١٠</div>
+        <div class="quiz-q">لماذا لا تُلغي قوة الفعل ورد الفعل بعضهما البعض؟</div>
+        <div class="quiz-options">
+          <div class="quiz-opt" onclick="answer(5,0,'a')"><div class="opt-icon">أ</div> لأنهما غير متساويتَين في المقدار</div>
+          <div class="quiz-opt" onclick="answer(5,1,'b')"><div class="opt-icon">ب</div> لأنهما تؤثران على جسمَين مختلفَين ✓</div>
+          <div class="quiz-opt" onclick="answer(5,0,'c')"><div class="opt-icon">ج</div> لأنهما في نفس الاتجاه</div>
+          <div class="quiz-opt" onclick="answer(5,0,'d')"><div class="opt-icon">د</div> لأن إحداهما تحدث بعد الأخرى</div>
+        </div>
+        <div class="quiz-feedback" id="fb5"></div>
+        <div class="quiz-nav"><button class="lab-btn btn-primary" onclick="nextQ(6)" id="next5" style="display:none">التالي ←</button></div>
+      </div>
+
+      <!-- Q6 -->
+      <div class="quiz-card" id="q6">
+        <div class="quiz-num">السؤال ٦ من ١٠</div>
+        <div class="quiz-q">صاروخ يطلق غازاته بقوة 50,000 نيوتن للأسفل. ما القوة التي تدفع الصاروخ للأعلى؟</div>
+        <div class="quiz-options">
+          <div class="quiz-opt" onclick="answer(6,0,'a')"><div class="opt-icon">أ</div> 25,000 نيوتن</div>
+          <div class="quiz-opt" onclick="answer(6,1,'b')"><div class="opt-icon">ب</div> 50,000 نيوتن ✓</div>
+          <div class="quiz-opt" onclick="answer(6,0,'c')"><div class="opt-icon">ج</div> 100,000 نيوتن</div>
+          <div class="quiz-opt" onclick="answer(6,0,'d')"><div class="opt-icon">د</div> تعتمد على كتلة الصاروخ</div>
+        </div>
+        <div class="quiz-feedback" id="fb6"></div>
+        <div class="quiz-nav"><button class="lab-btn btn-primary" onclick="nextQ(7)" id="next6" style="display:none">التالي ←</button></div>
+      </div>
+
+      <!-- Q7 -->
+      <div class="quiz-card" id="q7">
+        <div class="quiz-num">السؤال ٧ من ١٠</div>
+        <div class="quiz-q">أي من العبارات التالية تصف بشكل صحيح خط عمل قوتَي الفعل ورد الفعل؟</div>
+        <div class="quiz-options">
+          <div class="quiz-opt" onclick="answer(7,0,'a')"><div class="opt-icon">أ</div> يقعان على خطَّين متوازيَين</div>
+          <div class="quiz-opt" onclick="answer(7,1,'b')"><div class="opt-icon">ب</div> يقعان على نفس الخط ومتعاكسَين ✓</div>
+          <div class="quiz-opt" onclick="answer(7,0,'c')"><div class="opt-icon">ج</div> يقعان على خطَّين متعامدَين</div>
+          <div class="quiz-opt" onclick="answer(7,0,'d')"><div class="opt-icon">د</div> لا يوجد علاقة بين خطَّي عملهما</div>
+        </div>
+        <div class="quiz-feedback" id="fb7"></div>
+        <div class="quiz-nav"><button class="lab-btn btn-primary" onclick="nextQ(8)" id="next7" style="display:none">التالي ←</button></div>
+      </div>
+
+      <!-- Q8 -->
+      <div class="quiz-card" id="q8">
+        <div class="quiz-num">السؤال ٨ من ١٠</div>
+        <div class="quiz-q">ماذا يحدث لقوة رد الفعل إذا ضاعفنا قوة الفعل؟</div>
+        <div class="quiz-options">
+          <div class="quiz-opt" onclick="answer(8,0,'a')"><div class="opt-icon">أ</div> تبقى كما هي</div>
+          <div class="quiz-opt" onclick="answer(8,0,'b')"><div class="opt-icon">ب</div> تتضاعف بمقدار أقل</div>
+          <div class="quiz-opt" onclick="answer(8,1,'c')"><div class="opt-icon">ج</div> تتضاعف هي أيضاً (تصبح ضعف الأصلية) ✓</div>
+          <div class="quiz-opt" onclick="answer(8,0,'d')"><div class="opt-icon">د</div> تتضاعف أربع مرات</div>
+        </div>
+        <div class="quiz-feedback" id="fb8"></div>
+        <div class="quiz-nav"><button class="lab-btn btn-primary" onclick="nextQ(9)" id="next8" style="display:none">التالي ←</button></div>
+      </div>
+
+      <!-- Q9 -->
+      <div class="quiz-card" id="q9">
+        <div class="quiz-num">السؤال ٩ من ١٠</div>
+        <div class="quiz-q">سباح يدفع الماء بقوة 120 نيوتن للخلف. ما السرعة التي يتحرك بها إذا كانت كتلته 60 كغ وكتلة الماء كبيرة جداً؟ (تلميح: استخدم القانون الثاني لنيوتن)</div>
+        <div class="quiz-options">
+          <div class="quiz-opt" onclick="answer(9,0,'a')"><div class="opt-icon">أ</div> لا يتحرك لأن الماء ثقيل</div>
+          <div class="quiz-opt" onclick="answer(9,1,'b')"><div class="opt-icon">ب</div> يتسارع بـ 2 م/ث² للأمام ✓</div>
+          <div class="quiz-opt" onclick="answer(9,0,'c')"><div class="opt-icon">ج</div> يتسارع بـ 120 م/ث² للأمام</div>
+          <div class="quiz-opt" onclick="answer(9,0,'d')"><div class="opt-icon">د</div> يتسارع بـ 2 م/ث² للخلف</div>
+        </div>
+        <div class="quiz-feedback" id="fb9"></div>
+        <div class="quiz-nav"><button class="lab-btn btn-primary" onclick="nextQ(10)" id="next9" style="display:none">التالي ←</button></div>
+      </div>
+
+      <!-- Q10 -->
+      <div class="quiz-card" id="q10">
+        <div class="quiz-num">السؤال ١٠ من ١٠</div>
+        <div class="quiz-q">في التجربة التي نفّذناها بالميزانَين، ما الاستنتاج الصحيح عندما تكون قراءتاهما دائماً متساويتَين؟</div>
+        <div class="quiz-options">
+          <div class="quiz-opt" onclick="answer(10,0,'a')"><div class="opt-icon">أ</div> القوتان تؤثران على نفس الجسم</div>
+          <div class="quiz-opt" onclick="answer(10,0,'b')"><div class="opt-icon">ب</div> الميزانان معطّلان</div>
+          <div class="quiz-opt" onclick="answer(10,1,'c')"><div class="opt-icon">ج</div> قوتا الفعل ورد الفعل متساويتان دائماً في المقدار ✓</div>
+          <div class="quiz-opt" onclick="answer(10,0,'d')"><div class="opt-icon">د</div> الميزانان يقيسان نفس القوة</div>
+        </div>
+        <div class="quiz-feedback" id="fb10"></div>
+        <div class="quiz-nav"><button class="lab-btn btn-primary" onclick="showScore()" id="next10" style="display:none">🏆 عرض النتيجة النهائية</button></div>
+      </div>
+
+      <!-- Score panel -->
+      <div class="quiz-score-panel" id="scorePanel">
+        <div class="score-circle" id="scoreCircle">
+          <div class="score-num" id="scoreNum">0/10</div>
+        </div>
+        <div id="scoreMsg" style="font-size:1.2rem;font-weight:700;margin-bottom:12px;"></div>
+        <div id="scoreDetail" style="color:var(--text-muted);font-size:0.9rem;margin-bottom:20px;"></div>
+        <button class="lab-btn btn-primary" onclick="restartQuiz()">🔄 إعادة الاختبار</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <div style="text-align:center;padding:40px 0 30px;color:var(--text-muted);font-size:0.85rem;border-top:1px solid var(--border);">
+    <div style="font-size:1.2rem;margin-bottom:8px;">⚛️</div>
+    فيزياء الصف العاشر – مناهج فلسطين | قانون نيوتن الثالث
+    <br><span style="color:var(--accent1);">F₁₂ = –F₂₁</span>
+  </div>
+
+</div><!-- /container -->
+
+<script>
+// ═══════════════════════════════════════
+//  SPRING SCALE DRAWING
+// ═══════════════════════════════════════
+function drawScale(canvasId, force, maxForce, colorTop, colorBot) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0,0,W,H);
+
+  const ratio = Math.min(force / maxForce, 1);
+  const bodyTop = 20, bodyH = H - 40;
+  const bodyW = W - 16, bodyX = 8;
+
+  // 3D body gradient
+  const grad = ctx.createLinearGradient(bodyX, 0, bodyX+bodyW, 0);
+  grad.addColorStop(0, '#1e2d45');
+  grad.addColorStop(0.3, '#2a3f60');
+  grad.addColorStop(0.7, '#2a3f60');
+  grad.addColorStop(1, '#111827');
+  ctx.fillStyle = grad;
+  ctx.beginPath();
+  ctx.roundRect(bodyX, bodyTop, bodyW, bodyH, 8);
+  ctx.fill();
+
+  // border
+  ctx.strokeStyle = colorTop;
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.roundRect(bodyX, bodyTop, bodyW, bodyH, 8);
+  ctx.stroke();
+
+  // spring lines
+  const springTop = bodyTop + 10;
+  const springH = bodyH - 60;
+  const springW = bodyW - 20;
+  const springX = bodyX + 10;
+  const coils = 12;
+  const coilH = springH / coils;
+  const stretchY = ratio * (coilH * 2); // stretch effect
+
+  ctx.strokeStyle = `rgba(${hexToRgb(colorTop)},0.8)`;
+  ctx.lineWidth = 1.8;
+  ctx.beginPath();
+  for (let i = 0; i <= coils; i++) {
+    const y = springTop + i * (coilH + stretchY / coils);
+    const x = i % 2 === 0 ? springX : springX + springW;
+    if (i === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  }
+  ctx.stroke();
+
+  // pointer line (red marker)
+  const pointerAreaTop = bodyTop + 30;
+  const pointerAreaH = bodyH - 60;
+  const pointerY = pointerAreaTop + (1 - ratio) * pointerAreaH;
+
+  ctx.fillStyle = '#ef4444';
+  ctx.fillRect(bodyX + 4, pointerY - 2, bodyW - 8, 3);
+
+  // scale markings
+  const markCount = 10;
+  for (let i = 0; i <= markCount; i++) {
+    const yMark = pointerAreaTop + (i / markCount) * pointerAreaH;
+    const val = (maxForce * (1 - i / markCount)).toFixed(0);
+    const major = i % 2 === 0;
+    ctx.strokeStyle = 'rgba(148,163,184,0.4)';
+    ctx.lineWidth = major ? 1.5 : 1;
+    ctx.beginPath();
+    ctx.moveTo(bodyX + bodyW - (major ? 14 : 8), yMark);
+    ctx.lineTo(bodyX + bodyW - 2, yMark);
+    ctx.stroke();
+    if (major) {
+      ctx.fillStyle = 'rgba(148,163,184,0.7)';
+      ctx.font = '8px Cairo';
+      ctx.textAlign = 'right';
+      ctx.fillText(val, bodyX + bodyW - 16, yMark + 3);
+    }
+  }
+
+  // top hook
+  ctx.strokeStyle = '#aaa';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(W/2, 0);
+  ctx.lineTo(W/2, bodyTop);
+  ctx.stroke();
+
+  // bottom hook
+  ctx.beginPath();
+  ctx.moveTo(W/2, bodyTop + bodyH);
+  ctx.lineTo(W/2, H);
+  ctx.stroke();
+}
+
+function hexToRgb(hex) {
+  const r = parseInt(hex.slice(1,3),16);
+  const g = parseInt(hex.slice(3,5),16);
+  const b = parseInt(hex.slice(5,7),16);
+  return `${r},${g},${b}`;
+}
+
+// ═══════════════════════════════════════
+//  SEESAW ANIMATION
+// ═══════════════════════════════════════
+let seesawAngle = 0;
+function drawSeesaw() {
+  const canvas = document.getElementById('seesawCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0,0,W,H);
+
+  const wR = +document.getElementById('weightR').value;
+  const wL = +document.getElementById('weightL').value;
+  const diff = (wR - wL) / 120;
+  const targetAngle = diff * 0.35;
+  seesawAngle += (targetAngle - seesawAngle) * 0.08;
+
+  const cx = W/2, cy = H - 60;
+  const boardLen = 280, boardH = 10;
+
+  // Ground
+  ctx.fillStyle = '#1a2235';
+  ctx.fillRect(0, cy + 40, W, H);
+
+  // Triangle fulcrum
+  ctx.fillStyle = '#2a3f60';
+  ctx.beginPath();
+  ctx.moveTo(cx, cy + 40);
+  ctx.lineTo(cx - 20, cy + 40);
+  ctx.lineTo(cx + 20, cy + 40);
+  ctx.closePath();
+  ctx.fill();
+  ctx.strokeStyle = '#00d4ff44';
+  ctx.lineWidth = 1;
+  ctx.stroke();
+
+  ctx.save();
+  ctx.translate(cx, cy);
+  ctx.rotate(seesawAngle);
+
+  // Board gradient
+  const boardGrad = ctx.createLinearGradient(-boardLen/2, -boardH/2, boardLen/2, boardH/2);
+  boardGrad.addColorStop(0, '#3b82f6');
+  boardGrad.addColorStop(0.5, '#60a5fa');
+  boardGrad.addColorStop(1, '#ef4444');
+  ctx.fillStyle = boardGrad;
+  ctx.beginPath();
+  ctx.roundRect(-boardLen/2, -boardH/2, boardLen, boardH, 5);
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+  ctx.lineWidth = 1;
+  ctx.stroke();
+
+  // Child R (right)
+  const rX = boardLen/2 - 20;
+  const childH = (wR / 100) * 60 + 20;
+  ctx.fillStyle = '#ef4444';
+  ctx.fillRect(rX - 12, -boardH/2 - childH, 24, childH);
+  ctx.beginPath();
+  ctx.arc(rX, -boardH/2 - childH - 12, 12, 0, Math.PI*2);
+  ctx.fillStyle = '#fbbf24';
+  ctx.fill();
+  // weight label
+  ctx.fillStyle = '#fff';
+  ctx.font = 'bold 11px Cairo';
+  ctx.textAlign = 'center';
+  ctx.fillText(wR+'كغ', rX, -boardH/2 - childH - 28);
+
+  // Child L (left)
+  const lX = -(boardLen/2 - 20);
+  const childHL = (wL / 100) * 60 + 20;
+  ctx.fillStyle = '#3b82f6';
+  ctx.fillRect(lX - 12, -boardH/2 - childHL, 24, childHL);
+  ctx.beginPath();
+  ctx.arc(lX, -boardH/2 - childHL - 12, 12, 0, Math.PI*2);
+  ctx.fillStyle = '#fbbf24';
+  ctx.fill();
+  ctx.fillStyle = '#fff';
+  ctx.fillText(wL+'كغ', lX, -boardH/2 - childHL - 28);
+
+  // Force arrows
+  const fR = wR * 9.8;
+  const fL = wL * 9.8;
+  drawArrow3D(ctx, rX, -boardH/2, rX, boardH + 35, '#ef4444', (fR/980).toFixed(0)+'N');
+  drawArrow3D(ctx, lX, -boardH/2, lX, boardH + 35, '#3b82f6', (fL/980).toFixed(0)+'N');
+
+  ctx.restore();
+
+  // Labels
+  ctx.fillStyle = 'rgba(255,107,53,0.8)';
+  ctx.font = 'bold 11px Cairo';
+  ctx.textAlign = 'right';
+  ctx.fillText('الفعل: يضغط الطفل اللوح', W - 20, 20);
+  ctx.fillStyle = 'rgba(0,212,255,0.8)';
+  ctx.textAlign = 'left';
+  ctx.fillText('ردّ الفعل: اللوح يرفع الطفل', 20, 20);
+
+  // Status
+  const diff2 = Math.abs(wR - wL);
+  ctx.fillStyle = diff2 < 5 ? '#10b981' : '#fbbf24';
+  ctx.font = 'bold 13px Cairo';
+  ctx.textAlign = 'center';
+  ctx.fillText(diff2 < 5 ? '⚖️ متوازن – قوتا الفعل ورد الفعل متساويتان' : `⚠️ فرق الوزن: ${diff2} كغ – السيسو يميل`, W/2, H - 10);
+
+  requestAnimationFrame(drawSeesaw);
+}
+
+function drawArrow3D(ctx, x1, y1, x2, y2, color, label) {
+  const angle = Math.atan2(y2-y1, x2-x1);
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(x1, y1);
+  ctx.lineTo(x2, y2);
+  ctx.stroke();
+  ctx.fillStyle = color;
+  ctx.save();
+  ctx.translate(x2, y2);
+  ctx.rotate(angle);
+  ctx.beginPath();
+  ctx.moveTo(0,0); ctx.lineTo(-8,-4); ctx.lineTo(-8,4);
+  ctx.closePath(); ctx.fill();
+  ctx.restore();
+}
+
+// ═══════════════════════════════════════
+//  GRAPH
+// ═══════════════════════════════════════
+let graphData = [];
+function drawGraph() {
+  const canvas = document.getElementById('labGraph');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0,0,W,H);
+
+  // Grid
+  ctx.strokeStyle = 'rgba(30,58,95,0.5)';
+  ctx.lineWidth = 1;
+  for (let i = 0; i <= 5; i++) {
+    const x = 50 + (i/5)*(W-70);
+    const y = 20 + (i/5)*(H-40);
+    ctx.beginPath(); ctx.moveTo(x,20); ctx.lineTo(x,H-20); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(50,y); ctx.lineTo(W-20,y); ctx.stroke();
+    ctx.fillStyle = 'rgba(148,163,184,0.5)';
+    ctx.font = '10px Cairo'; ctx.textAlign = 'center';
+    ctx.fillText((i*10)+'N', x, H-5);
+    ctx.textAlign = 'right';
+    ctx.fillText((50-i*10)+'N', 45, y+4);
+  }
+
+  if (graphData.length === 0) {
+    ctx.fillStyle = 'rgba(148,163,184,0.3)';
+    ctx.font = '14px Cairo'; ctx.textAlign = 'center';
+    ctx.fillText('سجّل بيانات لتظهر هنا', W/2, H/2);
+    return;
+  }
+
+  // Ideal line
+  ctx.strokeStyle = 'rgba(0,212,255,0.2)';
+  ctx.lineWidth = 1;
+  ctx.setLineDash([5,5]);
+  ctx.beginPath();
+  ctx.moveTo(50, H-20);
+  ctx.lineTo(W-20, 20);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Data points
+  graphData.forEach((d, i) => {
+    const x = 50 + (d.fa/50)*(W-70);
+    const y = H-20 - (d.fb/50)*(H-40);
+    ctx.fillStyle = '#00d4ff';
+    ctx.beginPath();
+    ctx.arc(x,y,5,0,Math.PI*2);
+    ctx.fill();
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 9px Cairo';
+    ctx.textAlign = 'center';
+    ctx.fillText(i+1, x, y+3);
+  });
+
+  // Axes labels
+  ctx.fillStyle = 'rgba(0,212,255,0.8)';
+  ctx.font = '11px Cairo'; ctx.textAlign = 'center';
+  ctx.fillText('قوة الفعل (N)', W/2, H);
+  ctx.save();
+  ctx.translate(12, H/2); ctx.rotate(-Math.PI/2);
+  ctx.fillText('ردّ الفعل (N)', 0, 0);
+  ctx.restore();
+}
+
+// ═══════════════════════════════════════
+//  LAB LOGIC
+// ═══════════════════════════════════════
+let readings = [];
+let currentForce = 0;
+
+document.getElementById('pullForce').addEventListener('input', function() {
+  currentForce = +this.value;
+  document.getElementById('pullForceVal').textContent = currentForce.toFixed(1) + ' N';
+  updateScaleDisplay(currentForce);
+});
+
+document.getElementById('expNum').addEventListener('input', function() {
+  document.getElementById('expNumVal').textContent = 'التجربة ' + this.value;
+});
+
+function updateScaleDisplay(force) {
+  const maxF = 50;
+  drawScale('scaleA', force, maxF, '#3b82f6', '#1e40af');
+  drawScale('scaleB', force, maxF, '#ef4444', '#991b1b');
+  document.getElementById('scaleAVal').textContent = force.toFixed(1) + ' N';
+  document.getElementById('scaleBVal').textContent = force.toFixed(1) + ' N';
+
+  // Live observation
+  if (force > 0) {
+    const liveObs = document.getElementById('liveObs');
+    liveObs.style.display = 'block';
+    document.getElementById('liveObsText').innerHTML = `
+      الميزان أ يقرأ: <strong style="color:#60a5fa">${force.toFixed(1)} N</strong> &nbsp;|&nbsp;
+      الميزان ب يقرأ: <strong style="color:#f87171">${force.toFixed(1)} N</strong><br>
+      الملاحظة: القراءتان <strong style="color:#10b981">متساويتان تماماً</strong> — مما يدل على أن قوة الفعل = قوة رد الفعل دائماً.
+    `;
+  }
+
+  // Animate bodies
+  const bodyA = document.getElementById('bodyA');
+  const bodyB = document.getElementById('bodyB');
+  if (bodyA && bodyB) {
+    const scale = 1 + (force / 50) * 0.1;
+    bodyA.style.transform = `perspective(400px) rotateY(-8deg) rotateX(5deg) scaleX(${scale})`;
+    bodyB.style.transform = `perspective(400px) rotateY(8deg) rotateX(5deg) scaleX(${scale})`;
+  }
+
+  const status = document.getElementById('labStatus');
+  if (force > 0) {
+    status.className = 'lab-status status-running';
+    status.textContent = `🔄 جارٍ تطبيق قوة ${force.toFixed(1)} N — كلا الميزانَين يُظهران نفس القراءة`;
+  } else {
+    status.className = 'lab-status status-idle';
+    status.textContent = '🔵 اضبط قوة السحب ثم اضغط "تسجيل القراءة"';
+  }
+}
+
+function recordReading() {
+  if (currentForce <= 0) {
+    alert('اضبط قوة السحب أولاً!');
+    return;
+  }
+  const expN = document.getElementById('expNum').value;
+  const diff = (Math.random() * 0.05).toFixed(2); // tiny realistic noise
+  const fa = currentForce;
+  const fb = currentForce;
+  readings.push({ exp: expN, fa, fb, diff: '0.00' });
+  graphData.push({ fa, fb });
+  updateTable();
+  drawGraph();
+
+  const status = document.getElementById('labStatus');
+  status.className = 'lab-status status-done';
+  status.textContent = `✅ تم تسجيل القراءة: ميزان أ = ${fa.toFixed(1)} N | ميزان ب = ${fb.toFixed(1)} N`;
+}
+
+function updateTable() {
+  const tbody = document.getElementById('dataTableBody');
+  if (readings.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="5" style="color:var(--text-muted);padding:20px;">لا توجد بيانات بعد</td></tr>';
+    return;
+  }
+  tbody.innerHTML = readings.map((r,i) => `
+    <tr>
+      <td>تجربة ${r.exp}</td>
+      <td style="color:#60a5fa;font-weight:700">${r.fa.toFixed(1)} N</td>
+      <td style="color:#f87171;font-weight:700">${r.fb.toFixed(1)} N</td>
+      <td class="${r.diff==='0.00'?'equal-cell':'diff-cell'}">${r.diff} N</td>
+      <td class="equal-cell">✔ متساويتان</td>
+    </tr>
+  `).join('');
+}
+
+function resetLab() {
+  readings = [];
+  graphData = [];
+  currentForce = 0;
+  document.getElementById('pullForce').value = 0;
+  document.getElementById('pullForceVal').textContent = '0.0 N';
+  document.getElementById('expNum').value = 1;
+  document.getElementById('expNumVal').textContent = 'التجربة ١';
+  updateScaleDisplay(0);
+  updateTable();
+  drawGraph();
+  document.getElementById('liveObs').style.display = 'none';
+  document.getElementById('labStatus').className = 'lab-status status-idle';
+  document.getElementById('labStatus').textContent = '🔵 اضبط قوة السحب ثم اضغط "تسجيل القراءة"';
+}
+
+let autoRunning = false;
+async function autoDemo() {
+  if (autoRunning) return;
+  autoRunning = true;
+  resetLab();
+  const forces = [5, 10, 15, 20, 30, 40, 50];
+  for (let i = 0; i < forces.length; i++) {
+    currentForce = forces[i];
+    document.getElementById('pullForce').value = forces[i];
+    document.getElementById('pullForceVal').textContent = forces[i].toFixed(1) + ' N';
+    document.getElementById('expNum').value = i+1;
+    document.getElementById('expNumVal').textContent = 'التجربة ' + (i+1);
+    updateScaleDisplay(forces[i]);
+    await sleep(700);
+    recordReading();
+    await sleep(400);
+  }
+  autoRunning = false;
+}
+
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// ═══════════════════════════════════════
+//  FORCE SLIDER
+// ═══════════════════════════════════════
+document.getElementById('forceSlider').addEventListener('input', function() {
+  const v = (+this.value).toFixed(1);
+  document.getElementById('vizF1').textContent = v;
+  document.getElementById('vizF2').textContent = v;
+  document.getElementById('forceSliderVal').textContent = v + ' N';
+});
+
+// ═══════════════════════════════════════
+//  SEESAW EVENTS
+// ═══════════════════════════════════════
+document.getElementById('weightR').addEventListener('input', function() {
+  document.getElementById('weightRVal').textContent = this.value;
+});
+document.getElementById('weightL').addEventListener('input', function() {
+  document.getElementById('weightLVal').textContent = this.value;
+});
+
+// ═══════════════════════════════════════
+//  QUIZ
+// ═══════════════════════════════════════
+let quizScore = 0;
+let answered = new Set();
+
+const feedbacks = {
+  1: { c: '✅ صحيح! وفق القانون الثالث، رد الفعل مساوٍ للفعل في المقدار (30 نيوتن) ومعاكس في الاتجاه.', w: '❌ خطأ. القانون ينص على أن رد الفعل مساوٍ للفعل في المقدار تماماً وهو 30 نيوتن في الاتجاه المعاكس.' },
+  2: { c: '✅ ممتاز! الفعل ورد الفعل يجب أن يؤثرا على جسمَين مختلفَين، وهذا ما يجعلهما لا يلغيان بعضهما.', w: '❌ خطأ. الشرط الأساسي هو أن تؤثرا على جسمَين مختلفَين.' },
+  3: { c: '✅ إجابة مثالية! تجربة الميزانَين تثبت أن القراءتَين دائماً متساويتان بغض النظر عن مقدار القوة.', w: '❌ خطأ. القانون الثالث يضمن أن قراءة الميزان الثاني ستكون 8.5 نيوتن دائماً.' },
+  4: { c: '✅ ممتاز! رد الفعل من الأرض على الطفل = 40 × 9.8 ≈ 400 نيوتن للأعلى.', w: '❌ خطأ. القوة = ك × ج = 40 × 10 = 400 نيوتن للأعلى (رد فعل الأرض على الطفل).' },
+  5: { c: '✅ إجابة ممتازة! لأنهما تؤثران على جسمَين منفصلَين، لا يمكن إلغاؤهما بالجمع الاتجاهي.', w: '❌ خطأ. السبب هو أنهما تؤثران على جسمَين مختلفَين، وليس على نفس الجسم.' },
+  6: { c: '✅ صحيح! رد فعل الغازات على الصاروخ يساوي بالضبط قوة الفعل التي يدفع بها الصاروخ الغازات.', w: '❌ خطأ. الصاروخ يُدفع بنفس القوة البالغة 50,000 نيوتن وفق القانون الثالث.' },
+  7: { c: '✅ دقيق! قوتا الفعل ورد الفعل منطبقتان على نفس الخط ولكن في اتجاهَين متعاكسَين.', w: '❌ خطأ. يقعان على نفس الخط (منطبقَين) ولكن في اتجاهَين متعاكسَين.' },
+  8: { c: '✅ ممتاز! قوة رد الفعل تتضاعف بنفس نسبة تضاعف قوة الفعل دائماً وأبداً.', w: '❌ خطأ. وفق القانون الثالث، إذا تضاعفت قوة الفعل تضاعف رد الفعل بنفس النسبة.' },
+  9: { c: '✅ إجابة رياضية صحيحة! ت = ق/ك = 120/60 = 2 م/ث² للأمام (عكس اتجاه دفع الماء).', w: '❌ خطأ. التسارع = قوة رد الفعل / كتلة السباح = 120/60 = 2 م/ث² للأمام.' },
+  10: { c: '✅ ممتاز! هذا هو جوهر القانون الثالث لنيوتن الذي أثبتناه بالتجربة.', w: '❌ خطأ. الاستنتاج الصحيح هو أن قوتَي الفعل ورد الفعل متساويتان دائماً في المقدار.' },
+};
+
+function answer(qNum, correct, opt) {
+  if (answered.has(qNum)) return;
+  answered.add(qNum);
+  if (correct) quizScore++;
+
+  const opts = document.querySelectorAll(`#q${qNum} .quiz-opt`);
+  opts.forEach(o => o.style.pointerEvents = 'none');
+
+  const clickedOpt = event.currentTarget;
+  clickedOpt.classList.add(correct ? 'correct' : 'wrong');
+
+  // Show correct if wrong
+  if (!correct) {
+    opts.forEach(o => {
+      if (o.onclick.toString().includes(',1,')) o.classList.add('correct');
+    });
+  }
+
+  const fb = document.getElementById(`fb${qNum}`);
+  fb.textContent = correct ? feedbacks[qNum].c : feedbacks[qNum].w;
+  fb.className = 'quiz-feedback ' + (correct ? 'correct' : 'wrong');
+
+  document.getElementById(`next${qNum}`).style.display = 'inline-flex';
+  updateQuizProgress(qNum);
+}
+
+function nextQ(n) {
+  document.querySelectorAll('.quiz-card').forEach(c => c.classList.remove('active'));
+  document.getElementById('q'+n).classList.add('active');
+  updateQuizProgress(n);
+}
+
+function updateQuizProgress(current) {
+  const dots = document.querySelectorAll('.quiz-dot');
+  dots.forEach((d, i) => {
+    d.classList.remove('active','done');
+    if (i+1 < current) d.classList.add('done');
+    else if (i+1 === current) d.classList.add('active');
+  });
+}
+
+function showScore() {
+  document.querySelectorAll('.quiz-card').forEach(c => c.classList.remove('active'));
+  const panel = document.getElementById('scorePanel');
+  panel.style.display = 'block';
+  const pct = (quizScore / 10) * 100;
+  const circle = document.getElementById('scoreCircle');
+  circle.style.background = `conic-gradient(var(--green) ${pct*3.6}deg, var(--surface2) 0deg)`;
+  document.getElementById('scoreNum').textContent = `${quizScore}/10`;
+  document.getElementById('scoreMsg').textContent = pct >= 80 ? '🌟 ممتاز! أنت تفهم القانون جيداً' : pct >= 60 ? '👍 جيد، راجع النقاط التي أخطأت فيها' : '📚 راجع الدرس مرة أخرى وحاول مجدداً';
+  document.getElementById('scoreDetail').textContent = `أجبت صحيحاً على ${quizScore} من 10 أسئلة (${pct}%)`;
+}
+
+function restartQuiz() {
+  quizScore = 0;
+  answered.clear();
+  document.getElementById('scorePanel').style.display = 'none';
+  document.querySelectorAll('.quiz-card').forEach(c => {
+    c.classList.remove('active');
+    c.querySelectorAll('.quiz-opt').forEach(o => {
+      o.classList.remove('correct','wrong');
+      o.style.pointerEvents = '';
+    });
+    c.querySelectorAll('.quiz-feedback').forEach(f => { f.className='quiz-feedback'; f.textContent=''; });
+    c.querySelectorAll('[id^=next]').forEach(b => b.style.display='none');
+  });
+  document.getElementById('q1').classList.add('active');
+  updateQuizProgress(1);
+}
+
+// ═══════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════
+window.addEventListener('DOMContentLoaded', () => {
+  // Init quiz progress dots
+  const prog = document.getElementById('quizProgress');
+  for (let i = 0; i < 10; i++) {
+    const d = document.createElement('div');
+    d.className = 'quiz-dot' + (i===0?' active':'');
+    prog.appendChild(d);
+  }
+
+  // Init scales
+  drawScale('scaleA', 0, 50, '#3b82f6', '#1e40af');
+  drawScale('scaleB', 0, 50, '#ef4444', '#991b1b');
+  drawGraph();
+  updateTable();
+
+  // Resize graph canvas
+  const graphCanvas = document.getElementById('labGraph');
+  graphCanvas.width = graphCanvas.offsetWidth || 500;
+
+  // Start seesaw
+  drawSeesaw();
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+});
+
+// Resize handler
+window.addEventListener('resize', () => {
+  const graphCanvas = document.getElementById('labGraph');
+  graphCanvas.width = graphCanvas.offsetWidth || 500;
+  drawGraph();
+});
+</script>
+</body>
+</html>

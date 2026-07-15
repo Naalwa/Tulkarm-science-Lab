@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>المختبر الافتراضي | المجهر التشريحي</title>
+<style>
+  :root{
+    --bg1:#0f2027;
+    --bg2:#203a43;
+    --bg3:#2c5364;
+    --accent:#16c79a;
+    --accent2:#ff8c42;
+    --card:#ffffff;
+    --text-dark:#16324f;
+    --gold:#ffd166;
+    --danger:#e63946;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Tahoma','Segoe UI',Arial,sans-serif;
+    background:linear-gradient(135deg,var(--bg1),var(--bg2) 50%,var(--bg3));
+    color:#fff;
+    min-height:100vh;
+    line-height:1.8;
+  }
+  .wrap{max-width:1100px;margin:0 auto;padding:18px;}
+
+  header.hero{
+    text-align:center;
+    padding:30px 16px;
+    background:radial-gradient(ellipse at top, rgba(22,199,154,0.25), transparent 60%);
+    border-radius:20px;
+    margin-bottom:24px;
+    position:relative;
+    overflow:hidden;
+  }
+  header.hero h1{
+    font-size:clamp(22px,5vw,36px);
+    margin:0 0 8px;
+    background:linear-gradient(90deg,var(--accent),var(--gold));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  header.hero p{color:#cfe9e3;font-size:clamp(13px,2.5vw,16px);margin:4px 0;}
+  .badges{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:14px;}
+  .badge{
+    background:rgba(255,255,255,0.12);
+    border:1px solid rgba(255,255,255,0.25);
+    padding:6px 14px;border-radius:30px;font-size:13px;backdrop-filter:blur(4px);
+  }
+
+  nav.tabs{
+    display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:22px;
+    position:sticky;top:8px;z-index:50;
+  }
+  nav.tabs button{
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.25);
+    color:#fff;padding:10px 18px;border-radius:14px;cursor:pointer;
+    font-size:14px;font-weight:bold;transition:.25s;backdrop-filter:blur(6px);
+  }
+  nav.tabs button.active, nav.tabs button:hover{
+    background:linear-gradient(135deg,var(--accent),#0f9d83);
+    border-color:transparent;
+    box-shadow:0 6px 18px rgba(22,199,154,0.4);
+    transform:translateY(-2px);
+  }
+
+  section{display:none;animation:fadeIn .5s ease;}
+  section.active{display:block;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{
+    background:var(--card);
+    color:var(--text-dark);
+    border-radius:18px;
+    padding:22px;
+    margin-bottom:20px;
+    box-shadow:0 14px 30px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.6);
+  }
+  .card h2{
+    margin-top:0;color:var(--bg1);
+    border-bottom:3px solid var(--accent);
+    padding-bottom:8px;
+    display:flex;align-items:center;gap:8px;
+  }
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  @media(max-width:760px){.grid2{grid-template-columns:1fr;}}
+
+  .tool-item{
+    background:#f2f9f7;border:2px solid #d8efe9;border-radius:14px;
+    padding:14px;text-align:center;font-size:14px;font-weight:bold;
+    box-shadow:0 4px 0 #c7e5dc;
+  }
+  .tools-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;margin-top:10px;}
+
+  .steps-list{counter-reset:step;list-style:none;padding:0;margin:0;}
+  .steps-list li{
+    counter-increment:step;
+    background:#f7faf9;
+    border-right:5px solid var(--accent);
+    border-radius:10px;
+    padding:14px 16px;margin-bottom:12px;position:relative;
+  }
+  .steps-list li::before{
+    content:counter(step);
+    background:var(--accent);color:#fff;font-weight:bold;
+    width:30px;height:30px;border-radius:50%;
+    display:inline-flex;align-items:center;justify-content:center;
+    margin-left:10px;
+  }
+
+  /* ===== LAB ===== */
+  .lab-stage{
+    background:linear-gradient(180deg,#dfeaf0,#b9c9d2);
+    border-radius:20px;
+    padding:24px;
+    position:relative;
+    min-height:420px;
+    box-shadow:inset 0 0 40px rgba(0,0,0,0.15);
+    perspective:1000px;
+  }
+  .bench{
+    position:absolute;bottom:0;left:0;right:0;height:90px;
+    background:linear-gradient(180deg,#8d5b3a,#5e3b22);
+    border-radius:0 0 20px 20px;
+    box-shadow:inset 0 8px 14px rgba(0,0,0,0.35);
+  }
+
+  .scope-zone{
+    display:flex;justify-content:center;align-items:flex-end;
+    min-height:340px;position:relative;z-index:2;
+  }
+
+  /* microscope built with CSS, pseudo-3D */
+  .microscope{
+    position:relative;width:230px;height:300px;
+    transform-style:preserve-3d;
+    filter:drop-shadow(0 18px 14px rgba(0,0,0,0.35));
+  }
+  .scope-base{
+    position:absolute;bottom:0;left:50%;transform:translateX(-50%);
+    width:160px;height:22px;border-radius:10px;
+    background:linear-gradient(180deg,#54667a,#2c3a47);
+    box-shadow:0 6px 0 #1a232b;
+  }
+  .scope-arm{
+    position:absolute;bottom:18px;left:50%;transform:translateX(-50%);
+    width:26px;height:200px;border-radius:14px;
+    background:linear-gradient(90deg,#3a4a5c,#5d7387,#3a4a5c);
+  }
+  .scope-head{
+    position:absolute;top:6px;left:50%;transform:translateX(-50%) rotate(-8deg);
+    width:90px;height:60px;border-radius:14px;
+    background:linear-gradient(135deg,#6f8294,#3a4a5c);
+    box-shadow:0 4px 10px rgba(0,0,0,0.3);
+  }
+  .scope-eye{
+    position:absolute;top:-22px;left:18px;
+    width:20px;height:30px;border-radius:8px;
+    background:linear-gradient(180deg,#222,#000);
+    transform:rotate(-8deg);
+  }
+  .scope-eye2{
+    position:absolute;top:-22px;left:46px;
+    width:20px;height:30px;border-radius:8px;
+    background:linear-gradient(180deg,#222,#000);
+    transform:rotate(-8deg);
+  }
+  .scope-lens{
+    position:absolute;bottom:30px;left:50%;transform:translateX(-50%);
+    width:36px;height:36px;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #cfe, #4a6, #143);
+    box-shadow:0 0 0 6px #2c3a47, 0 6px 10px rgba(0,0,0,0.4);
+  }
+  .scope-stage{
+    position:absolute;bottom:14px;left:50%;transform:translateX(-50%);
+    width:120px;height:14px;border-radius:6px;
+    background:linear-gradient(180deg,#eef3f6,#c4ced4);
+    box-shadow:0 3px 6px rgba(0,0,0,0.25);
+  }
+  .light-glow{
+    position:absolute;bottom:8px;left:50%;transform:translateX(-50%);
+    width:60px;height:60px;border-radius:50%;
+    background:radial-gradient(circle, rgba(255,236,150,0.85), transparent 70%);
+    opacity:0;transition:opacity .4s;
+    filter:blur(2px);
+  }
+  .microscope.lit .light-glow{opacity:1;}
+
+  .specimen-on-stage{
+    position:absolute;bottom:18px;left:50%;transform:translateX(-50%);
+    width:90px;height:8px;border-radius:4px;
+    background:repeating-linear-gradient(90deg,#222 0 2px, transparent 2px 10px);
+    opacity:0;transition:opacity .4s;
+  }
+  .specimen-on-stage.show{opacity:1;}
+
+  .lab-controls{
+    margin-top:18px;display:flex;flex-wrap:wrap;gap:10px;justify-content:center;
+  }
+  .btn{
+    border:none;cursor:pointer;padding:11px 20px;border-radius:12px;
+    font-weight:bold;font-size:14px;color:#fff;
+    background:linear-gradient(135deg,var(--accent),#0f9d83);
+    box-shadow:0 5px 0 #0a6a57;transition:.15s;
+  }
+  .btn:active{transform:translateY(3px);box-shadow:0 2px 0 #0a6a57;}
+  .btn.secondary{background:linear-gradient(135deg,#5d7387,#3a4a5c);box-shadow:0 5px 0 #25303c;}
+  .btn.warn{background:linear-gradient(135deg,var(--accent2),#c4621f);box-shadow:0 5px 0 #8a4716;}
+  .btn:disabled{opacity:.45;cursor:not-allowed;box-shadow:none;}
+
+  select, input[type=text], input[type=number]{
+    padding:9px 12px;border-radius:10px;border:2px solid #cfe0e8;font-size:14px;font-family:inherit;
+  }
+
+  .ocular-view{
+    margin-top:20px;
+    background:#000;
+    border-radius:50%;
+    width:280px;height:280px;
+    margin-inline:auto;
+    border:14px solid #1c2730;
+    box-shadow:0 0 0 4px #000, inset 0 0 40px rgba(0,0,0,0.8), 0 14px 26px rgba(0,0,0,0.5);
+    position:relative;overflow:hidden;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .ocular-view::after{
+    content:"";position:absolute;inset:0;
+    background:radial-gradient(circle at 50% 50%, transparent 55%, rgba(0,0,0,0.85) 90%);
+    pointer-events:none;
+  }
+  .ocular-empty{color:#888;font-size:13px;text-align:center;padding:0 30px;}
+  .ruler-mag{
+    height:30px;width:90%;
+    background:repeating-linear-gradient(90deg, transparent 0 18px, #fff 18px 21px);
+    position:relative;transition:transform .35s;
+  }
+  .ruler-mag .mm-label{
+    position:absolute;top:32px;font-size:10px;color:#bdf;
+  }
+  .specimen-view{
+    font-size:13px;text-align:center;color:#dfe;padding:10px;max-width:220px;
+  }
+
+  .result-box{
+    margin-top:16px;background:#eef9f5;border:2px dashed var(--accent);
+    border-radius:12px;padding:14px;font-size:14px;display:none;
+  }
+  .result-box.show{display:block;}
+  .result-box.correct{border-color:#2ecc71;background:#eafff1;}
+  .result-box.wrong{border-color:var(--danger);background:#fff0f1;}
+
+  .specimen-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:14px;}
+  .spec-card{
+    background:#fff;border:2px solid #e2eef0;border-radius:14px;padding:12px;text-align:center;
+    cursor:pointer;transition:.2s;
+  }
+  .spec-card:hover, .spec-card.selected{
+    border-color:var(--accent);transform:translateY(-3px);
+    box-shadow:0 8px 18px rgba(22,199,154,0.25);
+  }
+  .spec-card .emoji{font-size:34px;}
+
+  label{font-weight:bold;display:block;margin:10px 0 6px;}
+  textarea{
+    width:100%;min-height:80px;border-radius:10px;border:2px solid #cfe0e8;
+    padding:10px;font-family:inherit;font-size:14px;resize:vertical;
+  }
+
+  .quiz-q{background:#f7faf9;border-radius:12px;padding:14px;margin-bottom:14px;border-right:5px solid var(--gold);}
+  .quiz-opts{display:flex;flex-direction:column;gap:8px;margin-top:10px;}
+  .quiz-opts label{
+    font-weight:normal;background:#fff;border:2px solid #e2eef0;border-radius:10px;
+    padding:9px 12px;cursor:pointer;display:flex;gap:8px;align-items:center;margin:0;
+  }
+  .quiz-opts label:hover{border-color:var(--accent);}
+  .quiz-opts input{accent-color:var(--accent);}
+
+  .score-banner{
+    text-align:center;font-size:18px;font-weight:bold;padding:14px;border-radius:12px;
+    background:linear-gradient(135deg,#16c79a,#0f9d83);color:#fff;display:none;margin-top:14px;
+  }
+  .score-banner.show{display:block;}
+
+  footer{text-align:center;font-size:12px;color:#aac;padding:20px 0;}
+
+  .conclusion-box{
+    background:linear-gradient(135deg,#fff9e6,#fff);
+    border:2px solid var(--gold);border-radius:14px;padding:16px;margin-top:14px;
+  }
+
+  .progress-track{
+    height:8px;background:rgba(255,255,255,0.15);border-radius:6px;margin:6px 0 18px;overflow:hidden;
+  }
+  .progress-fill{
+    height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--gold));transition:width .4s;
+  }
+
+  /* ═══ RESPONSIVE MOBILE & TABLET — AUTO-INJECTED ═══ */
+  @media (max-width: 768px) {
+    body { padding: 8px !important; font-size: 15px !important; overflow-x: hidden !important; }
+    .container, [class*="container"], [class*="wrapper"] { padding: 8px !important; max-width: 100% !important; }
+    canvas { width: 100% !important; height: auto !important; display: block !important; touch-action: none; max-width: 100% !important; }
+    svg { max-width: 100% !important; height: auto !important; }
+    h1 { font-size: clamp(18px, 5vw, 32px) !important; }
+    h2 { font-size: clamp(16px, 4vw, 26px) !important; }
+    h3 { font-size: clamp(14px, 3.5vw, 22px) !important; }
+    p, li, td, th, label, span { font-size: clamp(13px, 3.5vw, 16px) !important; }
+    [class*="grid"] { grid-template-columns: 1fr !important; }
+    [class*="flex"] { flex-wrap: wrap !important; }
+    input[type="range"] { width: 100% !important; min-height: 36px; }
+    input[type="number"], input[type="text"], select, textarea { 
+      font-size: 16px !important; width: 100% !important; box-sizing: border-box; padding: 8px !important;
+    }
+    button { min-height: 44px !important; font-size: 14px !important; touch-action: manipulation; padding: 10px 14px !important; }
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 13px !important; }
+    th, td { padding: 6px 4px !important; white-space: nowrap; }
+    [style*="display: grid"], [style*="display:grid"] { display: flex !important; flex-direction: column !important; }
+    .lab-window, [class*="lab-window"] { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+    header { padding: 12px !important; }
+    .controls, [class*="controls"] { flex-direction: column !important; gap: 8px !important; }
+  }
+  @media (max-width: 480px) {
+    body { padding: 4px !important; }
+    h1 { font-size: clamp(16px, 5vw, 24px) !important; }
+    button { width: 100% !important; }
+  }
+  /* ═══ END RESPONSIVE ═══ */
+</style>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<style>
+.vlab-back-btn {
+  position: fixed; top: 10px; left: 10px; z-index: 99999;
+  background: rgba(10,22,40,0.93); border: 1px solid rgba(0,200,150,0.4);
+  border-radius: 22px; padding: 8px 16px;
+  display: inline-flex; align-items: center; gap: 7px;
+  color: #00C896; font-family: Tajawal, Cairo, Arial, sans-serif;
+  font-size: 13px; font-weight: 700; text-decoration: none;
+  backdrop-filter: blur(8px); box-shadow: 0 4px 18px rgba(0,0,0,0.3);
+  transition: background 0.2s;
+}
+.vlab-back-btn:hover { background: rgba(0,200,150,0.18); color: #00C896; }
+</style>
+
+<a href="../grade8.html" class="vlab-back-btn">&#8594; العودة للصف</a>
+
+<div class="wrap">
+
+  <header class="hero">
+    <h1>🔬 المختبر الافتراضي: المجهر التشريحيّ</h1>
+    <p>منهاج العلوم والحياة – الصف الثامن – فلسطين</p>
+    <p>نشاط (5): استخدام المجهر التشريحيّ</p>
+    <div class="badges">
+      <span class="badge">📘 شرح الدرس</span>
+      <span class="badge">🧪 تجربة افتراضية ثلاثية الأبعاد</span>
+      <span class="badge">📝 استنتاجات</span>
+      <span class="badge">✅ اختبر نفسك</span>
+    </div>
+  </header>
+
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+
+  <nav class="tabs">
+    <button class="active" data-tab="lesson">📘 الدرس</button>
+    <button data-tab="tools">🧰 الأدوات</button>
+    <button data-tab="lab">🔬 المختبر الافتراضي</button>
+    <button data-tab="conclusion">💡 الاستنتاج</button>
+    <button data-tab="quiz">✅ اختبر نفسك</button>
+  </nav>
+
+  <!-- ===================== LESSON ===================== -->
+  <section id="lesson" class="active">
+    <div class="card">
+      <h2>🔬 ما هو المجهر التشريحيّ؟</h2>
+      <p>
+        المجهر التشريحيّ (المجهر المُجسّم) هو جهازٌ بصريّ يُستخدم لتكبير الأجسام والعيّنات الكبيرة نسبيًا
+        مثل الأوراق النباتية، والحشرات، والبذور، وأجزاء من الفواكه، ليتمكّن الطالب من رؤية تفاصيلها الخارجية
+        بوضوح دون الحاجة إلى تحضير شرائح رقيقة كما في المجهر الضوئيّ المركّب.
+      </p>
+      <div class="grid2">
+        <div>
+          <h3>🎯 أهمية المجهر التشريحيّ</h3>
+          <ul>
+            <li>تكبير العيّنات بدرجات مختلفة (مثل ×10 و ×40).</li>
+            <li>رؤية التفاصيل السطحية والملمس والتراكيب الخارجية.</li>
+            <li>دراسة العيّنات وهي ثلاثية الأبعاد (مجسّمة) دون تقطيعها.</li>
+            <li>استخدامه في قياس الأبعاد الصغيرة جدًا بدقّة باستخدام المسطرة المليمترية.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>⚙️ أجزاء المجهر التشريحيّ الأساسية</h3>
+          <ul>
+            <li><b>العدسة العينية:</b> ينظر الطالب من خلالها.</li>
+            <li><b>العدسة الشيئية:</b> تتجه نحو العيّنة وتُكبّرها.</li>
+            <li><b>منضدة العيّنة (المسرح):</b> توضع عليها العيّنة المراد فحصها.</li>
+            <li><b>مقبض التركيز:</b> لضبط وضوح الصورة.</li>
+            <li><b>مصدر الإضاءة:</b> لإنارة العيّنة من الأسفل أو الأعلى.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>🎯 أهداف النشاط</h2>
+      <p>من خلال هذا النشاط سيكون الطالب قادرًا على أن:</p>
+      <ul>
+        <li>يستخدم المجهر التشريحيّ بطريقة صحيحة وآمنة.</li>
+        <li>يحسب مقدار التكبير ويلاحظ أثره في وضوح علامات المليمتر على المسطرة.</li>
+        <li>يقدّر المسافة بين العلامات المليمترية تحت التكبير.</li>
+        <li>يفحص عيّنات مختلفة (نباتية وحيوانية) ويصف ما يشاهده بدقّة.</li>
+        <li>يستنتج العلاقة بين درجة التكبير ووضوح التفاصيل وحجم مجال الرؤية.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===================== TOOLS ===================== -->
+  <section id="tools">
+    <div class="card">
+      <h2>🧰 المواد والأدوات اللازمة</h2>
+      <div class="tools-grid">
+        <div class="tool-item">🔬<br>مجهر تشريحيّ</div>
+        <div class="tool-item">📏<br>مسطرة بلاستيكية شفّافة</div>
+        <div class="tool-item">🍃<br>أوراق نباتات مختلفة</div>
+        <div class="tool-item">🐛<br>وديدان</div>
+        <div class="tool-item">🦟<br>حشرات</div>
+        <div class="tool-item">🍊<br>أجزاء من خضار وفواكه</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>🧭 خطوات العمل</h2>
+      <ol class="steps-list">
+        <li>ضع المسطرة البلاستيكيّة الشفّافة فوق منضدة المجهر (مسرح العيّنة).</li>
+        <li>انظر تحت المجهر على مقدار تكبير ×40 للمسطرة البلاستيكيّة الشفّافة، وحاول أن ترى علامات المليمتر على المسطرة، وقدّر كم تبعد العلامات عن بعضها.</li>
+        <li>افحص العيّنات التي قمت بإحضارها تحت المجهر التشريحيّ، وصف ما تشاهده.</li>
+      </ol>
+      <p>👈 انتقل الآن إلى تبويب <b>"المختبر الافتراضي"</b> لتنفيذ هذه الخطوات بنفسك بشكل تفاعلي.</p>
+    </div>
+  </section>
+
+  <!-- ===================== LAB ===================== -->
+  <section id="lab">
+    <div class="card">
+      <h2>🔬 المختبر الافتراضي ثلاثيّ الأبعاد</h2>
+      <p>نفّذ خطوات التجربة بالترتيب: ضع المسطرة ← شغّل الإضاءة ← اضبط التكبير ← سجّل ملاحظاتك، ثم انتقل لفحص العيّنات.</p>
+
+      <div class="lab-stage">
+        <div class="scope-zone">
+          <div class="microscope" id="microscope">
+            <div class="light-glow" id="lightGlow"></div>
+            <div class="scope-head">
+              <div class="scope-eye"></div>
+              <div class="scope-eye2"></div>
+            </div>
+            <div class="scope-arm"></div>
+            <div class="scope-stage"></div>
+            <div class="specimen-on-stage" id="specimenOnStage"></div>
+            <div class="scope-lens"></div>
+            <div class="scope-base"></div>
+          </div>
+        </div>
+        <div class="bench"></div>
+      </div>
+
+      <div class="lab-controls">
+        <button class="btn" id="btnPlaceRuler">1️⃣ ضع المسطرة على المنضدة</button>
+        <button class="btn secondary" id="btnLight" disabled>2️⃣ شغّل الإضاءة</button>
+        <select id="magSelect" disabled>
+          <option value="0">اختر درجة التكبير</option>
+          <option value="10">×10</option>
+          <option value="40">×40</option>
+        </select>
+        <button class="btn warn" id="btnView" disabled>3️⃣ انظر في العدسة</button>
+      </div>
+
+      <div class="ocular-view" id="ocularView">
+        <div class="ocular-empty">🔭 لم يتمّ ضبط المجهر بعد.<br>اتّبع الخطوات بالترتيب أعلاه.</div>
+      </div>
+
+      <div class="result-box" id="rulerResult"></div>
+
+      <div id="rulerQuestion" style="display:none;margin-top:16px;">
+        <label>📝 بعد الملاحظة تحت تكبير ×40، كم تقدّر المسافة بين كل علامتين مليمتريّتين متجاورتين على المسطرة؟</label>
+        <select id="distanceAnswer">
+          <option value="">اختر إجابتك</option>
+          <option value="1mm">حوالي 1 ملم (المسافة الحقيقية بين العلامات)</option>
+          <option value="10mm">حوالي 10 ملم</option>
+          <option value="100mm">حوالي 100 ملم</option>
+        </select>
+        <button class="btn" id="btnCheckDistance" style="margin-right:10px;">تحقّق من إجابتي</button>
+        <div class="result-box" id="distanceResult"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>🧪 الخطوة الثالثة: فحص العيّنات</h2>
+      <p>اختر عيّنة من العيّنات التالية لفحصها تحت المجهر التشريحيّ:</p>
+      <div class="specimen-cards" id="specimenCards">
+        <div class="spec-card" data-spec="leaf">
+          <div class="emoji">🍃</div>ورقة نبات
+        </div>
+        <div class="spec-card" data-spec="insect">
+          <div class="emoji">🦟</div>حشرة (جناح)
+        </div>
+        <div class="spec-card" data-spec="worm">
+          <div class="emoji">🐛</div>دودة
+        </div>
+        <div class="spec-card" data-spec="fruit">
+          <div class="emoji">🍊</div>قشرة فاكهة
+        </div>
+      </div>
+
+      <div class="ocular-view" id="specimenOcular" style="margin-top:18px;">
+        <div class="ocular-empty">اختر عيّنة لفحصها أعلاه.</div>
+      </div>
+
+      <label>✍️ صف ما شاهدته في العيّنة المختارة تحت المجهر:</label>
+      <textarea id="specimenDesc" placeholder="اكتب وصفك هنا... مثال: لاحظت وجود عروق دقيقة متفرعة على سطح الورقة، ولونها أخضر فاتح، وحوافها مسننة."></textarea>
+      <button class="btn" id="btnSaveDesc" style="margin-top:10px;">💾 حفظ الملاحظة</button>
+      <div class="result-box" id="descResult"></div>
+    </div>
+  </section>
+
+  <!-- ===================== CONCLUSION ===================== -->
+  <section id="conclusion">
+    <div class="card">
+      <h2>💡 التوصّل إلى الاستنتاجات</h2>
+      <p>بناءً على ما لاحظته في المختبر الافتراضي، أجب عن الأسئلة التالية لتكوين استنتاجك الخاص:</p>
+
+      <label>1) هل استطعت رؤية علامات المليمتر على المسطرة بوضوح أكبر عند التكبير ×40 مقارنةً بـ ×10؟</label>
+      <select id="q1">
+        <option value="">اختر</option>
+        <option value="yes">نعم، كانت أوضح وأكبر</option>
+        <option value="no">لا، لم يتغيّر شيء</option>
+      </select>
+
+      <label>2) كلّما زاد مقدار التكبير، ماذا يحدث لحجم مجال الرؤية (المساحة التي تراها)؟</label>
+      <select id="q2">
+        <option value="">اختر</option>
+        <option value="smaller">يصبح أصغر</option>
+        <option value="bigger">يصبح أكبر</option>
+        <option value="same">يبقى كما هو</option>
+      </select>
+
+      <button class="btn" id="btnBuildConclusion" style="margin-top:14px;">🧩 ابنِ استنتاجي</button>
+
+      <div class="conclusion-box" id="finalConclusion" style="display:none;"></div>
+    </div>
+  </section>
+
+  <!-- ===================== QUIZ ===================== -->
+  <section id="quiz">
+    <div class="card">
+      <h2>✅ اختبر نفسك</h2>
+
+      <div class="quiz-q">
+        <b>1) ما الجزء من المجهر التشريحيّ الذي يوضع عليه العيّنة المراد فحصها؟</b>
+        <div class="quiz-opts">
+          <label><input type="radio" name="q1" value="b"> العدسة العينية</label>
+          <label><input type="radio" name="q1" value="a"> منضدة العيّنة (المسرح)</label>
+          <label><input type="radio" name="q1" value="c"> مقبض التركيز</label>
+        </div>
+      </div>
+
+      <div class="quiz-q">
+        <b>2) عند زيادة مقدار التكبير في المجهر التشريحيّ من ×10 إلى ×40، فإنّ مجال الرؤية:</b>
+        <div class="quiz-opts">
+          <label><input type="radio" name="q2" value="a"> يصغر</label>
+          <label><input type="radio" name="q2" value="b"> يكبر</label>
+          <label><input type="radio" name="q2" value="c"> يبقى ثابتًا</label>
+        </div>
+      </div>
+
+      <div class="quiz-q">
+        <b>3) أيّ ممّا يلي يُعدّ من مميزات المجهر التشريحيّ مقارنة بالمجهر الضوئيّ المركّب؟</b>
+        <div class="quiz-opts">
+          <label><input type="radio" name="q3" value="a"> رؤية العيّنة بشكل ثلاثي الأبعاد دون تحضير شرائح رقيقة</label>
+          <label><input type="radio" name="q3" value="b"> تكبير العيّنة آلاف المرّات</label>
+          <label><input type="radio" name="q3" value="c"> لا يحتاج إلى إضاءة</label>
+        </div>
+      </div>
+
+      <div class="quiz-q">
+        <b>4) المسافة الحقيقية بين علامتين متجاورتين على المسطرة المليمترية هي:</b>
+        <div class="quiz-opts">
+          <label><input type="radio" name="q4" value="a"> 1 ملم</label>
+          <label><input type="radio" name="q4" value="b"> 1 سم</label>
+          <label><input type="radio" name="q4" value="c"> 1 متر</label>
+        </div>
+      </div>
+
+      <button class="btn" id="btnSubmitQuiz">📤 أرسل الإجابات</button>
+      <div class="score-banner" id="scoreBanner"></div>
+    </div>
+  </section>
+
+  <footer>صفحة تعليمية تفاعلية — منهاج العلوم والحياة، الصف الثامن، فلسطين 🇵🇸</footer>
+</div>
+
+<script>
+// ---------- Tabs ----------
+const tabBtns = document.querySelectorAll('nav.tabs button');
+const sections = document.querySelectorAll('section');
+const progressFill = document.getElementById('progressFill');
+let visited = new Set(['lesson']);
+function updateProgress(){
+  progressFill.style.width = (visited.size/5*100)+'%';
+}
+tabBtns.forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    tabBtns.forEach(b=>b.classList.remove('active'));
+    sections.forEach(s=>s.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.tab).classList.add('active');
+    visited.add(btn.dataset.tab);
+    updateProgress();
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+});
+updateProgress();
+
+// ---------- LAB STATE ----------
+let rulerPlaced = false;
+let lightOn = false;
+let currentMag = 0;
+
+const btnPlaceRuler = document.getElementById('btnPlaceRuler');
+const btnLight = document.getElementById('btnLight');
+const magSelect = document.getElementById('magSelect');
+const btnView = document.getElementById('btnView');
+const specimenOnStage = document.getElementById('specimenOnStage');
+const microscope = document.getElementById('microscope');
+const lightGlow = document.getElementById('lightGlow');
+const ocularView = document.getElementById('ocularView');
+const rulerResult = document.getElementById('rulerResult');
+const rulerQuestion = document.getElementById('rulerQuestion');
+
+btnPlaceRuler.addEventListener('click', ()=>{
+  rulerPlaced = true;
+  specimenOnStage.classList.add('show');
+  btnPlaceRuler.disabled = true;
+  btnPlaceRuler.textContent = '✔️ تمّ وضع المسطرة';
+  btnLight.disabled = false;
+});
+
+btnLight.addEventListener('click', ()=>{
+  lightOn = true;
+  microscope.classList.add('lit');
+  btnLight.disabled = true;
+  btnLight.textContent = '✔️ الإضاءة مُشغّلة';
+  magSelect.disabled = false;
+});
+
+magSelect.addEventListener('change', ()=>{
+  currentMag = parseInt(magSelect.value) || 0;
+  btnView.disabled = currentMag === 0;
+});
+
+btnView.addEventListener('click', ()=>{
+  if(!rulerPlaced || !lightOn || !currentMag){
+    return;
+  }
+  ocularView.innerHTML = '';
+  const ruler = document.createElement('div');
+  ruler.className = 'ruler-mag';
+  // visual scale based on magnification: bigger mag -> wider spacing & fewer marks visible
+  const spacing = currentMag === 40 ? 60 : 20;
+  ruler.style.background = `repeating-linear-gradient(90deg, transparent 0 ${spacing-3}px, #fff ${spacing-3}px ${spacing}px)`;
+  ocularView.appendChild(ruler);
+
+  const label = document.createElement('div');
+  label.style.color = '#bff';
+  label.style.fontSize = '13px';
+  label.style.marginTop = '14px';
+  label.style.textAlign = 'center';
+  label.innerText = currentMag === 40
+    ? 'تكبير ×40: العلامات المليمترية تبدو متباعدة جدًا وواضحة، ويظهر عدد أقلّ منها في مجال الرؤية.'
+    : 'تكبير ×10: العلامات المليمترية متقاربة نسبيًا، ويظهر عدد أكبر منها في مجال الرؤية.';
+  ocularView.appendChild(label);
+
+  rulerResult.classList.add('show','correct');
+  rulerResult.innerHTML = `📌 لاحظت الآن المسطرة تحت تكبير ×${currentMag}. حاول الإجابة عن السؤال أدناه بناءً على ما شاهدته.`;
+  rulerQuestion.style.display = 'block';
+});
+
+const distanceAnswer = document.getElementById('distanceAnswer');
+const distanceResult = document.getElementById('distanceResult');
+document.getElementById('btnCheckDistance').addEventListener('click', ()=>{
+  distanceResult.classList.add('show');
+  if(distanceAnswer.value === '1mm'){
+    distanceResult.classList.remove('wrong');
+    distanceResult.classList.add('correct');
+    distanceResult.innerHTML = '✅ صحيح! المسافة الحقيقية بين كلّ علامتين متجاورتين على المسطرة المليمترية هي 1 ملم تقريبًا، مهما كان مقدار التكبير، لأنّ التكبير يُكبّر الصورة فقط ولا يُغيّر القياس الحقيقي للجسم.';
+  } else if(distanceAnswer.value === ''){
+    distanceResult.classList.remove('correct');
+    distanceResult.classList.add('wrong');
+    distanceResult.innerHTML = '⚠️ الرجاء اختيار إجابة أولًا.';
+  } else {
+    distanceResult.classList.remove('correct');
+    distanceResult.classList.add('wrong');
+    distanceResult.innerHTML = '❌ غير صحيح. تذكّر أنّ التكبير يُغيّر حجم الصورة كما تراها في العدسة، لكنّه لا يُغيّر القياس الحقيقي للمسطرة. المسافة الحقيقية بين العلامات تبقى 1 ملم.';
+  }
+});
+
+// ---------- Specimen examination ----------
+const specimenData = {
+  leaf: {
+    title: 'ورقة نبات 🍃',
+    desc: 'تظهر تحت المجهر التشريحيّ عروق دقيقة متفرعة (عروق الأوراق)، وملمس سطحي قد يكون أملس أو مغطّى بزغب صغير، وحواف قد تكون مسننة أو ملساء.'
+  },
+  insect: {
+    title: 'جناح حشرة 🦟',
+    desc: 'يظهر الجناح مكوّنًا من غشاء رقيق شفّاف مدعوم بعروق صلبة متشعبة تشبه الشبكة، وقد تُلاحظ ألوانًا أو أنماطًا دقيقة على سطحه.'
+  },
+  worm: {
+    title: 'دودة 🐛',
+    desc: 'يظهر جسم الدودة مقسّمًا إلى حلقات (قطع) متكررة على طول الجسم، وقد يُلاحظ سطح رطب ولون يتراوح بين الوردي والبنّي.'
+  },
+  fruit: {
+    title: 'قشرة فاكهة 🍊',
+    desc: 'تظهر القشرة بسطح غير منتظم يحتوي على مسام صغيرة وتجاعيد دقيقة، وقد تُلاحظ غدد زيتية صغيرة لامعة منتشرة على السطح.'
+  }
+};
+
+const specCards = document.querySelectorAll('.spec-card');
+const specimenOcular = document.getElementById('specimenOcular');
+let selectedSpec = null;
+
+specCards.forEach(card=>{
+  card.addEventListener('click', ()=>{
+    specCards.forEach(c=>c.classList.remove('selected'));
+    card.classList.add('selected');
+    selectedSpec = card.dataset.spec;
+    const data = specimenData[selectedSpec];
+    specimenOcular.innerHTML = `<div class="specimen-view"><b style="font-size:20px;">${data.title}</b><br><br>${data.desc}</div>`;
+  });
+});
+
+document.getElementById('btnSaveDesc').addEventListener('click', ()=>{
+  const txt = document.getElementById('specimenDesc').value.trim();
+  const descResult = document.getElementById('descResult');
+  descResult.classList.add('show');
+  if(!selectedSpec){
+    descResult.classList.add('wrong');
+    descResult.innerHTML = '⚠️ الرجاء اختيار عيّنة أولًا من البطاقات أعلاه.';
+    return;
+  }
+  if(txt.length < 8){
+    descResult.classList.remove('correct');
+    descResult.classList.add('wrong');
+    descResult.innerHTML = '⚠️ حاول أن تكتب وصفًا أكثر تفصيلًا لما شاهدته (اللون، الشكل، الملمس...).';
+    return;
+  }
+  descResult.classList.remove('wrong');
+  descResult.classList.add('correct');
+  descResult.innerHTML = '✅ تمّ حفظ ملاحظتك بنجاح! هذا بالضبط ما يقوم به العالِم: يلاحظ ويصف بدقّة.';
+});
+
+// ---------- Conclusion ----------
+document.getElementById('btnBuildConclusion').addEventListener('click', ()=>{
+  const q1 = document.getElementById('q1').value;
+  const q2 = document.getElementById('q2').value;
+  const box = document.getElementById('finalConclusion');
+  if(!q1 || !q2){
+    box.style.display='block';
+    box.innerHTML = '⚠️ الرجاء الإجابة عن السؤالين أعلاه أولًا.';
+    return;
+  }
+  box.style.display='block';
+  box.innerHTML = `
+    <h3>📌 الاستنتاج النهائي للتجربة</h3>
+    <p>عند استخدام المجهر التشريحيّ بدرجة تكبير أعلى (×40)، تظهر علامات المسطرة المليمترية أكبر وأوضح ممّا تظهر عليه بتكبير ×10،
+    إلا أنّ <b>المسافة الحقيقية</b> بين العلامات تبقى ثابتة (1 ملم) لأنّ التكبير لا يُغيّر القياس الفعليّ للجسم، بل يُكبّر صورته فقط.</p>
+    <p>كما لاحظنا أنّه كلّما زاد مقدار التكبير، ${q2==='smaller' ? 'قلّ حجم مجال الرؤية (المساحة التي يمكن مشاهدتها في وقت واحد)' : 'تغيّر حجم مجال الرؤية'}،
+    وهذا يعني أنّ هناك علاقة عكسية بين درجة التكبير ومساحة مجال الرؤية.</p>
+    <p>وباستخدام المجهر التشريحيّ، تمكّنّا من فحص عيّنات مختلفة (نباتية وحيوانية) ووصف تفاصيلها الخارجية بدقّة لم تكن ممكنة بالعين المجرّدة.</p>
+  `;
+});
+
+// ---------- Quiz ----------
+const correctAnswers = {q1:'a', q2:'a', q3:'a', q4:'a'};
+document.getElementById('btnSubmitQuiz').addEventListener('click', ()=>{
+  let score = 0;
+  let total = Object.keys(correctAnswers).length;
+  for(const key in correctAnswers){
+    const selected = document.querySelector(`input[name="${key}"]:checked`);
+    const allLabels = document.querySelectorAll(`input[name="${key}"]`);
+    allLabels.forEach(inp=>{
+      inp.parentElement.style.background = '#fff';
+      inp.parentElement.style.borderColor = '#e2eef0';
+    });
+    if(selected){
+      if(selected.value === correctAnswers[key]){
+        score++;
+        selected.parentElement.style.background = '#eafff1';
+        selected.parentElement.style.borderColor = '#2ecc71';
+      } else {
+        selected.parentElement.style.background = '#fff0f1';
+        selected.parentElement.style.borderColor = '#e63946';
+      }
+    }
+  }
+  const banner = document.getElementById('scoreBanner');
+  banner.classList.add('show');
+  banner.innerHTML = `🎉 نتيجتك: ${score} من ${total} — ${score===total ? 'ممتاز! إجابات كاملة 👏' : 'حاول مراجعة الدرس وإعادة المحاولة 💪'}`;
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <!-- تعديل meta viewport للجوال -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>محاكاة متطورة لتجربة المجهر - تأثير اللزوجة</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f0f7ff;
+            color: #333;
+            line-height: 1.6;
+            padding: 10px;
+            max-width: 100%;
+            margin: 0 auto;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+        }
+        
+        header {
+            text-align: center;
+            padding: 15px 10px;
+            background: linear-gradient(135deg, #2c5aa0, #4a8bf0);
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 150, 0.2);
+            margin-bottom: 10px;
+        }
+        
+        h1 {
+            font-size: 1.6rem;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+        
+        .subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+        }
+        
+        .controls-panel {
+            width: 100%;
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+            order: 2; /* نقل التحكم لأسفل على الجوال */
+        }
+        
+        .microscope-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            order: 1; /* نقل المجهر لأعلى على الجوال */
+        }
+        
+        .slide-selector {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .slide-btn {
+            padding: 15px 10px;
+            background-color: #e6eeff;
+            border: 2px solid #4a8bf0;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #2c5aa0;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 0.95rem;
+            width: 100%;
+            min-height: 55px;
+        }
+        
+        .slide-btn:hover {
+            background-color: #d4e1ff;
+        }
+        
+        .slide-btn.active {
+            background-color: #4a8bf0;
+            color: white;
+            box-shadow: 0 4px 10px rgba(74, 139, 240, 0.3);
+        }
+        
+        .microscope-view {
+            background-color: #1a1a2e;
+            border-radius: 10px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            height: auto;
+            min-height: 450px;
+            position: relative;
+        }
+        
+        .microscope-header {
+            color: white;
+            text-align: center;
+            margin-bottom: 15px;
+            width: 100%;
+        }
+        
+        .microscope-header h2 {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+        
+        .microscope-header p {
+            font-size: 0.9rem;
+        }
+        
+        .microscope-display {
+            width: 100%;
+            height: 300px;
+            background-color: #0d0d1a;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            border: 2px solid #33334d;
+            margin-bottom: 10px;
+        }
+        
+        .current-slide-indicator {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 6px 10px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            z-index: 100;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .observation-panel {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            width: 100%;
+            min-height: 70px;
+            font-size: 0.9rem;
+        }
+        
+        .organisms-controls {
+            margin-top: 20px;
+            background-color: #f8f9ff;
+            border-radius: 8px;
+            padding: 15px;
+            border: 2px solid #e6eeff;
+        }
+        
+        .organisms-title {
+            color: #2c5aa0;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.1rem;
+        }
+        
+        .organisms-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .organism-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 12px 8px;
+            background-color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid #e6eeff;
+            min-height: 120px;
+        }
+        
+        .organism-option:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .organism-option.selected {
+            border-color: #4a8bf0;
+            background-color: #e6eeff;
+        }
+        
+        .organism-icon {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            color: #2c5aa0;
+        }
+        
+        .organism-name {
+            font-weight: bold;
+            color: #333;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+        
+        .organism-description {
+            font-size: 0.75rem;
+            color: #666;
+            margin-top: 4px;
+            text-align: center;
+        }
+        
+        .steps-container {
+            margin-top: 15px;
+        }
+        
+        .step {
+            background-color: #f8f9ff;
+            border-right: 5px solid #4a8bf0;
+            padding: 12px;
+            margin-bottom: 12px;
+            border-radius: 8px;
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+            font-size: 0.9rem;
+        }
+        
+        .step:hover {
+            background-color: #e6eeff;
+            transform: translateX(-3px);
+        }
+        
+        .step.completed {
+            border-right-color: #2ecc71;
+            background-color: #f0fff5;
+        }
+        
+        .step.active {
+            border-right-color: #ff9800;
+            background-color: #fff8e6;
+        }
+        
+        .step-number {
+            display: inline-block;
+            background-color: #4a8bf0;
+            color: white;
+            width: 24px;
+            height: 24px;
+            text-align: center;
+            line-height: 24px;
+            border-radius: 50%;
+            margin-left: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .step.completed .step-number {
+            background-color: #2ecc71;
+        }
+        
+        .step.active .step-number {
+            background-color: #ff9800;
+        }
+        
+        .action-btn {
+            background-color: #4a8bf0;
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: bold;
+            transition: all 0.3s;
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            min-height: 55px;
+        }
+        
+        .action-btn:hover {
+            background-color: #3a7be0;
+        }
+        
+        .action-btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .reset-btn {
+            background-color: #e74c3c;
+            margin-bottom: 10px;
+        }
+        
+        .reset-btn:hover {
+            background-color: #c0392b;
+        }
+        
+        .magnification-controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .mag-btn {
+            background-color: #33334d;
+            color: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .mag-btn:hover {
+            background-color: #4a4a6d;
+        }
+        
+        .mag-btn.active {
+            background-color: #4a8bf0;
+            box-shadow: 0 0 8px #4a8bf0;
+        }
+        
+        .speed-comparison {
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+            border-top: 5px solid #4a8bf0;
+        }
+        
+        .speed-bar-container {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 12px;
+        }
+        
+        .speed-label {
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        
+        .speed-bar {
+            width: 100%;
+            height: 22px;
+            background-color: #e6eeff;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .speed-fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 1s ease;
+            width: 0%;
+        }
+        
+        .speed-fill.slide1 {
+            background: linear-gradient(90deg, #2ecc71, #27ae60);
+        }
+        
+        .speed-fill.slide2 {
+            background: linear-gradient(90deg, #e74c3c, #c0392b);
+        }
+        
+        .speed-value {
+            font-weight: bold;
+            font-size: 0.9rem;
+            text-align: left;
+        }
+        
+        .speed-details {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 10px;
+            font-size: 0.85rem;
+            color: #666;
+        }
+        
+        .speed-reduction {
+            background-color: #ffeaa7;
+            padding: 6px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            color: #d35400;
+            text-align: center;
+        }
+        
+        .instructions {
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+        }
+        
+        .instructions h3 {
+            color: #2c5aa0;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #f0f0f0;
+            font-size: 1.1rem;
+        }
+        
+        .instructions p {
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 15px;
+            color: #666;
+            font-size: 0.8rem;
+            margin-top: 15px;
+            line-height: 1.4;
+        }
+        
+        .organism {
+            position: absolute;
+            transition: all 0.5s linear;
+        }
+        
+        .paramecium {
+            background-color: #2ecc71;
+            border-radius: 50% 30% 50% 30%;
+        }
+        
+        .spirogyra {
+            background-color: #3498db;
+            border-radius: 2px;
+        }
+        
+        .daphnia {
+            background-color: #9b59b6;
+            border-radius: 40% 40% 0 0;
+        }
+        
+        /* استعلامات وسائط إضافية للجوال */
+        @media (max-width: 768px) {
+            body {
+                padding: 8px;
+            }
+            
+            header {
+                padding: 12px 8px;
+            }
+            
+            h1 {
+                font-size: 1.4rem;
+            }
+            
+            .subtitle {
+                font-size: 0.9rem;
+            }
+            
+            .microscope-view {
+                min-height: 400px;
+                padding: 12px;
+            }
+            
+            .microscope-display {
+                height: 250px;
+            }
+            
+            .organisms-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .organism-option {
+                min-height: 100px;
+                padding: 10px;
+            }
+            
+            .organism-icon {
+                font-size: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.2rem;
+            }
+            
+            .microscope-view {
+                min-height: 380px;
+            }
+            
+            .microscope-display {
+                height: 220px;
+            }
+            
+            .step {
+                padding: 10px;
+                font-size: 0.85rem;
+            }
+            
+            .step-number {
+                width: 22px;
+                height: 22px;
+                line-height: 22px;
+            }
+            
+            .magnification-controls {
+                gap: 8px;
+            }
+            
+            .mag-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 0.9rem;
+            }
+            
+            .action-btn {
+                padding: 12px 15px;
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (min-width: 769px) {
+            /* إعادة الترتيب لشاشات الكمبيوتر */
+            .main-content {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+            
+            .microscope-container {
+                flex: 3;
+                min-width: 300px;
+                order: 2;
+            }
+            
+            .controls-panel {
+                flex: 1;
+                min-width: 300px;
+                order: 1;
+            }
+            
+            .slide-selector {
+                flex-direction: row;
+                justify-content: center;
+                gap: 15px;
+            }
+            
+            .slide-btn {
+                width: auto;
+                min-height: auto;
+            }
+            
+            .organisms-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .speed-bar-container {
+                flex-direction: row;
+                align-items: center;
+            }
+            
+            .speed-label {
+                min-width: 120px;
+            }
+            
+            .speed-details {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+            
+            .action-btn {
+                width: auto;
+                min-height: auto;
+                display: inline-flex;
+                margin-right: 10px;
+            }
+        }
+    
+  /* ═══ RESPONSIVE MOBILE & TABLET — AUTO-INJECTED ═══ */
+  @media (max-width: 768px) {
+    body { padding: 8px !important; font-size: 15px !important; overflow-x: hidden !important; }
+    .container, [class*="container"], [class*="wrapper"] { padding: 8px !important; max-width: 100% !important; }
+    canvas { width: 100% !important; height: auto !important; display: block !important; touch-action: none; max-width: 100% !important; }
+    svg { max-width: 100% !important; height: auto !important; }
+    h1 { font-size: clamp(18px, 5vw, 32px) !important; }
+    h2 { font-size: clamp(16px, 4vw, 26px) !important; }
+    h3 { font-size: clamp(14px, 3.5vw, 22px) !important; }
+    p, li, td, th, label, span { font-size: clamp(13px, 3.5vw, 16px) !important; }
+    [class*="grid"] { grid-template-columns: 1fr !important; }
+    [class*="flex"] { flex-wrap: wrap !important; }
+    input[type="range"] { width: 100% !important; min-height: 36px; }
+    input[type="number"], input[type="text"], select, textarea { 
+      font-size: 16px !important; width: 100% !important; box-sizing: border-box; padding: 8px !important;
+    }
+    button { min-height: 44px !important; font-size: 14px !important; touch-action: manipulation; padding: 10px 14px !important; }
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 13px !important; }
+    th, td { padding: 6px 4px !important; white-space: nowrap; }
+    [style*="display: grid"], [style*="display:grid"] { display: flex !important; flex-direction: column !important; }
+    .lab-window, [class*="lab-window"] { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+    header { padding: 12px !important; }
+    .controls, [class*="controls"] { flex-direction: column !important; gap: 8px !important; }
+  }
+  @media (max-width: 480px) {
+    body { padding: 4px !important; }
+    h1 { font-size: clamp(16px, 5vw, 24px) !important; }
+    button { width: 100% !important; }
+  }
+  /* ═══ END RESPONSIVE ═══ */
+</style>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<style>
+.vlab-back-btn {
+  position: fixed; top: 10px; left: 10px; z-index: 99999;
+  background: rgba(10,22,40,0.93); border: 1px solid rgba(0,200,150,0.4);
+  border-radius: 22px; padding: 8px 16px;
+  display: inline-flex; align-items: center; gap: 7px;
+  color: #00C896; font-family: Tajawal, Cairo, Arial, sans-serif;
+  font-size: 13px; font-weight: 700; text-decoration: none;
+  backdrop-filter: blur(8px); box-shadow: 0 4px 18px rgba(0,0,0,0.3);
+  transition: background 0.2s;
+}
+.vlab-back-btn:hover { background: rgba(0,200,150,0.18); color: #00C896; }
+</style>
+
+<a href="../grade8.html" class="vlab-back-btn">&#8594; العودة للصف</a>
+
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-microscope"></i> محاكاة متطورة لتجربة المجهر</h1>
+            <p class="subtitle">مقارنة تأثير الميثيل سليلوز على حركة الكائنات الدقيقة تحت المجهر</p>
+        </header>
+        
+        <div class="main-content">
+            <div class="controls-panel">
+                <h2><i class="fas fa-vial"></i> خطوات التجربة</h2>
+                <div class="steps-container">
+                    <div class="step" id="step1">
+                        <span class="step-number">1</span>
+                        <span>ضع شريحتين زجاجيتين فارغتين على الطاولة</span>
+                    </div>
+                    <div class="step" id="step2">
+                        <span class="step-number">2</span>
+                        <span>ضع قطرة من الماء الراكد على كل شريحة</span>
+                    </div>
+                    <div class="step" id="step3">
+                        <span class="step-number">3</span>
+                        <span>أضف ميثيل سليلوز إلى الشريحة الثانية فقط</span>
+                    </div>
+                    <div class="step" id="step4">
+                        <span class="step-number">4</span>
+                        <span>غطّ الشريحتين بالغطاء الزجاجي</span>
+                    </div>
+                    <div class="step" id="step5">
+                        <span class="step-number">5</span>
+                        <span>جفف الماء الزائد بورق النشّاف</span>
+                    </div>
+                    <div class="step" id="step6">
+                        <span class="step-number">6</span>
+                        <span>افحص العينات تحت المجهر</span>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 20px;">
+                    <button class="action-btn reset-btn" id="resetBtn">
+                        <i class="fas fa-redo"></i> إعادة التجربة
+                    </button>
+                    <button class="action-btn" id="nextStepBtn">
+                        <i class="fas fa-forward"></i> الخطوة التالية
+                    </button>
+                </div>
+                
+                <div class="organisms-controls">
+                    <h3 class="organisms-title"><i class="fas fa-seedling"></i> اختيار الكائنات المراد رؤيتها</h3>
+                    <p style="color: #666; margin-bottom: 12px; font-size: 0.9rem;">اختر الكائنات التي تريد مشاهدتها تحت المجهر:</p>
+                    
+                    <div class="organisms-grid">
+                        <div class="organism-option selected" data-organism="paramecium">
+                            <div class="organism-icon"><i class="fas fa-oval"></i></div>
+                            <div class="organism-name">البراميسيوم</div>
+                            <div class="organism-description">كائن وحيد الخلية سريع الحركة</div>
+                        </div>
+                        
+                        <div class="organism-option selected" data-organism="spirogyra">
+                            <div class="organism-icon"><i class="fas fa-wave-square"></i></div>
+                            <div class="organism-name">السبيروجيرا</div>
+                            <div class="organism-description">طحلب أخضر خيطي</div>
+                        </div>
+                        
+                        <div class="organism-option selected" data-organism="daphnia">
+                            <div class="organism-icon"><i class="fas fa-shrimp"></i></div>
+                            <div class="organism-name">الدافنيا</div>
+                            <div class="organism-description">قشريات مائية صغيرة</div>
+                        </div>
+                        
+                        <div class="organism-option" data-organism="all">
+                            <div class="organism-icon"><i class="fas fa-th-large"></i></div>
+                            <div class="organism-name">جميع الكائنات</div>
+                            <div class="organism-description">عرض كل الأنواع معاً</div>
+                        </div>
+                        
+                        <div class="organism-option" data-organism="none">
+                            <div class="organism-icon"><i class="fas fa-ban"></i></div>
+                            <div class="organism-name">إخفاء الكل</div>
+                            <div class="organism-description">لا تعرض أي كائنات</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="instructions">
+                    <h3><i class="fas fa-info-circle"></i> تعليمات الاستخدام</h3>
+                    <p>1. تقدم في خطوات التجربة باستخدام "الخطوة التالية".</p>
+                    <p>2. اختر الكائنات التي تريد رؤيتها تحت المجهر.</p>
+                    <p>3. قم بالتبديل بين الشريحة الأولى والثانية لملاحظة الفرق في الحركة.</p>
+                    <p>4. استخدم أزرار التكبير لمشاهدة تفاصيل أكثر.</p>
+                    <p>5. لاحظ كيف يبطئ الميثيل سليلوز حركة الكائنات في الشريحة الثانية.</p>
+                </div>
+            </div>
+            
+            <div class="microscope-container">
+                <div class="slide-selector">
+                    <button class="slide-btn active" id="slide1Btn">
+                        <i class="fas fa-tint"></i> الشريحة الأولى (ماء فقط)
+                    </button>
+                    <button class="slide-btn" id="slide2Btn">
+                        <i class="fas fa-vial"></i> الشريحة الثانية (ماء + ميثيل سليلوز)
+                    </button>
+                </div>
+                
+                <div class="microscope-view">
+                    <div class="microscope-header">
+                        <h2><i class="fas fa-eye"></i> عرض المجهر التفاعلي</h2>
+                        <p>تكبير: <span id="magnificationText">100x</span> | 
+                           العرض: <span id="currentSlideText">الشريحة الأولى (ماء فقط)</span></p>
+                    </div>
+                    
+                    <div class="microscope-display" id="microscopeDisplay">
+                        <div class="current-slide-indicator" id="slideIndicator">
+                            <i class="fas fa-tint"></i> الشريحة الأولى (ماء فقط)
+                        </div>
+                        <!-- الكائنات ستضاف بواسطة JavaScript -->
+                    </div>
+                    
+                    <div class="magnification-controls">
+                        <button class="mag-btn" data-mag="40">40x</button>
+                        <button class="mag-btn active" data-mag="100">100x</button>
+                        <button class="mag-btn" data-mag="400">400x</button>
+                    </div>
+                    
+                    <div class="observation-panel" id="observationText">
+                        <p><strong>ملاحظات:</strong> اضغط على "الخطوة التالية" لبدء التجربة. اختر الكائنات التي تريد رؤيتها من القائمة.</p>
+                    </div>
+                </div>
+                
+                <div class="speed-comparison">
+                    <h3><i class="fas fa-tachometer-alt"></i> مقارنة سرعة الحركة</h3>
+                    <p style="color: #666; margin-bottom: 10px; font-size: 0.9rem;">لاحظ الفرق الكبير في سرعة حركة الكائنات بين الشريحتين:</p>
+                    
+                    <div class="speed-bar-container">
+                        <div class="speed-label">الشريحة الأولى (ماء فقط):</div>
+                        <div class="speed-bar">
+                            <div class="speed-fill slide1" id="speedBar1" style="width: 0%"></div>
+                        </div>
+                        <div class="speed-value" id="speedValue1">0 وحدة/ثانية</div>
+                    </div>
+                    
+                    <div class="speed-bar-container">
+                        <div class="speed-label">الشريحة الثانية (ماء + ميثيل سليلوز):</div>
+                        <div class="speed-bar">
+                            <div class="speed-fill slide2" id="speedBar2" style="width: 0%"></div>
+                        </div>
+                        <div class="speed-value" id="speedValue2">0 وحدة/ثانية</div>
+                    </div>
+                    
+                    <div class="speed-details">
+                        <div>
+                            <strong>الفرق في السرعة:</strong> 
+                            <span id="speedDifference">0%</span>
+                        </div>
+                        <div class="speed-reduction" id="speedReduction">
+                            التباطؤ: 0%
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 12px; font-size: 0.85rem; color: #2c5aa0;">
+                        <i class="fas fa-lightbulb"></i> 
+                        <strong>الملاحظة العلمية:</strong> الميثيل سليلوز يزيد من لزوجة الماء بنسبة تصل إلى 1000% مما يبطئ حركة الكائنات الدقيقة بشكل ملحوظ
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>الاستقصاء الافتراضي في عالم الخلية: المحاكاة الافتراضية كأداة للصمود المعرفي وتعزيز التعلم في الصف الثامن الفلسطيني</p>
+        </footer>
+    </div>
+
+    <!-- JavaScript يبقى كما هو دون تغيير -->
+    <script>
+        // حالة التجربة
+        let currentStep = 0;
+        let magnification = 100;
+        let currentSlide = 1; // 1 للشريحة الأولى، 2 للثانية
+        let selectedOrganisms = {
+            paramecium: true,
+            spirogyra: true,
+            daphnia: true
+        };
+        let organisms = [];
+        let animationId = null;
+        
+        // عناصر DOM
+        const steps = document.querySelectorAll('.step');
+        const nextStepBtn = document.getElementById('nextStepBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const microscopeDisplay = document.getElementById('microscopeDisplay');
+        const magnificationText = document.getElementById('magnificationText');
+        const observationText = document.getElementById('observationText');
+        const magButtons = document.querySelectorAll('.mag-btn');
+        const slide1Btn = document.getElementById('slide1Btn');
+        const slide2Btn = document.getElementById('slide2Btn');
+        const currentSlideText = document.getElementById('currentSlideText');
+        const slideIndicator = document.getElementById('slideIndicator');
+        const speedBar1 = document.getElementById('speedBar1');
+        const speedBar2 = document.getElementById('speedBar2');
+        const speedValue1 = document.getElementById('speedValue1');
+        const speedValue2 = document.getElementById('speedValue2');
+        const speedDifference = document.getElementById('speedDifference');
+        const speedReduction = document.getElementById('speedReduction');
+        const organismOptions = document.querySelectorAll('.organism-option');
+        
+        // خصائص الكائنات الدقيقة - سرعات معقولة وواقعية
+        const organismProperties = {
+            paramecium: {
+                name: "البراميسيوم",
+                color: "#2ecc71",
+                baseSpeed: 2.5, // 2.5 وحدة/ثانية في الماء العادي
+                size: { min: 12, max: 18 },
+                shape: "paramecium",
+                description: "كائن وحيد الخلية يتحرك بسرعة بواسطة الأهداب",
+                viscosityEffect: 0.1 // السرعة في الوسط اللزج = 10% من السرعة الأصلية
+            },
+            spirogyra: {
+                name: "السبيروجيرا",
+                color: "#3498db",
+                baseSpeed: 0.3, // 0.3 وحدة/ثانية في الماء العادي
+                size: { min: 6, max: 10 },
+                shape: "spirogyra",
+                description: "طحلب خيطي أخضر يتحرك ببطء مع تيارات الماء",
+                viscosityEffect: 0.15 // السرعة في الوسط اللزج = 15% من السرعة الأصلية
+            },
+            daphnia: {
+                name: "الدافنيا",
+                color: "#9b59b6",
+                baseSpeed: 1.8, // 1.8 وحدة/ثانية في الماء العادي
+                size: { min: 15, max: 25 },
+                shape: "daphnia",
+                description: "قشريات مائية صغيرة تتحرك بقفزات سريعة",
+                viscosityEffect: 0.2 // السرعة في الوسط اللزج = 20% من السرعة الأصلية
+            }
+        };
+        
+        // نصوص الملاحظات لكل خطوة
+        const observationTexts = [
+            "اضغط على 'الخطوة التالية' لبدء التجربة. اختر الكائنات التي تريد رؤيتها من القائمة.",
+            "تم وضع شريحتين زجاجيتين نظيفتين على الطاولة.",
+            "تم وضع قطرة من الماء الراكد على كل شريحة. الماء يحتوي على كائنات دقيقة وجسيمات صغيرة.",
+            "تم إضافة بودرة الميثيل سليلوز إلى الشريحة الثانية فقط وخلطها جيداً. المادة تذوب وتزيد من لزوجة الماء.",
+            "تم تغطية الشريحتين بأغطية زجاجية دون تكوين فقاعات هواء.",
+            "تم تجفيف الماء الزائد حول الأغطية باستخدام ورق النشاف.",
+            "أنت الآن تشاهد العينات تحت المجهر. استخدم أزرار التبديل للتحويل بين الشريحتين. لاحظ الفرق الكبير في سرعة حركة الكائنات."
+        ];
+        
+        // نصوص المؤشر لكل شريحة
+        const slideIndicatorTexts = {
+            1: '<i class="fas fa-tint"></i> الشريحة الأولى (ماء فقط)',
+            2: '<i class="fas fa-vial"></i> الشريحة الثانية (ماء + ميثيل سليلوز)'
+        };
+        
+        // تهيئة التجربة
+        function initExperiment() {
+            updateStepsDisplay();
+            updateObservationText();
+            createOrganisms();
+            animateOrganisms();
+            updateSpeedComparison();
+        }
+        
+        // تحديث عرض الخطوات
+        function updateStepsDisplay() {
+            steps.forEach((step, index) => {
+                step.classList.remove('completed', 'active');
+                if (index < currentStep) {
+                    step.classList.add('completed');
+                } else if (index === currentStep) {
+                    step.classList.add('active');
+                }
+            });
+        }
+        
+        // تحديث نص الملاحظات
+        function updateObservationText() {
+            observationText.innerHTML = `<p><strong>ملاحظات:</strong> ${observationTexts[currentStep]}</p>`;
+        }
+        
+        // إنشاء الكائنات الدقيقة للمجهر
+        function createOrganisms() {
+            microscopeDisplay.innerHTML = '';
+            organisms = [];
+            
+            // إضافة مؤشر الشريحة
+            slideIndicator.innerHTML = slideIndicatorTexts[currentSlide];
+            
+            // عدد الكائنات يعتمد على التكبير
+            let organismCount = magnification === 40 ? 8 : magnification === 100 ? 15 : 25;
+            
+            // توزيع الكائنات حسب الأنواع المختارة
+            const activeOrganisms = Object.keys(selectedOrganisms).filter(key => selectedOrganisms[key]);
+            if (activeOrganisms.length === 0) return;
+            
+            for (let i = 0; i < organismCount; i++) {
+                // اختيار نوع عشوائي من الأنواع النشطة
+                const organismType = activeOrganisms[Math.floor(Math.random() * activeOrganisms.length)];
+                const props = organismProperties[organismType];
+                
+                const organism = document.createElement('div');
+                organism.classList.add('organism', organismType);
+                
+                // تحديد الحجم بناءً على النوع
+                const size = props.size.min + Math.random() * (props.size.max - props.size.min);
+                organism.style.width = `${size}px`;
+                organism.style.height = `${size}px`;
+                
+                // تحديد الشكل
+                if (organismType === 'spirogyra') {
+                    organism.style.width = `${size * 3}px`; // السبيروجيرا أطول
+                    organism.style.height = `${size / 2}px`;
+                    organism.style.borderRadius = '2px';
+                } else if (organismType === 'paramecium') {
+                    organism.style.borderRadius = '50% 30% 50% 30%';
+                } else if (organismType === 'daphnia') {
+                    organism.style.borderRadius = '40% 40% 0 0';
+                }
+                
+                organism.style.backgroundColor = props.color;
+                
+                // وضع عشوائي في المنطقة المناسبة للشريحة الحالية
+                const displayWidth = microscopeDisplay.clientWidth;
+                const displayHeight = microscopeDisplay.clientHeight;
+                
+                let x, y;
+                if (currentSlide === 1) {
+                    // الشريحة الأولى: النصف الأيسر من الشاشة
+                    x = Math.random() * (displayWidth / 2 - size);
+                    if (organismType === 'spirogyra') x = Math.random() * (displayWidth / 2 - size * 3);
+                } else {
+                    // الشريحة الثانية: النصف الأيمن من الشاشة
+                    x = displayWidth / 2 + Math.random() * (displayWidth / 2 - size);
+                    if (organismType === 'spirogyra') x = displayWidth / 2 + Math.random() * (displayWidth / 2 - size * 3);
+                }
+                
+                y = Math.random() * (displayHeight - size);
+                
+                organism.style.left = `${x}px`;
+                organism.style.top = `${y}px`;
+                
+                // خصائص الحركة
+                const baseSpeed = props.baseSpeed;
+                const direction = Math.random() * Math.PI * 2;
+                
+                organisms.push({
+                    element: organism,
+                    type: organismType,
+                    x,
+                    y,
+                    size,
+                    baseSpeed: baseSpeed,
+                    currentSpeed: currentStep >= 6 ? baseSpeed : 0,
+                    direction,
+                    props: props
+                });
+                
+                microscopeDisplay.appendChild(organism);
+            }
+        }
+        
+        // تحريك الكائنات الدقيقة
+        function animateOrganisms() {
+            if (animationId) cancelAnimationFrame(animationId);
+            
+            function animate() {
+                organisms.forEach(organism => {
+                    // إذا كانت التجربة لم تصل بعد لخطوة الرؤية تحت المجهر
+                    if (currentStep < 6) {
+                        organism.element.style.opacity = '0';
+                        return;
+                    }
+                    
+                    organism.element.style.opacity = '1';
+                    
+                    // تحديد السرعة الحالية بناءً على الشريحة
+                    let currentSpeed;
+                    if (currentSlide === 1) {
+                        // الشريحة الأولى: السرعة الكاملة
+                        currentSpeed = organism.baseSpeed;
+                    } else {
+                        // الشريحة الثانية: السرعة مخفضة حسب تأثير اللزوجة
+                        currentSpeed = organism.baseSpeed * organism.props.viscosityEffect;
+                    }
+                    
+                    // تحديث الموقع
+                    organism.x += Math.cos(organism.direction) * currentSpeed;
+                    organism.y += Math.sin(organism.direction) * currentSpeed;
+                    
+                    // الانعكاس عند حواف المنطقة
+                    const displayWidth = microscopeDisplay.clientWidth;
+                    const displayHeight = microscopeDisplay.clientHeight;
+                    
+                    // تحديد حدود الحركة بناءً على الشريحة الحالية
+                    let minX, maxX;
+                    if (currentSlide === 1) {
+                        minX = 0;
+                        maxX = displayWidth / 2 - organism.size;
+                    } else {
+                        minX = displayWidth / 2;
+                        maxX = displayWidth - organism.size;
+                    }
+                    
+                    // تصحيح الحد الأقصى للسبيروجيرا (أطول)
+                    if (organism.type === 'spirogyra') {
+                        maxX = currentSlide === 1 ? 
+                            displayWidth / 2 - organism.size * 3 : 
+                            displayWidth - organism.size * 3;
+                    }
+                    
+                    if (organism.x <= minX || organism.x >= maxX) {
+                        organism.direction = Math.PI - organism.direction;
+                        organism.x = organism.x <= minX ? minX : maxX;
+                    }
+                    
+                    if (organism.y <= 0 || organism.y >= displayHeight - organism.size) {
+                        organism.direction = -organism.direction;
+                        organism.y = organism.y <= 0 ? 0 : displayHeight - organism.size;
+                    }
+                    
+                    // تحديث موقع العنصر
+                    organism.element.style.left = `${organism.x}px`;
+                    organism.element.style.top = `${organism.y}px`;
+                    
+                    // تغيير الاتجاه بشكل عشوائي قليلاً
+                    if (Math.random() > 0.97) {
+                        organism.direction += (Math.random() - 0.5) * 0.5;
+                    }
+                });
+                
+                // تحديث مقارنة السرعة
+                updateSpeedComparison();
+                
+                animationId = requestAnimationFrame(animate);
+            }
+            
+            animate();
+        }
+        
+        // تحديث مقارنة السرعة
+        function updateSpeedComparison() {
+            if (currentStep < 6) {
+                speedBar1.style.width = "0%";
+                speedBar2.style.width = "0%";
+                speedValue1.textContent = "0 وحدة/ثانية";
+                speedValue2.textContent = "0 وحدة/ثانية";
+                speedDifference.textContent = "0%";
+                speedReduction.textContent = "التباطؤ: 0%";
+                return;
+            }
+            
+            // حساب متوسط سرعة الكائنات النشطة في كل حالة
+            let totalSpeedSlide1 = 0;
+            let totalSpeedSlide2 = 0;
+            let count = 0;
+            
+            organisms.forEach(organism => {
+                if (selectedOrganisms[organism.type]) {
+                    totalSpeedSlide1 += organism.baseSpeed;
+                    totalSpeedSlide2 += organism.baseSpeed * organism.props.viscosityEffect;
+                    count++;
+                }
+            });
+            
+            if (count === 0) return;
+            
+            const avgSpeedSlide1 = totalSpeedSlide1 / count;
+            const avgSpeedSlide2 = totalSpeedSlide2 / count;
+            
+            // تحديث أشرطة السرعة (بحد أقصى 3 وحدات/ثانية للقياس)
+            const maxSpeedForDisplay = 3.0;
+            const percentage1 = Math.min(100, (avgSpeedSlide1 / maxSpeedForDisplay) * 100);
+            const percentage2 = Math.min(100, (avgSpeedSlide2 / maxSpeedForDisplay) * 100);
+            
+            speedBar1.style.width = `${percentage1}%`;
+            speedBar2.style.width = `${percentage2}%`;
+            
+            // تحديث القيم العددية
+            speedValue1.textContent = `${avgSpeedSlide1.toFixed(1)} وحدة/ثانية`;
+            speedValue2.textContent = `${avgSpeedSlide2.toFixed(1)} وحدة/ثانية`;
+            
+            // حساب الفرق
+            const reduction = ((avgSpeedSlide1 - avgSpeedSlide2) / avgSpeedSlide1) * 100;
+            const difference = (avgSpeedSlide2 / avgSpeedSlide1) * 100;
+            
+            speedDifference.textContent = `${difference.toFixed(0)}%`;
+            speedReduction.textContent = `التباطؤ: ${reduction.toFixed(0)}%`;
+            
+            // تغيير لون مؤشر التباطؤ بناءً على النسبة
+            if (reduction > 80) {
+                speedReduction.style.backgroundColor = "#ff7675";
+                speedReduction.style.color = "#ffffff";
+            } else if (reduction > 60) {
+                speedReduction.style.backgroundColor = "#fdcb6e";
+                speedReduction.style.color = "#000000";
+            } else {
+                speedReduction.style.backgroundColor = "#ffeaa7";
+                speedReduction.style.color = "#d35400";
+            }
+        }
+        
+        // الانتقال للخطوة التالية
+        function nextStep() {
+            if (currentStep < 6) {
+                currentStep++;
+                
+                updateStepsDisplay();
+                updateObservationText();
+                
+                // تعطيل الزر إذا انتهت الخطوات
+                if (currentStep === 6) {
+                    nextStepBtn.disabled = true;
+                    // إنشاء الكائنات عند بدء المراقبة
+                    createOrganisms();
+                }
+            }
+        }
+        
+        // تبديل الشريحة المعروضة
+        function switchSlide(slideNumber) {
+            currentSlide = slideNumber;
+            
+            // تحديث أزرار التبديل
+            slide1Btn.classList.toggle('active', slideNumber === 1);
+            slide2Btn.classList.toggle('active', slideNumber === 2);
+            
+            // تحديث النصوص
+            currentSlideText.textContent = slideNumber === 1 ? 
+                "الشريحة الأولى (ماء فقط)" : 
+                "الشريحة الثانية (ماء + ميثيل سليلوز)";
+            
+            slideIndicator.innerHTML = slideIndicatorTexts[slideNumber];
+            
+            // إعادة إنشاء الكائنات في الموضع المناسب
+            createOrganisms();
+        }
+        
+        // اختيار الكائنات المراد عرضها
+        function selectOrganism(organismType) {
+            if (organismType === 'all') {
+                // تفعيل كل الكائنات
+                Object.keys(selectedOrganisms).forEach(key => {
+                    selectedOrganisms[key] = true;
+                });
+            } else if (organismType === 'none') {
+                // إلغاء تفعيل كل الكائنات
+                Object.keys(selectedOrganisms).forEach(key => {
+                    selectedOrganisms[key] = false;
+                });
+            } else {
+                // تبديل حالة الكائن المحدد
+                selectedOrganisms[organismType] = !selectedOrganisms[organismType];
+            }
+            
+            // تحديث التحديد البصري
+            organismOptions.forEach(option => {
+                const type = option.getAttribute('data-organism');
+                if (type === 'all') {
+                    option.classList.toggle('selected', 
+                        Object.values(selectedOrganisms).every(v => v === true));
+                } else if (type === 'none') {
+                    option.classList.toggle('selected', 
+                        Object.values(selectedOrganisms).every(v => v === false));
+                } else {
+                    option.classList.toggle('selected', selectedOrganisms[type]);
+                }
+            });
+            
+            // إعادة إنشاء الكائنات المختارة فقط
+            createOrganisms();
+        }
+        
+        // إعادة تعيين التجربة
+        function resetExperiment() {
+            currentStep = 0;
+            currentSlide = 1;
+            
+            // إعادة تعيين الكائنات المختارة
+            selectedOrganisms = {
+                paramecium: true,
+                spirogyra: true,
+                daphnia: true
+            };
+            
+            // تحديث التحديد البصري
+            organismOptions.forEach(option => {
+                const type = option.getAttribute('data-organism');
+                if (type === 'all' || type === 'none') {
+                    option.classList.remove('selected');
+                } else {
+                    option.classList.add('selected');
+                }
+            });
+            
+            // إعادة تعيين العرض
+            switchSlide(1);
+            
+            // إعادة تعيين الخطوات والزر
+            updateStepsDisplay();
+            updateObservationText();
+            nextStepBtn.disabled = false;
+            
+            // إعادة إنشاء الكائنات
+            createOrganisms();
+        }
+        
+        // تغيير التكبير
+        function changeMagnification(newMag) {
+            magnification = newMag;
+            magnificationText.textContent = `${magnification}x`;
+            
+            // تحديث أزرار التكبير النشطة
+            magButtons.forEach(btn => {
+                const btnMag = parseInt(btn.getAttribute('data-mag'));
+                btn.classList.toggle('active', btnMag === magnification);
+            });
+            
+            // إعادة إنشاء الكائنات بحجم جديد
+            createOrganisms();
+        }
+        
+        // معالجات الأحداث
+        nextStepBtn.addEventListener('click', nextStep);
+        resetBtn.addEventListener('click', resetExperiment);
+        
+        slide1Btn.addEventListener('click', () => switchSlide(1));
+        slide2Btn.addEventListener('click', () => switchSlide(2));
+        
+        magButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const newMag = parseInt(btn.getAttribute('data-mag'));
+                changeMagnification(newMag);
+            });
+        });
+        
+        // اختيار الكائنات
+        organismOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                const organismType = option.getAttribute('data-organism');
+                selectOrganism(organismType);
+            });
+        });
+        
+        // السماح بالضغط على الخطوات للانتقال المباشر
+        steps.forEach((step, index) => {
+            step.addEventListener('click', () => {
+                if (index <= currentStep) {
+                    currentStep = index - 1;
+                    resetExperiment();
+                    for (let i = 0; i <= index; i++) {
+                        setTimeout(() => nextStep(), i * 300);
+                    }
+                }
+            });
+        });
+        
+        // بدء التجربة
+        initExperiment();
+        
+        // معالجة تغيير حجم النافذة
+        window.addEventListener('resize', () => {
+            createOrganisms();
+        });
+    </script>
+</body>
+</html>
