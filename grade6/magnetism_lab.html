@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+<title>التَّمغنط | مختبر العلوم والحياة - الصف السادس</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --iron:#2b2f33;
+  --iron-light:#4a5258;
+  --copper:#c8702a;
+  --copper-light:#e3955a;
+  --parchment:#f3ead7;
+  --parchment-dark:#e6d8b8;
+  --teal:#0b3d3a;
+  --teal-light:#155e58;
+  --field-blue:#3a6ea5;
+  --pole-n:#c0392b;
+  --pole-s:#2c5f8a;
+  --gold:#caa24a;
+  --ink:#1c1f1d;
+  --paper-line:#cdbf9a;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:'Tajawal',sans-serif;
+  background:
+    radial-gradient(ellipse at top left, #103c39 0%, #07211f 55%, #051615 100%);
+  color:var(--parchment);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+::selection{background:var(--copper);color:#fff;}
+
+/* ---------- scrollbar ---------- */
+::-webkit-scrollbar{width:10px;}
+::-webkit-scrollbar-track{background:#07211f;}
+::-webkit-scrollbar-thumb{background:var(--copper);border-radius:10px;}
+
+/* ---------- HERO ---------- */
+.hero{
+  position:relative;
+  min-height:92vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:40px 18px;
+  overflow:hidden;
+  perspective:1400px;
+}
+.hero::before{
+  content:"";
+  position:absolute;inset:0;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(202,162,74,0.04) 0px, rgba(202,162,74,0.04) 1px, transparent 1px, transparent 36px),
+    repeating-linear-gradient(90deg, rgba(202,162,74,0.04) 0px, rgba(202,162,74,0.04) 1px, transparent 1px, transparent 36px);
+  pointer-events:none;
+}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:'Cairo',sans-serif;
+  font-weight:700;
+  letter-spacing:1px;
+  color:var(--gold);
+  background:rgba(202,162,74,0.1);
+  border:1px solid rgba(202,162,74,0.4);
+  padding:8px 18px;border-radius:999px;
+  font-size:14px;
+  margin-bottom:22px;
+}
+.hero h1{
+  font-family:'Cairo',sans-serif;
+  font-weight:900;
+  font-size:clamp(38px,7vw,76px);
+  margin:0 0 12px;
+  background:linear-gradient(180deg,#fff 10%, var(--gold) 110%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  text-shadow:0 4px 30px rgba(202,162,74,0.25);
+}
+.hero p.sub{
+  font-size:clamp(16px,2.4vw,21px);
+  max-width:680px;
+  color:#d9d2c0;
+  line-height:1.9;
+  margin:0 auto 30px;
+}
+.hero-tags{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:42px;}
+.hero-tags span{
+  font-size:13px;color:var(--parchment);
+  border:1px solid rgba(243,234,215,0.25);
+  padding:6px 14px;border-radius:8px;background:rgba(255,255,255,0.03);
+}
+
+/* 3D Nail + magnet demo in hero */
+.hero-rig{
+  width:min(560px,90vw);
+  height:260px;
+  position:relative;
+  transform-style:preserve-3d;
+  margin-top:10px;
+}
+.field-svg{position:absolute;inset:-40px;width:calc(100% + 80px);height:calc(100% + 80px);opacity:0.55;}
+.field-line{fill:none;stroke:var(--field-blue);stroke-width:1.4;stroke-dasharray:6 7;animation:dash 4s linear infinite;}
+@keyframes dash{to{stroke-dashoffset:-130;}}
+
+.scene-nail{
+  position:absolute;left:50%;top:55%;
+  width:220px;height:18px;
+  transform:translate(-50%,-50%) rotateX(55deg) rotateZ(-8deg);
+  transform-style:preserve-3d;
+}
+.nail-body{
+  position:absolute;inset:0;
+  border-radius:4px;
+  background:linear-gradient(180deg,var(--iron-light),var(--iron));
+  box-shadow:0 18px 24px -10px rgba(0,0,0,0.6);
+}
+.nail-head{
+  position:absolute;right:-10px;top:50%;transform:translateY(-50%);
+  width:22px;height:32px;border-radius:5px;
+  background:linear-gradient(180deg,var(--iron-light),var(--iron));
+}
+.scene-magnet{
+  position:absolute;left:18%;top:18%;
+  width:120px;height:34px;border-radius:6px;
+  display:flex;overflow:hidden;
+  transform:rotateX(50deg) rotateZ(20deg);
+  box-shadow:0 22px 30px -10px rgba(0,0,0,0.55);
+  animation:swing 5s ease-in-out infinite;
+}
+@keyframes swing{
+  0%,100%{transform:rotateX(50deg) rotateZ(20deg) translateY(0);}
+  50%{transform:rotateX(50deg) rotateZ(20deg) translateY(-14px);}
+}
+.pole-n,.pole-s{flex:1;display:flex;align-items:center;justify-content:center;font-family:'Cairo',sans-serif;font-weight:900;color:#fff;font-size:14px;}
+.pole-n{background:linear-gradient(180deg,#e0584a,var(--pole-n));}
+.pole-s{background:linear-gradient(180deg,#3f7fb8,var(--pole-s));}
+
+.scroll-cue{margin-top:48px;font-size:13px;color:#a8a290;display:flex;flex-direction:column;align-items:center;gap:6px;}
+.scroll-cue .chev{width:10px;height:10px;border-right:2px solid var(--gold);border-bottom:2px solid var(--gold);transform:rotate(45deg);animation:bob 1.6s ease-in-out infinite;}
+@keyframes bob{0%,100%{transform:rotate(45deg) translateY(0);}50%{transform:rotate(45deg) translateY(6px);}}
+
+/* ---------- SECTION SHELL ---------- */
+section{
+  max-width:1080px;margin:0 auto;
+  padding:90px 22px;
+  position:relative;
+}
+.section-head{margin-bottom:46px;text-align:center;}
+.section-num{
+  font-family:'Cairo',sans-serif;font-weight:800;color:var(--copper-light);
+  font-size:14px;letter-spacing:3px;margin-bottom:10px;display:block;
+}
+.section-head h2{
+  font-family:'Cairo',sans-serif;font-weight:800;font-size:clamp(26px,4vw,40px);
+  margin:0 0 14px;color:var(--parchment);
+}
+.section-head p{color:#c7bfa9;max-width:640px;margin:0 auto;line-height:1.9;font-size:16px;}
+
+.card{
+  background:linear-gradient(165deg, rgba(243,234,215,0.05), rgba(243,234,215,0.02));
+  border:1px solid rgba(202,162,74,0.18);
+  border-radius:20px;
+  padding:30px;
+  backdrop-filter:blur(6px);
+}
+
+/* info / question boxes echoing the worksheet styling */
+.note-box, .ask-box{
+  border-radius:14px;padding:20px 22px;margin:26px 0;
+  display:flex;gap:14px;align-items:flex-start;
+  line-height:1.85;font-size:15.5px;
+}
+.note-box{background:rgba(58,110,165,0.12);border:1px solid rgba(58,110,165,0.4);}
+.ask-box{background:rgba(192,57,43,0.1);border:1px solid rgba(192,57,43,0.35);}
+.note-box .ic, .ask-box .ic{font-size:22px;flex:none;}
+
+/* ---------- LAB LAYOUT ---------- */
+.lab-grid{
+  display:grid;grid-template-columns:1.25fr 1fr;gap:26px;
+  align-items:stretch;
+}
+@media (max-width:860px){.lab-grid{grid-template-columns:1fr;}}
+
+.stage{
+  position:relative;
+  border-radius:18px;
+  background:
+    radial-gradient(circle at 30% 20%, rgba(202,162,74,0.07), transparent 60%),
+    linear-gradient(160deg,#16201d,#0c1513 70%);
+  border:1px solid rgba(202,162,74,0.2);
+  min-height:380px;
+  overflow:hidden;
+  perspective:1300px;
+  touch-action:none;
+}
+.stage-floor{
+  position:absolute;left:0;right:0;bottom:0;height:46%;
+  background:linear-gradient(180deg, rgba(202,162,74,0.05), rgba(202,162,74,0.12));
+  border-top:1px solid rgba(202,162,74,0.25);
+  transform-style:preserve-3d;
+}
+
+.controls{display:flex;flex-direction:column;gap:18px;}
+.ctrl-group{
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(243,234,215,0.12);
+  border-radius:14px;padding:16px 18px;
+}
+.ctrl-group h4{margin:0 0 10px;font-family:'Cairo',sans-serif;font-size:15px;color:var(--gold);}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;}
+button.opt{
+  font-family:'Tajawal',sans-serif;font-weight:700;
+  background:rgba(243,234,215,0.06);
+  border:1px solid rgba(243,234,215,0.25);
+  color:var(--parchment);
+  padding:9px 16px;border-radius:10px;cursor:pointer;
+  font-size:14px;transition:all .15s ease;
+}
+button.opt:hover{background:rgba(202,162,74,0.18);border-color:var(--gold);}
+button.opt.active{background:var(--copper);border-color:var(--copper);color:#fff;}
+
+input[type=range]{
+  width:100%;accent-color:var(--copper);height:6px;
+}
+.range-label{display:flex;justify-content:space-between;font-size:13px;color:#cfc7ae;margin-top:6px;}
+
+.primary-btn{
+  font-family:'Cairo',sans-serif;font-weight:800;
+  background:linear-gradient(180deg,var(--copper-light),var(--copper));
+  color:#fff;border:none;border-radius:12px;
+  padding:14px 20px;font-size:15px;cursor:pointer;
+  box-shadow:0 10px 22px -8px rgba(200,112,42,0.6);
+  transition:transform .15s ease;
+}
+.primary-btn:hover{transform:translateY(-2px);}
+.primary-btn:active{transform:translateY(0);}
+.ghost-btn{
+  font-family:'Tajawal',sans-serif;font-weight:700;
+  background:transparent;border:1px solid rgba(243,234,215,0.3);
+  color:var(--parchment);border-radius:12px;padding:13px 18px;cursor:pointer;font-size:14.5px;
+}
+
+.readout{
+  background:rgba(7,33,31,0.55);
+  border:1px dashed rgba(202,162,74,0.4);
+  border-radius:14px;padding:16px 18px;
+  font-size:14.5px;line-height:1.9;color:#e9e2cc;
+  min-height:64px;
+}
+.readout b{color:var(--gold);}
+.metric-row{display:flex;gap:14px;flex-wrap:wrap;margin-top:6px;}
+.metric{
+  background:rgba(202,162,74,0.08);border:1px solid rgba(202,162,74,0.3);
+  border-radius:12px;padding:10px 16px;text-align:center;flex:1;min-width:110px;
+}
+.metric .num{font-family:'Cairo',sans-serif;font-weight:900;font-size:26px;color:var(--gold);display:block;}
+.metric .lbl{font-size:12px;color:#cfc7ae;}
+
+/* nail + clips visuals reused across stages */
+.nail3d{
+  position:absolute;
+  width:200px;height:16px;
+  left:50%;top:50%;
+  transform-style:preserve-3d;
+  cursor:grab;
+}
+.nail3d .shaft{
+  position:absolute;inset:0;border-radius:3px;
+  background:linear-gradient(180deg,#5a6268,#2b2f33 60%,#1c1f21);
+  box-shadow:inset 0 2px 3px rgba(255,255,255,0.15), 0 10px 16px rgba(0,0,0,0.45);
+}
+.nail3d .head{
+  position:absolute;right:-9px;top:-7px;width:18px;height:30px;border-radius:4px;
+  background:linear-gradient(180deg,#5a6268,#2b2f33);
+}
+.nail3d.magnetized .shaft{
+  background:linear-gradient(90deg, var(--pole-n) 0%, var(--pole-n) 46%, var(--pole-s) 54%, var(--pole-s) 100%);
+  box-shadow:0 0 18px 2px rgba(58,110,165,0.55), 0 10px 16px rgba(0,0,0,0.45);
+}
+.pole-tag{
+  position:absolute;top:-22px;font-family:'Cairo',sans-serif;font-weight:800;font-size:12px;
+  color:var(--gold); opacity:0; transition:opacity .3s;
+}
+.nail3d.magnetized .pole-tag{opacity:1;}
+.pole-tag.left{right:-4px;} .pole-tag.right{left:-4px;}
+
+.magnet-tool{
+  position:absolute;width:96px;height:26px;border-radius:6px;
+  display:flex;overflow:hidden;
+  box-shadow:0 14px 20px -8px rgba(0,0,0,0.55);
+  cursor:grab;z-index:5;
+  transform-style:preserve-3d;
+}
+.magnet-tool .n,.magnet-tool .s{flex:1;display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Cairo',sans-serif;font-weight:900;font-size:11px;}
+.magnet-tool .n{background:linear-gradient(180deg,#e0584a,var(--pole-n));}
+.magnet-tool .s{background:linear-gradient(180deg,#3f7fb8,var(--pole-s));}
+
+.clip{
+  position:absolute;width:26px;height:14px;
+  border:3px solid #b9c2c8;border-radius:8px;
+  background:transparent;
+  transition:transform .35s cubic-bezier(.2,.8,.2,1.1), left .35s, top .35s, opacity .3s;
+}
+
+/* coil visual */
+.coil-wrap{position:absolute;left:50%;top:42%;transform:translate(-50%,-50%);transform-style:preserve-3d;}
+.coil-nail{
+  width:170px;height:14px;border-radius:3px;
+  background:linear-gradient(180deg,#5a6268,#2b2f33);
+  position:relative;
+}
+.coil-loops{position:absolute;inset:-10px 18px;display:flex;justify-content:space-between;align-items:center;}
+.loop{
+  width:10px;height:34px;border:3px solid var(--copper-light);border-radius:50%;
+  box-shadow:0 0 6px rgba(200,112,42,0.5);
+}
+.battery3d{
+  position:absolute;left:50%;top:78%;transform:translate(-50%,0);
+  width:90px;height:40px;border-radius:8px;
+  background:linear-gradient(180deg,#3a3a3a,#181818);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Cairo',sans-serif;font-weight:900;color:var(--gold);font-size:13px;
+  box-shadow:0 14px 18px -6px rgba(0,0,0,0.5);
+  gap:6px;
+}
+.battery3d .term{width:14px;height:14px;border-radius:50%;background:#caa24a;}
+.wire{position:absolute;border-top:3px solid var(--copper-light);border-radius:50%;opacity:.9;}
+
+/* progress dots / nav */
+.lab-nav{
+  position:sticky;top:0;z-index:50;
+  display:flex;justify-content:center;gap:8px;
+  padding:14px 10px;
+  background:linear-gradient(180deg, rgba(7,21,21,0.92), rgba(7,21,21,0.65));
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid rgba(202,162,74,0.2);
+  flex-wrap:wrap;
+}
+.lab-nav a{
+  font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;
+  color:#d9d2c0;text-decoration:none;
+  padding:8px 14px;border-radius:999px;border:1px solid transparent;
+  transition:all .2s;
+}
+.lab-nav a:hover{border-color:rgba(202,162,74,0.5);color:var(--gold);}
+
+/* conclusion fill-in */
+.fillblank{
+  width:100%;min-height:56px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(243,234,215,0.25);
+  border-radius:10px;color:var(--parchment);
+  padding:12px 14px;font-family:'Tajawal',sans-serif;font-size:15px;
+  resize:vertical;
+}
+.fillblank:focus{outline:2px solid var(--gold);}
+.check-row{display:flex;gap:10px;align-items:center;margin-top:10px;flex-wrap:wrap;}
+.feedback{font-size:14px;padding:8px 12px;border-radius:8px;display:none;}
+.feedback.show{display:inline-block;}
+.feedback.good{background:rgba(46,160,90,0.18);color:#7fe3a4;border:1px solid rgba(46,160,90,0.4);}
+.feedback.meh{background:rgba(202,162,74,0.15);color:var(--gold);border:1px solid rgba(202,162,74,0.4);}
+
+/* quiz */
+.quiz-card{margin-bottom:18px;}
+.quiz-q{font-family:'Cairo',sans-serif;font-weight:700;margin-bottom:12px;font-size:16px;}
+.quiz-opts{display:flex;flex-direction:column;gap:8px;}
+.quiz-opts button{
+  text-align:right;font-family:'Tajawal',sans-serif;
+  background:rgba(255,255,255,0.04);border:1px solid rgba(243,234,215,0.2);
+  color:var(--parchment);padding:11px 16px;border-radius:10px;cursor:pointer;font-size:14.5px;
+}
+.quiz-opts button.correct{background:rgba(46,160,90,0.25);border-color:#2ea05a;}
+.quiz-opts button.wrong{background:rgba(192,57,43,0.25);border-color:var(--pole-n);}
+.score-pill{
+  display:inline-block;margin-top:10px;font-family:'Cairo',sans-serif;font-weight:800;
+  background:var(--teal-light);padding:8px 18px;border-radius:999px;color:#fff;font-size:14px;
+}
+
+footer{
+  text-align:center;padding:50px 20px 70px;color:#8d8672;font-size:13px;line-height:2;
+}
+footer b{color:var(--gold);}
+
+@media(max-width:600px){
+  section{padding:64px 16px;}
+  .card{padding:20px;}
+  .stage{min-height:320px;}
+}
+
+  /* ══ RESPONSIVE MOBILE & TABLET ══ */
+  @media (max-width: 768px) {
+    body { padding: 8px !important; font-size: 15px !important; overflow-x: hidden !important; }
+    .container, [class*="container"], [class*="wrapper"] { padding: 8px !important; max-width: 100% !important; }
+    canvas { width: 100% !important; height: auto !important; display: block !important; touch-action: none; max-width: 100% !important; }
+    svg { max-width: 100% !important; height: auto !important; }
+    h1 { font-size: clamp(18px,5vw,32px) !important; }
+    h2 { font-size: clamp(15px,4vw,26px) !important; }
+    h3 { font-size: clamp(13px,3.5vw,20px) !important; }
+    [class*="grid"] { grid-template-columns: 1fr !important; }
+    [class*="flex"] { flex-wrap: wrap !important; }
+    input[type="range"] { width: 100% !important; min-height: 36px; }
+    input[type="number"], input[type="text"], select, textarea {
+      font-size: 16px !important; width: 100% !important; box-sizing: border-box; padding: 8px !important; }
+    button { min-height: 44px !important; font-size: 14px !important; touch-action: manipulation; padding: 10px 14px !important; }
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 13px !important; }
+    th, td { padding: 6px 4px !important; }
+    header { padding: 10px 12px !important; }
+    .controls, [class*="controls"] { flex-direction: column !important; gap: 8px !important; }
+    .lab-window, [class*="lab-window"] { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+  }
+  @media (max-width: 480px) {
+    body { padding: 4px !important; }
+    button { width: 100% !important; }
+  }
+  /* ══ END RESPONSIVE ══ */
+</style>
+</head>
+<body>
+<style>
+.vlab-back{position:fixed;top:10px;left:10px;z-index:99999;
+background:rgba(10,22,40,0.93);border:1px solid rgba(0,200,150,0.4);
+border-radius:22px;padding:8px 16px;display:inline-flex;align-items:center;gap:7px;
+color:#00C896;font-family:Tajawal,Cairo,Arial,sans-serif;font-size:13px;font-weight:700;
+text-decoration:none;backdrop-filter:blur(8px);box-shadow:0 4px 18px rgba(0,0,0,0.3);
+transition:background 0.2s;}
+.vlab-back:hover{background:rgba(0,200,150,0.18);}
+</style>
+<a href="../grade6.html" class="vlab-back">&#8594; العودة للصف</a>
+
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <span class="eyebrow">📘 العلوم والحياة — الصف السادس — الوحدة: المغناطيسية</span>
+  <h1>التَّمغنط</h1>
+  <p class="sub">كيف يتحوّل مسمار الحديد العادي إلى مغناطيس حقيقي يجذب الأشياء المعدنية؟
+    تعرّف على طرق التمغنط الثلاث، وجرّب بنفسك في المختبر الافتراضي ثلاثي الأبعاد أدناه.</p>
+  <div class="hero-tags">
+    <span>🧲 التمغنط بالحَكّ</span>
+    <span>🧲 التمغنط بالحَثّ المغناطيسي</span>
+    <span>⚡ المغناطيس الكهربائي</span>
+    <span>🔬 مختبر تفاعلي</span>
+  </div>
+
+  <div class="hero-rig">
+    <svg class="field-svg" viewBox="0 0 600 360">
+      <path class="field-line" d="M150,180 C150,90 450,90 450,180"/>
+      <path class="field-line" d="M150,180 C150,60 470,60 470,180" style="animation-delay:-1s"/>
+      <path class="field-line" d="M150,180 C150,260 450,260 450,180" style="animation-delay:-2s"/>
+      <path class="field-line" d="M150,180 C150,280 470,280 470,180" style="animation-delay:-3s"/>
+    </svg>
+    <div class="scene-nail">
+      <div class="nail-body"></div>
+      <div class="nail-head"></div>
+    </div>
+    <div class="scene-magnet">
+      <div class="pole-n">N</div><div class="pole-s">S</div>
+    </div>
+  </div>
+
+  <div class="scroll-cue"><span>ابدأ الدّرس</span><span class="chev"></span></div>
+</header>
+
+<!-- ============ STICKY LAB NAV ============ -->
+<nav class="lab-nav">
+  <a href="#intro">المقدّمة</a>
+  <a href="#stage1">تجربة ١: الحَكّ</a>
+  <a href="#stage2">تجربة ٢: الحَثّ</a>
+  <a href="#stage3">تجربة ٣: المغناطيس الكهربائي</a>
+  <a href="#stage4">تجربة ٤: العوامل المؤثّرة</a>
+  <a href="#quiz">اختبر نفسك</a>
+</nav>
+
+<!-- ============ INTRO ============ -->
+<section id="intro">
+  <div class="section-head">
+    <span class="section-num">٠١ — المفهوم الأساسي</span>
+    <h2>ما هو التَّمغنط؟</h2>
+    <p>إكساب المواد مثل الحديد والفولاذ خصائص مغناطيسيّة يُسمّى <b>التَّمغنط</b>. توجد عدّة طرق لتحويل قطعة حديد عادية إلى مغناطيس، سنكتشفها معًا واحدة تلو الأخرى من خلال التجارب التالية.</p>
+  </div>
+  <div class="card">
+    <div class="note-box"><span class="ic">💡</span>
+      <div>المسمار العادي تكون جزيئاته المغناطيسيّة الصغيرة (تُسمّى "النُّطَيقات المغناطيسيّة") موزّعة بشكل عشوائي، فتُلغي تأثير بعضها بعضًا. عندما يحدث التَّمغنط، تصطفّ هذه النُّطيقات في اتّجاه واحد، فيصبح للمسمار قطبان: شمالي وجنوبي.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STAGE 1: STROKE MAGNETIZATION ============ -->
+<section id="stage1">
+  <div class="section-head">
+    <span class="section-num">٠٢ — نشاط (١)</span>
+    <h2>أصنع مغناطيسيًّا بطريقة الحَكّ</h2>
+    <p>اسحب المغناطيس فوق المسمار عدّة مرّات <b>بنفس الاتّجاه دائمًا</b>، ثمّ جرّب تقريب المسمار من المشابك المعدنيّة لترى ماذا يحدث.</p>
+  </div>
+  <div class="lab-grid">
+    <div class="stage" id="stageOne">
+      <div class="stage-floor"></div>
+      <div class="nail3d" id="nail1">
+        <span class="pole-tag right">N</span>
+        <span class="pole-tag left">S</span>
+        <div class="shaft"></div>
+        <div class="head"></div>
+      </div>
+      <div class="magnet-tool" id="magnetTool" style="left:60px; top:40px;">
+        <div class="n">N</div><div class="s">S</div>
+      </div>
+      <div id="clipsHolder1"></div>
+    </div>
+    <div class="controls">
+      <div class="ctrl-group">
+        <h4>① اسحب المغناطيس فوق المسمار</h4>
+        <p style="font-size:13.5px;color:#cfc7ae;margin:0 0 10px;">اسحب أداة المغناطيس (🧲) من طرف المسمار إلى الطرف الآخر، بنفس الاتّجاه في كلّ مرّة.</p>
+        <div class="metric-row">
+          <div class="metric"><span class="num" id="strokeCount">0</span><span class="lbl">عدد مرّات الحَكّ</span></div>
+        </div>
+      </div>
+      <div class="ctrl-group">
+        <h4>② اختبر المسمار</h4>
+        <button class="primary-btn" id="testNail1" style="width:100%;">قرّب المسمار من المشابك 🧷</button>
+      </div>
+      <div class="readout" id="readout1">جرّب الحَكّ أولًا، ثمّ اختبر المسمار لتعرف عدد المشابك التي يجذبها.</div>
+      <button class="ghost-btn" id="resetStage1">إعادة التجربة 🔄</button>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:30px;">
+    <h4 style="font-family:'Cairo',sans-serif;color:var(--gold);margin-top:0;">📝 سجّل ملاحظاتي</h4>
+    <p style="color:#cfc7ae;font-size:14.5px;">أُسمّي هذه الطريقة في التمغنط بـ:</p>
+    <textarea class="fillblank" id="blank1" placeholder="اكتب إجابتك هنا..."></textarea>
+    <div class="check-row">
+      <button class="ghost-btn" id="check1">تحقّق من إجابتي</button>
+      <span class="feedback" id="fb1"></span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STAGE 2: INDUCTION (WITHOUT TOUCHING) ============ -->
+<section id="stage2">
+  <div class="section-head">
+    <span class="section-num">٠٣ — نشاط (١) تتمّة</span>
+    <h2>التمغنط بالحَثّ المغناطيسي</h2>
+    <p>هل يُمكن تحويل المسمار إلى مغناطيس <b>دون أن يلامسه المغناطيس</b>؟ قرّب المغناطيس من المسمار بدون لمسه، وراقب ماذا يحدث للمشابك.</p>
+  </div>
+  <div class="lab-grid">
+    <div class="stage" id="stageTwo">
+      <div class="stage-floor"></div>
+      <div class="nail3d" id="nail2">
+        <span class="pole-tag right">N</span>
+        <span class="pole-tag left">S</span>
+        <div class="shaft"></div>
+        <div class="head"></div>
+      </div>
+      <div class="magnet-tool" id="magnetTool2" style="left:30px; top:40px;">
+        <div class="n">N</div><div class="s">S</div>
+      </div>
+      <div id="clipsHolder2"></div>
+    </div>
+    <div class="controls">
+      <div class="ctrl-group">
+        <h4>① قرّب المغناطيس تدريجيًّا</h4>
+        <input type="range" id="distSlider" min="0" max="100" value="100">
+        <div class="range-label"><span>بعيد</span><span id="distLabel">المسافة: بعيدة جدًّا</span><span>قريب جدًّا (بدون لمس)</span></div>
+      </div>
+      <div class="readout" id="readout2">حرّك المنزلق لتقريب المغناطيس من المسمار تدريجيًّا دون لمسه.</div>
+      <div class="ctrl-group">
+        <h4>② الآن أبعِد المغناطيس عن المسمار</h4>
+        <button class="primary-btn" id="moveAway" style="width:100%;">أُبعِد المغناطيس 🚶‍♂️</button>
+      </div>
+      <div class="readout" id="readout2b">هل احتفظ المسمار بمغنطته بعد إبعاد المغناطيس عنه؟</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:30px;">
+    <div class="ask-box"><span class="ic">❓</span>
+      <div>عند تقريب مغناطيس من مسمار حديد دون أن يلامسه، فإنّ المسمار يتحوّل إلى ____________، وتُسمّى هذه الطريقة التَّمغنط بـ ____________.</div>
+    </div>
+    <textarea class="fillblank" id="blank2" placeholder="أكمل الفراغين بإجابتك..."></textarea>
+    <div class="check-row">
+      <button class="ghost-btn" id="check2">تحقّق من إجابتي</button>
+      <span class="feedback" id="fb2"></span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STAGE 3: ELECTROMAGNET BASIC ============ -->
+<section id="stage3">
+  <div class="section-head">
+    <span class="section-num">٠٤ — نشاط (١) الخطوة ٧</span>
+    <h2>أصنع مغناطيسًا كهربائيًّا</h2>
+    <p>استبدل البطّاريّة والأسلاك المعزولة بالمغناطيس! لُفّ السلك حول المسمار ووصّله بالبطّاريّة، وشاهد كيف يتحوّل المسمار إلى مغناطيس كهربائيّ قويّ.</p>
+  </div>
+  <div class="lab-grid">
+    <div class="stage" id="stageThree">
+      <div class="stage-floor"></div>
+      <div class="coil-wrap">
+        <div class="coil-loops" id="coilLoops3"></div>
+        <div class="coil-nail" id="coilNail3"></div>
+      </div>
+      <div class="battery3d" id="battery3"><div class="term"></div>+ بطّاريّة<div class="term"></div></div>
+      <div id="clipsHolder3"></div>
+    </div>
+    <div class="controls">
+      <div class="ctrl-group">
+        <h4>① وصّل الدّارة الكهربائيّة</h4>
+        <button class="primary-btn" id="connectCircuit" style="width:100%;">⚡ وصِّل البطّاريّة بالسلك</button>
+      </div>
+      <div class="readout" id="readout3">اضغط الزرّ لتوصيل الدّارة وتحويل المسمار إلى مغناطيس كهربائيّ.</div>
+      <div class="metric-row">
+        <div class="metric"><span class="num" id="clips3">0</span><span class="lbl">مشابك مُنجذِبة</span></div>
+      </div>
+      <button class="ghost-btn" id="resetStage3">فصل الدّارة 🔌</button>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:30px;">
+    <h4 style="font-family:'Cairo',sans-serif;color:var(--gold);margin-top:0;">📝 ماذا نُسمّي المغناطيس الناتج؟ ولماذا؟</h4>
+    <textarea class="fillblank" id="blank3" placeholder="اكتب تفسيرك هنا..."></textarea>
+  </div>
+</section>
+
+<!-- ============ STAGE 4: VARIABLES LAB (LOOPS / BATTERIES / MATERIAL) ============ -->
+<section id="stage4">
+  <div class="section-head">
+    <span class="section-num">٠٥ — نشاط (٢)</span>
+    <h2>العوامل المؤثِّرة في قوّة المغناطيس الكهربائيّ</h2>
+    <p>غيّر عدد لفّات السلك، وعدد البطّاريّات، ونوع المادّة، وراقب كيف تتغيّر قوّة المغناطيس الكهربائيّ (عدد المشابك التي يجذبها).</p>
+  </div>
+  <div class="lab-grid">
+    <div class="stage" id="stageFour">
+      <div class="stage-floor"></div>
+      <div class="coil-wrap">
+        <div class="coil-loops" id="coilLoops4"></div>
+        <div class="coil-nail" id="coilNail4"></div>
+      </div>
+      <div class="battery3d" id="battery4"><div class="term"></div>+<div class="term"></div></div>
+      <div id="clipsHolder4"></div>
+    </div>
+    <div class="controls">
+      <div class="ctrl-group">
+        <h4>عدد لفّات السلك</h4>
+        <div class="btn-row" id="loopsRow">
+          <button class="opt active" data-loops="25">٢٥ لفّة</button>
+          <button class="opt" data-loops="50">٥٠ لفّة</button>
+          <button class="opt" data-loops="75">٧٥ لفّة</button>
+        </div>
+      </div>
+      <div class="ctrl-group">
+        <h4>عدد البطّاريّات (شدّة التيّار)</h4>
+        <div class="btn-row" id="battRow">
+          <button class="opt active" data-batt="1">بطّاريّة واحدة</button>
+          <button class="opt" data-batt="2">بطّاريّتان</button>
+          <button class="opt" data-batt="3">٣ بطّاريّات</button>
+        </div>
+      </div>
+      <div class="ctrl-group">
+        <h4>نوع قلب الملفّ (نوع المادّة)</h4>
+        <div class="btn-row" id="matRow">
+          <button class="opt active" data-mat="iron">حديد</button>
+          <button class="opt" data-mat="wood">خشب</button>
+          <button class="opt" data-mat="plastic">بلاستيك</button>
+        </div>
+      </div>
+      <div class="readout" id="readout4">غيّر القيم أعلاه وشاهد قوّة الانجذاب تتغيّر فورًا.</div>
+      <div class="metric-row">
+        <div class="metric"><span class="num" id="clips4">0</span><span class="lbl">مشابك مُنجذِبة</span></div>
+        <div class="metric"><span class="num" id="strength4">ضعيفة</span><span class="lbl">قوّة المغناطيس</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:30px;">
+    <h4 style="font-family:'Cairo',sans-serif;color:var(--gold);margin-top:0;">🧪 استنتاجاتي من التجربة</h4>
+    <p style="color:#cfc7ae;font-size:14.5px;margin-bottom:6px;">١. العلاقة بين عدد لفّات السلك وقوّة المغناطيس الكهربائيّ:</p>
+    <textarea class="fillblank" id="concl1" placeholder="كلّما زاد عدد اللفّات..."></textarea>
+    <p style="color:#cfc7ae;font-size:14.5px;margin:16px 0 6px;">٢. العلاقة بين شدّة التيّار (عدد البطّاريّات) وقوّة المغناطيس الكهربائيّ:</p>
+    <textarea class="fillblank" id="concl2" placeholder="كلّما زادت شدّة التيّار..."></textarea>
+    <p style="color:#cfc7ae;font-size:14.5px;margin:16px 0 6px;">٣. هل يصلح كلّ نوع من المواد ليكون قلبًا للملفّ؟ فسّر إجابتك:</p>
+    <textarea class="fillblank" id="concl3" placeholder="اكتب استنتاجك..."></textarea>
+    <div class="check-row">
+      <button class="primary-btn" id="checkConcl">تحقّق من استنتاجاتي ✅</button>
+      <span class="feedback" id="fbConcl"></span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ QUIZ ============ -->
+<section id="quiz">
+  <div class="section-head">
+    <span class="section-num">٠٦ — تقويم</span>
+    <h2>اختبر نفسك</h2>
+    <p>أجب عن الأسئلة التالية بناءً على ما تعلّمته من التجارب.</p>
+  </div>
+  <div class="card">
+    <div class="quiz-card">
+      <div class="quiz-q">١. إكساب الحديد والفولاذ خصائص مغناطيسيّة يُسمّى:</div>
+      <div class="quiz-opts" data-correct="1">
+        <button>الانصهار</button>
+        <button>التَّمغنط</button>
+        <button>التَّبخّر</button>
+      </div>
+    </div>
+    <div class="quiz-card">
+      <div class="quiz-q">٢. عند زيادة عدد لفّات السلك حول المسمار، فإنّ قوّة المغناطيس الكهربائيّ:</div>
+      <div class="quiz-opts" data-correct="0">
+        <button>تزداد</button>
+        <button>تقلّ</button>
+        <button>تبقى ثابتة</button>
+      </div>
+    </div>
+    <div class="quiz-card">
+      <div class="quiz-q">٣. أيّ ممّا يلي يُعدّ طريقة من طرق التَّمغنط؟</div>
+      <div class="quiz-opts" data-correct="2">
+        <button>تسخين المسمار فقط</button>
+        <button>غسل المسمار بالماء</button>
+        <button>الحَكّ بمغناطيس</button>
+      </div>
+    </div>
+    <div class="quiz-card">
+      <div class="quiz-q">٤. زيادة عدد البطّاريّات في دارة المغناطيس الكهربائيّ تؤدّي إلى:</div>
+      <div class="quiz-opts" data-correct="0">
+        <button>زيادة شدّة التيّار وزيادة القوّة</button>
+        <button>توقّف الدّارة عن العمل</button>
+        <button>لا تأثير على القوّة</button>
+      </div>
+    </div>
+    <div id="quizResult" style="text-align:center;"></div>
+  </div>
+</section>
+
+<footer>
+  صفحة تعليميّة تفاعليّة لدرس <b>التَّمغنط</b> — منهاج العلوم والحياة، الصف السادس — فلسطين<br>
+  مبنيّة بترميز UTF-8 لدعم اللغة العربيّة، وتعمل على الهاتف والحاسوب.
+</footer>
+
+<script>
+/* ---------- Helpers ---------- */
+function placeClips(container, n, attracted, hostRect){
+  container.innerHTML = "";
+  const total = 6;
+  for(let i=0;i<total;i++){
+    const c = document.createElement('div');
+    c.className = 'clip';
+    const baseLeft = 20 + i*30;
+    const baseTop = 250;
+    c.style.left = baseLeft+'px';
+    c.style.top = baseTop+'px';
+    if(i < n && attracted){
+      c.style.left = (140 + i*8)+'px';
+      c.style.top = (96 + i*4)+'px';
+      c.style.transform = 'rotate('+(i*15-20)+'deg) scale(0.9)';
+    } else if (i>=n){
+      c.style.opacity='1';
+    }
+    container.appendChild(c);
+  }
+}
+
+/* ================= STAGE 1 : STROKE MAGNETIZATION ================= */
+(function(){
+  const stage = document.getElementById('stageOne');
+  const magnet = document.getElementById('magnetTool');
+  const nail = document.getElementById('nail1');
+  const strokeCountEl = document.getElementById('strokeCount');
+  const readout = document.getElementById('readout1');
+  const clipsHolder = document.getElementById('clipsHolder1');
+  let strokes = 0, magnetized = false, dragging=false, lastX=null, dirLocked=null, dirBroken=false;
+
+  placeClips(clipsHolder, 0, false);
+
+  function setMagnetPos(x,y){
+    magnet.style.left = Math.max(0,Math.min(stage.clientWidth-96,x))+'px';
+    magnet.style.top = Math.max(0,Math.min(stage.clientHeight-26,y))+'px';
+  }
+
+  function pointerDown(e){
+    dragging = true;
+    lastX = (e.touches? e.touches[0].clientX : e.clientX);
+    magnet.style.cursor='grabbing';
+  }
+  function pointerMove(e){
+    if(!dragging) return;
+    const clientX = (e.touches? e.touches[0].clientX : e.clientX);
+    const clientY = (e.touches? e.touches[0].clientY : e.clientY);
+    const rect = stage.getBoundingClientRect();
+    setMagnetPos(clientX-rect.left-48, clientY-rect.top-13);
+
+    const dx = clientX - lastX;
+    if(Math.abs(dx) > 4){
+      const dir = dx > 0 ? 'right' : 'left';
+      if(dirLocked === null) dirLocked = dir;
+      else if(dir !== dirLocked) dirBroken = true;
+      lastX = clientX;
+    }
+    // crossing the nail roughly = a stroke; detect by horizontal travel distance
+    const rectN = nail.getBoundingClientRect();
+    if(Math.abs(clientY - (rectN.top+rectN.height/2)) < 40){
+      stage.dataset.crossing = "1";
+    }
+  }
+  function pointerUp(e){
+    if(!dragging) return;
+    dragging = false;
+    magnet.style.cursor='grab';
+    if(stage.dataset.crossing === "1"){
+      strokes++;
+      strokeCountEl.textContent = strokes;
+      stage.dataset.crossing = "";
+      readout.innerHTML = dirBroken
+        ? "لاحظتُ أنّك غيّرت اتّجاه الحَكّ! للحصول على مغنطة جيّدة يجب الحَكّ <b>بنفس الاتّجاه دائمًا</b>. حاول مجدّدًا."
+        : "عدد مرّات الحَكّ: <b>"+strokes+"</b>. استمرّ بنفس الاتّجاه، ثمّ اختبر المسمار بالمشابك.";
+    }
+    dirLocked = dirBroken ? null : dirLocked;
+  }
+
+  magnet.addEventListener('mousedown', pointerDown);
+  magnet.addEventListener('touchstart', pointerDown, {passive:true});
+  window.addEventListener('mousemove', pointerMove);
+  window.addEventListener('touchmove', pointerMove, {passive:true});
+  window.addEventListener('mouseup', pointerUp);
+  window.addEventListener('touchend', pointerUp);
+
+  document.getElementById('testNail1').addEventListener('click', function(){
+    if(strokes >= 5 && !dirBroken){
+      magnetized = true;
+      nail.classList.add('magnetized');
+      const n = Math.min(5, Math.floor(strokes/3)+1);
+      placeClips(clipsHolder, n, true);
+      readout.innerHTML = "🎉 أصبح المسمار <b>مغناطيسًا</b>! اصطفّت النُّطيقات المغناطيسيّة داخله في اتّجاه واحد، فجذب <b>"+n+"</b> مشابك معدنيّة. أُسمّي هذه الطريقة: <b>التَّمغنط بالحَكّ</b>.";
+    } else {
+      magnetized = false;
+      nail.classList.remove('magnetized');
+      placeClips(clipsHolder, 0, false);
+      readout.innerHTML = "المسمار لم يُمغنط بعد بشكل كافٍ. اسحب المغناطيس فوقه عدّة مرّات (٥ مرّات على الأقلّ) <b>بنفس الاتّجاه</b> ثمّ أعد المحاولة.";
+    }
+  });
+
+  document.getElementById('resetStage1').addEventListener('click', function(){
+    strokes = 0; dirLocked=null; dirBroken=false; magnetized=false;
+    strokeCountEl.textContent = 0;
+    nail.classList.remove('magnetized');
+    placeClips(clipsHolder, 0, false);
+    setMagnetPos(60,40);
+    readout.textContent = "جرّب الحَكّ أولًا، ثمّ اختبر المسمار لتعرف عدد المشابك التي يجذبها.";
+  });
+
+  document.getElementById('check1').addEventListener('click', function(){
+    const val = document.getElementById('blank1').value.trim();
+    const fb = document.getElementById('fb1');
+    fb.classList.add('show');
+    if(val.includes('حك') || val.includes('حَكّ') || val.includes('حك ') || val.includes('احتكاك')){
+      fb.textContent = "✅ إجابة صحيحة: التَّمغنط بالحَكّ.";
+      fb.className = 'feedback show good';
+    } else {
+      fb.textContent = "💡 الإجابة المتوقَّعة: التَّمغنط بالحَكّ (لأنّنا حككنا المغناطيس على المسمار).";
+      fb.className = 'feedback show meh';
+    }
+  });
+})();
+
+/* ================= STAGE 2 : INDUCTION ================= */
+(function(){
+  const stage = document.getElementById('stageTwo');
+  const magnet = document.getElementById('magnetTool2');
+  const nail = document.getElementById('nail2');
+  const slider = document.getElementById('distSlider');
+  const distLabel = document.getElementById('distLabel');
+  const readout2 = document.getElementById('readout2');
+  const readout2b = document.getElementById('readout2b');
+  const clipsHolder = document.getElementById('clipsHolder2');
+  let inducted = false;
+
+  placeClips(clipsHolder, 0, false);
+
+  slider.addEventListener('input', function(){
+    const v = +slider.value; // 100 = far, 0 = close
+    const leftPx = 20 + (100-v)*1.3;
+    magnet.style.left = leftPx+'px';
+    if(v > 70){
+      distLabel.textContent = 'المسافة: بعيدة';
+      readout2.textContent = "المغناطيس بعيد عن المسمار، لا يوجد تأثير بعد.";
+      nail.classList.remove('magnetized');
+      inducted = false;
+      placeClips(clipsHolder,0,false);
+    } else if(v > 25){
+      distLabel.textContent = 'المسافة: تقترب...';
+      readout2.textContent = "المغناطيس يقترب... ابدأ المجال المغناطيسيّ بالتأثير في المسمار تدريجيًّا.";
+    } else {
+      distLabel.textContent = 'قريب جدًّا (بدون لمس) ✔';
+      if(!inducted){
+        inducted = true;
+        nail.classList.add('magnetized');
+        placeClips(clipsHolder, 4, true);
+        readout2.innerHTML = "🎉 دون أن يلمس المغناطيس المسمار، تحوّل المسمار إلى <b>مغناطيس</b> وجذب المشابك! هذه الطريقة تُسمّى <b>التَّمغنط بالحَثّ المغناطيسيّ</b>.";
+      }
+    }
+  });
+
+  document.getElementById('moveAway').addEventListener('click', function(){
+    slider.value = 100;
+    magnet.style.left = '20px';
+    distLabel.textContent = 'المسافة: بعيدة';
+    if(inducted){
+      readout2b.innerHTML = "✅ لاحظتُ أنّ المسمار <b>احتفظ بمغنطته</b> ولا يزال يجذب المشابك، رغم إبعاد المغناطيس عنه! هذا يدلّ على أنّ التَّمغنط بالحَثّ يمكن أن يكون مؤقّتًا أو شبه دائم حسب نوع المادّة.";
+    } else {
+      readout2b.textContent = "أولًا، قرّب المغناطيس من المسمار حتّى يتمغنط، ثمّ جرّب إبعاده.";
+    }
+  });
+
+  document.getElementById('check2').addEventListener('click', function(){
+    const val = document.getElementById('blank2').value.trim();
+    const fb = document.getElementById('fb2');
+    fb.classList.add('show');
+    if(val.includes('مغناطيس') && (val.includes('حث') || val.includes('حَثّ'))){
+      fb.textContent = "✅ ممتاز! يتحوّل المسمار إلى مغناطيس، وتُسمّى الطريقة: التَّمغنط بالحَثّ المغناطيسيّ.";
+      fb.className = 'feedback show good';
+    } else {
+      fb.textContent = "💡 الإجابة المتوقَّعة: يتحوّل المسمار إلى مغناطيس، وتُسمّى هذه الطريقة التَّمغنط بالحَثّ المغناطيسيّ.";
+      fb.className = 'feedback show meh';
+    }
+  });
+})();
+
+/* ================= STAGE 3 : SIMPLE ELECTROMAGNET ================= */
+(function(){
+  const coilLoops = document.getElementById('coilLoops3');
+  const battery = document.getElementById('battery3');
+  const readout3 = document.getElementById('readout3');
+  const clipsHolder = document.getElementById('clipsHolder3');
+  const clipsCountEl = document.getElementById('clips3');
+  let connected = false;
+
+  for(let i=0;i<10;i++){ const l=document.createElement('div'); l.className='loop'; coilLoops.appendChild(l); }
+  placeClips(clipsHolder, 0, false);
+  clipsCountEl.textContent = 0;
+
+  document.getElementById('connectCircuit').addEventListener('click', function(){
+    connected = !connected;
+    if(connected){
+      coilLoops.style.filter = 'drop-shadow(0 0 10px rgba(202,162,74,0.9))';
+      battery.style.boxShadow = '0 0 24px 4px rgba(202,162,74,0.7)';
+      placeClips(clipsHolder, 4, true);
+      clipsCountEl.textContent = 4;
+      readout3.innerHTML = "⚡ الدّارة موصولة! يمرّ التيّار الكهربائيّ في السلك الملفوف حول المسمار، فيتحوّل المسمار إلى <b>مغناطيس كهربائيّ</b> ويجذب المشابك.";
+      this.textContent = '🔌 فصل الدّارة';
+    } else {
+      coilLoops.style.filter = 'none';
+      battery.style.boxShadow = '';
+      placeClips(clipsHolder, 0, false);
+      clipsCountEl.textContent = 0;
+      readout3.textContent = "الدّارة مفصولة، لا يمرّ تيّار، والمسمار غير ممغنط.";
+      this.textContent = '⚡ وصِّل البطّاريّة بالسلك';
+    }
+  });
+
+  document.getElementById('resetStage3').addEventListener('click', function(){
+    connected = false;
+    coilLoops.style.filter='none'; battery.style.boxShadow='';
+    placeClips(clipsHolder,0,false); clipsCountEl.textContent=0;
+    readout3.textContent = "اضغط الزرّ لتوصيل الدّارة وتحويل المسمار إلى مغناطيس كهربائيّ.";
+    document.getElementById('connectCircuit').textContent = '⚡ وصِّل البطّاريّة بالسلك';
+  });
+})();
+
+/* ================= STAGE 4 : VARIABLES LAB ================= */
+(function(){
+  const coilLoops = document.getElementById('coilLoops4');
+  const readout4 = document.getElementById('readout4');
+  const clipsHolder = document.getElementById('clipsHolder4');
+  const clipsCountEl = document.getElementById('clips4');
+  const strengthEl = document.getElementById('strength4');
+
+  let loops = 25, batt = 1, mat = 'iron';
+
+  function renderCoil(){
+    coilLoops.innerHTML = '';
+    const count = Math.round(loops/8);
+    for(let i=0;i<count;i++){ const l=document.createElement('div'); l.className='loop'; coilLoops.appendChild(l); }
+  }
+
+  function compute(){
+    renderCoil();
+    let clipsN = 0;
+    if(mat === 'iron'){
+      const loopFactor = loops/25; // 1,2,3
+      const battFactor = batt;     // 1,2,3
+      clipsN = Math.min(8, Math.round(loopFactor + battFactor));
+    } else {
+      clipsN = 0; // wood/plastic: not magnetic core, electromagnet barely works
+    }
+    placeClips(clipsHolder, clipsN, clipsN>0);
+    clipsCountEl.textContent = clipsN;
+
+    let strength = 'لا يوجد';
+    if(mat !== 'iron'){
+      strength = 'لا يوجد (المادّة غير مغناطيسيّة)';
+      readout4.innerHTML = "🪵 المادّة المستخدَمة (<b>"+(mat==='wood'?'خشب':'بلاستيك')+"</b>) لا تكتسب خصائص مغناطيسيّة، لذلك لم يجذب الملفّ أيّ مشابك مهما زاد عدد اللفّات أو البطّاريّات.";
+    } else if(clipsN <= 2){
+      strength = 'ضعيفة';
+      readout4.innerHTML = "قوّة المغناطيس الكهربائيّ <b>ضعيفة</b>. جرّب زيادة عدد اللفّات أو عدد البطّاريّات لزيادة القوّة.";
+    } else if(clipsN <= 5){
+      strength = 'متوسّطة';
+      readout4.innerHTML = "قوّة المغناطيس الكهربائيّ <b>متوسّطة</b>. لاحظ أنّ زيادة اللفّات أو البطّاريّات تزيد عدد المشابك المُنجذِبة.";
+    } else {
+      strength = 'قويّة جدًّا';
+      readout4.innerHTML = "🔥 قوّة المغناطيس الكهربائيّ <b>قويّة جدًّا</b> الآن! عدد اللفّات وشدّة التيّار في أعلى مستوياتهما.";
+    }
+    strengthEl.textContent = strength;
+  }
+
+  document.getElementById('loopsRow').addEventListener('click', function(e){
+    if(e.target.dataset.loops){
+      [...this.children].forEach(b=>b.classList.remove('active'));
+      e.target.classList.add('active');
+      loops = +e.target.dataset.loops;
+      compute();
+    }
+  });
+  document.getElementById('battRow').addEventListener('click', function(e){
+    if(e.target.dataset.batt){
+      [...this.children].forEach(b=>b.classList.remove('active'));
+      e.target.classList.add('active');
+      batt = +e.target.dataset.batt;
+      compute();
+    }
+  });
+  document.getElementById('matRow').addEventListener('click', function(e){
+    if(e.target.dataset.mat){
+      [...this.children].forEach(b=>b.classList.remove('active'));
+      e.target.classList.add('active');
+      mat = e.target.dataset.mat;
+      compute();
+    }
+  });
+
+  compute();
+
+  document.getElementById('checkConcl').addEventListener('click', function(){
+    const c1 = document.getElementById('concl1').value.trim();
+    const c2 = document.getElementById('concl2').value.trim();
+    const c3 = document.getElementById('concl3').value.trim();
+    const fb = document.getElementById('fbConcl');
+    fb.classList.add('show');
+    const ok1 = c1.includes('زاد') || c1.includes('تزداد') || c1.includes('أكبر') || c1.includes('أقوى');
+    const ok2 = c2.includes('زاد') || c2.includes('تزداد') || c2.includes('أكبر') || c2.includes('أقوى');
+    const ok3 = c3.includes('حديد') || c3.includes('مغناطيسي');
+    if(ok1 && ok2 && ok3){
+      fb.textContent = "✅ استنتاجات صحيحة وواضحة، أحسنت!";
+      fb.className = 'feedback show good';
+    } else {
+      fb.textContent = "💡 تذكّر: كلّما زاد عدد اللفّات أو شدّة التيّار زادت قوّة المغناطيس الكهربائيّ، ويجب أن يكون قلب الملفّ من مادّة مغناطيسيّة كالحديد.";
+      fb.className = 'feedback show meh';
+    }
+  });
+})();
+
+/* ================= QUIZ ================= */
+(function(){
+  const cards = document.querySelectorAll('.quiz-card');
+  let score = 0, answered = 0;
+  cards.forEach(card=>{
+    const opts = card.querySelector('.quiz-opts');
+    const correctIdx = +opts.dataset.correct;
+    [...opts.children].forEach((btn, idx)=>{
+      btn.addEventListener('click', function(){
+        if(opts.dataset.locked) return;
+        opts.dataset.locked = "1";
+        [...opts.children].forEach((b,i)=>{
+          if(i===correctIdx) b.classList.add('correct');
+          else if(i===idx) b.classList.add('wrong');
+        });
+        if(idx === correctIdx) score++;
+        answered++;
+        if(answered === cards.length){
+          document.getElementById('quizResult').innerHTML =
+            '<span class="score-pill">نتيجتك: '+score+' / '+cards.length+'</span>';
+        }
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>

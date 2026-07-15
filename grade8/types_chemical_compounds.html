@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta http-equiv="Content-Type" content="text/html; charset="UTF-8">
+<meta name="description" content="درس أنواع المركبات الكيميائية - الصف الثامن - منهاج العلوم والحياة فلسطين">
+<title>أنواع المركبات الكيميائية</title>
+<style>
+/* ============ الخطوط والإعدادات الأساسية ============ */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Tajawal:wght@300;400;500;700&display=swap');
+
+:root{
+  --bg-deep:#0c1420;
+  --bg-mid:#13202f;
+  --panel:#172838;
+  --panel-light:#1d3146;
+  --accent-flame:#ff7a45;
+  --accent-flame-2:#ffb347;
+  --accent-ionic:#4fd1c5;
+  --accent-covalent:#a78bfa;
+  --accent-metallic:#fbbf24;
+  --text-bright:#eef4fa;
+  --text-dim:#9fb3c8;
+  --glass-line:#2c4258;
+  --good:#34d399;
+  --bad:#f87171;
+  --shadow-deep: 0 25px 60px -20px rgba(0,0,0,.65);
+}
+
+*{box-sizing:border-box;}
+html,body{
+  margin:0;padding:0;
+  background:var(--bg-deep);
+  color:var(--text-bright);
+  font-family:'Tajawal', 'Cairo', sans-serif;
+  scroll-behavior:smooth;
+  overflow-x:hidden;
+  font-size:16px;
+}
+h1,h2,h3,h4{font-family:'Cairo','Tajawal',sans-serif; margin:0;}
+p{line-height:1.9; color:var(--text-dim); margin:0 0 12px 0;}
+::selection{background:var(--accent-flame); color:#fff;}
+a{color:var(--accent-flame-2);}
+
+/* خلفية مختبر متوهجة */
+body::before{
+  content:"";
+  position:fixed; inset:0; z-index:-2;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(79,209,197,.10), transparent 40%),
+    radial-gradient(circle at 85% 10%, rgba(167,139,250,.12), transparent 45%),
+    radial-gradient(circle at 50% 90%, rgba(251,191,36,.08), transparent 50%),
+    linear-gradient(160deg, var(--bg-deep), var(--bg-mid) 60%, var(--bg-deep));
+}
+.grid-floor{
+  position:fixed; inset:0; z-index:-1; opacity:.05;
+  background-image:
+    linear-gradient(var(--glass-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--glass-line) 1px, transparent 1px);
+  background-size:40px 40px;
+}
+
+/* ============ شريط التنقل ============ */
+nav{
+  position:sticky; top:0; z-index:500;
+  background:rgba(12,20,32,.85);
+  backdrop-filter: blur(14px);
+  border-bottom:1px solid var(--glass-line);
+  display:flex; align-items:center; justify-content:space-between;
+  padding:12px 24px;
+  gap:10px;
+}
+.brand{display:flex; align-items:center; gap:10px; font-weight:900; font-size:1.05rem;}
+.brand .flask{font-size:1.6rem; filter:drop-shadow(0 0 8px var(--accent-flame));}
+.nav-links{display:flex; gap:6px; flex-wrap:wrap;}
+.nav-links button{
+  background:transparent; border:1px solid transparent; color:var(--text-dim);
+  padding:8px 14px; border-radius:30px; font-family:inherit; font-size:.85rem;
+  cursor:pointer; transition:.25s;
+}
+.nav-links button:hover, .nav-links button.active{
+  background:var(--panel-light); color:var(--text-bright); border-color:var(--glass-line);
+}
+.progress-wrap{position:fixed; top:0; right:0; left:0; height:3px; z-index:600; background:transparent;}
+.progress-bar{height:100%; width:0%; background:linear-gradient(90deg,var(--accent-flame),var(--accent-flame-2)); transition:width .15s;}
+
+/* ============ القسم الرئيسي / الهيرو ============ */
+.hero{
+  min-height:78vh; display:flex; align-items:center; justify-content:center;
+  position:relative; padding:60px 20px 40px; text-align:center;
+  perspective:1200px;
+}
+.hero-inner{max-width:780px; z-index:2;}
+.eyebrow{
+  display:inline-flex; align-items:center; gap:8px; font-size:.8rem; color:var(--accent-flame-2);
+  border:1px solid rgba(255,122,69,.4); padding:6px 16px; border-radius:30px; margin-bottom:22px;
+  background:rgba(255,122,69,.08); letter-spacing:.5px;
+}
+.hero h1{
+  font-size:clamp(2rem, 6vw, 3.4rem); font-weight:900; line-height:1.25;
+  background:linear-gradient(90deg, #fff, var(--accent-flame-2));
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  margin-bottom:18px;
+}
+.hero .sub{font-size:1.05rem; color:var(--text-dim); max-width:600px; margin:0 auto 30px;}
+
+/* عرض ثلاثي الأبعاد لذرات متحركة في الخلفية */
+.molecule-stage{
+  position:absolute; inset:0; z-index:1; pointer-events:none;
+  display:flex; align-items:center; justify-content:center;
+}
+.orbit-system{ width:480px; height:480px; position:relative; transform-style:preserve-3d; animation: spin3d 26s linear infinite;}
+@keyframes spin3d{ from{transform:rotateY(0deg) rotateX(8deg);} to{transform:rotateY(360deg) rotateX(8deg);} }
+.atom{
+  position:absolute; border-radius:50%; 
+  box-shadow:0 0 25px currentColor, inset -6px -6px 14px rgba(0,0,0,.4), inset 6px 6px 10px rgba(255,255,255,.25);
+}
+.atom.a1{width:60px;height:60px; top:48%; left:46%; background:radial-gradient(circle at 35% 30%, #7df9e8, var(--accent-ionic)); color:var(--accent-ionic);}
+.atom.a2{width:36px;height:36px; top:20%; left:62%; background:radial-gradient(circle at 35% 30%, #c9b6ff, var(--accent-covalent)); color:var(--accent-covalent); transform:translateZ(60px);}
+.atom.a3{width:28px;height:28px; top:65%; left:20%; background:radial-gradient(circle at 35% 30%, #ffe0a3, var(--accent-metallic)); color:var(--accent-metallic); transform:translateZ(-40px);}
+.atom.a4{width:20px;height:20px; top:30%; left:18%; background:radial-gradient(circle at 35% 30%, #ffb9a0, var(--accent-flame)); color:var(--accent-flame); transform:translateZ(20px);}
+.atom.a5{width:18px;height:18px; top:75%; left:60%; background:radial-gradient(circle at 35% 30%, #7df9e8, var(--accent-ionic)); color:var(--accent-ionic); transform:translateZ(-20px);}
+.ring{
+  position:absolute; border:1px dashed rgba(255,255,255,.12); border-radius:50%;
+  top:50%; left:50%; transform-style:preserve-3d;
+}
+.ring.r1{width:300px;height:300px; margin:-150px; transform:rotateX(70deg);}
+.ring.r2{width:420px;height:420px; margin:-210px; transform:rotateX(70deg) rotateZ(40deg);}
+.ring.r3{width:180px;height:180px; margin:-90px; transform:rotateX(70deg) rotateZ(-30deg);}
+
+.scroll-cue{margin-top:20px; color:var(--text-dim); font-size:.85rem; animation:bounce 2s infinite;}
+@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(8px);}}
+
+/* ============ أقسام عامة ============ */
+section{padding:70px 20px; max-width:1100px; margin:0 auto; position:relative;}
+.section-tag{
+  display:inline-block; font-size:.78rem; color:var(--accent-flame-2); letter-spacing:1px;
+  border-right:3px solid var(--accent-flame); padding-right:10px; margin-bottom:10px;
+}
+.section-title{font-size:clamp(1.5rem,3.5vw,2.1rem); font-weight:900; margin-bottom:10px;}
+.section-desc{color:var(--text-dim); max-width:700px; margin-bottom:36px; font-size:1rem;}
+
+/* ============ بطاقات أنواع المركبات ============ */
+.types-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:22px;}
+@media(max-width:900px){.types-grid{grid-template-columns:1fr;}}
+.type-card{
+  background:linear-gradient(160deg, var(--panel), var(--panel-light));
+  border:1px solid var(--glass-line); border-radius:20px; padding:26px 22px;
+  position:relative; overflow:hidden; transform-style:preserve-3d;
+  transition:transform .4s, box-shadow .4s; cursor:default;
+}
+.type-card:hover{transform: translateY(-10px) rotateX(4deg) rotateY(-2deg); box-shadow:var(--shadow-deep);}
+.type-card .icon3d{
+  width:70px; height:70px; border-radius:50%; margin-bottom:16px;
+  display:flex; align-items:center; justify-content:center; font-size:1.8rem;
+  box-shadow:inset -8px -8px 16px rgba(0,0,0,.35), inset 8px 8px 14px rgba(255,255,255,.18), 0 10px 25px -8px rgba(0,0,0,.5);
+}
+.type-card.ionic .icon3d{background:radial-gradient(circle at 35% 30%, #8af0e3, var(--accent-ionic));}
+.type-card.covalent .icon3d{background:radial-gradient(circle at 35% 30%, #d3c4ff, var(--accent-covalent));}
+.type-card.metallic .icon3d{background:radial-gradient(circle at 35% 30%, #ffe3a8, var(--accent-metallic));}
+.type-card h3{font-size:1.15rem; margin-bottom:8px;}
+.type-card .badge{
+  display:inline-block; font-size:.72rem; padding:3px 10px; border-radius:20px; margin-bottom:12px;
+  background:rgba(255,255,255,.08); color:var(--text-dim);
+}
+.type-card ul{margin:10px 0 0; padding-right:18px; color:var(--text-dim); font-size:.92rem; line-height:1.8;}
+.type-card .examples{margin-top:14px; font-size:.85rem; color:var(--text-bright); background:rgba(255,255,255,.04); padding:8px 12px; border-radius:10px;}
+
+/* ============ جدول مقارنة ============ */
+.compare-wrap{overflow-x:auto; border-radius:18px; border:1px solid var(--glass-line);}
+table.compare{width:100%; border-collapse:collapse; min-width:600px;}
+table.compare th, table.compare td{padding:14px 16px; text-align:center; font-size:.92rem;}
+table.compare thead th{background:var(--panel-light); color:var(--accent-flame-2); font-weight:700;}
+table.compare tbody tr:nth-child(odd){background:rgba(255,255,255,.02);}
+table.compare tbody td:first-child{color:var(--text-bright); font-weight:700; text-align:right;}
+table.compare tbody tr td{border-top:1px solid var(--glass-line); color:var(--text-dim);}
+
+/* ============ المختبر الافتراضي ============ */
+.lab-shell{
+  background:linear-gradient(170deg, #0e1c2b, #122436 60%, #0e1c2b);
+  border:1px solid var(--glass-line); border-radius:26px; padding:30px;
+  box-shadow:var(--shadow-deep);
+}
+.lab-header{display:flex; align-items:center; gap:14px; margin-bottom:20px; flex-wrap:wrap; justify-content:space-between;}
+.lab-header h3{font-size:1.3rem;}
+.steps-pill{display:flex; gap:6px;}
+.steps-pill span{
+  width:30px;height:30px;border-radius:50%; display:flex;align-items:center;justify-content:center;
+  background:var(--panel-light); border:1px solid var(--glass-line); font-size:.8rem; color:var(--text-dim);
+}
+.steps-pill span.done{background:var(--good); color:#062b1d; border-color:var(--good);}
+.steps-pill span.current{background:var(--accent-flame); color:#2b1200; border-color:var(--accent-flame);}
+
+.lab-grid{display:grid; grid-template-columns:280px 1fr 300px; gap:22px;}
+@media(max-width:980px){.lab-grid{grid-template-columns:1fr;}}
+
+/* عينات المواد */
+.samples{display:flex; flex-direction:column; gap:10px;}
+.sample-btn{
+  display:flex; align-items:center; gap:10px; padding:12px 14px; border-radius:14px;
+  background:var(--panel); border:1px solid var(--glass-line); color:var(--text-bright);
+  cursor:pointer; transition:.2s; font-family:inherit; font-size:.9rem; text-align:right;
+}
+.sample-btn:hover{border-color:var(--accent-flame); transform:translateX(-3px);}
+.sample-btn.selected{background:var(--panel-light); border-color:var(--accent-flame-2); box-shadow:0 0 0 2px rgba(255,179,71,.25);}
+.sample-dot{width:16px;height:16px;border-radius:50%; flex-shrink:0; box-shadow:inset -2px -2px 4px rgba(0,0,0,.3), inset 2px 2px 4px rgba(255,255,255,.3);}
+
+/* منصة المختبر ثلاثية الأبعاد */
+.bench{
+  position:relative; min-height:420px; border-radius:20px;
+  background:linear-gradient(180deg, #0a1722, #14283a);
+  border:1px solid var(--glass-line);
+  display:flex; flex-direction:column; align-items:center; justify-content:flex-end;
+  padding:20px; overflow:hidden;
+}
+.bench::after{ /* سطح منضدة */
+  content:""; position:absolute; bottom:0; left:0; right:0; height:60px;
+  background:linear-gradient(180deg, rgba(60,90,120,.25), rgba(20,40,60,.6));
+  border-top:1px solid var(--glass-line);
+}
+.beaker-stage{
+  perspective:900px; width:200px; height:280px; position:relative; z-index:2; margin-bottom:10px;
+}
+.beaker{
+  width:150px; height:230px; margin:0 auto; position:relative;
+  border:4px solid rgba(180,210,230,.55);
+  border-top:none;
+  border-radius:0 0 22px 22px;
+  background:linear-gradient(160deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+  box-shadow: inset 0 0 25px rgba(255,255,255,.04), 0 20px 35px -12px rgba(0,0,0,.6);
+  transform: rotateX(4deg);
+  overflow:hidden;
+}
+.beaker-rim{
+  position:absolute; top:-4px; left:-8px; right:-8px; height:14px;
+  border:4px solid rgba(180,210,230,.55); border-radius:50%;
+  background:rgba(180,210,230,.08);
+}
+.liquid{
+  position:absolute; bottom:0; left:0; right:0; height:35%;
+  background:linear-gradient(180deg, rgba(120,200,220,.55), rgba(40,110,150,.75));
+  transition: height 1.2s ease, background 1s;
+  border-top:2px solid rgba(255,255,255,.3);
+}
+.liquid::before{
+  content:""; position:absolute; top:-6px; left:0; right:0; height:12px;
+  background:radial-gradient(ellipse at 50% 50%, rgba(255,255,255,.35), transparent 70%);
+  animation:ripple 3s ease-in-out infinite;
+}
+@keyframes ripple{0%,100%{transform:scaleX(1);}50%{transform:scaleX(1.05);}}
+.bubble{
+  position:absolute; bottom:5px; width:6px; height:6px; border-radius:50%;
+  background:rgba(255,255,255,.5); opacity:0; animation:rise 2.4s ease-in infinite;
+}
+@keyframes rise{0%{opacity:0; transform:translateY(0) scale(.6);}10%{opacity:.8;}100%{opacity:0; transform:translateY(-160px) scale(1.2);}}
+
+.flame{
+  position:absolute; bottom:-26px; left:50%; transform:translateX(-50%); width:40px; height:50px;
+  opacity:0; transition:opacity .3s;
+}
+.flame.on{opacity:1;}
+.flame::before{
+  content:""; position:absolute; inset:0; border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;
+  background:radial-gradient(circle at 50% 70%, #fff5c2, var(--accent-flame-2) 40%, var(--accent-flame) 75%, transparent 100%);
+  animation:flick .35s ease-in-out infinite alternate;
+  filter:blur(.5px);
+}
+@keyframes flick{from{transform:scaleY(1) scaleX(1);}to{transform:scaleY(1.15) scaleX(.9) translateY(-3px);}}
+
+.probe{
+  position:absolute; top:-50px; right:30px; width:8px; height:90px; background:#888; border-radius:4px;
+  box-shadow:0 0 0 1px #444; transition:transform 1s; transform-origin:top center;
+}
+.probe .tip{position:absolute; bottom:-6px; left:-3px; width:14px; height:14px; border-radius:50%; background:#ccc;}
+.probe.dipped{transform:translateY(70px);}
+
+.led{
+  position:absolute; top:-58px; right:10px; width:22px; height:22px; border-radius:50%;
+  background:#3a3a3a; box-shadow:inset 0 0 4px #000;
+  transition:.3s;
+}
+.led.lit{background:radial-gradient(circle, #fff, var(--good)); box-shadow:0 0 18px var(--good), 0 0 4px #fff;}
+.led.lit.bad-current{background:radial-gradient(circle, #fff, var(--bad)); box-shadow:0 0 18px var(--bad);}
+
+.bench-controls{display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:8px; z-index:3;}
+.bench-controls button{
+  background:linear-gradient(160deg, var(--panel-light), var(--panel));
+  color:var(--text-bright); border:1px solid var(--glass-line); border-radius:12px;
+  padding:10px 16px; font-family:inherit; font-size:.85rem; cursor:pointer; transition:.2s;
+  display:flex; align-items:center; gap:6px;
+}
+.bench-controls button:hover:not(:disabled){border-color:var(--accent-flame-2); transform:translateY(-2px);}
+.bench-controls button:disabled{opacity:.35; cursor:not-allowed;}
+.bench-controls button.primary{background:linear-gradient(160deg, var(--accent-flame-2), var(--accent-flame)); color:#231000; border-color:transparent; font-weight:700;}
+
+.readout{
+  margin-top:14px; width:100%; max-width:380px; background:rgba(0,0,0,.25); border:1px solid var(--glass-line);
+  border-radius:14px; padding:12px 16px; font-size:.85rem; color:var(--text-dim); min-height:30px; text-align:center;
+  z-index:3;
+}
+.readout strong{color:var(--text-bright);}
+
+/* لوحة السجل / النتائج */
+.logbook{
+  background:var(--panel); border:1px solid var(--glass-line); border-radius:18px; padding:18px; height:fit-content;
+}
+.logbook h4{font-size:.95rem; margin-bottom:12px; color:var(--accent-flame-2);}
+.log-entry{
+  border-bottom:1px dashed var(--glass-line); padding:10px 0; font-size:.82rem; color:var(--text-dim);
+}
+.log-entry:last-child{border-bottom:none;}
+.log-entry b{color:var(--text-bright);}
+.tag{display:inline-block; font-size:.7rem; padding:2px 8px; border-radius:10px; margin-right:4px;}
+.tag.ionic{background:rgba(79,209,197,.18); color:var(--accent-ionic);}
+.tag.covalent{background:rgba(167,139,250,.18); color:var(--accent-covalent);}
+.empty-log{color:var(--text-dim); font-size:.82rem; text-align:center; padding:20px 0; opacity:.6;}
+
+/* ============ قسم الاستنتاج ============ */
+.conclusion-box{
+  background:linear-gradient(160deg, var(--panel), var(--panel-light));
+  border:1px solid var(--glass-line); border-radius:20px; padding:26px; margin-top:24px;
+}
+.conclusion-box textarea{
+  width:100%; min-height:110px; background:rgba(0,0,0,.25); border:1px solid var(--glass-line);
+  border-radius:12px; color:var(--text-bright); padding:14px; font-family:inherit; font-size:.92rem;
+  resize:vertical; margin-bottom:14px;
+}
+.conclusion-box textarea:focus{outline:none; border-color:var(--accent-flame-2);}
+.check-btn{
+  background:linear-gradient(160deg, var(--good), #1f9b76); border:none; color:#04261b; font-weight:700;
+  padding:10px 22px; border-radius:12px; cursor:pointer; font-family:inherit;
+}
+.feedback-box{margin-top:14px; padding:14px 18px; border-radius:12px; font-size:.88rem; display:none;}
+.feedback-box.show{display:block;}
+.feedback-box.ok{background:rgba(52,211,153,.12); border:1px solid rgba(52,211,153,.4); color:var(--good);}
+.feedback-box.warn{background:rgba(251,191,36,.12); border:1px solid rgba(251,191,36,.4); color:var(--accent-metallic);}
+
+/* جدول النتائج النهائي بعد التجربة */
+.results-table{width:100%; border-collapse:collapse; margin-top:18px;}
+.results-table th, .results-table td{padding:10px 12px; font-size:.85rem; text-align:center; border:1px solid var(--glass-line);}
+.results-table th{background:var(--panel-light); color:var(--accent-flame-2);}
+.results-table td:first-child{text-align:right;}
+
+/* ============ كويز ختامي ============ */
+.quiz-card{
+  background:var(--panel); border:1px solid var(--glass-line); border-radius:18px; padding:24px; margin-bottom:18px;
+}
+.quiz-card .q{font-weight:700; margin-bottom:14px; font-size:1rem;}
+.options{display:grid; gap:10px;}
+.opt{
+  background:var(--panel-light); border:1px solid var(--glass-line); border-radius:12px; padding:12px 16px;
+  cursor:pointer; transition:.2s; font-size:.9rem;
+}
+.opt:hover{border-color:var(--accent-flame-2);}
+.opt.correct{background:rgba(52,211,153,.18); border-color:var(--good);}
+.opt.wrong{background:rgba(248,113,113,.18); border-color:var(--bad);}
+.quiz-score{text-align:center; font-size:1.1rem; font-weight:700; margin-top:10px; color:var(--accent-flame-2);}
+
+/* ============ تذييل ============ */
+footer{
+  text-align:center; padding:40px 20px; color:var(--text-dim); font-size:.85rem;
+  border-top:1px solid var(--glass-line); margin-top:40px;
+}
+
+/* تأثير ظهور تدريجي */
+.reveal{opacity:0; transform:translateY(30px); transition:opacity .7s, transform .7s;}
+.reveal.in{opacity:1; transform:translateY(0);}
+
+@media(max-width:600px){
+  section{padding:50px 14px;}
+  .hero{min-height:65vh;}
+  .orbit-system{width:320px; height:320px;}
+}
+
+  /* ═══ RESPONSIVE MOBILE & TABLET — AUTO-INJECTED ═══ */
+  @media (max-width: 768px) {
+    body { padding: 8px !important; font-size: 15px !important; overflow-x: hidden !important; }
+    .container, [class*="container"], [class*="wrapper"] { padding: 8px !important; max-width: 100% !important; }
+    canvas { width: 100% !important; height: auto !important; display: block !important; touch-action: none; max-width: 100% !important; }
+    svg { max-width: 100% !important; height: auto !important; }
+    h1 { font-size: clamp(18px, 5vw, 32px) !important; }
+    h2 { font-size: clamp(16px, 4vw, 26px) !important; }
+    h3 { font-size: clamp(14px, 3.5vw, 22px) !important; }
+    p, li, td, th, label, span { font-size: clamp(13px, 3.5vw, 16px) !important; }
+    [class*="grid"] { grid-template-columns: 1fr !important; }
+    [class*="flex"] { flex-wrap: wrap !important; }
+    input[type="range"] { width: 100% !important; min-height: 36px; }
+    input[type="number"], input[type="text"], select, textarea { 
+      font-size: 16px !important; width: 100% !important; box-sizing: border-box; padding: 8px !important;
+    }
+    button { min-height: 44px !important; font-size: 14px !important; touch-action: manipulation; padding: 10px 14px !important; }
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 13px !important; }
+    th, td { padding: 6px 4px !important; white-space: nowrap; }
+    [style*="display: grid"], [style*="display:grid"] { display: flex !important; flex-direction: column !important; }
+    .lab-window, [class*="lab-window"] { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+    header { padding: 12px !important; }
+    .controls, [class*="controls"] { flex-direction: column !important; gap: 8px !important; }
+  }
+  @media (max-width: 480px) {
+    body { padding: 4px !important; }
+    h1 { font-size: clamp(16px, 5vw, 24px) !important; }
+    button { width: 100% !important; }
+  }
+  /* ═══ END RESPONSIVE ═══ */
+</style>
+</head>
+<body>
+
+<style>
+.vlab-back-btn {
+  position: fixed; top: 10px; left: 10px; z-index: 99999;
+  background: rgba(10,22,40,0.93); border: 1px solid rgba(0,200,150,0.4);
+  border-radius: 22px; padding: 8px 16px;
+  display: inline-flex; align-items: center; gap: 7px;
+  color: #00C896; font-family: Tajawal, Cairo, Arial, sans-serif;
+  font-size: 13px; font-weight: 700; text-decoration: none;
+  backdrop-filter: blur(8px); box-shadow: 0 4px 18px rgba(0,0,0,0.3);
+  transition: background 0.2s;
+}
+.vlab-back-btn:hover { background: rgba(0,200,150,0.18); color: #00C896; }
+</style>
+
+<a href="../grade8.html" class="vlab-back-btn">&#8594; العودة للصف</a>
+
+
+<div class="grid-floor"></div>
+<div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+
+<nav>
+  <div class="brand"><span class="flask">⚗️</span> أنواع المركبات الكيميائية</div>
+  <div class="nav-links">
+    <button onclick="scrollToId('intro')" class="nav-btn active">المقدمة</button>
+    <button onclick="scrollToId('types')" class="nav-btn">الأنواع</button>
+    <button onclick="scrollToId('compare')" class="nav-btn">المقارنة</button>
+    <button onclick="scrollToId('lab')" class="nav-btn">المختبر الافتراضي</button>
+    <button onclick="scrollToId('quiz')" class="nav-btn">اختبر نفسك</button>
+  </div>
+</nav>
+
+<!-- ============ الهيرو ============ -->
+<header class="hero" id="intro">
+  <div class="molecule-stage">
+    <div class="orbit-system">
+      <div class="ring r1"></div><div class="ring r2"></div><div class="ring r3"></div>
+      <div class="atom a1"></div><div class="atom a2"></div><div class="atom a3"></div>
+      <div class="atom a4"></div><div class="atom a5"></div>
+    </div>
+  </div>
+  <div class="hero-inner reveal">
+    <span class="eyebrow">منهاج العلوم والحياة 🇵🇸 — الصف الثامن — الوحدة: المركبات الكيميائية</span>
+    <h1>كيف تتشكّل المادة من حولنا؟<br>أنواع المركبات الكيميائية</h1>
+    <p class="sub">
+      كل ما تراه من ملحٍ على مائدتك، وسكّرٍ في كوب شايك، وأسلاك النحاس في بيتك، هو نتاج اتحاد ذرات بطرقٍ مختلفة.
+      في هذا الدرس ستكتشف أنواع المركبات الكيميائية الثلاثة، ثم تدخل مختبرًا افتراضيًا لتُجري تجربة حقيقية وتستنتج الفرق بنفسك.
+    </p>
+    <button onclick="scrollToId('types')" style="background:linear-gradient(160deg,var(--accent-flame-2),var(--accent-flame)); color:#241000; border:none; padding:14px 30px; border-radius:30px; font-weight:700; font-family:inherit; cursor:pointer; font-size:.95rem;">ابدأ الدرس ⬇</button>
+    <div class="scroll-cue">مرر للأسفل للاستكشاف</div>
+  </div>
+</header>
+
+<!-- ============ أنواع المركبات ============ -->
+<section id="types">
+  <span class="section-tag reveal">الدرس النظري</span>
+  <h2 class="section-title reveal">أنواع المركبات الكيميائية الثلاثة</h2>
+  <p class="section-desc reveal">
+    تتكوّن المركبات الكيميائية عندما تتحد ذرّتان أو أكثر من عناصر مختلفة برابطة كيميائية. تُصنَّف المركبات حسب نوع الرابطة التي تجمع ذرّاتها إلى ثلاثة أنواع رئيسية:
+  </p>
+
+  <div class="types-grid">
+    <div class="type-card ionic reveal">
+      <div class="icon3d">🧂</div>
+      <span class="badge">رابطة أيونية</span>
+      <h3>المركبات الأيونية</h3>
+      <p>تنتج من انتقال إلكترونات من ذرة فلز إلى ذرة لا فلز، فتتجاذب الأيونات الموجبة والسالبة الناتجة بقوة جذب كهروستاتيكية.</p>
+      <ul>
+        <li>درجة انصهار وغليان مرتفعة جدًا</li>
+        <li>تتوصل الكهرباء عند الذوبان في الماء أو الانصهار</li>
+        <li>صلبة وقابلة للذوبان في الماء غالبًا</li>
+      </ul>
+      <div class="examples">مثال: كلوريد الصوديوم NaCl (ملح الطعام)</div>
+    </div>
+
+    <div class="type-card covalent reveal">
+      <div class="icon3d">💧</div>
+      <span class="badge">رابطة تساهمية</span>
+      <h3>المركبات التساهمية</h3>
+      <p>تنتج من مشاركة ذرتين لا فلزيتين لزوج أو أكثر من الإلكترونات، فتتكوّن جزيئات منفصلة بدلًا من شبكة أيونية.</p>
+      <ul>
+        <li>درجة انصهار وغليان منخفضة نسبيًا</li>
+        <li>لا توصّل الكهرباء عادةً (المحلول النقي)</li>
+        <li>قد تكون صلبة أو سائلة أو غازية</li>
+      </ul>
+      <div class="examples">مثال: السكروز C₁₂H₂₂O₁₁ (السكر) والماء H₂O</div>
+    </div>
+
+    <div class="type-card metallic reveal">
+      <div class="icon3d">🔩</div>
+      <span class="badge">رابطة فلزية</span>
+      <h3>المركبات/الروابط الفلزية</h3>
+      <p>تنتج من تجمّع ذرات الفلزّ معًا، حيث "تسبح" إلكترونات التكافؤ بحرية بين الأيونات الموجبة، فتكوّن "بحرًا من الإلكترونات".</p>
+      <ul>
+        <li>توصّل الكهرباء في الحالة الصلبة (دون ذوبان)</li>
+        <li>قابلة للطرق والسحب (مرنة)</li>
+        <li>لها بريق فلزي مميز</li>
+      </ul>
+      <div class="examples">مثال: النحاس Cu والحديد Fe والألمنيوم Al</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ جدول المقارنة ============ -->
+<section id="compare">
+  <span class="section-tag reveal">قبل أن تدخل المختبر</span>
+  <h2 class="section-title reveal">جدول المقارنة السريع</h2>
+  <p class="section-desc reveal">هذا الجدول سيساعدك على تفسير النتائج التي ستحصل عليها في التجربة القادمة.</p>
+  <div class="compare-wrap reveal">
+    <table class="compare">
+      <thead><tr><th>الخاصية</th><th>المركبات الأيونية</th><th>المركبات التساهمية</th></tr></thead>
+      <tbody>
+        <tr><td>درجة الانصهار</td><td>مرتفعة جدًا (غالبًا فوق 500°C)</td><td>منخفضة (غالبًا أقل من 300°C)</td></tr>
+        <tr><td>التوصيل الكهربائي للمحلول</td><td>توصّل (تتفكك إلى أيونات حرة)</td><td>لا توصّل عادة (تبقى جزيئات متعادلة)</td></tr>
+        <tr><td>الذوبان في الماء</td><td>غالبًا تذوب بسهولة</td><td>يختلف حسب القطبية</td></tr>
+        <tr><td>الحالة الفيزيائية في الظروف العادية</td><td>صلبة بلّورية</td><td>صلبة، سائلة أو غازية</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============ المختبر الافتراضي ============ -->
+<section id="lab">
+  <span class="section-tag reveal">التجربة العملية</span>
+  <h2 class="section-title reveal">المختبر الافتراضي: تصنيف المركبات بالتجربة</h2>
+  <p class="section-desc reveal">
+    <strong>هدف التجربة:</strong> تصنيف ثلاث مواد مجهولة إلى أيونية أو تساهمية، عن طريق قياس درجة انصهار كل مادة، ثم اختبار توصيلها للكهرباء بعد إذابتها في الماء.
+    اختر مادة من القائمة، ثم نفّذ الاختبارين بالترتيب، وسجّل ملاحظاتك في دفتر النتائج.
+  </p>
+
+  <div class="lab-shell reveal">
+    <div class="lab-header">
+      <h3>🧪 منضدة المختبر</h3>
+      <div class="steps-pill">
+        <span id="stepDot1" class="current">1</span>
+        <span id="stepDot2">2</span>
+        <span id="stepDot3">3</span>
+      </div>
+    </div>
+
+    <div class="lab-grid">
+      <!-- عينات المواد -->
+      <div class="samples">
+        <h4 style="font-size:.9rem;color:var(--text-dim);margin-bottom:6px;">① اختر مادة الاختبار:</h4>
+        <button class="sample-btn" data-sample="salt" onclick="selectSample('salt')">
+          <span class="sample-dot" style="background:#e9eef2;"></span> المادة A — بلّورات بيضاء (ملح صخري)
+        </button>
+        <button class="sample-btn" data-sample="sugar" onclick="selectSample('sugar')">
+          <span class="sample-dot" style="background:#f3f0e6;"></span> المادة B — بلّورات بيضاء (سكر)
+        </button>
+        <button class="sample-btn" data-sample="wax" onclick="selectSample('wax')">
+          <span class="sample-dot" style="background:#fbe7a1;"></span> المادة C — مادة شمعية صلبة
+        </button>
+        <div style="margin-top:14px; font-size:.8rem; color:var(--text-dim); background:rgba(255,255,255,.04); padding:10px; border-radius:10px;">
+          💡 لا تعرف بعد هوية كل مادة بالتحديد، مهمتك تحديد نوع رابطتها من خلال النتائج فقط.
+        </div>
+      </div>
+
+      <!-- منضدة العرض ثلاثية الأبعاد -->
+      <div class="bench">
+        <div class="beaker-stage">
+          <div class="probe" id="probe"><div class="tip"></div></div>
+          <div class="led" id="led"></div>
+          <div class="beaker">
+            <div class="beaker-rim"></div>
+            <div class="liquid" id="liquid">
+              <div class="bubble" style="left:30%; animation-delay:.2s;"></div>
+              <div class="bubble" style="left:55%; animation-delay:1s;"></div>
+              <div class="bubble" style="left:75%; animation-delay:1.8s;"></div>
+            </div>
+          </div>
+          <div class="flame" id="flame"></div>
+        </div>
+        <div class="bench-controls">
+          <button id="btnHeat" onclick="runHeatTest()" disabled>🔥 اختبار درجة الانصهار</button>
+          <button id="btnDissolve" onclick="dissolveSample()" disabled>💧 إذابة في الماء</button>
+          <button id="btnConduct" onclick="runConductTest()" disabled>⚡ اختبار التوصيل الكهربائي</button>
+          <button id="btnReset" onclick="resetBench()">↺ إعادة ضبط</button>
+        </div>
+        <div class="readout" id="readout">اختر مادة من القائمة على اليمين لتبدأ.</div>
+      </div>
+
+      <!-- دفتر النتائج -->
+      <div class="logbook">
+        <h4>📓 دفتر النتائج</h4>
+        <div id="logList"><div class="empty-log">لم تُسجَّل نتائج بعد</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- جدول تجميعي للنتائج -->
+  <div class="reveal" style="margin-top:26px;">
+    <h3 style="font-size:1.05rem; margin-bottom:10px;">📊 جدول تجميع النتائج (يُكتمل تلقائيًا أثناء تجربتك)</h3>
+    <div style="overflow-x:auto;">
+      <table class="results-table">
+        <thead><tr><th>المادة</th><th>درجة الانصهار التقريبية</th><th>التوصيل الكهربائي للمحلول</th><th>التصنيف المُستنتج</th></tr></thead>
+        <tbody id="resultsBody">
+          <tr><td>المادة A</td><td>—</td><td>—</td><td>—</td></tr>
+          <tr><td>المادة B</td><td>—</td><td>—</td><td>—</td></tr>
+          <tr><td>المادة C</td><td>—</td><td>—</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- صندوق الاستنتاج -->
+  <div class="conclusion-box reveal">
+    <h3 style="margin-bottom:10px; font-size:1.1rem;">✍️ سجّل استنتاجك</h3>
+    <p>بناءً على النتائج التي حصلت عليها، اكتب استنتاجًا يوضّح: ما العلاقة بين نوع الرابطة (أيونية/تساهمية) وكل من درجة الانصهار والتوصيل الكهربائي؟</p>
+    <textarea id="conclusionInput" placeholder="مثال: لاحظتُ أن المادة التي توصّل الكهرباء عند الذوبان..."></textarea>
+    <button class="check-btn" onclick="checkConclusion()">تحقّق من استنتاجي</button>
+    <div class="feedback-box" id="conclusionFeedback"></div>
+  </div>
+</section>
+
+<!-- ============ كويز ختامي ============ -->
+<section id="quiz">
+  <span class="section-tag reveal">تقييم ختامي</span>
+  <h2 class="section-title reveal">اختبر نفسك</h2>
+  <p class="section-desc reveal">أربعة أسئلة سريعة لتتأكد من فهمك للدرس والتجربة.</p>
+
+  <div id="quizContainer"></div>
+  <div class="quiz-score" id="quizScore"></div>
+</section>
+
+<footer>
+  مادة العلوم والحياة — الصف الثامن — فلسطين 🇵🇸 | صفحة تفاعلية لدرس «أنواع المركبات الكيميائية» | تعمل على الهاتف والحاسوب
+</footer>
+
+<script>
+/* ============== أدوات عامة ============== */
+function scrollToId(id){
+  document.getElementById(id).scrollIntoView({behavior:'smooth'});
+}
+
+// شريط التقدّم وتفعيل الروابط النشطة
+const progressBar = document.getElementById('progressBar');
+window.addEventListener('scroll', ()=>{
+  const h = document.documentElement;
+  const pct = (h.scrollTop)/(h.scrollHeight - h.clientHeight) * 100;
+  progressBar.style.width = pct + '%';
+});
+
+// ظهور تدريجي عند التمرير
+const revealEls = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); } });
+},{threshold:.15});
+revealEls.forEach(el=>io.observe(el));
+
+/* ============== منطق المختبر الافتراضي ============== */
+// خصائص حقيقية مبسطة للمواد الثلاث (لخدمة الاستنتاج التعليمي)
+const SAMPLES = {
+  salt:  { name:"المادة A", real:"كلوريد الصوديوم (NaCl)", type:"ionic",
+           meltLabel:"مرتفعة جدًا (~801°C) — لم تنصهر عند التسخين البسيط",
+           meltColor:"#cbd5e1", conduct:true, liquidColor:"linear-gradient(180deg, rgba(220,230,240,.5), rgba(150,180,210,.7))" },
+  sugar: { name:"المادة B", real:"السكروز (سكر المائدة)", type:"covalent",
+           meltLabel:"منخفضة نسبيًا (~186°C) — تفحّمت بسرعة عند التسخين",
+           meltColor:"#7c5a2e", conduct:false, liquidColor:"linear-gradient(180deg, rgba(230,210,180,.5), rgba(180,150,110,.6))" },
+  wax:   { name:"المادة C", real:"شمع البرافين", type:"covalent",
+           meltLabel:"منخفضة جدًا (~55°C) — انصهرت سريعًا قبل أي تفحّم",
+           meltColor:"#f4d9a0", conduct:false, liquidColor:"linear-gradient(180deg, rgba(255,235,180,.5), rgba(220,190,120,.6))" }
+};
+
+let current = null;
+let state = {heated:false, dissolved:false, conducted:false};
+let resultsData = {}; // لتجميع نتائج كل مادة
+
+const els = {
+  readout: document.getElementById('readout'),
+  liquid: document.getElementById('liquid'),
+  flame: document.getElementById('flame'),
+  probe: document.getElementById('probe'),
+  led: document.getElementById('led'),
+  btnHeat: document.getElementById('btnHeat'),
+  btnDissolve: document.getElementById('btnDissolve'),
+  btnConduct: document.getElementById('btnConduct'),
+  logList: document.getElementById('logList'),
+  resultsBody: document.getElementById('resultsBody'),
+};
+
+function selectSample(key){
+  current = key;
+  state = {heated:false, dissolved:false, conducted:false};
+  document.querySelectorAll('.sample-btn').forEach(b=>b.classList.remove('selected'));
+  document.querySelector('[data-sample="'+key+'"]').classList.add('selected');
+
+  els.liquid.style.height = '35%';
+  els.liquid.style.background = 'linear-gradient(180deg, rgba(120,200,220,.4), rgba(40,110,150,.6))';
+  els.flame.classList.remove('on');
+  els.probe.classList.remove('dipped');
+  els.led.classList.remove('lit','bad-current');
+
+  els.btnHeat.disabled = false;
+  els.btnDissolve.disabled = true;
+  els.btnConduct.disabled = true;
+
+  setDot(1,'current'); setDot(2,''); setDot(3,'');
+  els.readout.innerHTML = '<strong>تم اختيار '+SAMPLES[key].name+'.</strong> ابدأ باختبار درجة الانصهار 🔥';
+}
+
+function setDot(n, cls){
+  const d = document.getElementById('stepDot'+n);
+  d.className = cls;
+}
+
+function runHeatTest(){
+  if(!current) return;
+  const s = SAMPLES[current];
+  els.flame.classList.add('on');
+  els.btnHeat.disabled = true;
+  els.readout.innerHTML = '🔥 جارٍ تسخين '+s.name+' ... راقب ما يحدث';
+
+  setTimeout(()=>{
+    els.flame.classList.remove('on');
+    state.heated = true;
+    els.readout.innerHTML = '<strong>نتيجة الانصهار:</strong> '+s.meltLabel;
+    addLog('تسخين '+s.name, s.meltLabel);
+    setDot(1,'done'); setDot(2,'current');
+    els.btnDissolve.disabled = false;
+  }, 1800);
+}
+
+function dissolveSample(){
+  if(!current || !state.heated) return;
+  const s = SAMPLES[current];
+  els.liquid.style.background = s.liquidColor;
+  els.liquid.style.height = '55%';
+  els.btnDissolve.disabled = true;
+  els.readout.innerHTML = '💧 تمت إذابة '+s.name+' في كوب من الماء المقطّر.';
+  state.dissolved = true;
+  setDot(2,'done'); setDot(3,'current');
+  els.btnConduct.disabled = false;
+}
+
+function runConductTest(){
+  if(!current || !state.dissolved) return;
+  const s = SAMPLES[current];
+  els.probe.classList.add('dipped');
+  els.btnConduct.disabled = true;
+  els.readout.innerHTML = '⚡ جارٍ غمر مسبار جهاز التوصيل في المحلول...';
+
+  setTimeout(()=>{
+    if(s.conduct){
+      els.led.classList.add('lit');
+      els.readout.innerHTML = '<strong>النتيجة:</strong> أُضيء المصباح! المحلول يوصّل الكهرباء ⚡ — إذن توجد أيونات حرة الحركة.';
+      addLog('اختبار التوصيل', 'أوصل الكهرباء — يحتوي أيونات حرة');
+    } else {
+      els.led.classList.add('lit','bad-current');
+      els.readout.innerHTML = '<strong>النتيجة:</strong> لم يُضئ المصباح. المحلول لا يوصّل الكهرباء — لا توجد أيونات حرة، بل جزيئات متعادلة.';
+      addLog('اختبار التوصيل', 'لم يوصّل الكهرباء — جزيئات متعادلة');
+    }
+    state.conducted = true;
+    setDot(3,'done');
+    finalizeSample();
+  }, 1500);
+}
+
+function addLog(title, detail){
+  if(els.logList.querySelector('.empty-log')) els.logList.innerHTML='';
+  const div = document.createElement('div');
+  div.className='log-entry';
+  div.innerHTML = '<b>'+title+'</b><br>'+detail;
+  els.logList.prepend(div);
+}
+
+function finalizeSample(){
+  const s = SAMPLES[current];
+  const typeArabic = s.type === 'ionic' ? 'مركب أيوني' : 'مركب تساهمي';
+  resultsData[current] = {melt:s.meltLabel, conduct:s.conduct?'توصّل':'لا توصّل', type:typeArabic, tagClass:s.type};
+  addLog('التصنيف النهائي لـ '+s.name, '<span class="tag '+s.type+'">'+typeArabic+'</span>');
+  renderResultsTable();
+}
+
+function renderResultsTable(){
+  const order = ['salt','sugar','wax'];
+  els.resultsBody.innerHTML = order.map(k=>{
+    const s = SAMPLES[k];
+    const r = resultsData[k];
+    return '<tr><td>'+s.name+'</td><td>'+(r?r.melt:'—')+'</td><td>'+(r?r.conduct:'—')+'</td><td>'+(r?('<span class="tag '+r.tagClass+'">'+r.type+'</span>'):'—')+'</td></tr>';
+  }).join('');
+}
+
+function resetBench(){
+  current = null;
+  state = {heated:false, dissolved:false, conducted:false};
+  document.querySelectorAll('.sample-btn').forEach(b=>b.classList.remove('selected'));
+  els.liquid.style.height='35%';
+  els.liquid.style.background = 'linear-gradient(180deg, rgba(120,200,220,.4), rgba(40,110,150,.6))';
+  els.flame.classList.remove('on');
+  els.probe.classList.remove('dipped');
+  els.led.classList.remove('lit','bad-current');
+  els.btnHeat.disabled = true;
+  els.btnDissolve.disabled = true;
+  els.btnConduct.disabled = true;
+  setDot(1,'current'); setDot(2,''); setDot(3,'');
+  els.readout.innerHTML = 'اختر مادة من القائمة على اليمين لتبدأ.';
+}
+
+/* ============== التحقق من الاستنتاج ============== */
+function checkConclusion(){
+  const txt = document.getElementById('conclusionInput').value.trim();
+  const fb = document.getElementById('conclusionFeedback');
+  fb.classList.add('show');
+  if(txt.length < 25){
+    fb.className='feedback-box show warn';
+    fb.innerHTML = '⚠️ استنتاجك قصير جدًا. حاول أن تربط بين نوع الرابطة ودرجة الانصهار والتوصيل الكهربائي بجملتين على الأقل.';
+    return;
+  }
+  const hasIonicWord = /أيون/.test(txt);
+  const hasMeltWord = /انصهار|حرارة|درجة/.test(txt);
+  const hasConductWord = /كهرباء|توصيل|توصّل/.test(txt);
+  if(hasIonicWord && hasMeltWord && hasConductWord){
+    fb.className='feedback-box show ok';
+    fb.innerHTML = '✅ ممتاز! استنتاجك يربط بشكل صحيح بين نوع الرابطة الأيونية وارتفاع درجة الانصهار وقدرة المحلول على توصيل الكهرباء، وهذا هو جوهر الدرس.';
+  } else {
+    fb.className='feedback-box show warn';
+    fb.innerHTML = '👍 جيد، لكن حاول أن تذكر بوضوح: العلاقة بين الرابطة الأيونية ودرجة الانصهار المرتفعة، والعلاقة بين وجود الأيونات الحرة وتوصيل الكهرباء.';
+  }
+}
+
+/* ============== الكويز الختامي ============== */
+const QUIZ = [
+  { q:"أي المركبات التالية يُتوقّع أن يمتلك أعلى درجة انصهار؟",
+    options:["كلوريد الصوديوم (مركب أيوني)","السكروز (مركب تساهمي)","شمع البرافين (مركب تساهمي)"], correct:0 },
+  { q:"لماذا توصّل محاليل المركبات الأيونية الكهرباء بعكس محاليل المركبات التساهمية النقية؟",
+    options:["لأنها أثقل في الوزن","لأنها تتفكك إلى أيونات حرة الحركة تحمل الشحنة","لأنها تتبخر بسرعة"], correct:1 },
+  { q:"الرابطة التي تنتج عن تجاذب أيونات موجبة وسالبة تسمى:",
+    options:["رابطة فلزية","رابطة تساهمية","رابطة أيونية"], correct:2 },
+  { q:"في تجربة المختبر، ما الدليل العملي الذي استخدمناه لتمييز المادة الأيونية عن التساهمية؟",
+    options:["لون المادة فقط","درجة الانصهار والتوصيل الكهربائي للمحلول","رائحة المادة"], correct:1 }
+];
+
+let score = 0;
+let answered = 0;
+const quizContainer = document.getElementById('quizContainer');
+
+QUIZ.forEach((item, qi)=>{
+  const card = document.createElement('div');
+  card.className='quiz-card reveal';
+  card.innerHTML = '<div class="q">'+(qi+1)+'. '+item.q+'</div><div class="options"></div>';
+  const optsWrap = card.querySelector('.options');
+  item.options.forEach((opt, oi)=>{
+    const optEl = document.createElement('div');
+    optEl.className='opt';
+    optEl.textContent = opt;
+    optEl.onclick = ()=>{
+      if(optEl.dataset.locked) return;
+      const allOpts = optsWrap.querySelectorAll('.opt');
+      allOpts.forEach(o=>o.dataset.locked='1');
+      if(oi === item.correct){
+        optEl.classList.add('correct');
+        score++;
+      } else {
+        optEl.classList.add('wrong');
+        allOpts[item.correct].classList.add('correct');
+      }
+      answered++;
+      updateScore();
+    };
+    optsWrap.appendChild(optEl);
+  });
+  quizContainer.appendChild(card);
+  io.observe(card);
+});
+
+function updateScore(){
+  const scoreEl = document.getElementById('quizScore');
+  if(answered === QUIZ.length){
+    scoreEl.innerHTML = '🎉 نتيجتك النهائية: '+score+' من '+QUIZ.length+
+      (score===QUIZ.length ? ' — ممتاز! فهمت الدرس بشكل كامل 👏' : ' — راجع الأجزاء التي أخطأت فيها ثم أعد المحاولة لاحقًا.');
+  } else {
+    scoreEl.innerHTML = 'الإجابات الصحيحة حتى الآن: '+score+' / '+answered;
+  }
+}
+
+/* تفعيل زر التنقل النشط بحسب موضع التمرير */
+const sections = document.querySelectorAll('section, header');
+const navBtns = document.querySelectorAll('.nav-btn');
+const navObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      navBtns.forEach(b=>b.classList.remove('active'));
+      const id = entry.target.id;
+      const match = Array.from(navBtns).find(b=>b.getAttribute('onclick').includes("'"+id+"'"));
+      if(match) match.classList.add('active');
+    }
+  });
+},{threshold:.5});
+sections.forEach(s=> s.id && navObserver.observe(s));
+</script>
+</body>
+</html>

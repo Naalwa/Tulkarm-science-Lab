@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>المختبر الافتراضي التجريبي — مديرية طولكرم</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;800;900&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="lab-theme.css">
+<style>
+/* ── INDEX-ONLY STYLES ── */
+.navbar {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 13px 28px; gap: 10px; flex-wrap: wrap;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 2px 16px var(--shadow);
+}
+.nav-brand { display:flex; align-items:center; gap:12px; }
+.nav-icon {
+  width:44px; height:44px; border-radius:12px;
+  background: linear-gradient(135deg, var(--sky), var(--indigo));
+  display:flex; align-items:center; justify-content:center; font-size:20px;
+  box-shadow: 0 4px 14px var(--shadow2);
+}
+.nav-title { font-family:'Cairo',sans-serif; font-size:1rem; font-weight:800; color:var(--deep); }
+.nav-sub   { font-size:0.68rem; color:var(--sky); font-weight:600; }
+.nav-badge {
+  background:#E0F2FE; border:1px solid var(--border2);
+  border-radius:20px; padding:5px 16px;
+  font-size:0.72rem; font-weight:700; color:var(--deep2);
+  text-align:center; line-height:1.6;
+}
+
+/* HERO */
+.hero {
+  background: linear-gradient(145deg,#E0F2FE 0%,#EFF6FF 55%,#F0F9FF 100%);
+  padding: 52px 24px 42px; text-align:center;
+  position:relative; overflow:hidden;
+}
+.hero::before {
+  content:''; position:absolute; top:-50px; right:-50px;
+  width:240px; height:240px; border-radius:50%;
+  background:rgba(14,165,233,0.09); pointer-events:none;
+}
+.hero::after {
+  content:''; position:absolute; bottom:-40px; left:-40px;
+  width:180px; height:180px; border-radius:50%;
+  background:rgba(99,102,241,0.07); pointer-events:none;
+}
+.hero-emblem {
+  width:96px; height:96px; border-radius:50%;
+  background:var(--white); border:2px solid var(--border2);
+  display:flex; align-items:center; justify-content:center; font-size:40px;
+  margin:0 auto 20px;
+  box-shadow: 0 6px 28px var(--shadow2);
+  animation: float 4s ease-in-out infinite;
+  position:relative; z-index:1;
+}
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+
+.eyebrow {
+  display:inline-flex; align-items:center; gap:8px;
+  background:#DBEAFE; border:1px solid var(--border2);
+  border-radius:30px; padding:6px 20px;
+  font-size:0.78rem; font-weight:700; color:#1D4ED8;
+  margin-bottom:18px; position:relative; z-index:1;
+}
+.eyebrow-dot {
+  width:8px; height:8px; background:var(--sky);
+  border-radius:50%; animation:blink 1.6s ease-in-out infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+.hero-h1 {
+  font-family:'Cairo',sans-serif;
+  font-size:clamp(1.9rem,5vw,3rem); font-weight:900;
+  color:var(--deep); line-height:1.2; margin-bottom:12px;
+  position:relative; z-index:1;
+}
+.hero-h1 span { color:var(--sky); }
+.hero-p {
+  font-size:0.95rem; color:var(--muted);
+  max-width:460px; margin:0 auto 28px; line-height:1.8;
+  position:relative; z-index:1;
+}
+
+.cta-btn {
+  display:inline-flex; align-items:center; gap:10px;
+  padding:14px 34px; border-radius:50px;
+  font-family:'Cairo',sans-serif; font-size:1rem; font-weight:800;
+  color:#fff; text-decoration:none;
+  background:linear-gradient(135deg,var(--sky),var(--indigo));
+  box-shadow:0 6px 22px var(--shadow2);
+  margin-bottom:32px; position:relative; z-index:1;
+  transition:transform 0.24s ease, box-shadow 0.24s ease;
+}
+.cta-btn:hover {
+  transform:translateY(-3px) scale(1.03);
+  box-shadow:0 12px 36px rgba(14,165,233,0.38);
+}
+.cta-arrow { transition:transform 0.24s; }
+.cta-btn:hover .cta-arrow { transform:translateX(-5px); }
+
+.stats {
+  display:flex; justify-content:center; gap:28px;
+  flex-wrap:wrap; position:relative; z-index:1;
+}
+.stat { text-align:center; }
+.stat-num {
+  font-family:'Cairo',sans-serif; font-size:2rem; font-weight:900;
+  color:var(--sky); line-height:1;
+}
+.stat-lbl { font-size:0.7rem; color:var(--muted); margin-top:4px; }
+.stat-div { width:1px; height:36px; background:var(--border2); align-self:center; }
+
+/* SEARCH */
+.search-section {
+  max-width:560px; margin:0 auto; padding:28px 20px 0;
+  position:relative;
+}
+.search-wrap { position:relative; }
+.search-input {
+  width:100%; padding:15px 50px 15px 20px;
+  border-radius:50px; border:2px solid var(--border2);
+  background:var(--white); color:var(--deep);
+  font-family:'Tajawal',sans-serif; font-size:0.95rem;
+  outline:none; direction:rtl;
+  box-shadow:0 2px 14px var(--shadow);
+  transition:border-color 0.24s, box-shadow 0.24s;
+}
+.search-input::placeholder { color:var(--light); }
+.search-input:focus {
+  border-color:var(--sky);
+  box-shadow:0 4px 20px var(--shadow2);
+}
+.search-icon {
+  position:absolute; left:18px; top:50%;
+  transform:translateY(-50%); font-size:1.1rem; pointer-events:none;
+}
+.search-results {
+  position:absolute; top:calc(100% + 8px); left:0; right:0;
+  background:var(--white); border:1px solid var(--border2);
+  border-radius:16px; max-height:360px; overflow-y:auto;
+  z-index:200; display:none;
+  box-shadow:0 12px 40px var(--shadow2);
+}
+.search-results.open { display:block; }
+.sri {
+  display:flex; align-items:center; gap:12px;
+  padding:12px 18px; border-bottom:1px solid var(--border);
+  cursor:pointer; text-decoration:none; color:var(--deep);
+  transition:background 0.2s; direction:rtl;
+}
+.sri:last-child { border-bottom:none; }
+.sri:hover { background:var(--bg); }
+.sri-grade {
+  font-size:0.68rem; font-weight:700; background:#E0F2FE;
+  border:1px solid var(--border2); border-radius:20px;
+  padding:3px 10px; color:var(--sky); white-space:nowrap;
+}
+.sri-title { flex:1; font-size:0.88rem; font-weight:600; }
+.sri-num { font-size:0.7rem; color:var(--light); white-space:nowrap; }
+.sri-empty { padding:22px; text-align:center; color:var(--light); font-size:0.9rem; }
+
+/* GRADES GRID */
+.grades-section { padding:32px 20px 60px; }
+.sec-header { text-align:center; margin-bottom:28px; }
+.sec-header h2 {
+  font-family:'Cairo',sans-serif; font-size:1.5rem; font-weight:800; color:var(--deep);
+}
+.sec-header p { font-size:0.85rem; color:var(--muted); margin-top:5px; }
+.title-bar {
+  width:56px; height:3px; border-radius:3px;
+  background:linear-gradient(90deg,var(--sky),var(--indigo));
+  margin:12px auto 0;
+}
+
+.g-grid {
+  display:grid; grid-template-columns:repeat(3,1fr);
+  gap:16px; max-width:900px; margin:0 auto;
+}
+
+.g-card {
+  background:var(--white); border:1px solid var(--border);
+  border-radius:var(--radius); overflow:hidden;
+  text-decoration:none; display:block;
+  box-shadow:0 2px 14px var(--shadow);
+  transition:transform var(--trans), box-shadow var(--trans), border-color var(--trans);
+  position:relative;
+}
+.g-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+  background:linear-gradient(90deg,var(--sky),var(--indigo));
+  opacity:0; transition:opacity var(--trans);
+}
+.g-card:hover {
+  transform:translateY(-5px);
+  border-color:var(--border2);
+  box-shadow:0 14px 36px var(--shadow2);
+}
+.g-card:hover::before { opacity:1; }
+
+.g-head { padding:18px 16px 13px; display:flex; align-items:flex-start; gap:11px; }
+.g-icon {
+  width:50px; height:50px; border-radius:13px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:22px; flex-shrink:0;
+}
+.g-info .g-tag {
+  font-size:0.6rem; font-weight:700; letter-spacing:1.5px; margin-bottom:3px;
+}
+.g-info .g-name {
+  font-family:'Cairo',sans-serif; font-size:1.05rem; font-weight:900; color:var(--deep);
+}
+.g-div { height:1px; background:var(--bg2); margin:0 16px; }
+.g-foot {
+  padding:11px 16px; display:flex;
+  align-items:center; justify-content:space-between;
+}
+.g-count { font-size:0.73rem; color:var(--light); }
+.g-enter {
+  font-size:0.73rem; font-weight:700; color:var(--sky);
+  background:#E0F2FE; border:1px solid var(--border2);
+  border-radius:18px; padding:5px 13px;
+  transition:background var(--trans);
+}
+.g-card:hover .g-enter { background:#BAE6FD; }
+
+.g5 .g-icon{background:linear-gradient(135deg,#FDE68A,#F59E0B);} .g5 .g-tag{color:#B45309;}
+.g6 .g-icon{background:linear-gradient(135deg,#A7F3D0,#10B981);} .g6 .g-tag{color:#065F46;}
+.g7 .g-icon{background:linear-gradient(135deg,#BAE6FD,#0EA5E9);} .g7 .g-tag{color:#0369A1;}
+.g8 .g-icon{background:linear-gradient(135deg,#FBCFE8,#EC4899);} .g8 .g-tag{color:#9D174D;}
+.g9 .g-icon{background:linear-gradient(135deg,#DDD6FE,#7C3AED);} .g9 .g-tag{color:#5B21B6;}
+.g10 .g-icon{background:linear-gradient(135deg,#FEE2E2,#EF4444);} .g10 .g-tag{color:#B91C1C;}
+
+/* FOOTER */
+.site-footer {
+  background:var(--white); border-top:1px solid var(--border);
+  padding:26px 24px; text-align:center;
+  box-shadow:0 -2px 14px var(--shadow);
+}
+.site-footer .f-logo {
+  font-family:'Cairo',sans-serif; font-size:1rem; font-weight:800;
+  color:var(--sky); margin-bottom:6px;
+}
+.site-footer .f-bar {
+  width:56px; height:2px; border-radius:2px;
+  background:linear-gradient(90deg,var(--sky),var(--indigo));
+  margin:10px auto;
+}
+.site-footer .f-sub {
+  font-size:0.75rem; color:var(--light); line-height:1.9;
+}
+.site-footer .f-sub strong { color:var(--deep2); }
+
+@media(max-width:700px){
+  .g-grid{grid-template-columns:repeat(2,1fr);gap:12px;}
+  .hero-h1{font-size:1.7rem;}
+  .navbar{padding:11px 16px;}
+  .nav-badge{display:none;}
+}
+@media(max-width:420px){
+  .g-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+<canvas id="bg-canvas"></canvas>
+<div class="wrapper">
+
+<nav class="navbar">
+  <div class="nav-brand">
+    <div class="nav-icon">🔬</div>
+    <div>
+      <div class="nav-title">المختبر الافتراضي التجريبي</div>
+      <div class="nav-sub">فريق صُنَّاع التميّز التربوي · قادة الإبداع</div>
+    </div>
+  </div>
+  <div class="nav-badge">مديرية التربية والتعليم<br><strong>طولكرم — مبحث العلوم</strong></div>
+</nav>
+
+<section class="hero">
+  <div class="hero-emblem">🏫</div>
+  <div class="eyebrow"><span class="eyebrow-dot"></span> منصة التعلم التفاعلي العلمي</div>
+  <h1 class="hero-h1">مختبر علوم <span>طولكرم</span><br>الافتراضي التجريبي</h1>
+  <p class="hero-p">استكشف عالم الفيزياء والكيمياء والأحياء من خلال تجارب افتراضية تفاعلية مصممة لمناهج المديرية</p>
+  <a href="#grades" class="cta-btn">ابدأ التجربة <span class="cta-arrow">←</span></a>
+  <div class="stats">
+    <div class="stat"><div class="stat-num">150</div><div class="stat-lbl">تجربة افتراضية</div></div>
+    <div class="stat-div"></div>
+    <div class="stat"><div class="stat-num">6</div><div class="stat-lbl">صفوف دراسية</div></div>
+    <div class="stat-div"></div>
+    <div class="stat"><div class="stat-num">3</div><div class="stat-lbl">مواد علمية</div></div>
+  </div>
+</section>
+
+<div class="search-section">
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input class="search-input" id="searchInput" type="text"
+           placeholder="ابحث عن تجربة بالاسم أو الصف..." autocomplete="off">
+    <div class="search-results" id="searchResults"></div>
+  </div>
+</div>
+
+<section class="grades-section" id="grades">
+  <div class="sec-header">
+    <h2>اختر صفّك الدراسي</h2>
+    <p>ادخل إلى عالمك العلمي واستكشف التجارب المخصصة لصفك</p>
+    <div class="title-bar"></div>
+  </div>
+  <div class="g-grid">
+    <a href="grade5.html" class="g-card g5">
+      <div class="g-head"><div class="g-icon">🌱</div><div class="g-info"><div class="g-tag">GRADE 5</div><div class="g-name">الصف الخامس</div></div></div>
+      <div class="g-div"></div>
+      <div class="g-foot"><span class="g-count">53 تجربة</span><span class="g-enter">ادخل ←</span></div>
+    </a>
+    <a href="grade6.html" class="g-card g6">
+      <div class="g-head"><div class="g-icon">💧</div><div class="g-info"><div class="g-tag">GRADE 6</div><div class="g-name">الصف السادس</div></div></div>
+      <div class="g-div"></div>
+      <div class="g-foot"><span class="g-count">20 تجربة</span><span class="g-enter">ادخل ←</span></div>
+    </a>
+    <a href="grade7.html" class="g-card g7">
+      <div class="g-head"><div class="g-icon">⚗️</div><div class="g-info"><div class="g-tag">GRADE 7</div><div class="g-name">الصف السابع</div></div></div>
+      <div class="g-div"></div>
+      <div class="g-foot"><span class="g-count">11 تجربة</span><span class="g-enter">ادخل ←</span></div>
+    </a>
+    <a href="grade8.html" class="g-card g8">
+      <div class="g-head"><div class="g-icon">🔭</div><div class="g-info"><div class="g-tag">GRADE 8</div><div class="g-name">الصف الثامن</div></div></div>
+      <div class="g-div"></div>
+      <div class="g-foot"><span class="g-count">28 تجربة</span><span class="g-enter">ادخل ←</span></div>
+    </a>
+    <a href="grade9.html" class="g-card g9">
+      <div class="g-head"><div class="g-icon">⚡</div><div class="g-info"><div class="g-tag">GRADE 9</div><div class="g-name">الصف التاسع</div></div></div>
+      <div class="g-div"></div>
+      <div class="g-foot"><span class="g-count">22 تجربة</span><span class="g-enter">ادخل ←</span></div>
+    </a>
+    <a href="grade10.html" class="g-card g10">
+      <div class="g-head"><div class="g-icon">🧬</div><div class="g-info"><div class="g-tag">GRADE 10</div><div class="g-name">الصف العاشر</div></div></div>
+      <div class="g-div"></div>
+      <div class="g-foot"><span class="g-count">16 تجربة</span><span class="g-enter">ادخل ←</span></div>
+    </a>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="f-logo">🔬 المختبر الافتراضي التجريبي</div>
+  <div class="f-bar"></div>
+  <div class="f-sub">
+    من إعداد فريق صُنَّاع التميّز التربوي (قادة الإبداع)<br>
+    <strong>مديرية التربية والتعليم — طولكرم — مبحث العلوم 🇵🇸</strong>
+  </div>
+</footer>
+
+</div>
+<script src="lab-theme.js"></script>
+<script>
+(function(){
+  const EXPS = [
+    /* الصف الخامس */
+    {href:"grade5/simulate_cell.html",num:"تجربة 1",title:"أحاكي الخلية",grade:"الصف الخامس",emoji:"🌱"},
+    {href:"grade5/separate_mixture_magnet.html",num:"تجربة 2",title:"أريد حَلّاً — فصل المخلوط بالمغناطيس",grade:"الصف الخامس",emoji:"🌱"},
+    {href:"grade5/forms_of_energy.html",num:"تجربة 3",title:"أشكال الطاقة",grade:"الصف الخامس",emoji:"🌱"},
+    {href:"grade5/play_with_energy.html",num:"تجربة 4",title:"ألعب مع الطاقة",grade:"الصف الخامس",emoji:"🌱"},
+    {href:"grade5/play_with_dough_physical_change.html",num:"تجربة 5",title:"ألعب مع المعجون — التغيّر الطبيعي",grade:"الصف الخامس",emoji:"🌱"},
+    {href:"grade5/salts_of_palestine.html",num:"تجربة 6",title:"أملاح بلادي",grade:"الصف الخامس",emoji:"🌱"},
+    {href:"grade5/i_am_mixture.html",num:"تجربة 7",title:"أنا المخلوط",grade:"الصف الخامس",emoji:"🌱"},
+    {href:"grade5/types_of_rocks.html",num:"تجربة 8",title:"أنواع الصخور",grade:"الصف الخامس",emoji:"🌱"},
+    {href:"grade5/simulate_compound.html",num:"تجربة 9",title:"أُحاكي المُرَكَّب",grade:"الصف الخامس",emoji:"🌱"},
+    {href:"grade5/lightning_thunder.html",num:"تجربة 10",title:"البرق والرعد",grade:"الصف الخامس",emoji:"🌱"},
+    {href:"grade5/attraction_repulsion_charges.html",num:"تجربة 11",title:"التجاذب والتنافر — مختبر الشحنات",grade:"الصف الخامس",emoji:"🌱"},
+    {href:"grade5/distillation_lab.html",num:"تجربة 12",title:"التقطير — مختبر افتراضي",grade:"الصف الخامس",emoji:"🌱"},
+    {href:"grade5/industrial_resources.html",num:"تجربة 13",title:"الثروات الصناعية",grade:"الصف الخامس",emoji:"🌱"},
+    {href:"grade5/natural_resources.html",num:"تجربة 14",title:"الثروات الطبيعية",grade:"الصف الخامس",emoji:"🌱"},
+    {href:"grade5/skeletal_system.html",num:"تجربة 15",title:"الجهاز الهيكلي",grade:"الصف الخامس",emoji:"🌱"},
+    {href:"grade5/charging_contact_induction.html",num:"تجربة 16",title:"الشحن باللمس والحث",grade:"الصف الخامس",emoji:"🌱"},
+    {href:"grade5/lightning_static_electricity.html",num:"تجربة 17",title:"الصاعقة — ظواهر الكهرباء الساكنة",grade:"الصف الخامس",emoji:"🌱"},
+    {href:"grade5/energy_environment.html",num:"تجربة 18",title:"الطاقة والبيئة",grade:"الصف الخامس",emoji:"🌱"},
+    {href:"grade5/energy_sources.html",num:"تجربة 19",title:"الطاقة ومصادرها",grade:"الصف الخامس",emoji:"🌱"},
+    {href:"grade5/electroscope_lab.html",num:"تجربة 20",title:"الكشاف الكهربائي",grade:"الصف الخامس",emoji:"🌱"},
+    {href:"grade5/salt_treasure_activity4.html",num:"تجربة 21",title:"الكنز المِلحيّ — نشاط ٤",grade:"الصف الخامس",emoji:"🌱"},
+    {href:"grade5/pure_impure_matter.html",num:"تجربة 22",title:"المادة النقية وغير النقية",grade:"الصف الخامس",emoji:"🌱"},
+    {href:"grade5/microscope_cell_discovery.html",num:"تجربة 23",title:"المجهر واكتشاف الخليّة",grade:"الصف الخامس",emoji:"🌱"},
+    {href:"grade5/electric_generator_energy.html",num:"تجربة 24",title:"المولّد الكهربائي — تحوّلات الطاقة",grade:"الصف الخامس",emoji:"🌱"},
+    {href:"grade5/groundwater_palestine.html",num:"تجربة 25",title:"المياه الجوفيّة في فلسطين",grade:"الصف الخامس",emoji:"🌱"},
+    {href:"grade5/surface_water.html",num:"تجربة 26",title:"المياه السطحية",grade:"الصف الخامس",emoji:"🌱"},
+    {href:"grade5/oil_in_palestine.html",num:"تجربة 27",title:"النفط في بلادي",grade:"الصف الخامس",emoji:"🌱"},
+    {href:"grade5/other_energy_transformations.html",num:"تجربة 28",title:"تحوّلات أخرى للطاقة",grade:"الصف الخامس",emoji:"🌱"},
+    {href:"grade5/light_energy_transformations.html",num:"تجربة 29",title:"تحوّلات الطاقة الضوئية",grade:"الصف الخامس",emoji:"🌱"},
+    {href:"grade5/energy_conservation.html",num:"تجربة 30",title:"ترشيد استهلاك الطاقة",grade:"الصف الخامس",emoji:"🌱"},
+    {href:"grade5/classify_materials.html",num:"تجربة 31",title:"تصنيف المواد",grade:"الصف الخامس",emoji:"🌱"},
+    {href:"grade5/states_of_matter.html",num:"تجربة 32",title:"حالات المادّة",grade:"الصف الخامس",emoji:"🌱"},
+    {href:"grade5/burn_magnesium_chemical_change.html",num:"تجربة 33",title:"حرق المغنيسيوم — تغيّر كيميائي",grade:"الصف الخامس",emoji:"🌱"},
+    {href:"grade5/water_harvesting.html",num:"تجربة 34",title:"حصاد المياه",grade:"الصف الخامس",emoji:"🌱"},
+    {href:"grade5/rock_properties.html",num:"تجربة 35",title:"خصائص الصّخور",grade:"الصف الخامس",emoji:"🌱"},
+    {href:"grade5/compound_properties.html",num:"تجربة 36",title:"خصائص المُرَكَّب",grade:"الصف الخامس",emoji:"🌱"},
+    {href:"grade5/element_lesson.html",num:"تجربة 37",title:"درس العنصر",grade:"الصف الخامس",emoji:"🌱"},
+    {href:"grade5/salt_dissolving_water.html",num:"تجربة 38",title:"ذوبان المِلح في الماء",grade:"الصف الخامس",emoji:"🌱"},
+    {href:"grade5/cell_discovery_journey.html",num:"تجربة 39",title:"رحلة اكتشاف الخليّة",grade:"الصف الخامس",emoji:"🌱"},
+    {href:"grade5/sedimentary_rocks_formation.html",num:"تجربة 40",title:"تكوّن الصخور الرسوبية",grade:"الصف الخامس",emoji:"🌱"},
+    {href:"grade5/separation_funnel.html",num:"تجربة 41",title:"قِمعُ الفَصل",grade:"الصف الخامس",emoji:"🌱"},
+    {href:"grade5/how_oil_forms_3d.html",num:"تجربة 42",title:"كيف يتكوّن النفط — ثلاثي الأبعاد",grade:"الصف الخامس",emoji:"🌱"},
+    {href:"grade5/homogeneous_heterogeneous.html",num:"تجربة 43",title:"متجانس أم غير متجانس",grade:"الصف الخامس",emoji:"🌱"},
+    {href:"grade5/different_mixtures.html",num:"تجربة 44",title:"مخاليط مختلفة",grade:"الصف الخامس",emoji:"🌱"},
+    {href:"grade5/biological_organization_levels.html",num:"تجربة 45",title:"مستويات التنظيم الحيوي",grade:"الصف الخامس",emoji:"🌱"},
+    {href:"grade5/electrical_energy_sources.html",num:"تجربة 46",title:"مصادر الطاقة الكهربائية",grade:"الصف الخامس",emoji:"🌱"},
+    {href:"grade5/cell_components.html",num:"تجربة 47",title:"مكوّنات الخليّة",grade:"الصف الخامس",emoji:"🌱"},
+    {href:"grade5/quarries_3d.html",num:"تجربة 48",title:"مَحاجِرُ بلادي — ثلاثي الأبعاد",grade:"الصف الخامس",emoji:"🌱"},
+    {href:"grade5/activity1_matter.html",num:"تجربة 49",title:"نشاط ١ — المادة",grade:"الصف الخامس",emoji:"🌱"},
+    {href:"grade5/activity3_electric_charge.html",num:"تجربة 50",title:"نشاط ٣ — الشّحنة الكهربائيّة",grade:"الصف الخامس",emoji:"🌱"},
+    {href:"grade5/activity3_water_purification.html",num:"تجربة 51",title:"نشاط ٣ — فصل الشوائب من الماء",grade:"الصف الخامس",emoji:"🌱"},
+    {href:"grade5/activity8_element.html",num:"تجربة 52",title:"نشاط ٨ — العُنصُر",grade:"الصف الخامس",emoji:"🌱"},
+    {href:"grade7/groundwater_lab.html",num:"تجربة 53",title:"المياه الجوفيّة — مختبر تفاعلي",grade:"الصف الخامس",emoji:"🌱"},
+    /* الصف السادس */
+    {href:"grade6/leaf_photosynthesis_lab.html",num:"تجربة 1",title:"آلية عمل الورقة — البناء الضوئي",grade:"الصف السادس",emoji:"💧"},
+    {href:"grade6/photosynthesis_respiration_integration.html",num:"تجربة 2",title:"التكامل بين البناء الضوئي والتنفس",grade:"الصف السادس",emoji:"💧"},
+    {href:"grade6/magnetism_electric_current.html",num:"تجربة 3",title:"التمغنط بالتيار الكهربائي",grade:"الصف السادس",emoji:"💧"},
+    {href:"grade6/magnetism_induction.html",num:"تجربة 4",title:"التمغنط بالحث",grade:"الصف السادس",emoji:"💧"},
+    {href:"grade6/electric_current_galvanic_cell.html",num:"تجربة 5",title:"التيار الكهربائي والخلية الجلفانية",grade:"الصف السادس",emoji:"💧"},
+    {href:"grade6/magnetism_lab.html",num:"تجربة 6",title:"التَّمغنط",grade:"الصف السادس",emoji:"💧"},
+    {href:"grade6/electrical_contact.html",num:"تجربة 7",title:"التّماس الكهربائيّ",grade:"الصف السادس",emoji:"💧"},
+    {href:"grade6/folds_faults_3d.html",num:"تجربة 8",title:"الطيّات والصدوع — ثلاثي الأبعاد",grade:"الصف السادس",emoji:"💧"},
+    {href:"grade6/electric_charge_transfer.html",num:"تجربة 9",title:"انتقال الشحنات الكهربائية",grade:"الصف السادس",emoji:"💧"},
+    {href:"grade6/earth_structure_3d.html",num:"تجربة 10",title:"بنية الأرض — ثلاثي الأبعاد",grade:"الصف السادس",emoji:"💧"},
+    {href:"grade6/vinegar_baking_soda.html",num:"تجربة 11",title:"تفاعل الخل مع بيكربونات الصوديوم",grade:"الصف السادس",emoji:"💧"},
+    {href:"grade6/how_kidney_works.html",num:"تجربة 12",title:"كيف تعمل الكُلية",grade:"الصف السادس",emoji:"💧"},
+    {href:"grade6/charging_by_friction.html",num:"تجربة 13",title:"التكهرب بالدَّلْك",grade:"الصف السادس",emoji:"💧"},
+    {href:"grade6/blood_circulation.html",num:"تجربة 14",title:"رحلة الدم — الدورة الدموية",grade:"الصف السادس",emoji:"💧"},
+    {href:"grade6/circuit_connection_types.html",num:"تجربة 15",title:"طرق التوصيل في الدارات الكهربائية",grade:"الصف السادس",emoji:"💧"},
+    {href:"grade6/bulb_connection_types.html",num:"تجربة 16",title:"طرق توصيل المصابيح الكهربائيّة",grade:"الصف السادس",emoji:"💧"},
+    {href:"grade6/magnetizability_elements_3d.html",num:"تجربة 17",title:"قابلية التمغنط للعناصر",grade:"الصف السادس",emoji:"💧"},
+    {href:"grade6/malleability_ductility.html",num:"تجربة 18",title:"قابلية العناصر للطرق والسحب",grade:"الصف السادس",emoji:"💧"},
+    {href:"grade6/thermal_conductivity.html",num:"تجربة 19",title:"قابلية المواد للتوصيل الحراري",grade:"الصف السادس",emoji:"💧"},
+    {href:"grade6/electric_charge_transfer2.html",num:"تجربة 20",title:"انتقال الشحنات الكهربائيّة ٢",grade:"الصف السادس",emoji:"💧"},
+    /* الصف السابع */
+    {href:"grade7/excretion_in_plants.html",num:"تجربة 1",title:"الإخراج في النباتات",grade:"الصف السابع",emoji:"⚗️"},
+    {href:"grade7/fermentation_yeast_cells.html",num:"تجربة 2",title:"التّخمّر في خلايا الخميرة",grade:"الصف السابع",emoji:"⚗️"},
+    {href:"grade7/aerobic_cellular_respiration.html",num:"تجربة 3",title:"التنفّس الخلوي الهوائي",grade:"الصف السابع",emoji:"⚗️"},
+    {href:"grade7/dissolution_and_heat.html",num:"تجربة 4",title:"الذوبان والحرارة",grade:"الصف السابع",emoji:"⚗️"},
+    {href:"grade7/inertia_grade7.html",num:"تجربة 5",title:"القصور الذاتي",grade:"الصف السابع",emoji:"⚗️"},
+    {href:"grade7/force_and_mass.html",num:"تجربة 6",title:"العلاقة بين القوة وكتلة الجسم",grade:"الصف السابع",emoji:"⚗️"},
+    {href:"grade7/classify_solutions.html",num:"تجربة 7",title:"أصنّف المحاليل من حولي",grade:"الصف السابع",emoji:"⚗️"},
+    {href:"grade7/decomposition_bread_mold.html",num:"تجربة 8",title:"الترمّم — مختبر عفن الخبز",grade:"الصف السابع",emoji:"⚗️"},
+    {href:"grade7/air_pressure_temperature.html",num:"تجربة 9",title:"العلاقة بين الضغط الجوي ودرجة الحرارة",grade:"الصف السابع",emoji:"⚗️"},
+    {href:"grade7/newtons_third_law_g7.html",num:"تجربة 10",title:"القانون الثالث لنيوتن",grade:"الصف السابع",emoji:"⚗️"},
+    {href:"grade7/movement_microorganisms.html",num:"تجربة 11",title:"الحركة في الكائنات الحية الدقيقة",grade:"الصف السابع",emoji:"⚗️"},
+    /* الصف الثامن */
+    {href:"grade8/cell_division_simulation.html",num:"تجربة 1",title:"محاكاة انقسام الخلايا",grade:"الصف الثامن",emoji:"🔭"},
+    {href:"grade8/dna_simulation.html",num:"تجربة 2",title:"محاكاة DNA",grade:"الصف الثامن",emoji:"🔭"},
+    {href:"grade8/osmosis_property.html",num:"تجربة 3",title:"الخاصية الأسموزية",grade:"الصف الثامن",emoji:"🔭"},
+    {href:"grade8/cell_membrane_diffusion.html",num:"تجربة 4",title:"الانتشار عبر الغشاء الخلوي",grade:"الصف الثامن",emoji:"🔭"},
+    {href:"grade8/dna_replication_simulation.html",num:"تجربة 5",title:"محاكاة تضاعف DNA",grade:"الصف الثامن",emoji:"🔭"},
+    {href:"grade8/microscope_viscosity_simulation.html",num:"تجربة 6",title:"تأثير اللزوجة — مختبر المجهر",grade:"الصف الثامن",emoji:"🔭"},
+    {href:"grade8/osmosis_red_blood_cell.html",num:"تجربة 7",title:"الخاصية الأسموزية — خلية الدم الحمراء",grade:"الصف الثامن",emoji:"🔭"},
+    {href:"grade8/types_chemical_compounds.html",num:"تجربة 8",title:"أنواع المركبات الكيميائية",grade:"الصف الثامن",emoji:"🔭"},
+    {href:"grade8/valence_electrons_lab.html",num:"تجربة 9",title:"إلكترونات التكافؤ",grade:"الصف الثامن",emoji:"🔭"},
+    {href:"grade8/bioluminescence_lab.html",num:"تجربة 10",title:"إنتاج وميض — مختبر البيولوجيا",grade:"الصف الثامن",emoji:"🔭"},
+    {href:"grade8/transverse_waves.html",num:"تجربة 11",title:"الأمواج المستعرضة",grade:"الصف الثامن",emoji:"🔭"},
+    {href:"grade8/vibration_produces_sound.html",num:"تجربة 12",title:"الاهتزاز يولد صوتاً",grade:"الصف الثامن",emoji:"🔭"},
+    {href:"grade8/bacteria_lab.html",num:"تجربة 13",title:"البكتيريا — مختبر افتراضي",grade:"الصف الثامن",emoji:"🔭"},
+    {href:"grade8/natural_frequency_resonance.html",num:"تجربة 14",title:"التردد الطبيعي والرنين",grade:"الصف الثامن",emoji:"🔭"},
+    {href:"grade8/compound_microscope.html",num:"تجربة 15",title:"المِجهر المركّب",grade:"الصف الثامن",emoji:"🔭"},
+    {href:"grade8/asexual_reproduction_cuttings.html",num:"تجربة 16",title:"التكاثر اللاجنسي — تحضير العُقل",grade:"الصف الثامن",emoji:"🔭"},
+    {href:"grade8/electron_distribution_3d.html",num:"تجربة 17",title:"التوزيع الإلكتروني للذرّة",grade:"الصف الثامن",emoji:"🔭"},
+    {href:"grade8/periodic_table_atom_lab.html",num:"تجربة 18",title:"الجدول الدوري — مختبر الذرّة",grade:"الصف الثامن",emoji:"🔭"},
+    {href:"grade8/chemical_formula_dead_sea.html",num:"تجربة 19",title:"الصيغة الكيميائية — مختبر البحر الميّت",grade:"الصف الثامن",emoji:"🔭"},
+    {href:"grade8/dissecting_microscope.html",num:"تجربة 20",title:"المجهر التشريحي",grade:"الصف الثامن",emoji:"🔭"},
+    {href:"grade8/water_transverse_wave.html",num:"تجربة 21",title:"الموجة المائية المستعرضة",grade:"الصف الثامن",emoji:"🔭"},
+    {href:"grade8/sound_transmission_vacuum.html",num:"تجربة 22",title:"انتقال الصوت في الفراغ",grade:"الصف الثامن",emoji:"🔭"},
+    {href:"grade8/sound_in_solids_liquids.html",num:"تجربة 23",title:"انتقال الصوت في المواد الصلبة والسائلة",grade:"الصف الثامن",emoji:"🔭"},
+    {href:"grade8/signs_chemical_reaction.html",num:"تجربة 24",title:"دلالات حدوث التفاعل الكيميائي",grade:"الصف الثامن",emoji:"🔭"},
+    {href:"grade8/potential_energy.html",num:"تجربة 25",title:"طاقة الوضع",grade:"الصف الثامن",emoji:"🔭"},
+    {href:"grade8/mechanical_energy_conservation_3d.html",num:"تجربة 26",title:"قانون حفظ الطاقة الميكانيكية",grade:"الصف الثامن",emoji:"🔭"},
+    {href:"grade8/dna_simulation.html",num:"تجربة 27",title:"محاكاة DNA — معلومات واختبار",grade:"الصف الثامن",emoji:"🔭"},
+    {href:"grade8/microscope_viscosity_simulation.html",num:"تجربة 28",title:"محاكاة متطورة لتجربة المجهر",grade:"الصف الثامن",emoji:"🔭"},
+    /* الصف التاسع */
+    {href:"grade9/types_of_sugars.html",num:"تجربة 1",title:"أنواع السكريات",grade:"الصف التاسع",emoji:"⚡"},
+    {href:"grade9/black_snake_reaction.html",num:"تجربة 2",title:"الثعبان الأسود — تفاعل كيميائي",grade:"الصف التاسع",emoji:"⚡"},
+    {href:"grade9/galvanic_cell.html",num:"تجربة 3",title:"الخلية الكهروكيميائية الجلفانية",grade:"الصف التاسع",emoji:"⚡"},
+    {href:"grade9/periodic_properties_elements.html",num:"تجربة 4",title:"الدورية في صفات العناصر",grade:"الصف التاسع",emoji:"⚡"},
+    {href:"grade9/electroplating_lab.html",num:"تجربة 5",title:"الطلاء الكهربائي",grade:"الصف التاسع",emoji:"⚡"},
+    {href:"grade9/factors_electrical_resistance.html",num:"تجربة 6",title:"العوامل التي تعتمد عليها المقاومة",grade:"الصف التاسع",emoji:"⚡"},
+    {href:"grade9/electrical_power.html",num:"تجربة 7",title:"القدرة الكهربائية",grade:"الصف التاسع",emoji:"⚡"},
+    {href:"grade9/carbohydrates_sugars_lab.html",num:"تجربة 8",title:"الكربوهيدرات والسكّريات",grade:"الصف التاسع",emoji:"⚡"},
+    {href:"grade9/double_displacement_gas.html",num:"تجربة 9",title:"تفاعل إطلاق غاز — إحلال مزدوج",grade:"الصف التاسع",emoji:"⚡"},
+    {href:"grade9/double_displacement_reactions.html",num:"تجربة 10",title:"تفاعلات الإحلال المزدوج",grade:"الصف التاسع",emoji:"⚡"},
+    {href:"grade9/neutralization_reactions.html",num:"تجربة 11",title:"تفاعلات التعادل",grade:"الصف التاسع",emoji:"⚡"},
+    {href:"grade9/decomposition_reactions.html",num:"تجربة 12",title:"تفاعلات التفكك",grade:"الصف التاسع",emoji:"⚡"},
+    {href:"grade9/parallel_resistors.html",num:"تجربة 13",title:"توصيل المقاومات على التوازي",grade:"الصف التاسع",emoji:"⚡"},
+    {href:"grade9/series_resistors.html",num:"تجربة 14",title:"توصيل المقاومات على التوالي",grade:"الصف التاسع",emoji:"⚡"},
+    {href:"grade9/ionic_covalent_compounds.html",num:"تجربة 15",title:"المركبات الأيونية والتساهمية",grade:"الصف التاسع",emoji:"⚡"},
+    {href:"grade9/chemical_activity_series.html",num:"تجربة 16",title:"سلسلة النشاط الكيميائي",grade:"الصف التاسع",emoji:"⚡"},
+    {href:"grade9/anemia_lab.html",num:"تجربة 17",title:"فقر الدم — مختبر افتراضي",grade:"الصف التاسع",emoji:"⚡"},
+    {href:"grade9/ohms_law.html",num:"تجربة 18",title:"قانون أوم",grade:"الصف التاسع",emoji:"⚡"},
+    {href:"grade9/measure_electric_current.html",num:"تجربة 19",title:"قياس شدّة التيار الكهربائي",grade:"الصف التاسع",emoji:"⚡"},
+    {href:"grade9/measure_voltage.html",num:"تجربة 20",title:"قياس فرق الجهد",grade:"الصف التاسع",emoji:"⚡"},
+    {href:"grade9/digestion_mouth.html",num:"تجربة 21",title:"هضم الطعام داخل الفم",grade:"الصف التاسع",emoji:"⚡"},
+    {href:"grade9/respiratory_system.html",num:"تجربة 22",title:"الجهاز التنفسي",grade:"الصف التاسع",emoji:"⚡"},
+    /* الصف العاشر */
+    {href:"grade10/acceleration.html",num:"تجربة 1",title:"التسارع",grade:"الصف العاشر",emoji:"🧬"},
+    {href:"grade10/inertia.html",num:"تجربة 2",title:"القصور الذاتي",grade:"الصف العاشر",emoji:"🧬"},
+    {href:"grade10/micrometer_lab.html",num:"تجربة 3",title:"الميكرومتر الهندسي",grade:"الصف العاشر",emoji:"🧬"},
+    {href:"grade10/distance_displacement.html",num:"تجربة 4",title:"المسافة والإزاحة",grade:"الصف العاشر",emoji:"🧬"},
+    {href:"grade10/hydrometer_lab.html",num:"تجربة 5",title:"الهيدروميتر",grade:"الصف العاشر",emoji:"🧬"},
+    {href:"grade10/fluid_pressure.html",num:"تجربة 6",title:"ضغط السائل",grade:"الصف العاشر",emoji:"🧬"},
+    {href:"grade10/fluid_pressure_lab.html",num:"تجربة 7",title:"ضغط السائل — مختبر ١",grade:"الصف العاشر",emoji:"🧬"},
+    {href:"grade10/fluid_pressure_lab2.html",num:"تجربة 8",title:"ضغط السائل — مختبر ٢",grade:"الصف العاشر",emoji:"🧬"},
+    {href:"grade10/liquids_pressure_physics.html",num:"تجربة 9",title:"ضغط السوائل — فيزياء",grade:"الصف العاشر",emoji:"🧬"},
+    {href:"grade10/archimedes_principle.html",num:"تجربة 10",title:"قاعدة أرشميدس",grade:"الصف العاشر",emoji:"🧬"},
+    {href:"grade10/pascal_law.html",num:"تجربة 11",title:"قاعدة باسكال",grade:"الصف العاشر",emoji:"🧬"},
+    {href:"grade10/newtons_third_law.html",num:"تجربة 12",title:"قانون نيوتن الثالث",grade:"الصف العاشر",emoji:"🧬"},
+    {href:"grade10/newtons_second_law.html",num:"تجربة 13",title:"قانون نيوتن الثاني",grade:"الصف العاشر",emoji:"🧬"},
+    {href:"grade10/gravity_lab.html",num:"تجربة 14",title:"مختبر الجاذبية الأرضية",grade:"الصف العاشر",emoji:"🧬"},
+    {href:"grade10/water_heating_curve.html",num:"تجربة 15",title:"منحنى تسخين الماء",grade:"الصف العاشر",emoji:"🧬"},
+    {href:"grade10/vernier_caliper.html",num:"تجربة 16",title:"الورنية — القدمة ذات الورنية",grade:"الصف العاشر",emoji:"🧬"},
+  ];
+  const input   = document.getElementById('searchInput');
+  const results = document.getElementById('searchResults');
+  function normalize(s){
+    return s.replace(/[أإآا]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي')
+            .replace(/[\u064B-\u065F]/g,'').toLowerCase();
+  }
+  function render(q){
+    const nq=normalize(q.trim());
+    if(!nq){results.classList.remove('open');return;}
+    const matches=EXPS.filter(e=>
+      normalize(e.title).includes(nq)||normalize(e.grade).includes(nq)||e.num.includes(q)
+    ).slice(0,14);
+    if(!matches.length){
+      results.innerHTML='<div class="sri-empty">لا توجد نتائج</div>';
+    }else{
+      results.innerHTML=matches.map(e=>`
+        <a class="sri" href="${e.href}">
+          <span class="sri-grade">${e.emoji} ${e.grade}</span>
+          <span class="sri-title">${e.title}</span>
+          <span class="sri-num">${e.num}</span>
+        </a>`).join('');
+    }
+    results.classList.add('open');
+  }
+  input.addEventListener('input',e=>render(e.target.value));
+  document.addEventListener('click',e=>{
+    if(!e.target.closest('.search-section'))results.classList.remove('open');
+  });
+  input.addEventListener('keydown',e=>{if(e.key==='Escape')results.classList.remove('open');});
+})();
+</script>
+</body>
+</html>

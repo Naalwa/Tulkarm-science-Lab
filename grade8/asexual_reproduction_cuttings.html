@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>التكاثر اللاجنسي: تحضير العُقل في المختبر</title>
+<style>
+:root{
+  --green-900:#0f3d2e;
+  --green-800:#155c3f;
+  --green-700:#1d7a52;
+  --green-600:#2a9d62;
+  --green-400:#6fcf97;
+  --green-200:#d6f5e3;
+  --soil:#6b4226;
+  --water:#8ecae6;
+  --water-deep:#3a8fb7;
+  --paper:#fbfaf5;
+  --gold:#e0a82e;
+  --ink:#1c2b22;
+  --shadow:rgba(15,61,46,.25);
+  font-family:'Segoe UI', Tahoma, Arial, sans-serif;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:linear-gradient(180deg,#eafaf0 0%, #d8f0e3 40%, #cdeede 100%);
+  color:var(--ink);
+  min-height:100vh;
+  padding-bottom:60px;
+}
+
+/* ===== Header ===== */
+header.hero{
+  background:radial-gradient(circle at 30% 20%, var(--green-600), var(--green-900) 80%);
+  color:#fff;
+  padding:28px 18px 60px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+  box-shadow:0 8px 30px var(--shadow);
+  border-bottom-left-radius:40px 20px;
+  border-bottom-right-radius:40px 20px;
+}
+header.hero::before{
+  content:"";
+  position:absolute; inset:0;
+  background-image:radial-gradient(circle, rgba(255,255,255,.08) 1px, transparent 1px);
+  background-size:18px 18px;
+  opacity:.5;
+}
+header.hero h1{
+  font-size:clamp(22px,4.5vw,38px);
+  margin:6px 0 4px;
+  text-shadow:0 3px 8px rgba(0,0,0,.35);
+  position:relative;
+}
+header.hero h2{
+  font-weight:400;
+  font-size:clamp(14px,2.6vw,18px);
+  opacity:.9;
+  margin:0;
+  position:relative;
+}
+.badge-row{
+  display:flex; gap:10px; justify-content:center; flex-wrap:wrap;
+  margin-top:14px; position:relative;
+}
+.badge{
+  background:rgba(255,255,255,.15);
+  backdrop-filter:blur(4px);
+  border:1px solid rgba(255,255,255,.35);
+  padding:6px 14px;
+  border-radius:20px;
+  font-size:13px;
+}
+
+/* ===== Nav ===== */
+nav.tabs{
+  max-width:1000px;
+  margin:-32px auto 0;
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  justify-content:center;
+  padding:0 14px;
+  position:relative;
+  z-index:5;
+}
+nav.tabs button{
+  flex:1 1 130px;
+  border:none;
+  padding:14px 10px;
+  border-radius:16px;
+  background:#fff;
+  color:var(--green-800);
+  font-weight:700;
+  font-size:14px;
+  cursor:pointer;
+  box-shadow:0 6px 16px var(--shadow);
+  transition:transform .15s, box-shadow .15s, background .2s, color .2s;
+}
+nav.tabs button:hover{transform:translateY(-3px);}
+nav.tabs button.active{
+  background:linear-gradient(135deg,var(--green-600),var(--green-800));
+  color:#fff;
+}
+
+main{max-width:1000px; margin:24px auto; padding:0 14px;}
+section.panel{display:none; animation:fadeIn .4s ease;}
+section.panel.active{display:block;}
+@keyframes fadeIn{from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);}}
+
+.card{
+  background:var(--paper);
+  border-radius:22px;
+  padding:22px 20px;
+  box-shadow:0 10px 25px var(--shadow);
+  margin-bottom:20px;
+  border:1px solid #e3ede6;
+}
+.card h3{
+  margin-top:0;
+  color:var(--green-800);
+  display:flex; align-items:center; gap:8px;
+  font-size:clamp(17px,3vw,22px);
+}
+.card h3 .num{
+  background:var(--green-600);
+  color:#fff;
+  width:30px; height:30px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:15px; flex-shrink:0;
+}
+p, li{line-height:1.9; font-size:15.5px;}
+ul{padding-inline-start:22px;}
+
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
+@media(max-width:680px){.grid2{grid-template-columns:1fr;}}
+
+.tool-box{
+  background:var(--green-200);
+  border-radius:16px;
+  padding:14px;
+  text-align:center;
+  font-weight:600;
+  color:var(--green-900);
+}
+.tool-box .emoji{font-size:34px; display:block; margin-bottom:6px;}
+
+/* ===== Definition box ===== */
+.def{
+  background:linear-gradient(135deg,#fff8e6,#fdf0d0);
+  border-right:6px solid var(--gold);
+  padding:14px 16px;
+  border-radius:12px;
+  margin:14px 0;
+}
+.def b{color:#8a5a00;}
+
+/* ===== 3D Lab ===== */
+.lab-wrap{
+  perspective:1300px;
+  display:flex;
+  justify-content:center;
+  padding:30px 6px 10px;
+}
+.bench{
+  width:100%;
+  max-width:560px;
+  height:320px;
+  position:relative;
+  transform-style:preserve-3d;
+  transform:rotateX(8deg);
+}
+.bench-surface{
+  position:absolute;
+  bottom:0; left:0; right:0;
+  height:50px;
+  background:linear-gradient(180deg,#caa472,#9c7a4f);
+  border-radius:10px;
+  box-shadow:0 20px 30px rgba(0,0,0,.35);
+  transform:translateZ(-10px);
+}
+.jar{
+  position:absolute;
+  bottom:48px;
+  left:50%;
+  transform:translateX(-50%);
+  width:170px;
+  height:200px;
+  transition:height .6s ease;
+}
+.jar-glass{
+  position:absolute; inset:0;
+  border-radius:18px 18px 26px 26px;
+  background:linear-gradient(135deg, rgba(255,255,255,.55), rgba(180,220,230,.25) 40%, rgba(255,255,255,.5));
+  border:2px solid rgba(255,255,255,.65);
+  box-shadow:
+    inset 0 0 25px rgba(255,255,255,.5),
+    0 25px 40px rgba(0,0,0,.25);
+  backdrop-filter:blur(1px);
+  overflow:hidden;
+}
+.jar-water{
+  position:absolute;
+  left:4px; right:4px; bottom:4px;
+  height:38%;
+  background:linear-gradient(180deg, var(--water), var(--water-deep));
+  border-radius:0 0 22px 22px;
+  transition:height .8s ease, opacity .8s ease;
+  opacity:.85;
+}
+.jar-water::before{
+  content:"";
+  position:absolute; top:-6px; left:0; right:0; height:10px;
+  background:repeating-linear-gradient(90deg, rgba(255,255,255,.6) 0 10px, transparent 10px 20px);
+  opacity:.5;
+}
+.cutting{
+  position:absolute;
+  bottom:8px; left:50%;
+  transform:translateX(-50%);
+  width:10px;
+  height:0;
+  background:linear-gradient(180deg,#7a5230,#5b3c20);
+  border-radius:6px;
+  transition:height 1s ease;
+  z-index:3;
+}
+.cutting::after{ /* leaves */
+  content:"🌿";
+  position:absolute;
+  top:-34px; left:50%;
+  transform:translateX(-50%);
+  font-size:40px;
+  filter:drop-shadow(0 6px 6px rgba(0,0,0,.25));
+}
+.roots{
+  position:absolute;
+  bottom:6px; left:50%;
+  transform:translateX(-50%);
+  width:60px;
+  height:0;
+  opacity:0;
+  transition:height 1.2s ease, opacity 1s ease;
+  z-index:2;
+  pointer-events:none;
+}
+.roots svg{width:100%; height:100%; display:block;}
+
+.pot{
+  position:absolute; bottom:48px; left:50%; transform:translateX(-50%);
+  width:150px; height:130px;
+  opacity:0; transition:opacity .6s ease;
+}
+.pot.show{opacity:1;}
+.pot-body{
+  position:absolute; bottom:0; left:10px; right:10px; height:80px;
+  background:linear-gradient(135deg,#c97b3d,#a85c25);
+  border-radius:6px 6px 16px 16px;
+  box-shadow:0 18px 30px rgba(0,0,0,.3);
+}
+.pot-rim{
+  position:absolute; bottom:74px; left:0; right:0; height:16px;
+  background:linear-gradient(135deg,#dd9352,#b56b2c);
+  border-radius:8px;
+}
+.pot-soil{
+  position:absolute; bottom:82px; left:14px; right:14px; height:12px;
+  background:var(--soil);
+  border-radius:50%;
+}
+.pot .cutting2{
+  position:absolute; bottom:90px; left:50%; transform:translateX(-50%);
+  width:10px; height:70px;
+  background:linear-gradient(180deg,#7a5230,#5b3c20);
+  border-radius:6px;
+}
+.pot .cutting2::after{
+  content:"🌿🌱"; position:absolute; top:-40px; left:50%; transform:translateX(-50%);
+  font-size:36px;
+}
+
+.lab-controls{
+  display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-top:18px;
+}
+.btn{
+  background:linear-gradient(135deg,var(--green-600),var(--green-800));
+  color:#fff; border:none; padding:12px 22px;
+  border-radius:14px; font-size:15px; font-weight:700;
+  cursor:pointer; box-shadow:0 8px 16px var(--shadow);
+  transition:transform .15s, opacity .2s;
+}
+.btn:hover{transform:translateY(-2px);}
+.btn:disabled{opacity:.45; cursor:not-allowed; transform:none;}
+.btn.secondary{background:linear-gradient(135deg,#e0a82e,#b9831c);}
+.btn.outline{background:#fff; color:var(--green-800); border:2px solid var(--green-600);}
+
+.day-counter{
+  text-align:center; font-weight:700; color:var(--green-800);
+  margin-top:10px; font-size:15px;
+}
+.progress-track{
+  background:#e1efe5; border-radius:10px; height:14px; max-width:400px; margin:8px auto 0; overflow:hidden;
+  box-shadow:inset 0 2px 4px rgba(0,0,0,.15);
+}
+.progress-fill{
+  height:100%; width:0%; background:linear-gradient(90deg,var(--green-400),var(--green-700));
+  transition:width .6s ease;
+}
+
+.observation-log{
+  background:#fff; border-radius:16px; padding:14px 16px; margin-top:18px;
+  border:1px dashed var(--green-600); min-height:50px;
+  font-size:14.5px; line-height:1.9;
+}
+.observation-log .entry{margin-bottom:6px;}
+.observation-log .entry b{color:var(--green-700);}
+
+/* ===== Quiz ===== */
+.q-block{margin-bottom:20px;}
+.q-block p.qtext{font-weight:700; margin-bottom:10px;}
+.options{display:flex; flex-direction:column; gap:8px;}
+.opt{
+  background:#fff; border:2px solid #dfe9e2; border-radius:12px;
+  padding:10px 14px; cursor:pointer; transition:.2s;
+  font-size:14.5px;
+}
+.opt:hover{border-color:var(--green-600);}
+.opt.correct{background:#dff5e3; border-color:var(--green-700); font-weight:700;}
+.opt.wrong{background:#fbe2e2; border-color:#c44545;}
+.feedback{margin-top:8px; font-weight:700; min-height:20px;}
+.feedback.ok{color:var(--green-700);}
+.feedback.bad{color:#b03030;}
+
+.fill-blank input{
+  border:none; border-bottom:2px solid var(--green-600);
+  font-size:15px; width:120px; text-align:center; background:transparent; font-family:inherit;
+  padding:4px;
+}
+.fill-blank .check{margin-right:8px;}
+
+.score-box{
+  text-align:center; background:linear-gradient(135deg,var(--green-200),#fff);
+  border-radius:16px; padding:16px; font-weight:700; color:var(--green-800); font-size:17px;
+}
+
+footer{
+  text-align:center; color:var(--green-800); font-size:13px; padding:30px 10px 10px; opacity:.8;
+}
+
+.flow{
+  display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin:18px 0;
+}
+.flow .step{
+  background:#fff; border-radius:14px; padding:12px 14px; flex:1 1 130px; text-align:center;
+  box-shadow:0 6px 14px var(--shadow); position:relative;
+}
+.flow .step .ic{font-size:30px;}
+.flow .step .lbl{font-size:13px; font-weight:700; margin-top:6px; color:var(--green-800);}
+.flow .arrow{align-self:center; font-size:22px; color:var(--green-600);}
+
+@media(max-width:560px){
+  .flow{flex-direction:column;}
+  .flow .arrow{transform:rotate(90deg);}
+}
+
+.hint{
+  font-size:13px; color:#5a6f63; text-align:center; margin-top:6px;
+}
+
+.lock-msg{
+  text-align:center; color:#a35b00; font-weight:700; padding:10px;
+  background:#fff4e0; border-radius:10px; margin-top:10px; display:none;
+}
+
+  /* ═══ RESPONSIVE MOBILE & TABLET — AUTO-INJECTED ═══ */
+  @media (max-width: 768px) {
+    body { padding: 8px !important; font-size: 15px !important; overflow-x: hidden !important; }
+    .container, [class*="container"], [class*="wrapper"] { padding: 8px !important; max-width: 100% !important; }
+    canvas { width: 100% !important; height: auto !important; display: block !important; touch-action: none; max-width: 100% !important; }
+    svg { max-width: 100% !important; height: auto !important; }
+    h1 { font-size: clamp(18px, 5vw, 32px) !important; }
+    h2 { font-size: clamp(16px, 4vw, 26px) !important; }
+    h3 { font-size: clamp(14px, 3.5vw, 22px) !important; }
+    p, li, td, th, label, span { font-size: clamp(13px, 3.5vw, 16px) !important; }
+    [class*="grid"] { grid-template-columns: 1fr !important; }
+    [class*="flex"] { flex-wrap: wrap !important; }
+    input[type="range"] { width: 100% !important; min-height: 36px; }
+    input[type="number"], input[type="text"], select, textarea { 
+      font-size: 16px !important; width: 100% !important; box-sizing: border-box; padding: 8px !important;
+    }
+    button { min-height: 44px !important; font-size: 14px !important; touch-action: manipulation; padding: 10px 14px !important; }
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 13px !important; }
+    th, td { padding: 6px 4px !important; white-space: nowrap; }
+    [style*="display: grid"], [style*="display:grid"] { display: flex !important; flex-direction: column !important; }
+    .lab-window, [class*="lab-window"] { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+    header { padding: 12px !important; }
+    .controls, [class*="controls"] { flex-direction: column !important; gap: 8px !important; }
+  }
+  @media (max-width: 480px) {
+    body { padding: 4px !important; }
+    h1 { font-size: clamp(16px, 5vw, 24px) !important; }
+    button { width: 100% !important; }
+  }
+  /* ═══ END RESPONSIVE ═══ */
+</style>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<style>
+.vlab-back-btn {
+  position: fixed; top: 10px; left: 10px; z-index: 99999;
+  background: rgba(10,22,40,0.93); border: 1px solid rgba(0,200,150,0.4);
+  border-radius: 22px; padding: 8px 16px;
+  display: inline-flex; align-items: center; gap: 7px;
+  color: #00C896; font-family: Tajawal, Cairo, Arial, sans-serif;
+  font-size: 13px; font-weight: 700; text-decoration: none;
+  backdrop-filter: blur(8px); box-shadow: 0 4px 18px rgba(0,0,0,0.3);
+  transition: background 0.2s;
+}
+.vlab-back-btn:hover { background: rgba(0,200,150,0.18); color: #00C896; }
+</style>
+
+<a href="../grade8.html" class="vlab-back-btn">&#8594; العودة للصف</a>
+
+
+<header class="hero">
+  <h1>🌱 التكاثر اللاجنسي: تحضير العُقل في المختبر</h1>
+  <h2>منهاج العلوم والحياة — الصف الثامن — فلسطين</h2>
+  <div class="badge-row">
+    <span class="badge">🧪 مختبر افتراضي ثلاثي الأبعاد</span>
+    <span class="badge">📘 شرح + استنتاج</span>
+    <span class="badge">📱 يعمل على الهاتف والحاسوب</span>
+  </div>
+</header>
+
+<nav class="tabs">
+  <button class="tab-btn active" data-tab="lesson">📖 الدرس</button>
+  <button class="tab-btn" data-tab="lab">🧪 المختبر الافتراضي</button>
+  <button class="tab-btn" data-tab="conclusion">💡 الاستنتاج</button>
+  <button class="tab-btn" data-tab="quiz">📝 اختبر نفسك</button>
+</nav>
+
+<main>
+
+<!-- ===================== LESSON ===================== -->
+<section class="panel active" id="lesson">
+
+  <div class="card">
+    <h3><span class="num">١</span> ما هو التكاثر اللاجنسي؟</h3>
+    <div class="def">
+      <b>التكاثر اللاجنسي (Asexual Reproduction):</b> هو نوع من التكاثر ينتج فيه كائن حي جديد من <b>جزء واحد فقط</b> من كائن حي واحد (الأبوي)، دون الحاجة إلى أمشاج ذكرية وأنثوية، وتكون الأفراد الناتجة <b>مطابقة وراثيًا</b> للكائن الأصلي.
+    </div>
+    <p>تتكاثر النباتات لاجنسيًا بعدة طرق منها: التكاثر بالعُقل (الأفرع)، والتكاثر بالدرنات، والتكاثر بالأبصال، والتكاثر بالريزومات. وفي هذا النشاط سنتعرّف عمليًا على <b>طريقة تحضير العُقل</b>.</p>
+  </div>
+
+  <div class="card">
+    <h3><span class="num">٢</span> تعريف العُقلة</h3>
+    <div class="def">
+      <b>العُقلة (Cutting):</b> جزء مقطوع من ساق أو فرع نبات، يحتوي على براعم، ويُستخدم لإنتاج نبات جديد كامل عن طريق تكوين جذور عرضية (جذور تنشأ من مكان غير الجذر الأصلي).
+    </div>
+  </div>
+
+  <div class="card">
+    <h3><span class="num">٣</span> المواد والأدوات اللازمة</h3>
+    <div class="grid2">
+      <div class="tool-box"><span class="emoji">🪣</span>مرطبان فيه ماء</div>
+      <div class="tool-box"><span class="emoji">✂️</span>مقص حاد لقطع الأفرع</div>
+      <div class="tool-box"><span class="emoji">🌿</span>نباتات مختلفة (صباريات، ورد الخبيزة)</div>
+      <div class="tool-box"><span class="emoji">🪴</span>أصيص فيه تربة</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3><span class="num">٤</span> خطوات العمل</h3>
+    <div class="flow">
+      <div class="step"><div class="ic">✂️</div><div class="lbl">١. قطع 3 أفرع بطول مناسب، نزع الأوراق السفلية</div></div>
+      <div class="arrow">⬅</div>
+      <div class="step"><div class="ic">🫙</div><div class="lbl">٢. وضع الأفرع في مرطبان ماء ومراقبتها يوميًا</div></div>
+      <div class="arrow">⬅</div>
+      <div class="step"><div class="ic">🌱</div><div class="lbl">٣. ظهور الجذور بعد عدة أيام</div></div>
+      <div class="arrow">⬅</div>
+      <div class="step"><div class="ic">🪴</div><div class="lbl">٤. نقل العُقلة إلى أصيص فيه تربة</div></div>
+    </div>
+    <p>👈 انتقل الآن إلى تبويب <b>"المختبر الافتراضي"</b> لتنفيذ هذه الخطوات بنفسك ومشاهدة النتائج!</p>
+  </div>
+</section>
+
+<!-- ===================== LAB ===================== -->
+<section class="panel" id="lab">
+  <div class="card">
+    <h3><span class="num">🧪</span> المختبر الافتراضي — نفّذ التجربة بنفسك</h3>
+    <p>اتبع الخطوات بالترتيب: اقطع العقلة، ضعها في الماء، انتظر تكوّن الجذور، ثم انقلها إلى التربة. راقب ما يحدث وسجّل ملاحظاتك في سجل المراقبة.</p>
+
+    <div class="lab-wrap">
+      <div class="bench" id="bench">
+        <div class="jar" id="jar">
+          <div class="jar-glass">
+            <div class="jar-water" id="jarWater"></div>
+          </div>
+          <div class="cutting" id="cutting"></div>
+          <div class="roots" id="roots">
+            <svg viewBox="0 0 60 40" preserveAspectRatio="none">
+              <path d="M30 0 C 20 10, 10 14, 4 26 M30 0 C 25 12, 26 20, 18 34 M30 0 C 35 12, 34 20, 42 34 M30 0 C 40 10, 50 14, 56 26"
+                stroke="#f1e3c5" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </div>
+        <div class="pot" id="pot">
+          <div class="pot-rim"></div>
+          <div class="pot-body"></div>
+          <div class="pot-soil"></div>
+          <div class="cutting2"></div>
+        </div>
+        <div class="bench-surface"></div>
+      </div>
+    </div>
+
+    <div class="day-counter" id="dayCounter">الخطوة ١: اضغط "قص العقلة من النبات" للبدء</div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+
+    <div class="lab-controls">
+      <button class="btn" id="btnCut">✂️ قص العُقلة من النبات الأم</button>
+      <button class="btn" id="btnWater" disabled>🫙 وضع العُقلة في المرطبان</button>
+      <button class="btn secondary" id="btnDay" disabled>⏭️ مرور يوم (راقب الجذور)</button>
+      <button class="btn outline" id="btnPlant" disabled>🪴 نقل العُقلة إلى التربة</button>
+      <button class="btn outline" id="btnReset">🔄 إعادة التجربة</button>
+    </div>
+    <div class="lock-msg" id="lockMsg">⚠️ يجب إتمام الخطوة السابقة أولًا!</div>
+
+    <div class="observation-log" id="log">
+      <div class="entry">📋 سجل المراقبة سيظهر هنا أثناء تنفيذك للتجربة...</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CONCLUSION ===================== -->
+<section class="panel" id="conclusion">
+  <div class="card">
+    <h3><span class="num">💡</span> الاستنتاجات</h3>
+    <ul>
+      <li>يمكن للنبات أن يُنتج <b>جذورًا عرضية جديدة</b> من جزء من ساقه (العقلة) دون الحاجة إلى بذرة.</li>
+      <li>النبات الناتج عن العقلة <b>مطابق وراثيًا</b> للنبات الأم لأنه نشأ من خلايا جسدية له (تكاثر لاجنسي).</li>
+      <li>وجود <b>الماء والرطوبة</b> ضروري لتنشيط نمو الجذور في بداية التجربة.</li>
+      <li>بعد تكوّن الجذور، يحتاج النبات إلى <b>التربة</b> ليحصل على الماء والأملاح المعدنية ويستمر في النمو والتثبيت.</li>
+      <li>هذه الطريقة (التكاثر بالعُقل) تُستخدم في الزراعة للحصول على نباتات جديدة بسرعة وبصفات مطابقة للنبات الأصلي (كما في زراعة الورد والصباريات).</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3><span class="num">🔍</span> قارن: تكاثر جنسي ولاجنسي</h3>
+    <div class="grid2">
+      <div class="tool-box" style="text-align:right; background:#eaf6ec;">
+        <b>التكاثر اللاجنسي (العُقل)</b>
+        <ul style="text-align:right; margin-top:8px;">
+          <li>كائن أبوي واحد</li>
+          <li>لا يوجد اندماج أمشاج</li>
+          <li>أفراد مطابقة وراثيًا</li>
+          <li>سريع نسبيًا</li>
+        </ul>
+      </div>
+      <div class="tool-box" style="text-align:right; background:#fdf3e3;">
+        <b>التكاثر الجنسي</b>
+        <ul style="text-align:right; margin-top:8px;">
+          <li>أبوان (ذكر وأنثى)</li>
+          <li>اندماج أمشاج (إخصاب)</li>
+          <li>أفراد متنوعة وراثيًا</li>
+          <li>أبطأ نسبيًا</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== QUIZ ===================== -->
+<section class="panel" id="quiz">
+  <div class="card">
+    <h3><span class="num">📝</span> اختبر فهمك</h3>
+
+    <div class="q-block" data-q="1">
+      <p class="qtext">١. ما هي العُقلة؟</p>
+      <div class="options">
+        <div class="opt" data-correct="false">بذرة جافة توضع في التربة مباشرة</div>
+        <div class="opt" data-correct="true">جزء مقطوع من ساق أو فرع النبات يُستخدم لإنتاج نبات جديد</div>
+        <div class="opt" data-correct="false">جزء من جذر النبات فقط لا غير</div>
+      </div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q-block" data-q="2">
+      <p class="qtext">٢. التكاثر اللاجنسي ينتج أفرادًا:</p>
+      <div class="options">
+        <div class="opt" data-correct="false">مختلفة وراثيًا عن الأبوين</div>
+        <div class="opt" data-correct="true">مطابقة وراثيًا للنبات الأم</div>
+        <div class="opt" data-correct="false">ناتجة عن اتحاد مشيج ذكري وأنثوي</div>
+      </div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q-block" data-q="3">
+      <p class="qtext">٣. لماذا توضع العُقلة في الماء أولًا قبل التربة؟</p>
+      <div class="options">
+        <div class="opt" data-correct="false">لتجف أوراقها بسرعة</div>
+        <div class="opt" data-correct="true">لتحفيز نمو جذور عرضية جديدة بوجود الرطوبة</div>
+        <div class="opt" data-correct="false">لتغيير لون الساق</div>
+      </div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q-block fill-blank" data-q="4">
+      <p class="qtext">٤. أكمل: بعد ظهور الجذور، تُنقل العُقلة إلى أصيص فيه ............ ليستمر النبات في النمو.</p>
+      <input type="text" placeholder="اكتب الإجابة هنا">
+      <button class="btn outline check">تحقق</button>
+      <div class="feedback"></div>
+    </div>
+
+    <button class="btn" id="btnFinish">✅ عرض النتيجة النهائية</button>
+    <div class="score-box" id="scoreBox" style="display:none; margin-top:14px;"></div>
+  </div>
+</section>
+
+</main>
+
+<footer>صفحة تعليمية تفاعلية — مادة العلوم والحياة، الصف الثامن، فلسطين 🇵🇸 — تصميم رقمي تفاعلي</footer>
+
+<script>
+// ===== Tabs =====
+const tabBtns = document.querySelectorAll('.tab-btn');
+const panels = document.querySelectorAll('.panel');
+tabBtns.forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    tabBtns.forEach(b=>b.classList.remove('active'));
+    panels.forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.tab).classList.add('active');
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+});
+
+// ===== Virtual Lab Logic =====
+const btnCut = document.getElementById('btnCut');
+const btnWater = document.getElementById('btnWater');
+const btnDay = document.getElementById('btnDay');
+const btnPlant = document.getElementById('btnPlant');
+const btnReset = document.getElementById('btnReset');
+const lockMsg = document.getElementById('lockMsg');
+
+const cutting = document.getElementById('cutting');
+const jarWater = document.getElementById('jarWater');
+const roots = document.getElementById('roots');
+const pot = document.getElementById('pot');
+const log = document.getElementById('log');
+const dayCounter = document.getElementById('dayCounter');
+const progressFill = document.getElementById('progressFill');
+
+let state = { cut:false, watered:false, day:0, planted:false };
+
+function addLog(text){
+  const e = document.createElement('div');
+  e.className='entry';
+  e.innerHTML = text;
+  log.appendChild(e);
+  log.scrollTop = log.scrollHeight;
+}
+function flashLock(){
+  lockMsg.style.display='block';
+  setTimeout(()=>lockMsg.style.display='none', 1800);
+}
+function setProgress(p){ progressFill.style.width = p+'%'; }
+
+btnCut.addEventListener('click', ()=>{
+  state.cut = true;
+  cutting.style.height = '90px';
+  btnCut.disabled = true;
+  btnWater.disabled = false;
+  dayCounter.textContent = 'تم قص العُقلة 🌿 — الآن ضعها في المرطبان';
+  setProgress(20);
+  addLog('✂️ <b>تم قص العُقلة</b> من النبات الأم بطول مناسب ونزع الأوراق السفلية منها.');
+});
+
+btnWater.addEventListener('click', ()=>{
+  state.watered = true;
+  jarWater.style.height = '55%';
+  btnWater.disabled = true;
+  btnDay.disabled = false;
+  dayCounter.textContent = 'اليوم 0: العُقلة في الماء — اضغط "مرور يوم" لمراقبة الجذور';
+  setProgress(35);
+  addLog('🫙 <b>تم وضع العُقلة في المرطبان</b> المملوء بالماء، ووُضع المرطبان في مكان مناسب للمراقبة.');
+});
+
+btnDay.addEventListener('click', ()=>{
+  if(!state.watered){ flashLock(); return; }
+  state.day++;
+  dayCounter.textContent = 'مرّ اليوم رقم ' + state.day + ' — جارٍ مراقبة العُقلة...';
+  setProgress(35 + state.day*8);
+
+  if(state.day === 2){
+    addLog('🔎 اليوم 2: لا تزال العُقلة سليمة، لم تظهر جذور بعد.');
+  } else if(state.day === 4){
+    roots.style.height = '34px';
+    roots.style.opacity = '1';
+    addLog('🌱 اليوم 4: بدأت <b>جذور عرضية صغيرة بيضاء</b> بالظهور عند قاعدة الساق!');
+  } else if(state.day === 6){
+    roots.style.height = '50px';
+    addLog('🌿 اليوم 6: ازدادت الجذور طولًا وعددًا — العُقلة أصبحت جاهزة تقريبًا للنقل إلى التربة.');
+  } else if(state.day >= 7){
+    roots.style.height = '60px';
+    btnDay.disabled = true;
+    btnPlant.disabled = false;
+    dayCounter.textContent = '✅ تكوّنت الجذور بشكل كافٍ — يمكنك الآن نقل العُقلة إلى التربة';
+    setProgress(80);
+    addLog('🌳 اليوم ' + state.day + ': تكوّن نظام جذري جيد. <b>يمكن الآن نقل العُقلة إلى الأصيص.</b>');
+  }
+});
+
+btnPlant.addEventListener('click', ()=>{
+  if(!btnPlant.disabled){
+    document.getElementById('jar').style.opacity = '0';
+    document.getElementById('jar').style.transition = 'opacity .6s ease';
+    pot.classList.add('show');
+    btnPlant.disabled = true;
+    dayCounter.textContent = '🪴 تم نقل العُقلة إلى التربة — تجربة ناجحة!';
+    setProgress(100);
+    addLog('🪴 <b>تم نقل العُقلة إلى أصيص فيه تربة</b>. سيستمر النبات الجديد في النمو متغذيًا من التربة، وهو مطابق وراثيًا للنبات الأم.');
+    addLog('🎉 <b>انتهت التجربة بنجاح! </b> انتقل لتبويب "الاستنتاج" لمراجعة ما توصلت إليه.');
+  }
+});
+
+btnReset.addEventListener('click', ()=>{
+  state = { cut:false, watered:false, day:0, planted:false };
+  cutting.style.height = '0';
+  jarWater.style.height = '0';
+  roots.style.height = '0';
+  roots.style.opacity = '0';
+  pot.classList.remove('show');
+  document.getElementById('jar').style.opacity = '1';
+  btnCut.disabled = false;
+  btnWater.disabled = true;
+  btnDay.disabled = true;
+  btnPlant.disabled = true;
+  dayCounter.textContent = 'الخطوة ١: اضغط "قص العقلة من النبات" للبدء';
+  setProgress(0);
+  log.innerHTML = '<div class="entry">📋 سجل المراقبة سيظهر هنا أثناء تنفيذك للتجربة...</div>';
+});
+
+[btnWater, btnDay, btnPlant].forEach(b=>{
+  b.addEventListener('click', (e)=>{
+    if(b.disabled) flashLock();
+  });
+});
+
+// ===== Quiz logic =====
+document.querySelectorAll('.q-block .options').forEach(group=>{
+  const opts = group.querySelectorAll('.opt');
+  opts.forEach(opt=>{
+    opt.addEventListener('click', ()=>{
+      if(group.dataset.locked) return;
+      const block = group.closest('.q-block');
+      const fb = block.querySelector('.feedback');
+      opts.forEach(o=>o.classList.remove('correct','wrong'));
+      if(opt.dataset.correct === 'true'){
+        opt.classList.add('correct');
+        fb.textContent = '✅ إجابة صحيحة!';
+        fb.className = 'feedback ok';
+        block.dataset.score = 1;
+      } else {
+        opt.classList.add('wrong');
+        const correctOpt = [...opts].find(o=>o.dataset.correct==='true');
+        correctOpt.classList.add('correct');
+        fb.textContent = '❌ إجابة غير صحيحة، الصحيحة موضحة باللون الأخضر.';
+        fb.className = 'feedback bad';
+        block.dataset.score = 0;
+      }
+      group.dataset.locked = 'true';
+    });
+  });
+});
+
+document.querySelectorAll('.fill-blank .check').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const block = btn.closest('.q-block');
+    const input = block.querySelector('input');
+    const fb = block.querySelector('.feedback');
+    const val = input.value.trim();
+    const accepted = ['تربة','التربة','تربه','التربه'];
+    if(accepted.includes(val)){
+      fb.textContent = '✅ صحيح! تُنقل العُقلة إلى تربة لتستمر في النمو.';
+      fb.className='feedback ok';
+      block.dataset.score = 1;
+    } else {
+      fb.textContent = '❌ غير صحيح. الإجابة الصحيحة هي: "تربة".';
+      fb.className='feedback bad';
+      block.dataset.score = 0;
+    }
+  });
+});
+
+document.getElementById('btnFinish').addEventListener('click', ()=>{
+  const blocks = document.querySelectorAll('.q-block');
+  let score = 0;
+  blocks.forEach(b=>{ if(b.dataset.score === '1') score++; });
+  const total = blocks.length;
+  const box = document.getElementById('scoreBox');
+  box.style.display = 'block';
+  let msg = '';
+  if(score === total) msg = '🏆 ممتاز! نتيجتك: ' + score + ' / ' + total + ' — أحسنت، لقد فهمت الدرس جيدًا!';
+  else if(score >= total/2) msg = '👍 جيد! نتيجتك: ' + score + ' / ' + total + ' — راجع الأجزاء التي أخطأت فيها.';
+  else msg = '📘 نتيجتك: ' + score + ' / ' + total + ' — يُنصح بمراجعة الدرس والمختبر الافتراضي مرة أخرى.';
+  box.textContent = msg;
+  box.scrollIntoView({behavior:'smooth', block:'center'});
+});
+</script>
+</body>
+</html>

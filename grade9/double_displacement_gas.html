@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>تفاعل إطلاق غاز | إحلال مزدوج</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=Cairo:wght@600;700;800&family=Amiri:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#F4EEDF;
+  --ink-2:#8FE0D2;
+  --paper:#0A1E30;
+  --paper-2:#12314A;
+  --card:#0F2A40;
+  --card-soft:#16334C;
+  --accent:#E8A056;
+  --accent-dark:#F2B876;
+  --teal:#5FCBB9;
+  --teal-dark:#8FE0D2;
+  --danger:#F0847C;
+  --success:#5FD69A;
+  --line:rgba(232,160,86,.22);
+  --text:#DCE6EE;
+  --muted:#9FB6C8;
+  --deep:#081625;
+  --deep-2:#0F2A40;
+  --shadow: 0 10px 30px rgba(3,12,22,.45);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:
+    radial-gradient(circle at 15% 10%, rgba(95,203,185,.10), transparent 40%),
+    radial-gradient(circle at 90% 20%, rgba(232,160,86,.08), transparent 45%),
+    var(--paper);
+  color:var(--text);
+  font-family:'Tajawal', sans-serif;
+  line-height:1.8;
+}
+h1,h2,h3,.disp{font-family:'Cairo', sans-serif;}
+.eq{font-family:'Amiri', serif; font-style:normal;}
+::selection{background:var(--accent);color:#fff}
+
+/* ===== Top bar ===== */
+.topbar{
+  position:sticky; top:0; z-index:50;
+  background:linear-gradient(180deg, var(--deep) 0%, var(--deep-2) 100%);
+  color:#f5ece0;
+  box-shadow:var(--shadow);
+  border-bottom:1px solid var(--line);
+}
+.topbar-inner{
+  max-width:1100px; margin:0 auto; padding:10px 18px;
+  display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;
+}
+.brand{display:flex; align-items:center; gap:10px; font-family:'Cairo',sans-serif; font-weight:800}
+.brand .flask{width:30px;height:30px;flex:0 0 auto}
+.tabs{display:flex; gap:6px; flex-wrap:wrap}
+.tab-btn{
+  background:rgba(255,255,255,.08); color:#f5ece0; border:1px solid rgba(255,255,255,.15);
+  padding:7px 14px; border-radius:999px; font-family:'Tajawal',sans-serif; font-weight:700; font-size:.85rem;
+  cursor:pointer; transition:.2s;
+}
+.tab-btn:hover{background:rgba(255,255,255,.18)}
+.tab-btn.active{background:var(--accent); border-color:var(--accent); color:var(--deep)}
+
+/* ===== Hero ===== */
+.hero{
+  max-width:1100px; margin:0 auto; padding:38px 18px 20px;
+}
+.eyebrow{
+  display:inline-flex; align-items:center; gap:8px;
+  background:var(--paper-2); border:1px solid var(--line); color:var(--accent-dark);
+  font-weight:700; font-size:.8rem; padding:5px 14px; border-radius:999px;
+}
+.hero h1{
+  font-size:clamp(1.7rem, 4vw, 2.6rem); margin:14px 0 8px; color:var(--ink);
+  border-right:6px solid var(--accent); padding-right:14px;
+}
+.hero p.lead{color:var(--muted); font-size:1.05rem; max-width:70ch; margin:0}
+
+/* ===== Sections ===== */
+.section{max-width:1100px; margin:0 auto; padding:26px 18px}
+.card{
+  background:var(--card); border:1px solid var(--line); border-radius:18px;
+  padding:24px; box-shadow:var(--shadow);
+}
+.card + .card{margin-top:18px}
+.section h2{
+  color:var(--ink); font-size:1.5rem; display:flex; align-items:center; gap:10px; margin-top:0;
+}
+.section h2 .num{
+  display:inline-flex; align-items:center; justify-content:center;
+  width:34px;height:34px;border-radius:50%; background:var(--accent); color:var(--deep); font-size:1rem;
+  flex:0 0 auto;
+}
+.section h3{color:var(--ink-2); font-size:1.15rem}
+
+/* ===== Concept explanation ===== */
+.grid2{display:grid; grid-template-columns:1.1fr .9fr; gap:20px}
+@media(max-width:800px){.grid2{grid-template-columns:1fr}}
+.definition-box{
+  background:linear-gradient(135deg, rgba(76,154,141,.12), rgba(76,154,141,.04));
+  border:1.5px dashed var(--teal); border-radius:14px; padding:16px 18px; margin:14px 0;
+}
+.definition-box b{color:var(--teal-dark)}
+.eq-box{
+  background:var(--deep); color:#fdf6ea; border:1px solid var(--line); border-radius:14px; padding:18px; text-align:center;
+  font-size:1.15rem; overflow-x:auto; margin:14px 0;
+}
+.eq-box .sub{color:#8FB4C7; font-size:.72em}
+.examples-list{list-style:none; padding:0; margin:14px 0; display:grid; gap:10px}
+.examples-list li{
+  background:var(--paper-2); border-radius:12px; padding:10px 14px; display:flex; gap:10px; align-items:flex-start;
+  border-right:4px solid var(--accent);
+}
+.examples-list li .ico{font-size:1.3rem}
+
+/* ===== Lab layout ===== */
+.lab-wrap{display:grid; grid-template-columns:340px 1fr; gap:18px}
+@media(max-width:900px){.lab-wrap{grid-template-columns:1fr}}
+.materials{
+  background:var(--paper-2); border-radius:14px; padding:16px; border:1px solid var(--line);
+}
+.materials h4{margin:0 0 10px; color:var(--ink)}
+.materials ul{margin:0; padding-right:18px}
+.materials li{margin-bottom:6px}
+.steps-panel{margin-top:16px}
+.step-item{
+  display:flex; gap:10px; padding:10px 12px; border-radius:12px; margin-bottom:8px;
+  background:var(--card-soft); border:1px solid var(--line); opacity:.6; transition:.3s;
+}
+.step-item.active{opacity:1; border-color:var(--accent); box-shadow:0 4px 14px rgba(232,160,86,.18)}
+.step-item.done{opacity:.85; background:rgba(95,214,154,.10); border-color:var(--success)}
+.step-dot{
+  width:26px;height:26px;border-radius:50%; background:var(--line); color:#fff; flex:0 0 auto;
+  display:flex;align-items:center;justify-content:center; font-size:.8rem; font-weight:800;
+}
+.step-item.active .step-dot{background:var(--accent)}
+.step-item.done .step-dot{background:var(--success)}
+.step-item p{margin:2px 0 0; font-size:.88rem; color:var(--muted)}
+
+.bench-area{
+  background:linear-gradient(180deg, #dfeef0 0%, #cfe4e0 60%, #b98f5e 60%, #a67848 100%);
+  border-radius:18px; padding:10px; position:relative; overflow:hidden; border:1px solid var(--line);
+  min-height:460px; display:flex; flex-direction:column; align-items:center; justify-content:flex-end;
+}
+.bench-area::before{
+  content:''; position:absolute; inset:0 0 60% 0;
+  background:repeating-linear-gradient(90deg, rgba(255,255,255,.25) 0 2px, transparent 2px 90px);
+  opacity:.4;
+}
+#labSvgHolder{width:100%; max-width:520px; margin:0 auto;}
+.controls-row{
+  display:flex; gap:10px; justify-content:center; flex-wrap:wrap; padding:14px 8px 4px;
+  position:relative; z-index:2;
+}
+.btn{
+  font-family:'Tajawal',sans-serif; font-weight:800; border:none; cursor:pointer;
+  padding:11px 22px; border-radius:12px; font-size:.95rem; transition:.2s; box-shadow:0 4px 10px rgba(0,0,0,.12);
+}
+.btn-primary{background:var(--accent); color:var(--deep)}
+.btn-primary:hover{background:var(--accent-dark); transform:translateY(-1px)}
+.btn-primary:disabled{background:#4a5a68; color:#a9b8c4; cursor:not-allowed; transform:none; box-shadow:none}
+.btn-ghost{background:var(--card-soft); color:var(--ink); border:1.5px solid var(--line)}
+.btn-ghost:hover{border-color:var(--accent)}
+.btn-sm{padding:7px 14px; font-size:.82rem; border-radius:9px}
+
+.observe-box{
+  margin-top:16px; background:var(--card-soft); border:1.5px solid var(--line); border-radius:14px; padding:16px;
+}
+.observe-box textarea{
+  width:100%; min-height:70px; border:1.5px solid var(--line); border-radius:10px; padding:10px;
+  font-family:'Tajawal',sans-serif; font-size:.95rem; resize:vertical; background:var(--deep); color:var(--text);
+}
+textarea, input, select{ background:var(--deep); color:var(--text); }
+.reveal{
+  display:none; margin-top:10px; background:rgba(63,143,95,.1); border-right:4px solid var(--success);
+  padding:10px 14px; border-radius:10px; font-size:.9rem;
+}
+.reveal.show{display:block}
+
+.badge-note{
+  display:inline-flex; align-items:center; gap:6px; font-size:.8rem; background:rgba(193,68,61,.1);
+  color:var(--danger); padding:4px 10px; border-radius:999px; font-weight:700; margin-inline-start:6px;
+}
+
+/* bubble/foam styling injected via svg, extra floating css bubbles */
+.gas-tag{
+  position:absolute; top:8px; right:14px; background:rgba(255,255,255,.92); border:1px solid var(--line);
+  border-radius:10px; padding:6px 10px; font-size:.78rem; font-weight:700; color:#1B3A4B; display:none; z-index:5;
+}
+.gas-tag.show{display:block; animation:pop .3s ease}
+@keyframes pop{from{transform:scale(.7); opacity:0} to{transform:scale(1); opacity:1}}
+
+/* ===== analysis ===== */
+.q-block{
+  background:var(--paper-2); border-radius:14px; padding:16px 18px; margin-bottom:14px; border:1px solid var(--line);
+}
+.q-block h4{margin:0 0 8px; color:var(--ink-2)}
+.choice-row{display:flex; gap:10px; flex-wrap:wrap; margin-top:10px}
+.choice-btn{
+  background:var(--card-soft); border:1.5px solid var(--line); padding:9px 16px; border-radius:10px; cursor:pointer;
+  font-family:'Tajawal',sans-serif; font-weight:700; color:var(--text); transition:.2s;
+}
+.choice-btn:hover{border-color:var(--teal)}
+.choice-btn.correct{background:rgba(95,214,154,.22); border-color:var(--success)}
+.choice-btn.wrong{background:rgba(240,132,124,.18); border-color:var(--danger)}
+
+/* ===== quiz ===== */
+.quiz-card{border-right:5px solid var(--teal)}
+.quiz-progress{
+  height:8px; background:var(--paper-2); border-radius:999px; overflow:hidden; margin-bottom:16px;
+}
+.quiz-progress > div{height:100%; background:var(--accent); width:0%; transition:.4s}
+.score-pill{
+  display:inline-flex; align-items:center; gap:6px; background:var(--accent); color:var(--deep); padding:6px 14px;
+  border-radius:999px; font-weight:700; font-size:.85rem;
+}
+
+footer{
+  text-align:center; padding:26px 18px 40px; color:var(--muted); font-size:.85rem;
+}
+
+/* scroll reveal */
+.fade-in{opacity:0; transform:translateY(16px); transition:opacity .6s ease, transform .6s ease}
+.fade-in.visible{opacity:1; transform:translateY(0)}
+
+@media(max-width:520px){
+  .hero h1{border-right-width:4px; padding-right:10px}
+  .card{padding:16px}
+  .eq-box{font-size:.95rem}
+}
+
+  /* ═══ RESPONSIVE MOBILE & TABLET — AUTO-INJECTED ═══ */
+  @media (max-width: 768px) {
+    body { padding: 8px !important; font-size: 15px !important; overflow-x: hidden !important; }
+    .container, [class*="container"], [class*="wrapper"] { padding: 8px !important; max-width: 100% !important; }
+    canvas { width: 100% !important; height: auto !important; display: block !important; touch-action: none; max-width: 100% !important; }
+    svg { max-width: 100% !important; height: auto !important; }
+    h1 { font-size: clamp(18px, 5vw, 32px) !important; }
+    h2 { font-size: clamp(16px, 4vw, 26px) !important; }
+    h3 { font-size: clamp(14px, 3.5vw, 22px) !important; }
+    p, li, td, th, label, span { font-size: clamp(13px, 3.5vw, 16px) !important; }
+    [class*="grid"] { grid-template-columns: 1fr !important; }
+    [class*="flex"] { flex-wrap: wrap !important; }
+    input[type="range"] { width: 100% !important; min-height: 36px; }
+    input[type="number"], input[type="text"], select, textarea { 
+      font-size: 16px !important; width: 100% !important; box-sizing: border-box; padding: 8px !important;
+    }
+    button { min-height: 44px !important; font-size: 14px !important; touch-action: manipulation; padding: 10px 14px !important; }
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 13px !important; }
+    th, td { padding: 6px 4px !important; white-space: nowrap; }
+    [style*="display: grid"], [style*="display:grid"] { display: flex !important; flex-direction: column !important; }
+    .lab-window, [class*="lab-window"] { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+    header { padding: 12px !important; }
+    .controls, [class*="controls"] { flex-direction: column !important; gap: 8px !important; }
+  }
+  @media (max-width: 480px) {
+    body { padding: 4px !important; }
+    h1 { font-size: clamp(16px, 5vw, 24px) !important; }
+    button { width: 100% !important; }
+  }
+  /* ═══ END RESPONSIVE ═══ */
+</style>
+</head>
+<body>
+
+<style>
+.vlab-back-btn {
+  position: fixed; top: 10px; left: 10px; z-index: 99999;
+  background: rgba(10,22,40,0.93); border: 1px solid rgba(0,200,150,0.4);
+  border-radius: 22px; padding: 8px 16px;
+  display: inline-flex; align-items: center; gap: 7px;
+  color: #00C896; font-family: Tajawal, Cairo, Arial, sans-serif;
+  font-size: 13px; font-weight: 700; text-decoration: none;
+  backdrop-filter: blur(8px); box-shadow: 0 4px 18px rgba(0,0,0,0.3);
+  transition: background 0.2s;
+}
+.vlab-back-btn:hover { background: rgba(0,200,150,0.18); color: #00C896; }
+</style>
+
+<a href="../grade9.html" class="vlab-back-btn">&#8594; العودة للصف</a>
+
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <svg class="flask" viewBox="0 0 40 40"><path d="M15 6h10v8l8 16a3 3 0 0 1-3 4H10a3 3 0 0 1-3-4l8-16z" fill="none" stroke="#f5ece0" stroke-width="2" stroke-linejoin="round"/><path d="M11 24h18" stroke="#D97D3D" stroke-width="2"/><circle cx="20" cy="30" r="1.6" fill="#4C9A8D"/><circle cx="16" cy="32" r="1.2" fill="#4C9A8D"/><circle cx="24" cy="33" r="1" fill="#4C9A8D"/></svg>
+      <span>المختبر الافتراضي | العلوم والحياة - تاسع</span>
+    </div>
+    <div class="tabs">
+      <button class="tab-btn active" data-target="sec-intro">شرح الدرس</button>
+      <button class="tab-btn" data-target="sec-lab">المختبر الافتراضي</button>
+      <button class="tab-btn" data-target="sec-analysis">التحليل والاستنتاج</button>
+      <button class="tab-btn" data-target="sec-quiz">اختبر نفسك</button>
+    </div>
+  </div>
+</div>
+
+<div class="hero">
+  <span class="eyebrow">🧪 نشاط (13) — تفاعلات إطلاق غاز</span>
+  <h1>تفاعل إطلاق غاز من تفاعلات الإحلال المزدوج</h1>
+  <p class="lead">نفّذ التجربة بنفسك داخل مختبر افتراضي واقعي خطوة بخطوة: أضف حمض الأستيك، ثم الصابون السائل، ثم بيكربونات الصوديوم، وشاهد الغاز يتصاعد أمامك، ثم فسّر ما حدث على المستوى الكيميائي.</p>
+</div>
+
+<!-- ============ SECTION 1: الشرح ============ -->
+<section class="section fade-in" id="sec-intro">
+  <div class="card">
+    <h2><span class="num">1</span> ما هو تفاعل إطلاق الغاز؟</h2>
+    <div class="grid2">
+      <div>
+        <p>يندرج هذا التفاعل ضمن <b>تفاعلات الإحلال المزدوج (Double Displacement)</b>، وهي التفاعلات التي يتبادل فيها مركّبان أيوناتهما لتكوين مركّبين جديدين، دون أن يتغيّر عدد التأكسد لأي عنصر.</p>
+        <div class="definition-box">
+          <b>تفاعل إطلاق الغاز:</b> هو تفاعل إحلال مزدوج ينتج عنه غاز يتصاعد من المحلول ويهرب إلى الجو، غالبًا عند تفاعل حمض مع كربونات أو بيكربونات فينتج غاز ثاني أكسيد الكربون CO₂.
+        </div>
+        <p>الصيغة العامة لهذا النوع من التفاعلات:</p>
+        <div class="eq-box eq">
+          حمض + كربونات (أو بيكربونات) &nbsp;⟶&nbsp; ملح + ماء + CO₂↑
+        </div>
+        <p>في تجربتنا اليوم، سيتفاعل <b>حمض الأستيك CH₃COOH</b> (الموجود في الخل) مع <b>بيكربونات الصوديوم NaHCO₃</b>، وسنستخدم <b>محلول الصابون</b> ككاشف بصري يجعل فقاعات الغاز المتصاعد واضحة على شكل رغوة يمكن ملاحظتها بسهولة.</p>
+      </div>
+      <div>
+        <h3>أمثلة من الحياة</h3>
+        <ul class="examples-list">
+          <li><span class="ico">🌋</span><span>بركان الخل وصودا الخبز الشهير في التجارب المدرسية — نفس مبدأ تفاعلنا اليوم.</span></li>
+          <li><span class="ico">💊</span><span>أقراص الفوّار المضادة للحموضة تتفاعل مع حمض المعدة وتُطلق CO₂ لتخفيف الانتفاخ.</span></li>
+          <li><span class="ico">🧯</span><span>بعض طفايات الحريق القديمة تعتمد على تفاعل حمض مع بيكربونات لتوليد CO₂ الذي يخنق النار.</span></li>
+          <li><span class="ico">🏔️</span><span>تآكل الصخور الجيرية (كربونات الكالسيوم) بفعل الأمطار الحمضية ينتج غاز CO₂.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 2: المختبر الافتراضي ============ -->
+<section class="section fade-in" id="sec-lab">
+  <div class="card">
+    <h2><span class="num">2</span> المختبر الافتراضي التجريبي</h2>
+    <p>نفّذ التجربة خطوة بخطوة بالضغط على زر <b>"نفّذ الخطوة"</b>، وراقب المخبار المدرّج جيدًا في كل مرحلة.</p>
+
+    <div class="lab-wrap">
+      <div>
+        <div class="materials">
+          <h4>🧰 المواد والأدوات</h4>
+          <ul>
+            <li>حمض الأستيك (الخل) 100 مل</li>
+            <li>بيكربونات الصوديوم NaHCO₃ (5 غ)</li>
+            <li>محلول الصابون السائل</li>
+            <li>مخبار مدرّج</li>
+            <li>كؤوس ودوارق زجاجية</li>
+          </ul>
+        </div>
+        <div class="steps-panel" id="stepsPanel">
+          <div class="step-item" data-step="1">
+            <div class="step-dot">1</div>
+            <div><strong>سكب الخل</strong><p>سكب 100 مل من حمض الأستيك في المخبار المدرّج.</p></div>
+          </div>
+          <div class="step-item" data-step="2">
+            <div class="step-dot">2</div>
+            <div><strong>إضافة الصابون</strong><p>إضافة القليل من الصابون السائل المُلوّن.</p></div>
+          </div>
+          <div class="step-item" data-step="3">
+            <div class="step-dot">3</div>
+            <div><strong>إضافة البيكربونات</strong><p>زنّ 5 غرامات من NaHCO₃ وأضفها للمخبار.</p></div>
+          </div>
+        </div>
+        <div class="controls-row" style="justify-content:flex-start; padding-inline-start:0">
+          <button class="btn btn-primary btn-sm" id="btnNext">▶ نفّذ الخطوة</button>
+          <button class="btn btn-ghost btn-sm" id="btnReset">↺ إعادة التجربة</button>
+        </div>
+      </div>
+
+      <div class="bench-area">
+        <span class="gas-tag" id="gasTag">💨 غاز CO₂ يتصاعد!</span>
+        <div id="labSvgHolder"></div>
+      </div>
+    </div>
+
+    <div class="observe-box">
+      <h4 style="margin-top:0">✍️ ماذا تلاحظ؟ <span class="badge-note">دوّن ملاحظاتك أولًا بنفسك</span></h4>
+      <textarea id="studentObs" placeholder="اكتب هنا ما لاحظته أثناء تنفيذ خطوات التجربة (اللون، الصوت، الفقاعات، الرغوة...)"></textarea>
+      <div class="controls-row" style="justify-content:flex-start; padding-inline-start:0; padding-top:10px">
+        <button class="btn btn-ghost btn-sm" id="btnRevealObs">👁 عرض ملاحظات نموذجية</button>
+      </div>
+      <div class="reveal" id="revealObs">
+        عند إضافة بيكربونات الصوديوم إلى محلول حمض الأستيك الممزوج بالصابون، يبدأ <b>فوران فوري</b> مصحوب بصوت "فش"، وتظهر <b>فقاعات غاز</b> كثيفة تتحول إلى <b>رغوة بيضاء</b> ترتفع فوق سطح السائل بسبب الصابون الذي يحبس فقاعات الغاز، وتستمر الفقاعات بالتصاعد حتى ذوبان كامل كمية البيكربونات، ويُلاحظ أيضًا شعور بسيط بالبرودة عند لمس جدار المخبار.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 3: التحليل والاستنتاج ============ -->
+<section class="section fade-in" id="sec-analysis">
+  <div class="card">
+    <h2><span class="num">3</span> التحليل والتفسير</h2>
+    <p>تعبّر المعادلة الآتية عن التفاعل الحاصل في المخبار المدرّج:</p>
+    <div class="eq-box eq">
+      CH₃COOH<span class="sub">(aq)</span> + NaHCO₃<span class="sub">(s)</span> ⟶ CH₃COONa<span class="sub">(aq)</span> + CO₂<span class="sub">(g)</span>↑ + H₂O<span class="sub">(l)</span>
+    </div>
+
+    <div class="q-block">
+      <h4>1️⃣ ماذا حدث لعنصر الصوديوم؟</h4>
+      <textarea class="s-input" style="width:100%; min-height:55px; border:1.5px solid var(--line); border-radius:10px; padding:10px; font-family:'Tajawal',sans-serif" placeholder="اكتب إجابتك هنا..."></textarea>
+      <div class="controls-row" style="justify-content:flex-start; padding-inline-start:0; padding-top:8px">
+        <button class="btn btn-ghost btn-sm reveal-btn">👁 عرض الإجابة النموذجية</button>
+      </div>
+      <div class="reveal">انتقل أيون الصوديوم Na⁺ من ارتباطه بأيون البيكربونات HCO₃⁻ في المركب NaHCO₃، إلى الارتباط بأيون الخلات CH₃COO⁻ ليكوّن ملح خلات الصوديوم CH₃COONa، أي أنه <b>تبادل الشريك الأيوني</b> ولم يتغيّر عدد تأكسده (بقي +1).</div>
+    </div>
+
+    <div class="q-block">
+      <h4>2️⃣ فسّر ملاحظاتك خلال التجربة</h4>
+      <textarea class="s-input" style="width:100%; min-height:55px; border:1.5px solid var(--line); border-radius:10px; padding:10px; font-family:'Tajawal',sans-serif" placeholder="اكتب إجابتك هنا..."></textarea>
+      <div class="controls-row" style="justify-content:flex-start; padding-inline-start:0; padding-top:8px">
+        <button class="btn btn-ghost btn-sm reveal-btn">👁 عرض الإجابة النموذجية</button>
+      </div>
+      <div class="reveal">الفقاعات والرغوة الناتجة هي غاز <b>CO₂</b> المتصاعد من تفكك حمض الكربونيك H₂CO₃ غير المستقر (الناتج وسيطيًا) إلى ماء وثاني أكسيد الكربون. ظهور الرغوة البيضاء بسبب الصابون الذي يحبس فقاعات الغاز عند سطح السائل بدلًا من هروبها المباشر، ما يجعل انطلاق الغاز مرئيًا بوضوح.</div>
+    </div>
+
+    <div class="q-block">
+      <h4>3️⃣ صنّف التفاعل في النشاط إلى إحلال أحادي أو إحلال مزدوج</h4>
+      <div class="choice-row" id="classifyChoices">
+        <button class="choice-btn" data-correct="false">إحلال أُحادي</button>
+        <button class="choice-btn" data-correct="true">إحلال مزدوج</button>
+      </div>
+      <div class="reveal" id="classifyReveal">إجابة صحيحة: <b>إحلال مزدوج</b> — لأن كاتيون الصوديوم Na⁺ ارتبط بأنيون الخلات CH₃COO⁻، بينما ارتبط كاتيون الهيدروجين H⁺ بأنيون البيكربونات HCO₃⁻ (مكوّنًا H₂CO₃ الذي تحلّل إلى ماء وغاز)؛ أي تبادل الطرفان أيوناتهما معًا، وهذا هو تعريف الإحلال المزدوج.</div>
+    </div>
+
+    <div class="definition-box" style="border-color:var(--accent); background:linear-gradient(135deg, rgba(217,125,61,.12), rgba(217,125,61,.03))">
+      <b>💡 تذكّر:</b> يصاحب بعض تفاعلات الإحلال المزدوج انطلاق غاز، كما لاحظت في هذا النشاط. تحدث تفاعلات مشابهة عند تفاعل أي <b>حمض</b> مع أي <b>كربونات أو بيكربونات</b> فينتج CO₂ دائمًا — مهما اختلفت أسماء المواد المتفاعلة.
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 4: QUIZ ============ -->
+<section class="section fade-in" id="sec-quiz">
+  <div class="card quiz-card">
+    <h2><span class="num">4</span> اختبر نفسك</h2>
+    <div class="quiz-progress"><div id="quizBar"></div></div>
+    <div id="quizArea"></div>
+    <div style="margin-top:16px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px">
+      <span class="score-pill" id="scorePill">النتيجة: 0 / 0</span>
+      <button class="btn btn-ghost btn-sm" id="btnQuizRestart">↺ إعادة الاختبار</button>
+    </div>
+  </div>
+</section>
+
+<footer>صُمّم لمنهاج العلوم والحياة — الصف التاسع — فلسطين ● المختبر الافتراضي التجريبي</footer>
+
+<script>
+/* ---------- tabs ---------- */
+const tabBtns = document.querySelectorAll('.tab-btn');
+tabBtns.forEach(b=>b.addEventListener('click', ()=>{
+  tabBtns.forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');
+  document.getElementById(b.dataset.target).scrollIntoView({behavior:'smooth', block:'start'});
+}));
+
+/* ---------- reveal on scroll ---------- */
+const io = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
+},{threshold:.1});
+document.querySelectorAll('.fade-in').forEach(el=>io.observe(el));
+
+/* ---------- reveal buttons (analysis) ---------- */
+document.querySelectorAll('.reveal-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const rev = btn.closest('.q-block').querySelector('.reveal');
+    rev.classList.toggle('show');
+    btn.textContent = rev.classList.contains('show') ? '🙈 إخفاء الإجابة' : '👁 عرض الإجابة النموذجية';
+  });
+});
+document.getElementById('btnRevealObs').addEventListener('click', ()=>{
+  const rev = document.getElementById('revealObs');
+  rev.classList.toggle('show');
+});
+
+/* classify question */
+document.querySelectorAll('#classifyChoices .choice-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('#classifyChoices .choice-btn').forEach(b=>b.classList.remove('correct','wrong'));
+    btn.classList.add(btn.dataset.correct === 'true' ? 'correct' : 'wrong');
+    document.getElementById('classifyReveal').classList.add('show');
+  });
+});
+
+/* ==================================================
+   VIRTUAL LAB — SVG SCENE + STEP LOGIC
+================================================== */
+const svgNS = "http://www.w3.org/2000/svg";
+const holder = document.getElementById('labSvgHolder');
+
+function buildScene(){
+  holder.innerHTML = `
+  <svg viewBox="0 0 420 420" width="100%" xmlns="${svgNS}">
+    <defs>
+      <linearGradient id="vinegarGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#f4e9b8"/>
+        <stop offset="100%" stop-color="#e8d27a"/>
+      </linearGradient>
+      <linearGradient id="glassGrad" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#ffffff" stop-opacity=".05"/>
+        <stop offset="50%" stop-color="#ffffff" stop-opacity=".35"/>
+        <stop offset="100%" stop-color="#ffffff" stop-opacity=".05"/>
+      </linearGradient>
+      <clipPath id="cylClip"><rect id="cylClipRect" x="152" y="330" width="60" height="0"/></clipPath>
+      <clipPath id="beakerClip"><path d="M110 250 L110 380 Q110 395 128 395 L262 395 Q280 395 280 380 L280 250 Z"/></clipPath>
+    </defs>
+
+    <!-- shelf shadow -->
+    <ellipse cx="195" cy="400" rx="150" ry="10" fill="rgba(0,0,0,.15)"/>
+
+    <!-- vinegar bottle (left) -->
+    <g id="vinegarBottle" transform="translate(30,190)">
+      <rect x="0" y="30" width="46" height="90" rx="6" fill="#dfe9d0" stroke="#94a382" stroke-width="2"/>
+      <rect x="12" y="0" width="22" height="34" rx="4" fill="#c7d4b6" stroke="#94a382" stroke-width="2"/>
+      <rect x="8" y="55" width="34" height="40" rx="3" fill="#fff" opacity=".85"/>
+      <text x="25" y="72" font-size="9" text-anchor="middle" font-family="Tajawal" fill="#4b5a3a" font-weight="700">CH₃COOH</text>
+      <text x="25" y="84" font-size="8" text-anchor="middle" font-family="Tajawal" fill="#6b7a5a">حمض الأستيك</text>
+    </g>
+
+    <!-- soap bottle -->
+    <g id="soapBottle" transform="translate(330,205)">
+      <rect x="0" y="20" width="34" height="70" rx="14" fill="#bfe0e6" stroke="#7fb0b8" stroke-width="2"/>
+      <rect x="10" y="0" width="14" height="24" rx="3" fill="#7fb0b8"/>
+      <circle cx="17" cy="-6" r="4" fill="#7fb0b8"/>
+      <text x="17" y="55" font-size="8" text-anchor="middle" font-family="Tajawal" fill="#2d5158" font-weight="700">صابون</text>
+    </g>
+
+    <!-- NaHCO3 jar -->
+    <g id="powderJar" transform="translate(325,300)">
+      <rect x="0" y="10" width="42" height="34" rx="5" fill="#f4f4f4" stroke="#bbb" stroke-width="2"/>
+      <rect x="4" y="0" width="34" height="12" rx="3" fill="#9aa0a6"/>
+      <ellipse cx="21" cy="18" rx="16" ry="4" fill="#ffffff"/>
+      <text x="21" y="33" font-size="8" text-anchor="middle" font-family="Tajawal" fill="#555" font-weight="700">NaHCO₃</text>
+    </g>
+
+    <!-- graduated cylinder -->
+    <g id="cylinder">
+      <rect x="150" y="150" width="64" height="190" rx="6" fill="url(#glassGrad)" stroke="#9fb3ba" stroke-width="2"/>
+      <rect x="140" y="330" width="84" height="12" rx="3" fill="#c7d3d6" stroke="#9fb3ba" stroke-width="1.5"/>
+      <g stroke="#9fb3ba" stroke-width="1" opacity=".7">
+        <line x1="150" y1="170" x2="160" y2="170"/>
+        <line x1="150" y1="200" x2="160" y2="200"/>
+        <line x1="150" y1="230" x2="160" y2="230"/>
+        <line x1="150" y1="260" x2="160" y2="260"/>
+        <line x1="150" y1="290" x2="160" y2="290"/>
+      </g>
+      <rect id="cylLiquid" x="152" y="330" width="60" height="0" fill="url(#vinegarGrad)" clip-path="url(#cylClip)"/>
+    </g>
+
+    <!-- pour stream (hidden by default) -->
+    <path id="pourStream" d="M60 210 Q110 240 180 260" stroke="#e8d27a" stroke-width="0" fill="none" opacity="0"/>
+
+    <!-- beaker -->
+    <g id="beaker">
+      <path d="M110 250 L110 380 Q110 395 128 395 L262 395 Q280 395 280 380 L280 250 Z" fill="url(#glassGrad)" stroke="#9fb3ba" stroke-width="2.5"/>
+      <path d="M105 248 L285 248" stroke="#9fb3ba" stroke-width="3" stroke-linecap="round"/>
+      <text x="270" y="245" font-size="9" fill="#7d8f95" font-family="Tajawal">100 mL</text>
+
+      <g clip-path="url(#beakerClip)">
+        <rect id="beakerLiquid" x="105" y="395" width="180" height="0" fill="url(#vinegarGrad)"/>
+        <g id="foamLayer" opacity="0"></g>
+        <g id="bubbleField"></g>
+      </g>
+    </g>
+
+    <!-- soap drops group -->
+    <g id="soapDrops" opacity="0"></g>
+    <!-- powder falling group -->
+    <g id="powderFall" opacity="0"></g>
+
+    <!-- label under beaker -->
+    <text x="195" y="412" font-size="11" text-anchor="middle" font-family="Tajawal" fill="#3a3226" font-weight="700" id="beakerCaption">المخبار المدرّج</text>
+  </svg>`;
+}
+buildScene();
+
+let stepIndex = 0; // 0 = not started, 1,2,3 done states
+const steps = document.querySelectorAll('.step-item');
+const btnNext = document.getElementById('btnNext');
+const btnReset = document.getElementById('btnReset');
+const gasTag = document.getElementById('gasTag');
+
+function setStepStates(){
+  steps.forEach((s,i)=>{
+    s.classList.remove('active','done');
+    const n = i+1;
+    if(n < stepIndex+1) s.classList.add('done');
+    else if(n === stepIndex+1) s.classList.add('active');
+  });
+}
+setStepStates();
+
+function animateVal(setter, from, to, dur){
+  const start = performance.now();
+  function frame(t){
+    const p = Math.min(1,(t-start)/dur);
+    const eased = 1 - Math.pow(1-p, 3);
+    setter(from + (to-from)*eased);
+    if(p<1) requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}
+
+function step1_pourVinegar(){
+  const stream = document.getElementById('pourStream');
+  stream.setAttribute('stroke-width','4');
+  stream.style.transition='opacity .2s';
+  stream.style.opacity = 1;
+  // fill cylinder to ~150 height over 1.4s
+  const rect = document.getElementById('cylClipRect');
+  animateVal(v=>{
+    rect.setAttribute('y', 330 - v);
+    rect.setAttribute('height', v);
+  }, 0, 150, 1200);
+  setTimeout(()=>{ stream.style.opacity = 0; }, 1300);
+
+  // then pour cylinder into beaker
+  setTimeout(()=>{
+    const stream2 = document.getElementById('pourStream');
+    stream2.setAttribute('d','M182 330 Q195 300 195 260');
+    stream2.style.opacity = 1;
+    animateVal(v=>{ rect.setAttribute('y', 330-v); rect.setAttribute('height', v); }, 150, 0, 900);
+    const bl = document.getElementById('beakerLiquid');
+    animateVal(v=>{ bl.setAttribute('y', 395-v); bl.setAttribute('height', v); }, 0, 110, 1000);
+    setTimeout(()=>{ stream2.style.opacity = 0; }, 1000);
+  }, 1500);
+}
+
+function step2_addSoap(){
+  const dropsG = document.getElementById('soapDrops');
+  dropsG.style.opacity = 1;
+  dropsG.innerHTML = '';
+  for(let i=0;i<4;i++){
+    const c = document.createElementNS(svgNS,'ellipse');
+    c.setAttribute('cx', 200+i*3);
+    c.setAttribute('cy', 210);
+    c.setAttribute('rx', 3); c.setAttribute('ry', 5);
+    c.setAttribute('fill', '#a9d8de');
+    c.setAttribute('opacity', '.9');
+    dropsG.appendChild(c);
+    animateVal(v=>{ c.setAttribute('cy', v); }, 210, 285, 700 + i*120);
+    setTimeout(()=>{ c.style.transition='opacity .3s'; c.style.opacity=0; }, 900+i*120);
+  }
+  // tint liquid slightly + add subtle sheen
+  setTimeout(()=>{
+    const bl = document.getElementById('beakerLiquid');
+    bl.setAttribute('fill', 'url(#vinegarGrad)');
+    bl.style.filter = 'saturate(1.15) brightness(1.03)';
+  }, 900);
+}
+
+function step3_addBicarbAndReact(){
+  const fallG = document.getElementById('powderFall');
+  fallG.style.opacity = 1;
+  fallG.innerHTML = '';
+  for(let i=0;i<10;i++){
+    const r = document.createElementNS(svgNS,'rect');
+    const startX = 330+Math.random()*10;
+    r.setAttribute('x', startX);
+    r.setAttribute('y', 300);
+    r.setAttribute('width', 3); r.setAttribute('height', 3);
+    r.setAttribute('fill', '#f2f2f2');
+    fallG.appendChild(r);
+    const endX = 150 + Math.random()*90;
+    animateVal(v=>{
+      r.setAttribute('y', v);
+      const p = (v-300)/(300-320); // dummy
+    }, 300, 380, 700+Math.random()*400);
+    animateVal(v=>{ r.setAttribute('x', v); }, startX, endX, 700+Math.random()*400);
+  }
+
+  setTimeout(()=>{
+    fallG.style.transition='opacity .4s';
+    fallG.style.opacity = 0;
+    startReaction();
+  }, 1200);
+}
+
+function startReaction(){
+  gasTag.classList.add('show');
+  const bubbleField = document.getElementById('bubbleField');
+  const foamLayer = document.getElementById('foamLayer');
+  foamLayer.style.transition = 'opacity .6s';
+  foamLayer.style.opacity = 1;
+
+  // build foam blobs at surface (y ~ 285)
+  foamLayer.innerHTML = '';
+  for(let i=0;i<14;i++){
+    const c = document.createElementNS(svgNS,'circle');
+    c.setAttribute('cx', 115 + Math.random()*160);
+    c.setAttribute('cy', 285 - Math.random()*10);
+    c.setAttribute('r', 4+Math.random()*5);
+    c.setAttribute('fill', '#ffffff');
+    c.setAttribute('opacity', .8);
+    foamLayer.appendChild(c);
+  }
+
+  let bubbleCount = 0;
+  const maxBubbles = 46;
+  const interval = setInterval(()=>{
+    if(bubbleCount >= maxBubbles){ clearInterval(interval); return; }
+    bubbleCount++;
+    const b = document.createElementNS(svgNS,'circle');
+    const x = 120 + Math.random()*150;
+    b.setAttribute('cx', x);
+    b.setAttribute('cy', 390);
+    b.setAttribute('r', 2+Math.random()*3.5);
+    b.setAttribute('fill', 'rgba(255,255,255,.85)');
+    b.setAttribute('stroke', 'rgba(255,255,255,.6)');
+    bubbleField.appendChild(b);
+    const wobble = (Math.random()-0.5)*20;
+    animateVal(v=>{
+      b.setAttribute('cy', v);
+      b.setAttribute('cx', x + wobble*Math.sin(v/12));
+    }, 390, 250, 900+Math.random()*500);
+    setTimeout(()=>{ b.remove(); }, 1450);
+  }, 90);
+
+  setTimeout(()=>{
+    foamLayer.style.opacity = .55;
+  }, 4000);
+}
+
+btnNext.addEventListener('click', ()=>{
+  if(stepIndex >= 3){ return; }
+  stepIndex++;
+  setStepStates();
+  if(stepIndex===1) step1_pourVinegar();
+  if(stepIndex===2) step2_addSoap();
+  if(stepIndex===3) step3_addBicarbAndReact();
+  if(stepIndex===3){ btnNext.textContent='✔ اكتملت التجربة'; btnNext.disabled = true; }
+});
+
+btnReset.addEventListener('click', ()=>{
+  stepIndex = 0;
+  buildScene();
+  setStepStates();
+  gasTag.classList.remove('show');
+  btnNext.disabled = false;
+  btnNext.textContent = '▶ نفّذ الخطوة';
+});
+
+/* ==================================================
+   QUIZ
+================================================== */
+const quizData = [
+  {
+    q: "أي غاز يتصاعد عند تفاعل حمض الأستيك مع بيكربونات الصوديوم؟",
+    options: ["الأكسجين O₂", "ثاني أكسيد الكربون CO₂", "الهيدروجين H₂", "النيتروجين N₂"],
+    correct: 1
+  },
+  {
+    q: "ما وظيفة محلول الصابون في هذه التجربة؟",
+    options: ["تسريع التفاعل", "تغيير لون الناتج", "إظهار فقاعات الغاز على شكل رغوة", "خفض درجة الحرارة"],
+    correct: 2
+  },
+  {
+    q: "هذا التفاعل يُصنَّف على أنه:",
+    options: ["إحلال أحادي", "إحلال مزدوج", "اتحاد مباشر", "تحلل"],
+    correct: 1
+  },
+  {
+    q: "الناتج الملحي لهذا التفاعل هو:",
+    options: ["كلوريد الصوديوم", "خلات الصوديوم CH₃COONa", "كربونات الصوديوم", "هيدروكسيد الصوديوم"],
+    correct: 1
+  },
+  {
+    q: "أي مما يلي مثال آخر على تفاعل إطلاق غاز؟",
+    options: ["احتراق الشمعة", "تفاعل حجر الكلس مع مطر حمضي", "تبخر الماء", "انصهار الجليد"],
+    correct: 1
+  }
+];
+
+let quizIndex = 0, score = 0;
+const quizArea = document.getElementById('quizArea');
+const quizBar = document.getElementById('quizBar');
+const scorePill = document.getElementById('scorePill');
+
+function renderQuiz(){
+  if(quizIndex >= quizData.length){
+    quizArea.innerHTML = `<div class="reveal show" style="font-size:1.05rem; text-align:center">
+      🎉 أنهيت الاختبار! نتيجتك النهائية: <b>${score} / ${quizData.length}</b>
+    </div>`;
+    quizBar.style.width='100%';
+    return;
+  }
+  const item = quizData[quizIndex];
+  quizArea.innerHTML = `
+    <h4 style="color:var(--ink-2); margin-top:0">سؤال ${quizIndex+1} من ${quizData.length}</h4>
+    <p style="font-weight:700">${item.q}</p>
+    <div class="choice-row" id="quizChoices"></div>
+  `;
+  const cRow = document.getElementById('quizChoices');
+  item.options.forEach((opt,i)=>{
+    const b = document.createElement('button');
+    b.className='choice-btn';
+    b.textContent = opt;
+    b.addEventListener('click', ()=>{
+      document.querySelectorAll('#quizChoices .choice-btn').forEach(x=>x.disabled=true);
+      if(i === item.correct){
+        b.classList.add('correct');
+        score++;
+      } else {
+        b.classList.add('wrong');
+        cRow.children[item.correct].classList.add('correct');
+      }
+      scorePill.textContent = `النتيجة: ${score} / ${quizData.length}`;
+      setTimeout(()=>{ quizIndex++; renderQuiz(); }, 1100);
+    });
+    cRow.appendChild(b);
+  });
+  quizBar.style.width = `${(quizIndex/quizData.length)*100}%`;
+  scorePill.textContent = `النتيجة: ${score} / ${quizData.length}`;
+}
+renderQuiz();
+
+document.getElementById('btnQuizRestart').addEventListener('click', ()=>{
+  quizIndex = 0; score = 0; renderQuiz();
+});
+</script>
+</body>
+</html>

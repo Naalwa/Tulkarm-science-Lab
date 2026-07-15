@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta http-equiv="Content-Language" content="ar">
+<meta name="description" content="درس تفاعلي: أصنّف المحاليل من حولي — مختبر افتراضي ثلاثي الأبعاد لتصنيف المحاليل الحقيقية والغروية والمعلقة، منهاج العلوم والحياة، الصف السابع، فلسطين.">
+<title>أصنّف المحاليل من حولي | مختبر افتراضي — الصف السابع</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --parchment:#F3EDDD;
+  --parchment-deep:#E9DFC4;
+  --ink:#22291F;
+  --lab-green:#1F4B3E;
+  --lab-green-dark:#132F27;
+  --amber:#C2793B;
+  --amber-light:#E0A85E;
+  --teal:#2C8570;
+  --water:#8FC1DE;
+  --true-sol:#3E8FC4;
+  --colloid:#D9B24C;
+  --suspension:#B15139;
+  --glass-edge: rgba(255,255,255,.55);
+  --shadow-lg: 0 24px 60px rgba(19,47,39,.25);
+  --shadow-sm: 0 6px 18px rgba(19,47,39,.15);
+  --radius: 18px;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--parchment);
+  color:var(--ink);
+  font-family:'Tajawal',sans-serif;
+  line-height:1.85;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,.display{
+  font-family:'Aref Ruqaa','Tajawal',sans-serif;
+  font-weight:700;
+  color:var(--lab-green-dark);
+}
+img,svg{max-width:100%;display:block;}
+button{font-family:inherit;cursor:pointer;}
+.wrap{max-width:1100px;margin:0 auto;padding:0 22px;}
+
+/* ---------------- topbar ---------------- */
+.topbar{
+  background:var(--lab-green-dark);
+  color:var(--parchment);
+  padding:14px 0;
+  position:sticky;top:0;z-index:50;
+  box-shadow:0 4px 16px rgba(0,0,0,.25);
+}
+.topbar .wrap{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;}
+.brand{display:flex;align-items:center;gap:10px;}
+.brand-badge{
+  width:40px;height:40px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%, var(--amber-light), var(--amber) 70%);
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;box-shadow: inset 0 -4px 8px rgba(0,0,0,.25), 0 3px 8px rgba(0,0,0,.3);
+}
+.brand-text small{display:block;font-size:11px;opacity:.75;letter-spacing:.5px;}
+.brand-text strong{font-size:15px;}
+.topnav{display:flex;gap:4px;flex-wrap:wrap;}
+.topnav a{
+  color:var(--parchment);
+  text-decoration:none;
+  font-size:13.5px;
+  padding:8px 12px;
+  border-radius:20px;
+  opacity:.85;
+  transition:.25s;
+}
+.topnav a:hover{background:rgba(255,255,255,.12);opacity:1;}
+
+/* ---------------- hero ---------------- */
+.hero{
+  position:relative;
+  padding:70px 0 90px;
+  background:
+    radial-gradient(circle at 85% 10%, rgba(255,255,255,.35), transparent 45%),
+    linear-gradient(160deg, var(--lab-green) 0%, var(--lab-green-dark) 60%, #0e211b 100%);
+  color:var(--parchment);
+  overflow:hidden;
+}
+.hero::after{
+  content:"";
+  position:absolute;inset:0;
+  background-image:radial-gradient(circle,rgba(255,255,255,.06) 1px, transparent 1px);
+  background-size:26px 26px;
+  opacity:.5;
+}
+.hero .wrap{position:relative;z-index:2;display:grid;grid-template-columns:1.2fr .8fr;gap:40px;align-items:center;}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.25);
+  padding:6px 16px;border-radius:30px;
+  font-size:13px;letter-spacing:.4px;
+  margin-bottom:18px;
+}
+.hero h1{font-size:clamp(34px,5vw,54px);color:#fff;margin:0 0 16px;line-height:1.3;}
+.hero h1 span{color:var(--amber-light);}
+.hero p{font-size:16.5px;max-width:52ch;opacity:.9;margin:0 0 26px;}
+.hero-ctas{display:flex;gap:14px;flex-wrap:wrap;}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:13px 26px;border-radius:14px;border:none;
+  font-size:15px;font-weight:700;
+  transition:transform .2s, box-shadow .2s;
+}
+.btn:active{transform:translateY(2px);}
+.btn-primary{background:var(--amber);color:#fff;box-shadow:0 10px 24px rgba(194,121,59,.4);}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(194,121,59,.5);}
+.btn-ghost{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.4);}
+.btn-ghost:hover{background:rgba(255,255,255,.1);}
+
+.hero-flask{perspective:900px;display:flex;justify-content:center;}
+.flask-3d{
+  width:190px;height:230px;position:relative;
+  transform-style:preserve-3d;
+  animation:floaty 6s ease-in-out infinite;
+}
+@keyframes floaty{0%,100%{transform:rotateY(-8deg) rotateX(4deg) translateY(0);}50%{transform:rotateY(6deg) rotateX(-2deg) translateY(-12px);}}
+.flask-body{
+  position:absolute;bottom:0;left:50%;transform:translateX(-50%);
+  width:150px;height:150px;
+  background:linear-gradient(160deg, rgba(255,255,255,.25), rgba(255,255,255,.05));
+  border:2px solid var(--glass-edge);
+  border-radius:50% 50% 44% 44% / 60% 60% 40% 40%;
+  overflow:hidden;
+  box-shadow: var(--shadow-lg), inset 0 0 30px rgba(255,255,255,.08);
+}
+.flask-neck{
+  position:absolute;top:-46px;left:50%;transform:translateX(-50%);
+  width:36px;height:52px;
+  background:linear-gradient(160deg, rgba(255,255,255,.22), rgba(255,255,255,.04));
+  border:2px solid var(--glass-edge);border-bottom:none;
+  border-radius:8px 8px 0 0;
+}
+.flask-liquid{
+  position:absolute;bottom:0;left:0;right:0;height:60%;
+  background:linear-gradient(180deg, var(--colloid), #9c7c2e);
+  animation:swirl 4s ease-in-out infinite;
+}
+@keyframes swirl{0%,100%{height:58%;}50%{height:64%;}}
+.flask-bubble{position:absolute;border-radius:50%;background:rgba(255,255,255,.55);animation:rise 3.2s linear infinite;}
+
+/* ---------------- section shell ---------------- */
+section{padding:68px 0;}
+.section-head{max-width:720px;margin:0 auto 40px;text-align:center;}
+.section-head .kicker{
+  color:var(--teal);font-weight:800;font-size:13px;letter-spacing:2px;
+  text-transform:uppercase;display:block;margin-bottom:10px;
+}
+.section-head h2{font-size:clamp(26px,3.4vw,36px);margin:0 0 12px;}
+.section-head p{color:#4b5348;font-size:15.5px;}
+
+/* ---------------- concept ---------------- */
+.concept-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+.concept-card{
+  background:#fff;border-radius:var(--radius);
+  padding:26px 22px;box-shadow:var(--shadow-sm);
+  border-top:5px solid var(--teal);
+  position:relative;
+}
+.concept-card .num{
+  position:absolute;top:-16px;right:20px;
+  width:34px;height:34px;border-radius:50%;
+  background:var(--teal);color:#fff;display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:14px;box-shadow:0 6px 14px rgba(44,133,112,.4);
+}
+.concept-card h3{font-size:19px;margin:6px 0 10px;}
+.concept-card p{font-size:14.5px;color:#4b5348;margin:0;}
+
+/* ---------------- types cards ---------------- */
+.types-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+.type-card{
+  background:linear-gradient(180deg,#fff, #FBF8EF);
+  border-radius:20px;padding:0;overflow:hidden;
+  box-shadow:var(--shadow-sm);
+  border:1px solid rgba(0,0,0,.05);
+  transition:transform .3s, box-shadow .3s;
+}
+.type-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg);}
+.type-visual{
+  height:150px;position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+}
+.type-visual.true-visual{background:linear-gradient(160deg,#EAF6FC,#CFE9F5);}
+.type-visual.colloid-visual{background:linear-gradient(160deg,#FBF3DE,#F1DFAF);}
+.type-visual.suspension-visual{background:linear-gradient(160deg,#F7E6DD,#EDC9B7);}
+.mini-tube{width:44px;height:88px;border:2px solid rgba(34,41,31,.25);border-bottom-left-radius:20px;border-bottom-right-radius:20px;position:relative;background:rgba(255,255,255,.4);overflow:hidden;box-shadow:0 8px 16px rgba(0,0,0,.1);}
+.mini-tube .fill{position:absolute;bottom:0;left:0;right:0;height:72%;}
+.true-visual .fill{background:linear-gradient(180deg,#BEE0F2,#8FC1DE);}
+.colloid-visual .fill{background:linear-gradient(180deg,#F4E6BC,#E3C978);}
+.suspension-visual .fill{background:linear-gradient(180deg,#EFD3C2,#DDAE93);}
+.suspension-visual .fill::after{
+  content:"";position:absolute;bottom:0;left:0;right:0;height:26%;
+  background:repeating-linear-gradient(45deg,#8B5A3C,#8B5A3C 3px,#7a4c31 3px,#7a4c31 6px);
+}
+.colloid-visual .beam{position:absolute;width:70px;height:14px;background:radial-gradient(ellipse at right, rgba(255,255,255,.9), transparent 70%);top:44%;right:-10px;transform:rotate(-14deg);filter:blur(1px);animation:pulseGlow 2.4s ease-in-out infinite;}
+@keyframes pulseGlow{0%,100%{opacity:.5;}50%{opacity:1;}}
+.type-body{padding:20px 20px 24px;}
+.type-tag{
+  display:inline-block;font-size:12px;font-weight:800;
+  padding:4px 12px;border-radius:20px;margin-bottom:10px;
+}
+.true-tag{background:#DDF0FA;color:#1D6E9C;}
+.colloid-tag{background:#F6E8BE;color:#8A6614;}
+.suspension-tag{background:#F3D9CB;color:#8C3E24;}
+.type-body h3{font-size:19px;margin:0 0 8px;}
+.type-body p{font-size:14px;color:#4b5348;margin:0 0 10px;}
+.type-body ul{margin:0;padding-inline-start:18px;font-size:13.5px;color:#4b5348;}
+.type-body li{margin-bottom:4px;}
+
+/* ---------------- LAB ---------------- */
+.lab-section{
+  background:linear-gradient(180deg,#EFE6C8,#E4D7AC);
+  border-radius:28px;
+  margin:0 22px;
+  padding:50px 6px 60px;
+  box-shadow: inset 0 2px 0 rgba(255,255,255,.5), var(--shadow-lg);
+}
+.lab-inner{max-width:1080px;margin:0 auto;padding:0 22px;}
+.lab-tag{
+  text-align:center;color:var(--lab-green-dark);
+  font-weight:800;letter-spacing:2px;font-size:12.5px;text-transform:uppercase;
+}
+.lab-title{text-align:center;font-size:clamp(24px,3vw,32px);margin:6px 0 8px;}
+.lab-sub{text-align:center;color:#4b5348;max-width:640px;margin:0 auto 40px;font-size:14.5px;}
+
+.materials{
+  display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:38px;
+}
+.material{
+  background:#fff;border-radius:16px;padding:12px 16px;
+  display:flex;align-items:center;gap:10px;min-width:150px;
+  box-shadow:var(--shadow-sm);font-size:13px;
+}
+.material .ic{font-size:22px;}
+.material strong{display:block;font-size:13.5px;}
+.material span{color:#7a8073;font-size:11.5px;}
+
+.bench{perspective:1400px;display:flex;justify-content:center;margin-bottom:26px;}
+.rack{
+  transform-style:preserve-3d;
+  transform:rotateX(10deg);
+  display:flex;gap:34px;padding:26px 40px 46px;
+  background:linear-gradient(180deg,#B77F45,#8F5C2C);
+  border-radius:14px;
+  box-shadow:0 30px 50px rgba(0,0,0,.35), inset 0 3px 6px rgba(255,255,255,.25);
+  position:relative;
+}
+.rack::before{ /* top bar of rack */
+  content:"";position:absolute;top:-14px;left:16px;right:16px;height:16px;
+  background:linear-gradient(180deg,#C79256,#9C6733);
+  border-radius:8px;box-shadow:0 4px 10px rgba(0,0,0,.25);
+}
+.tube-unit{display:flex;flex-direction:column;align-items:center;gap:10px;}
+.tube-select{
+  border:none;background:rgba(255,255,255,.85);
+  padding:6px 14px;border-radius:20px;font-size:12px;font-weight:700;
+  color:var(--lab-green-dark);cursor:pointer;transition:.2s;
+}
+.tube-select.active{background:var(--amber);color:#fff;box-shadow:0 4px 12px rgba(194,121,59,.5);}
+.tube-hole{
+  width:70px;height:20px;background:#6b4423;border-radius:50%;
+  box-shadow:inset 0 4px 6px rgba(0,0,0,.5);
+}
+.tube{
+  width:56px;height:190px;
+  position:relative;
+  transform-style:preserve-3d;
+  transition:transform .6s ease;
+}
+.tube.shaking{animation:shakeTube .45s ease-in-out 4;}
+@keyframes shakeTube{0%,100%{transform:rotate(0deg) translateX(0);}25%{transform:rotate(-9deg) translateX(-4px);}75%{transform:rotate(9deg) translateX(4px);}}
+.tube-glass{
+  width:100%;height:100%;
+  border:2px solid rgba(255,255,255,.65);
+  border-top:none;
+  border-radius:0 0 26px 26px;
+  background:linear-gradient(100deg, rgba(255,255,255,.35), rgba(255,255,255,.05) 30%, rgba(255,255,255,.25) 60%, rgba(255,255,255,.05));
+  position:relative;overflow:hidden;
+  box-shadow: 0 14px 26px rgba(0,0,0,.28), inset -6px 0 10px rgba(255,255,255,.15);
+}
+.tube-rim{
+  width:64px;height:10px;margin:0 auto -2px;
+  background:linear-gradient(180deg,#fff,#d8d8d8);
+  border-radius:5px;box-shadow:0 3px 6px rgba(0,0,0,.2);
+}
+.tube-liquid{
+  position:absolute;bottom:0;left:0;right:0;height:64%;
+  background:linear-gradient(180deg, rgba(143,193,222,.75), rgba(143,193,222,.9));
+  transition:background 1.2s ease, height .6s ease;
+}
+.tube-particles{position:absolute;inset:0;}
+.tube-particles .p{
+  position:absolute;border-radius:50%;
+  background:#fff;
+}
+.tube-label{
+  font-family:'Aref Ruqaa',serif;font-size:15px;font-weight:700;
+  color:var(--lab-green-dark);
+}
+.tube-caption{font-size:11px;color:#5a4a2c;text-align:center;min-height:16px;font-weight:700;}
+.add-btn{
+  border:none;border-radius:12px;padding:8px 14px;font-size:12px;font-weight:700;
+  background:var(--teal);color:#fff;box-shadow:0 6px 14px rgba(44,133,112,.35);
+  transition:.2s;
+}
+.add-btn:hover{transform:translateY(-2px);}
+.add-btn:disabled{background:#c7c2ad;box-shadow:none;cursor:not-allowed;transform:none;}
+
+/* flashlight beam */
+.beam-cone{
+  position:absolute;top:38%;right:-46px;width:0;height:0;
+  opacity:0;transition:opacity .5s;
+  pointer-events:none;
+}
+.tube.lit .beam-cone{opacity:1;}
+.beam-cone svg{width:70px;height:60px;}
+
+/* flashlight fixture above the rack */
+.flashlight-fixture{
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+  margin:0 auto -6px;width:fit-content;position:relative;z-index:2;
+}
+.fl-icon{font-size:30px;filter:grayscale(1) opacity(.5);transition:filter .4s;transform:rotate(90deg);display:inline-block;}
+.flashlight-fixture.on .fl-icon{filter:grayscale(0) opacity(1) drop-shadow(0 0 10px #ffe58a);}
+.fl-rays{display:flex;gap:6px;height:20px;justify-content:center;opacity:0;transition:opacity .4s;}
+.flashlight-fixture.on .fl-rays{opacity:1;}
+.fl-rays span{
+  width:2px;height:100%;background:linear-gradient(180deg,#ffe58a,transparent);
+  animation:rayPulse 1.4s ease-in-out infinite;
+}
+.fl-rays span:nth-child(2){animation-delay:.2s;}
+.fl-rays span:nth-child(3){animation-delay:.4s;}
+@keyframes rayPulse{0%,100%{opacity:.4;}50%{opacity:1;}}
+
+/* full-tube glow overlay: makes the light effect unmistakable */
+.tube-overlay{position:absolute;inset:0;overflow:hidden;pointer-events:none;}
+.glow-beam{position:absolute;left:0;right:0;}
+.glow-beam--straight{
+  top:46%;height:8%;
+  background:linear-gradient(90deg, transparent, #fff6cf 20%, #fff6cf 80%, transparent);
+  box-shadow:0 0 14px 3px rgba(255,236,150,.8);
+  animation:beamAppear .5s ease;
+}
+.glow-beam--scatter{
+  inset:6% 4%;border-radius:50%;
+  background:radial-gradient(circle at 30% 45%, rgba(255,246,207,.95), rgba(255,246,207,.35) 55%, transparent 78%);
+  animation:beamAppear .6s ease;
+}
+.glow-beam--broken{
+  top:46%;height:8%;
+  background:repeating-linear-gradient(90deg, #fff6cf 0 10%, transparent 10% 20%);
+  opacity:.65;
+  animation:beamAppear .5s ease;
+}
+.glow-beam--upper{
+  top:14%;height:8%;left:0;right:36%;
+  background:linear-gradient(90deg, transparent, #fff6cf 30%, #fff6cf 90%);
+  box-shadow:0 0 12px 2px rgba(255,236,150,.75);
+  animation:beamAppear .5s ease;
+}
+.glow-blocked{
+  position:absolute;left:0;right:0;bottom:22%;height:4px;
+  background:#fff6cf;box-shadow:0 0 10px 4px rgba(255,236,150,.9);
+  animation:beamAppear .5s ease;
+}
+@keyframes beamAppear{from{opacity:0;}to{opacity:1;}}
+
+/* result label shown beneath each tube once light is on */
+.light-tag{
+  font-size:11px;font-weight:800;padding:3px 10px;border-radius:20px;
+  opacity:0;transform:translateY(-4px);transition:opacity .35s, transform .35s;
+  min-height:18px;
+}
+.light-tag.show{opacity:1;transform:translateY(0);}
+.light-tag.straight{background:#DDF0FA;color:#1D6E9C;}
+.light-tag.scatter{background:#F6E8BE;color:#8A6614;}
+.light-tag.blocked{background:#F3D9CB;color:#8C3E24;}
+
+.lab-controls{
+  display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:30px 0 20px;
+}
+.ctrl-btn{
+  border:none;border-radius:14px;padding:13px 22px;font-size:14px;font-weight:800;
+  display:flex;align-items:center;gap:8px;box-shadow:var(--shadow-sm);
+  transition:.2s;
+}
+.ctrl-btn:hover{transform:translateY(-2px);}
+.ctrl-btn:disabled{opacity:.4;cursor:not-allowed;transform:none;}
+.ctrl-shake{background:var(--amber);color:#fff;}
+.ctrl-wait{background:var(--lab-green);color:#fff;}
+.ctrl-light{background:#2b2b2b;color:#fff;}
+.ctrl-reset{background:#fff;color:var(--lab-green-dark);border:1.5px solid var(--lab-green);}
+
+.log{
+  background:#fffdf6;border:1.5px dashed #c8bd97;border-radius:16px;
+  padding:16px 20px;max-width:760px;margin:0 auto 30px;
+  font-size:13.5px;color:#5a4a2c;min-height:56px;
+}
+.log strong{color:var(--lab-green-dark);}
+.log ul{margin:6px 0 0;padding-inline-start:20px;}
+
+.results-wrap{overflow-x:auto;}
+table.results{
+  width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;
+  box-shadow:var(--shadow-sm);font-size:13.5px;min-width:640px;
+}
+table.results th{background:var(--lab-green-dark);color:#fff;padding:12px 10px;font-weight:700;}
+table.results td{padding:11px 10px;text-align:center;border-bottom:1px solid #eee2c4;}
+table.results tr:last-child td{border-bottom:none;}
+.badge{padding:3px 10px;border-radius:20px;font-size:12px;font-weight:800;}
+.badge.true{background:#DDF0FA;color:#1D6E9C;}
+.badge.colloid{background:#F6E8BE;color:#8A6614;}
+.badge.suspension{background:#F3D9CB;color:#8C3E24;}
+.badge.pending{background:#eee;color:#999;}
+
+/* ---------------- quiz ---------------- */
+.quiz-list{display:flex;flex-direction:column;gap:20px;max-width:820px;margin:0 auto;}
+.q-card{background:#fff;border-radius:16px;padding:22px 24px;box-shadow:var(--shadow-sm);border-inline-start:5px solid var(--teal);}
+.q-card h4{margin:0 0 12px;font-size:16px;}
+.q-options{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px;}
+.q-options label{
+  background:var(--parchment);border-radius:12px;padding:9px 14px;font-size:13.5px;
+  cursor:pointer;border:1.5px solid transparent;transition:.2s;display:flex;align-items:center;gap:6px;
+}
+.q-options label:hover{border-color:var(--teal);}
+.q-options input{accent-color:var(--teal);}
+.q-feedback{font-size:13.5px;padding:10px 14px;border-radius:10px;margin-top:8px;display:none;}
+.q-feedback.show{display:block;}
+.q-feedback.correct{background:#E4F5EA;color:#1E7A44;}
+.q-feedback.wrong{background:#FBE7E2;color:#A83D26;}
+.reveal-btn{
+  border:none;background:var(--lab-green);color:#fff;padding:8px 16px;border-radius:10px;
+  font-size:12.5px;font-weight:700;
+}
+.reveal-answer{display:none;margin-top:10px;font-size:13.5px;background:var(--parchment);padding:10px 14px;border-radius:10px;color:#3d4535;}
+.reveal-answer.show{display:block;}
+
+.think-box{
+  max-width:820px;margin:34px auto 0;background:var(--lab-green-dark);color:#fff;
+  border-radius:18px;padding:24px 26px;position:relative;
+}
+.think-box .tag{display:inline-flex;align-items:center;gap:8px;background:var(--amber);padding:5px 14px;border-radius:20px;font-size:12.5px;font-weight:800;margin-bottom:12px;}
+.think-box p{margin:0;font-size:14.5px;opacity:.95;}
+
+/* ---------------- summary / inference ---------------- */
+#summary textarea:focus{outline:2px solid var(--teal);}
+
+footer{background:var(--lab-green-dark);color:rgba(255,255,255,.75);padding:32px 0;text-align:center;font-size:13px;margin-top:40px;}
+footer strong{color:#fff;}
+
+@media (max-width:860px){
+  .hero .wrap{grid-template-columns:1fr;text-align:center;}
+  .hero p{margin-inline:auto;}
+  .hero-ctas{justify-content:center;}
+  .concept-grid, .types-grid{grid-template-columns:1fr;}
+  .rack{flex-direction:row;overflow-x:auto;padding:22px 18px 40px;}
+  .lab-section{margin:0 8px;border-radius:20px;}
+}
+@media (max-width:520px){
+  .topnav{display:none;}
+  .rack{gap:16px;}
+  .tube{width:46px;height:150px;}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <div class="brand">
+      <div class="brand-badge">🧪</div>
+      <div class="brand-text">
+        <small>العلوم والحياة · الصف السابع · فلسطين</small>
+        <strong>أصنّف المحاليل من حولي</strong>
+      </div>
+    </div>
+    <nav class="topnav">
+      <a href="#types">أنواع المحاليل</a>
+      <a href="#lab">المختبر الافتراضي</a>
+      <a href="#quiz">استنتج وأجب</a>
+      <a href="#summary">الخلاصة</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">🧫 نشاط (٥) — أصنّف المحاليل من حولي</span>
+      <h1>لماذا لا تتساوى المواد <span>في طريقة اختفائها بالماء؟</span></h1>
+      <p>سكّر، مسحوق طباشير، وحليب... ثلاث مواد تدخل الماء، لكنها تفترق في الوجهة: بعضها يختفي تمامًا، وبعضها يبقى عالقًا، وبعضها يترسّب في القاع. في هذا الدرس التفاعلي ستنفّذ التجربة بنفسك داخل مختبر افتراضي ثلاثي الأبعاد، وتكتشف الفرق بين المحلول الحقيقي والغروي والمعلّق.</p>
+      <div class="hero-ctas">
+        <button class="btn btn-primary" onclick="document.getElementById('lab').scrollIntoView()">🔬 ابدأ التجربة الافتراضية</button>
+        <button class="btn btn-ghost" onclick="document.getElementById('types').scrollIntoView()">اقرأ الشرح أولًا</button>
+      </div>
+    </div>
+    <div class="hero-flask">
+      <div class="flask-3d">
+        <div class="flask-neck"></div>
+        <div class="flask-body">
+          <div class="flask-liquid"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<main>
+
+<!-- ================= TYPES ================= -->
+<section id="types">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker">ثلاثة أنواع</span>
+      <h2>المحلول الحقيقي، الغروي، والمعلّق</h2>
+      <p>الفرق الجوهري بين الأنواع الثلاثة هو حجم دقائق المذاب، وما يترتّب عليه من سلوك مختلف تجاه الترسيب والضوء.</p>
+    </div>
+    <div class="types-grid">
+      <div class="type-card">
+        <div class="type-visual true-visual">
+          <div class="mini-tube"><div class="fill"></div></div>
+        </div>
+        <div class="type-body">
+          <span class="type-tag true-tag">محلول حقيقي</span>
+          <h3>Solution</h3>
+          <p>تتوزّع دقائقه توزيعًا تامًا فيكون المحلول متجانسًا تمامًا وشفافًا.</p>
+          <ul>
+            <li>دقائق دقيقة جدًا لا تُرى بالعين المجرّدة</li>
+            <li>لا تترسّب مهما طال الزمن</li>
+            <li>لا يشتّت الضوء المارّ خلاله</li>
+          </ul>
+        </div>
+      </div>
+      <div class="type-card">
+        <div class="type-visual colloid-visual">
+          <div class="mini-tube"><div class="fill"></div></div>
+          <div class="beam"></div>
+        </div>
+        <div class="type-body">
+          <span class="type-tag colloid-tag">محلول غروي</span>
+          <h3>Colloid</h3>
+          <p>دقائقه أكبر من المحلول الحقيقي، تبقى عالقة ولا تترسّب بسهولة، ويظهر أثر تندال عند تسليط الضوء.</p>
+          <ul>
+            <li>مظهر غير شفاف (عكِر خفيف)</li>
+            <li>لا يترسّب إلا بعد زمن طويل جدًا</li>
+            <li>يشتّت الضوء (تأثير تندال)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="type-card">
+        <div class="type-visual suspension-visual">
+          <div class="mini-tube"><div class="fill"></div></div>
+        </div>
+        <div class="type-body">
+          <span class="type-tag suspension-tag">محلول معلّق</span>
+          <h3>Suspension</h3>
+          <p>دقائقه كبيرة نسبيًا، غير متجانسة التوزيع، وتترسّب بعد فترة قصيرة من الرَّجّ.</p>
+          <ul>
+            <li>تُرى دقائقه بالعين المجرّدة غالبًا</li>
+            <li>تترسّب بسرعة في القاع</li>
+            <li>يحجب الضوء أو يظهر معلّقًا عكِرًا</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= LAB ================= -->
+<section id="lab">
+  <div class="lab-section">
+    <div class="lab-inner">
+      <span class="lab-tag">نشاط (٥) — تجربة عملية</span>
+      <h2 class="lab-title">المختبر الافتراضي: أصنّف المحاليل من حولي</h2>
+      <p class="lab-sub">نفّذ خطوات النشاط كما في كتابك: أضف المادة المناسبة لكل أنبوب، ثم رُجّ الأنابيب، ثم انتظر دقيقتين لتلاحظ الترسيب، وأخيرًا سلّط الضوء لتلاحظ التشتّت.</p>
+
+      <div class="materials">
+        <div class="material"><span class="ic">🥄</span><div><strong>مسحوق الطباشير</strong><span>للأنبوب رقم ١</span></div></div>
+        <div class="material"><span class="ic">🍬</span><div><strong>السكر</strong><span>للأنبوب رقم ٢</span></div></div>
+        <div class="material"><span class="ic">🥛</span><div><strong>الحليب</strong><span>للأنبوب رقم ٣</span></div></div>
+        <div class="material"><span class="ic">💧</span><div><strong>ماء مقطّر</strong><span>كمية متساوية بكل أنبوب</span></div></div>
+        <div class="material"><span class="ic">🔦</span><div><strong>مصباح يد</strong><span>لاختبار تشتّت الضوء</span></div></div>
+      </div>
+
+      <div class="flashlight-fixture" id="flashlightFixture">
+        <span class="fl-icon">🔦</span>
+        <div class="fl-rays">
+          <span></span><span></span><span></span>
+        </div>
+      </div>
+      <div class="bench">
+        <div class="rack" id="rack">
+          <!-- tube 1 -->
+          <div class="tube-unit">
+            <button class="add-btn" id="add1" onclick="addSubstance(1)">➕ أضف مسحوق الطباشير</button>
+            <div class="tube-hole"></div>
+            <div class="tube" id="tube1" data-substance="chalk">
+              <div class="tube-rim"></div>
+              <div class="tube-glass">
+                <div class="tube-liquid" id="liquid1"></div>
+                <div class="tube-particles" id="particles1"></div>
+                <div class="tube-overlay" id="overlay1"></div>
+              </div>
+              <div class="beam-cone" id="beam1"></div>
+            </div>
+            <div class="tube-label">أنبوب ١</div>
+            <div class="tube-caption" id="caption1">ماء مقطّر</div>
+            <div class="light-tag" id="lightTag1"></div>
+          </div>
+          <!-- tube 2 -->
+          <div class="tube-unit">
+            <button class="add-btn" id="add2" onclick="addSubstance(2)">➕ أضف السكر</button>
+            <div class="tube-hole"></div>
+            <div class="tube" id="tube2" data-substance="sugar">
+              <div class="tube-rim"></div>
+              <div class="tube-glass">
+                <div class="tube-liquid" id="liquid2"></div>
+                <div class="tube-particles" id="particles2"></div>
+                <div class="tube-overlay" id="overlay2"></div>
+              </div>
+              <div class="beam-cone" id="beam2"></div>
+            </div>
+            <div class="tube-label">أنبوب ٢</div>
+            <div class="tube-caption" id="caption2">ماء مقطّر</div>
+            <div class="light-tag" id="lightTag2"></div>
+          </div>
+          <!-- tube 3 -->
+          <div class="tube-unit">
+            <button class="add-btn" id="add3" onclick="addSubstance(3)">➕ أضف الحليب</button>
+            <div class="tube-hole"></div>
+            <div class="tube" id="tube3" data-substance="milk">
+              <div class="tube-rim"></div>
+              <div class="tube-glass">
+                <div class="tube-liquid" id="liquid3"></div>
+                <div class="tube-particles" id="particles3"></div>
+                <div class="tube-overlay" id="overlay3"></div>
+              </div>
+              <div class="beam-cone" id="beam3"></div>
+            </div>
+            <div class="tube-label">أنبوب ٣</div>
+            <div class="tube-caption" id="caption3">ماء مقطّر</div>
+            <div class="light-tag" id="lightTag3"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lab-controls">
+        <button class="ctrl-btn ctrl-shake" id="shakeBtn" onclick="shakeTubes()" disabled>🫳 رُجّ الأنابيب</button>
+        <button class="ctrl-btn ctrl-wait" id="waitBtn" onclick="waitTubes()" disabled>⏱️ انتظر دقيقتين</button>
+        <button class="ctrl-btn ctrl-light" id="lightBtn" onclick="toggleLight()" disabled>🔦 سلّط الضوء</button>
+        <button class="ctrl-btn ctrl-reset" onclick="resetLab()">🔄 أعد التجربة</button>
+      </div>
+
+      <div class="log" id="log"><strong>سجل الملاحظات:</strong> ابدأ بإضافة المواد إلى الأنابيب الثلاثة لتفتح باقي الخطوات.</div>
+
+      <div class="results-wrap">
+        <table class="results">
+          <thead>
+            <tr>
+              <th>الأنبوب</th>
+              <th>المادة المضافة</th>
+              <th>الحالة بعد الرَّجّ</th>
+              <th>بعد الانتظار (الترسيب)</th>
+              <th>أثر تسليط الضوء</th>
+            </tr>
+          </thead>
+          <tbody id="resultsBody">
+            <tr>
+              <td>١</td><td>مسحوق الطباشير</td>
+              <td id="r1-shake">—</td><td id="r1-settle">—</td><td id="r1-light">—</td>
+            </tr>
+            <tr>
+              <td>٢</td><td>السكر</td>
+              <td id="r2-shake">—</td><td id="r2-settle">—</td><td id="r2-light">—</td>
+            </tr>
+            <tr>
+              <td>٣</td><td>الحليب</td>
+              <td id="r3-shake">—</td><td id="r3-settle">—</td><td id="r3-light">—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= QUIZ ================= -->
+<section id="quiz">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker">استنتج وأجب</span>
+      <h2>أسئلة النشاط (٥)</h2>
+      <p>أكمل تجربتك أولًا في المختبر الافتراضي، ثم أجب عن الأسئلة التالية بالاعتماد على ملاحظاتك.</p>
+    </div>
+    <div class="quiz-list">
+
+      <div class="q-card">
+        <h4>١. أيّ المحاليل لا يمكن مشاهدة دقائق المذاب فيه بالعين المجرّدة؟ ولماذا؟</h4>
+        <div class="q-options" data-q="q1">
+          <label><input type="radio" name="q1" value="wrong">أنبوب ١ (مسحوق الطباشير)</label>
+          <label><input type="radio" name="q1" value="correct">أنبوب ٢ (السكر)</label>
+          <label><input type="radio" name="q1" value="wrong">أنبوب ٣ (الحليب)</label>
+        </div>
+        <div class="q-feedback"></div>
+      </div>
+
+      <div class="q-card">
+        <h4>٢. أيّ المحاليل ترسّبت دقائق المذاب فيه بعد فترة قصيرة؟</h4>
+        <div class="q-options" data-q="q2">
+          <label><input type="radio" name="q2" value="correct">أنبوب ١ (مسحوق الطباشير)</label>
+          <label><input type="radio" name="q2" value="wrong">أنبوب ٢ (السكر)</label>
+          <label><input type="radio" name="q2" value="wrong">أنبوب ٣ (الحليب)</label>
+        </div>
+        <div class="q-feedback"></div>
+      </div>
+
+      <div class="q-card">
+        <h4>٣. أيّها شتّت الضوء المسلّط عليه (أثر تندال) دون أن يترسّب؟</h4>
+        <div class="q-options" data-q="q3">
+          <label><input type="radio" name="q3" value="wrong">أنبوب ١ (مسحوق الطباشير)</label>
+          <label><input type="radio" name="q3" value="wrong">أنبوب ٢ (السكر)</label>
+          <label><input type="radio" name="q3" value="correct">أنبوب ٣ (الحليب)</label>
+        </div>
+        <div class="q-feedback"></div>
+      </div>
+
+      <div class="q-card">
+        <h4>٤. رتّب المحاليل الثلاثة حسب درجة صفائها، من الأصفى إلى الأكثر عكارة.</h4>
+        <div class="q-options" data-q="q4">
+          <label><input type="radio" name="q4" value="correct">السكر ← الحليب ← مسحوق الطباشير</label>
+          <label><input type="radio" name="q4" value="wrong">مسحوق الطباشير ← السكر ← الحليب</label>
+          <label><input type="radio" name="q4" value="wrong">الحليب ← السكر ← مسحوق الطباشير</label>
+        </div>
+        <div class="q-feedback"></div>
+      </div>
+
+      <div class="q-card">
+        <h4>٥. ما أهمية شرب الحليب للجسم؟</h4>
+        <button class="reveal-btn" onclick="this.nextElementSibling.classList.toggle('show')">إظهار الإجابة النموذجية</button>
+        <div class="reveal-answer">الحليب مصدر غنيّ بالكالسيوم والبروتين والفيتامينات (كفيتامين د)، وهي عناصر ضرورية لبناء وتقوية العظام والأسنان، ونموّ الجسم بشكل سليم، خصوصًا في مرحلة النمو.</div>
+      </div>
+
+    </div>
+
+    <div class="think-box">
+      <span class="tag">💡 فكّر</span>
+      <p><strong>لماذا يتشتّت ضوء مصابيح السيارة في أيام الضباب؟</strong></p>
+      <button class="reveal-btn" style="margin-top:10px" onclick="this.nextElementSibling.classList.toggle('show')">إظهار التفسير</button>
+      <div class="reveal-answer" style="background:rgba(255,255,255,.1);color:#fff;">الضباب عبارة عن قُطيرات ماء دقيقة معلّقة في الهواء، فهو أشبه بمحلول غروي. وحين يسقط ضوء المصابيح على هذه القُطيرات فإنه يتشتّت في اتجاهات مختلفة (أثر تندال)، فيبدو الضوء منتشرًا وغير واضح بدلًا من أن يمرّ في شعاع مستقيم كما في الهواء الصافي.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SUMMARY / CONCLUSION QUESTION ================= -->
+<section id="summary">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker">الخلاصة</span>
+      <h2>سؤال استنتاجي</h2>
+      <p>وظّف كل ما لاحظته في التجربة — الترسيب، وأثر الضوء — للإجابة عن السؤال التالي بأسلوبك الخاص.</p>
+    </div>
+    <div class="q-card" style="max-width:820px;margin:0 auto;">
+      <h4>بناءً على نتائج تجربتك، فسّر العلاقة بين حجم دقائق المذاب في المحلول وكل من: قابليته للترسيب، وقدرته على تشتيت الضوء.</h4>
+      <textarea id="inferAnswer" rows="4" placeholder="اكتب استنتاجك هنا..." style="width:100%;border:1.5px solid #ddd3ad;border-radius:12px;padding:12px 14px;font-family:inherit;font-size:14px;resize:vertical;background:var(--parchment);"></textarea>
+      <div style="margin-top:12px;">
+        <button class="reveal-btn" onclick="this.nextElementSibling.classList.toggle('show')">إظهار إجابة نموذجية</button>
+        <div class="reveal-answer">كلما كبر حجم دقائق المذاب، زادت قابليتها للترسيب في القاع بفعل الجاذبية، كما في مسحوق الطباشير (محلول معلّق). أما الدقائق المتوسطة الحجم فتبقى عالقة في المذيب دون أن تترسّب، لكنها كبيرة بما يكفي لتعكس الضوء وتشتّته في اتجاهات مختلفة (أثر تندال)، كما في الحليب (محلول غروي). في المقابل، الدقائق الدقيقة جدًا (كالسكر الذائب) تتوزّع توزيعًا تامًا بين جزيئات المذيب، فلا تترسّب أبدًا ولا تشتّت الضوء المارّ خلالها، ويمرّ الشعاع في خط مستقيم (محلول حقيقي).</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    درس تفاعلي — <strong>أصنّف المحاليل من حولي</strong> — كتاب العلوم والحياة، الصف السابع، وزارة التربية والتعليم الفلسطينية.
+  </div>
+</footer>
+
+<script>
+/* ---------- data & state ---------- */
+const tubes = {
+  1:{substance:'chalk', label:'مسحوق الطباشير', added:false, shaken:false, settled:false},
+  2:{substance:'sugar', label:'السكر', added:false, shaken:false, settled:false},
+  3:{substance:'milk', label:'الحليب', added:false, shaken:false, settled:false}
+};
+let lightOn = false;
+
+function logMsg(html){
+  document.getElementById('log').innerHTML = '<strong>سجل الملاحظات:</strong> ' + html;
+}
+
+function allAdded(){ return tubes[1].added && tubes[2].added && tubes[3].added; }
+
+function addSubstance(n){
+  const t = tubes[n];
+  if(t.added) return;
+  t.added = true;
+  document.getElementById('add'+n).disabled = true;
+  document.getElementById('add'+n).textContent = '✔ أُضيفت ' + t.label;
+  document.getElementById('caption'+n).textContent = 'ماء + ' + t.label + ' (قبل الرَّجّ)';
+
+  const particlesEl = document.getElementById('particles'+n);
+  particlesEl.innerHTML = '';
+  const count = t.substance === 'chalk' ? 14 : (t.substance === 'sugar' ? 10 : 0);
+  for(let i=0;i<count;i++){
+    const p = document.createElement('div');
+    p.className = 'p';
+    const size = t.substance === 'chalk' ? (3+Math.random()*3) : (2+Math.random()*2);
+    p.style.width = size+'px';
+    p.style.height = size+'px';
+    p.style.left = (10+Math.random()*70)+'%';
+    p.style.top = (10+Math.random()*70)+'%';
+    p.style.background = t.substance === 'chalk' ? '#fff' : 'rgba(255,255,255,.9)';
+    particlesEl.appendChild(p);
+  }
+  if(t.substance === 'milk'){
+    document.getElementById('liquid'+n).style.background = 'linear-gradient(180deg,#f2ecdb,#e7dfc4)';
+  }
+
+  if(allAdded()){
+    document.getElementById('shakeBtn').disabled = false;
+    logMsg('أُضيفت المواد الثلاث. الآن اضغط «رُجّ الأنابيب» لخلطها جيدًا.');
+  } else {
+    logMsg('أضفت ' + t.label + ' إلى الأنبوب ' + arabicNum(n) + '. أكمل إضافة بقية المواد.');
+  }
+}
+
+function arabicNum(n){ return ['','١','٢','٣'][n]; }
+
+function shakeTubes(){
+  document.getElementById('shakeBtn').disabled = true;
+  [1,2,3].forEach(n=>{
+    document.getElementById('tube'+n).classList.add('shaking');
+    tubes[n].shaken = true;
+  });
+  logMsg('جارٍ رجّ الأنابيب... لاحظ كيف تتغيّر كل مادة فور الخلط.');
+
+  setTimeout(()=>{
+    [1,2,3].forEach(n=>{
+      document.getElementById('tube'+n).classList.remove('shaking');
+      applyShakeResult(n);
+    });
+    document.getElementById('waitBtn').disabled = false;
+    document.getElementById('lightBtn').disabled = false;
+    logMsg('انتهى الرَّجّ. لاحظ الفرق بين الأنابيب الثلاثة، ثم اضغط «انتظر دقيقتين» لترى أثر الترسيب، أو «سلّط الضوء» لاختبار التشتّت.');
+  }, 1900);
+}
+
+function applyShakeResult(n){
+  const t = tubes[n];
+  const liquid = document.getElementById('liquid'+n);
+  const particles = document.getElementById('particles'+n);
+  const caption = document.getElementById('caption'+n);
+
+  if(t.substance === 'sugar'){
+    liquid.style.background = 'linear-gradient(180deg, rgba(190,224,242,.55), rgba(143,193,222,.65))';
+    particles.querySelectorAll('.p').forEach(p=>{ p.style.transition='opacity 1s'; p.style.opacity='0'; });
+    caption.textContent = 'ذاب تمامًا — سائل صافٍ متجانس';
+    setCell(n,'shake','ذاب كليًا، صار السائل صافيًا شفافًا');
+  } else if(t.substance === 'chalk'){
+    particles.querySelectorAll('.p').forEach(p=>{
+      p.style.top = (5+Math.random()*85)+'%';
+      p.style.left = (5+Math.random()*85)+'%';
+    });
+    liquid.style.background = 'linear-gradient(180deg, rgba(220,215,200,.6), rgba(200,190,165,.7))';
+    caption.textContent = 'عالق ومنتشر مؤقتًا — عكِر بالكامل';
+    setCell(n,'shake','انتشر بشكل عكِر في كل السائل');
+  } else if(t.substance === 'milk'){
+    liquid.style.background = 'linear-gradient(180deg,#f4eee0,#eadfc0)';
+    caption.textContent = 'مزيج عكِر متجانس المظهر';
+    setCell(n,'shake','امتزج بشكل متجانس المظهر (عكِر)');
+  }
+}
+
+function waitTubes(){
+  document.getElementById('waitBtn').disabled = true;
+  logMsg('⏱️ مرور دقيقتين من الزمن...');
+  setTimeout(()=>{
+    [1,2,3].forEach(n=> applySettleResult(n));
+    logMsg('لاحظ أنبوب ١: ترسّب مسحوق الطباشير في القاع وصفا الماء فوقه. أما أنبوب ٢ فبقي صافيًا، وأنبوب ٣ بقي عكِرًا متجانسًا دون ترسيب.');
+  }, 1400);
+}
+
+function applySettleResult(n){
+  const t = tubes[n];
+  t.settled = true;
+  const particles = document.getElementById('particles'+n);
+  const liquid = document.getElementById('liquid'+n);
+
+  if(t.substance === 'chalk'){
+    particles.querySelectorAll('.p').forEach((p,i)=>{
+      p.style.transition = 'top 1.1s ease, left .8s ease';
+      p.style.top = (74 + Math.random()*18)+'%';
+      p.style.left = (8+Math.random()*80)+'%';
+    });
+    liquid.style.background = 'linear-gradient(180deg, rgba(230,238,240,.25) 0%, rgba(230,238,240,.25) 70%, rgba(190,170,140,.85) 70%, rgba(160,140,110,.9) 100%)';
+    document.getElementById('caption'+n).textContent = 'ترسّب في القاع، وصفا الماء أعلاه';
+    setCell(n,'settle','ترسّبت الدقائق في القاع بوضوح');
+  } else if(t.substance === 'sugar'){
+    document.getElementById('caption'+n).textContent = 'ما زال صافيًا تمامًا — لا ترسيب';
+    setCell(n,'settle','لم يترسّب، بقي صافيًا ومتجانسًا');
+  } else if(t.substance === 'milk'){
+    document.getElementById('caption'+n).textContent = 'ما زال عكِرًا متجانسًا — لا ترسيب';
+    setCell(n,'settle','لم يترسّب، بقي عكِرًا متجانس المظهر');
+  }
+}
+
+function toggleLight(){
+  lightOn = !lightOn;
+  const btn = document.getElementById('lightBtn');
+  const fixture = document.getElementById('flashlightFixture');
+  btn.textContent = lightOn ? '🔦 أطفئ الضوء' : '🔦 سلّط الضوء';
+  if(fixture) fixture.classList.toggle('on', lightOn);
+
+  [1,2,3].forEach(n=>{
+    const tube = document.getElementById('tube'+n);
+    const beam = document.getElementById('beam'+n);
+    const overlay = document.getElementById('overlay'+n);
+    const tag = document.getElementById('lightTag'+n);
+    if(lightOn){
+      tube.classList.add('lit');
+      beam.innerHTML = buildBeamSVG(tubes[n].substance, tubes[n].settled);
+      overlay.innerHTML = buildOverlay(tubes[n].substance, tubes[n].settled);
+      const info = lightDescription(tubes[n].substance, tubes[n].settled);
+      tag.textContent = info.icon + ' ' + info.short;
+      tag.className = 'light-tag show ' + info.cls;
+      setCell(n,'light', info.full);
+    } else {
+      tube.classList.remove('lit');
+      beam.innerHTML = '';
+      overlay.innerHTML = '';
+      tag.className = 'light-tag';
+    }
+  });
+  if(lightOn){
+    logMsg('🔦 الضوء مسلّط الآن على الأنابيب الثلاثة — قارن أثر الشعاع أسفل كل أنبوب.');
+  } else {
+    logMsg('أُطفئ الضوء. جرّب تسليطه مرة أخرى لمقارنة الأنابيب.');
+  }
+}
+
+function buildBeamSVG(substance, settled){
+  if(substance === 'sugar'){
+    return '<svg viewBox="0 0 70 60"><line x1="0" y1="30" x2="65" y2="30" stroke="#fff6cf" stroke-width="5" stroke-linecap="round" opacity="0.98"/></svg>';
+  }
+  if(substance === 'milk'){
+    return '<svg viewBox="0 0 70 60"><defs><radialGradient id="glow" cx="25%" cy="50%" r="75%"><stop offset="0%" stop-color="#fff6cf" stop-opacity="1"/><stop offset="100%" stop-color="#fff6cf" stop-opacity="0"/></radialGradient></defs><ellipse cx="26" cy="30" rx="42" ry="26" fill="url(#glow)"/><line x1="0" y1="30" x2="55" y2="30" stroke="#fff6cf" stroke-width="4" opacity="0.6"/></svg>';
+  }
+  // chalk
+  if(settled){
+    return '<svg viewBox="0 0 70 60"><line x1="0" y1="22" x2="60" y2="22" stroke="#fff6cf" stroke-width="3" stroke-linecap="round" opacity="0.75"/><line x1="0" y1="22" x2="20" y2="22" stroke="#fff6cf" stroke-width="3" opacity="0.25"/></svg>';
+  }
+  return '<svg viewBox="0 0 70 60"><line x1="0" y1="30" x2="16" y2="30" stroke="#fff6cf" stroke-width="4" stroke-linecap="round" opacity="0.55"/></svg>';
+}
+
+/* full-tube glow overlay so the light effect is unmistakable inside the liquid itself */
+function buildOverlay(substance, settled){
+  if(substance === 'sugar'){
+    return '<div class="glow-beam glow-beam--straight"></div>';
+  }
+  if(substance === 'milk'){
+    return '<div class="glow-beam glow-beam--scatter"></div>';
+  }
+  if(settled){
+    return '<div class="glow-beam glow-beam--upper"></div><div class="glow-blocked"></div>';
+  }
+  return '<div class="glow-beam glow-beam--broken"></div>';
+}
+
+function lightDescription(substance, settled){
+  if(substance === 'sugar') return {icon:'➡️', short:'يمرّ باستقامة', full:'يمرّ الضوء في خط مستقيم دون تشتّت', cls:'straight'};
+  if(substance === 'milk') return {icon:'✨', short:'يتشتّت (تندال)', full:'يتشتّت الضوء بوضوح في جميع الاتجاهات (أثر تندال)', cls:'scatter'};
+  return settled
+    ? {icon:'⛔', short:'يُحجب عند الرواسب', full:'يمرّ فوق الماء الصافي، ثم يُحجب عند طبقة الرواسب', cls:'blocked'}
+    : {icon:'🌫️', short:'يُحجب جزئيًا', full:'يتبعثر ويُحجب جزئيًا بالدقائق العالقة الكثيفة', cls:'blocked'};
+}
+
+function setCell(n, key, text){
+  document.getElementById('r'+n+'-'+key).textContent = text;
+}
+
+function resetLab(){
+  location.reload();
+}
+
+/* ---------- quiz interactions ---------- */
+document.querySelectorAll('.q-options').forEach(group=>{
+  group.addEventListener('change', (e)=>{
+    const card = group.closest('.q-card');
+    const fb = card.querySelector('.q-feedback');
+    const val = e.target.value;
+    fb.classList.remove('correct','wrong');
+    if(val === 'correct'){
+      fb.textContent = '✔ إجابة صحيحة — أحسنت الاستنتاج!';
+      fb.classList.add('correct');
+    } else {
+      fb.textContent = '✘ ليست الإجابة الدقيقة، راجع ملاحظاتك في المختبر وحاول مجددًا.';
+      fb.classList.add('wrong');
+    }
+    fb.classList.add('show');
+  });
+});
+
+/* hero flask bubbles */
+(function(){
+  const body = document.querySelector('.flask-body');
+  for(let i=0;i<6;i++){
+    const b = document.createElement('div');
+    b.className='flask-bubble';
+    const size = 3+Math.random()*5;
+    b.style.width=size+'px';
+    b.style.height=size+'px';
+    b.style.left=(20+Math.random()*60)+'%';
+    b.style.bottom='4px';
+    b.style.animationDelay=(Math.random()*3)+'s';
+    body.appendChild(b);
+  }
+  const styleTag = document.createElement('style');
+  styleTag.textContent = '@keyframes rise{0%{transform:translateY(0);opacity:.9;}100%{transform:translateY(-90px);opacity:0;}}';
+  document.head.appendChild(styleTag);
+})();
+</script>
+</body>
+</html>

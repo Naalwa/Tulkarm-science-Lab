@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta http-equiv="Content-Language" content="ar">
+<title>الذوبان والحرارة | مختبر افتراضي - العلوم والحياة - الصف السابع</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a1a26;
+    --bg-2:#0e2233;
+    --panel:#12293c;
+    --panel-2:#173751;
+    --line: rgba(210,232,245,0.10);
+    --text:#eaf3f8;
+    --muted:#8fadc2;
+    --flame-1:#ff8a3d;
+    --flame-2:#ffd166;
+    --water:#3fc1c9;
+    --water-deep:#146b74;
+    --salt:#f2f7fb;
+    --accent:#ff7b39;
+    --accent-2:#4ecdc4;
+    --good:#6fcf97;
+    --bad:#ef6a6a;
+    --radius: 20px;
+    --radius-sm: 12px;
+    --shadow: 0 20px 50px rgba(0,0,0,.45);
+    --font-display: 'Cairo', 'Tahoma', sans-serif;
+    --font-body: 'Tajawal', 'Tahoma', sans-serif;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1200px 600px at 85% -10%, rgba(78,205,196,.10), transparent 60%),
+      radial-gradient(900px 500px at 10% 10%, rgba(255,123,57,.08), transparent 55%),
+      var(--bg);
+    color:var(--text);
+    font-family:var(--font-body);
+    line-height:1.8;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{font-family:var(--font-display); margin:0;}
+  a{color:inherit;}
+  img,svg{display:block;}
+  button{font-family:var(--font-body); cursor:pointer;}
+  ::selection{background:var(--accent); color:#111;}
+  :focus-visible{outline:3px solid var(--accent-2); outline-offset:3px; border-radius:6px;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important;}
+  }
+
+  .wrap{max-width:1180px; margin:0 auto; padding:0 22px;}
+
+  /* ===== NAV ===== */
+  .nav{
+    position:sticky; top:0; z-index:50;
+    backdrop-filter: blur(10px);
+    background:rgba(10,26,38,.75);
+    border-bottom:1px solid var(--line);
+  }
+  .nav .wrap{display:flex; align-items:center; justify-content:space-between; padding-block:14px;}
+  .brand{display:flex; align-items:center; gap:10px; font-family:var(--font-display); font-weight:800; font-size:1.05rem;}
+  .brand-badge{
+    width:34px; height:34px; border-radius:10px;
+    background:linear-gradient(135deg,var(--flame-1),var(--flame-2));
+    display:flex; align-items:center; justify-content:center; font-size:1.1rem;
+    box-shadow: 0 6px 16px rgba(255,138,61,.35);
+  }
+  .nav-links{display:flex; gap:6px; flex-wrap:wrap;}
+  .nav-links a{
+    font-size:.85rem; color:var(--muted); text-decoration:none;
+    padding:8px 12px; border-radius:999px; transition:.2s;
+    border:1px solid transparent;
+  }
+  .nav-links a:hover{color:var(--text); border-color:var(--line); background:var(--panel);}
+
+  /* ===== HERO ===== */
+  .hero{position:relative; overflow:hidden; padding:64px 0 40px;}
+  .hero .wrap{display:grid; grid-template-columns:1.15fr .85fr; gap:40px; align-items:center;}
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:.78rem; color:var(--accent-2); background:rgba(78,205,196,.10);
+    border:1px solid rgba(78,205,196,.28); padding:6px 14px; border-radius:999px;
+    letter-spacing:.02em; margin-bottom:18px; font-weight:700;
+  }
+  .hero h1{
+    font-size:clamp(2.1rem, 5vw, 3.4rem); font-weight:900; line-height:1.25;
+    background:linear-gradient(90deg,#fff, #cfe9f0 55%, var(--accent-2));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .hero p.lead{color:var(--muted); font-size:1.08rem; max-width:52ch; margin-top:16px;}
+  .hero-actions{display:flex; gap:12px; margin-top:28px; flex-wrap:wrap;}
+  .btn{
+    border:none; border-radius:999px; padding:13px 26px; font-weight:800; font-size:.95rem;
+    transition:.2s transform, .2s box-shadow, .2s background; display:inline-flex; align-items:center; gap:8px;
+  }
+  .btn-primary{background:linear-gradient(90deg,var(--flame-1),var(--accent)); color:#151007; box-shadow:0 10px 26px rgba(255,123,57,.35);}
+  .btn-primary:hover{transform:translateY(-2px); box-shadow:0 14px 32px rgba(255,123,57,.45);}
+  .btn-ghost{background:var(--panel); color:var(--text); border:1px solid var(--line);}
+  .btn-ghost:hover{background:var(--panel-2); transform:translateY(-2px);}
+
+  /* hero visual: thermometer + flame */
+  .hero-visual{
+    position:relative; height:340px; display:flex; align-items:flex-end; justify-content:center;
+    perspective:900px;
+  }
+  .therm{
+    position:relative; width:46px; height:260px;
+    transform: rotateY(-8deg) rotateX(2deg);
+  }
+  .therm-tube{
+    position:absolute; inset:0 auto 34px auto; left:50%; transform:translateX(-50%);
+    width:16px; height:220px; border-radius:10px;
+    background:linear-gradient(90deg, rgba(255,255,255,.06), rgba(255,255,255,.18), rgba(255,255,255,.06)), var(--panel-2);
+    border:1px solid var(--line);
+    overflow:hidden;
+    box-shadow: inset 0 0 20px rgba(0,0,0,.4);
+  }
+  .therm-fill{
+    position:absolute; bottom:0; right:0; left:0;
+    height:55%;
+    background:linear-gradient(0deg, var(--flame-1), var(--flame-2));
+    border-radius:0 0 10px 10px;
+    transition:height 1.2s ease;
+  }
+  .therm-bulb{
+    position:absolute; bottom:0; left:50%; transform:translateX(-50%);
+    width:46px; height:46px; border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, var(--flame-2), var(--flame-1) 60%, #b3491a);
+    box-shadow:0 0 30px rgba(255,138,61,.55), inset -6px -6px 10px rgba(0,0,0,.25);
+    border:1px solid rgba(255,255,255,.15);
+  }
+  .therm-scale{position:absolute; right:-26px; top:0; bottom:34px; display:flex; flex-direction:column; justify-content:space-between; font-size:.65rem; color:var(--muted);}
+  .flame-deco{
+    position:absolute; bottom:-10px; right:8%;
+    width:70px; height:100px; opacity:.9;
+  }
+  .flame-deco .f{
+    position:absolute; bottom:0; left:50%; transform:translateX(-50%);
+    width:46px; height:70px; border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;
+    background:radial-gradient(circle at 50% 70%, var(--flame-2), var(--flame-1) 55%, #b3491a 85%);
+    filter:blur(.3px);
+    animation:flicker 1.6s ease-in-out infinite alternate;
+    box-shadow:0 0 40px rgba(255,138,61,.5);
+  }
+  @keyframes flicker{
+    0%{transform:translateX(-50%) scale(1,1) rotate(-2deg);}
+    50%{transform:translateX(-50%) scale(1.06,.95) rotate(2deg);}
+    100%{transform:translateX(-50%) scale(.96,1.04) rotate(-1deg);}
+  }
+
+  /* ===== SECTION shells ===== */
+  section{padding:64px 0;}
+  .section-head{max-width:64ch; margin-bottom:36px;}
+  .kicker{color:var(--accent-2); font-weight:800; font-size:.8rem; letter-spacing:.04em; margin-bottom:8px; display:block;}
+  .section-head h2{font-size:clamp(1.5rem,3vw,2.1rem); font-weight:900;}
+  .section-head p{color:var(--muted); margin-top:10px;}
+
+  .divider{height:1px; background:linear-gradient(90deg, transparent, var(--line), transparent); margin:0;}
+
+  /* ===== CONCEPT CARDS ===== */
+  .concept-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:18px;}
+  .card{
+    background:linear-gradient(180deg, var(--panel), var(--panel-2));
+    border:1px solid var(--line); border-radius:var(--radius); padding:24px;
+    box-shadow:var(--shadow);
+    transition:.25s transform, .25s border-color;
+  }
+  .card:hover{transform:translateY(-4px); border-color:rgba(78,205,196,.35);}
+  .card .icon{
+    width:48px; height:48px; border-radius:14px; display:flex; align-items:center; justify-content:center;
+    font-size:1.4rem; margin-bottom:14px;
+    background:rgba(78,205,196,.12); border:1px solid rgba(78,205,196,.25);
+  }
+  .card h3{font-size:1.08rem; font-weight:800; margin-bottom:8px;}
+  .card p{color:var(--muted); font-size:.92rem;}
+
+  .goals{
+    display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-top:28px;
+  }
+  .goal-item{
+    display:flex; gap:12px; align-items:flex-start; background:var(--panel);
+    border:1px solid var(--line); border-radius:var(--radius-sm); padding:14px 16px;
+  }
+  .goal-item .num{
+    flex:none; width:30px; height:30px; border-radius:9px; background:rgba(255,123,57,.15);
+    color:var(--accent); font-weight:900; display:flex; align-items:center; justify-content:center; font-size:.85rem;
+    border:1px solid rgba(255,123,57,.3);
+  }
+  .goal-item p{margin:0; font-size:.92rem;}
+
+  /* ===== LAB ===== */
+  .lab-panel{
+    background:radial-gradient(1000px 400px at 50% -20%, rgba(78,205,196,.08), transparent), var(--panel);
+    border:1px solid var(--line); border-radius:28px; padding:34px; box-shadow:var(--shadow);
+  }
+  .steps-track{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:30px;}
+  .step-chip{
+    flex:1; min-width:150px; background:var(--bg-2); border:1px solid var(--line);
+    border-radius:14px; padding:12px 14px; font-size:.8rem; color:var(--muted);
+    position:relative; transition:.3s;
+  }
+  .step-chip b{display:block; color:var(--text); font-size:.86rem; margin-bottom:2px;}
+  .step-chip.active{border-color:var(--accent-2); background:rgba(78,205,196,.08); color:var(--text);}
+  .step-chip.done{border-color:var(--good); }
+  .step-chip.done::after{content:"✓"; position:absolute; top:8px; left:10px; color:var(--good); font-weight:900;}
+
+  .bench{
+    display:grid; grid-template-columns:1fr 1fr; gap:34px; margin-bottom:28px;
+  }
+  .beaker-stage{
+    background:linear-gradient(180deg, rgba(255,255,255,.02), transparent 40%);
+    border:1px solid var(--line); border-radius:22px; padding:22px;
+    display:flex; flex-direction:column; align-items:center; gap:16px;
+    position:relative; overflow:hidden;
+  }
+  .beaker-stage .tag{
+    position:absolute; top:16px; right:16px; font-size:.72rem; font-weight:800;
+    padding:5px 12px; border-radius:999px; letter-spacing:.02em;
+  }
+  .tag.cold{background:rgba(78,205,196,.14); color:var(--accent-2); border:1px solid rgba(78,205,196,.3);}
+  .tag.hot{background:rgba(255,123,57,.14); color:var(--accent); border:1px solid rgba(255,123,57,.3);}
+
+  .rig{
+    height:230px; display:flex; align-items:flex-end; justify-content:center; gap:14px;
+    perspective:800px;
+  }
+  .beaker{
+    position:relative; width:120px; height:150px;
+    transform:rotateX(4deg);
+  }
+  .beaker-glass{
+    position:absolute; inset:0; border-radius:10px 10px 26px 26px;
+    background:linear-gradient(100deg, rgba(255,255,255,.08), rgba(255,255,255,.02) 40%, rgba(255,255,255,.10));
+    border:2px solid rgba(255,255,255,.22);
+    border-top:none;
+    box-shadow: inset 0 0 18px rgba(0,0,0,.35), 0 14px 30px rgba(0,0,0,.4);
+    overflow:hidden;
+  }
+  .beaker-lip{
+    position:absolute; top:-6px; right:-4px; left:-4px; height:10px;
+    border-radius:8px; background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.25);
+  }
+  .liquid{
+    position:absolute; bottom:0; right:0; left:0; height:70%;
+    background:linear-gradient(180deg, var(--water), var(--water-deep));
+    transition:filter 1s ease;
+    overflow:visible;
+  }
+  .liquid::before{
+    content:""; position:absolute; top:-6px; right:0; left:0; height:12px;
+    background:radial-gradient(closest-side, rgba(255,255,255,.55), rgba(255,255,255,0));
+    background-size:22px 12px; background-repeat:repeat-x;
+    opacity:.5;
+  }
+  .grain{
+    position:absolute; width:6px; height:6px; background:var(--salt); border-radius:2px;
+    box-shadow:0 0 3px rgba(255,255,255,.6);
+    transition: transform var(--dur,4s) ease-in, opacity var(--dur,4s) ease-in;
+  }
+  .grain.dissolved{transform:scale(0) translateY(6px); opacity:0;}
+  .bubble{
+    position:absolute; bottom:2px; width:5px; height:5px; border-radius:50%;
+    background:rgba(255,255,255,.55);
+    animation:rise 1.8s linear infinite;
+    opacity:0;
+  }
+  @keyframes rise{
+    0%{transform:translateY(0) scale(.6); opacity:0;}
+    15%{opacity:.8;}
+    100%{transform:translateY(-95px) scale(1); opacity:0;}
+  }
+  .flame-under{
+    position:relative; width:60px; height:0; margin-top:-4px;
+  }
+  .flame-under .f{
+    position:absolute; bottom:0; left:50%; transform:translateX(-50%) scale(0);
+    width:34px; height:46px; border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;
+    background:radial-gradient(circle at 50% 70%, var(--flame-2), var(--flame-1) 55%, #b3491a 85%);
+    transition:transform .4s ease;
+    box-shadow:0 0 30px rgba(255,138,61,.5);
+  }
+  .flame-under.on .f{transform:translateX(-50%) scale(1); animation:flicker 1.4s ease-in-out infinite alternate;}
+  .stand{width:2px; height:60px; background:rgba(255,255,255,.15); margin:0 auto;}
+
+  .mini-therm{
+    position:absolute; top:14px; left:14px; width:12px; height:110px;
+    border-radius:8px; background:var(--bg-2); border:1px solid var(--line); overflow:hidden;
+  }
+  .mini-therm .fill{
+    position:absolute; bottom:0; right:0; left:0; height:30%;
+    background:linear-gradient(0deg,var(--flame-1),var(--flame-2));
+    transition:height 1s ease;
+  }
+
+  .readout{display:flex; gap:18px; font-size:.85rem; color:var(--muted); width:100%; justify-content:center; flex-wrap:wrap;}
+  .readout b{color:var(--text); font-size:1rem;}
+
+  .lab-controls{
+    display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin:26px 0 10px;
+  }
+  .btn-lab{
+    background:var(--bg-2); border:1px solid var(--line); color:var(--text);
+    padding:12px 20px; border-radius:14px; font-weight:700; font-size:.88rem;
+    display:flex; align-items:center; gap:8px; transition:.2s;
+  }
+  .btn-lab:hover:not(:disabled){border-color:var(--accent-2); background:rgba(78,205,196,.08); transform:translateY(-2px);}
+  .btn-lab:disabled{opacity:.4; cursor:not-allowed;}
+  .btn-lab.hot-toggle.active{border-color:var(--accent); background:rgba(255,123,57,.12); color:var(--accent);}
+
+  .results{
+    margin-top:26px; display:grid; grid-template-columns:1fr 1fr; gap:16px;
+  }
+  .result-card{
+    background:var(--bg-2); border:1px solid var(--line); border-radius:16px; padding:18px 20px;
+  }
+  .result-card .rt{font-size:.78rem; color:var(--muted); margin-bottom:6px;}
+  .result-card .rv{font-size:1.5rem; font-weight:900; font-family:var(--font-display);}
+  .conclusion-box{
+    margin-top:22px; padding:20px 22px; border-radius:16px;
+    background:linear-gradient(135deg, rgba(78,205,196,.1), rgba(255,123,57,.08));
+    border:1px solid rgba(78,205,196,.28); font-size:.95rem;
+    display:none;
+  }
+  .conclusion-box.show{display:block; animation:fadeUp .5s ease;}
+  @keyframes fadeUp{from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);}}
+
+  /* ===== QUESTION / THINK ===== */
+  .think-grid{display:grid; grid-template-columns:1fr 1fr; gap:20px;}
+  .q-card{
+    background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:26px;
+  }
+  .q-card .tagline{display:flex; align-items:center; gap:10px; margin-bottom:14px; font-weight:800; color:var(--accent-2); font-size:.95rem;}
+  textarea{
+    width:100%; min-height:110px; background:var(--bg-2); border:1px solid var(--line); border-radius:12px;
+    color:var(--text); padding:14px; font-family:var(--font-body); font-size:.92rem; resize:vertical;
+  }
+  .hint-btn{margin-top:12px;}
+  .hint-text{
+    margin-top:12px; font-size:.88rem; color:var(--muted); background:var(--bg-2);
+    border-right:3px solid var(--accent-2); padding:12px 14px; border-radius:8px; display:none;
+  }
+  .hint-text.show{display:block;}
+  .fikkir{
+    background:linear-gradient(135deg, rgba(255,209,102,.10), rgba(255,123,57,.06));
+    border:1px solid rgba(255,209,102,.3);
+  }
+
+  /* ===== QUIZ ===== */
+  .quiz-grid{display:grid; gap:16px;}
+  .quiz-card{
+    background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:22px;
+  }
+  .quiz-card h4{font-size:1rem; margin-bottom:14px; font-weight:800;}
+  .options{display:grid; grid-template-columns:repeat(2,1fr); gap:10px;}
+  .opt{
+    background:var(--bg-2); border:1px solid var(--line); border-radius:12px; padding:12px 14px;
+    text-align:right; font-size:.88rem; color:var(--text); transition:.15s;
+  }
+  .opt:hover:not(:disabled){border-color:var(--accent-2);}
+  .opt.correct{border-color:var(--good); background:rgba(111,207,151,.12); color:var(--good);}
+  .opt.wrong{border-color:var(--bad); background:rgba(239,106,106,.12); color:var(--bad);}
+  .quiz-feedback{margin-top:10px; font-size:.85rem; color:var(--muted); min-height:1.2em;}
+  .quiz-score{
+    text-align:center; font-family:var(--font-display); font-weight:900; font-size:1.1rem;
+    color:var(--accent-2); margin-top:6px;
+  }
+
+  footer{padding:40px 0 70px; text-align:center; color:var(--muted); font-size:.82rem;}
+  footer .page-badge{
+    display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px;
+    border-radius:50%; background:var(--panel); border:1px solid var(--line); margin-bottom:14px; font-weight:800; color:var(--text);
+  }
+
+  @media (max-width: 900px){
+    .hero .wrap{grid-template-columns:1fr;}
+    .hero-visual{height:220px; order:-1;}
+    .concept-grid{grid-template-columns:1fr;}
+    .goals{grid-template-columns:1fr;}
+    .bench{grid-template-columns:1fr;}
+    .think-grid{grid-template-columns:1fr;}
+    .options{grid-template-columns:1fr;}
+    .results{grid-template-columns:1fr;}
+    .nav-links{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <div class="brand"><span class="brand-badge">🧪</span> العلوم والحياة · الصف السابع</div>
+    <div class="nav-links">
+      <a href="#concept">المفهوم</a>
+      <a href="#lab">المختبر الافتراضي</a>
+      <a href="#think">فكّر وناقش</a>
+      <a href="#quiz">اختبر نفسك</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">نشاط (٧) · وحدة المحاليل في حياتنا</span>
+      <h1>الذوبان والحرارة</h1>
+      <p class="lead">
+        هل يذوب الملح في الماء الساخن أسرع من الماء البارد؟ في هذا الدرس ستكتشف العلاقة بين درجة الحرارة
+        وسرعة الذوبان من خلال شرح مبسّط، ثم تنفّذ التجربة بنفسك داخل مختبر افتراضي ثلاثي الأبعاد وتسجّل استنتاجاتك.
+      </p>
+      <div class="hero-actions">
+        <button class="btn btn-primary" onclick="document.getElementById('lab').scrollIntoView({behavior:'smooth'})">
+          🔥 ابدأ التجربة الافتراضية
+        </button>
+        <button class="btn btn-ghost" onclick="document.getElementById('concept').scrollIntoView({behavior:'smooth'})">
+          📖 اقرأ الشرح أولاً
+        </button>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="flame-deco"><div class="f"></div></div>
+      <div class="therm">
+        <div class="therm-scale"><span>٥٠°</span><span>٣٥°</span><span>٢٠°</span></div>
+        <div class="therm-tube"><div class="therm-fill" id="heroThermFill"></div></div>
+        <div class="therm-bulb"></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="divider"></div>
+
+<!-- ===== CONCEPT ===== -->
+<section id="concept">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker">المفهوم العلمي</span>
+      <h2>لماذا يذوب الملح أسرع في الماء الساخن؟</h2>
+      <p>
+        الذوبان عملية تتشتّت فيها جسيمات المادة المذابة (كالملح) بين جسيمات المادة المذيبة (كالماء) لتكوين محلول متجانس.
+        وسرعة هذه العملية لا تعتمد على نوع المادة فقط، بل تتأثر بعدة عوامل يمكنك دراستها عملياً.
+      </p>
+    </div>
+
+    <div class="concept-grid">
+      <div class="card">
+        <div class="icon">🌡️</div>
+        <h3>درجة الحرارة</h3>
+        <p>كلما ارتفعت درجة حرارة المذيب، تحركت جسيماته بسرعة أكبر وطاقة أعلى، فتصطدم بجسيمات المذاب بشكل أكثر تكراراً وتفكّكها أسرع. هذا هو المتغير الذي ستدرسه في التجربة.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🥄</div>
+        <h3>التحريك</h3>
+        <p>يُبعد التحريك الجسيمات المذابة المتجمّعة قرب سطح المذاب عن الطبقة المُشبَعة المحيطة به، مما يسمح بتلامس مستمر مع جزيئات ماء جديدة.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🔬</div>
+        <h3>حجم الحبيبات</h3>
+        <p>تقليل حجم حبيبات المادة المذابة (كطحن الملح) يزيد مساحة سطحها الملامسة للمذيب، فتذوب أسرع من الحبيبات الكبيرة بالكتلة نفسها.</p>
+      </div>
+    </div>
+
+    <div class="goals">
+      <div class="goal-item"><span class="num">١</span><p>يفسّر أثر ارتفاع درجة الحرارة في سرعة ذوبان المواد الصلبة في الماء.</p></div>
+      <div class="goal-item"><span class="num">٢</span><p>ينفّذ تجربة عملية مُتحكَّم فيها لمقارنة سرعة الذوبان في كأسين مختلفين بدرجة الحرارة.</p></div>
+      <div class="goal-item"><span class="num">٣</span><p>يسجّل الملاحظات والبيانات ويقارن بينها ليتوصّل إلى استنتاج علمي.</p></div>
+      <div class="goal-item"><span class="num">٤</span><p>يتنبّأ بنتائج تغيير متغيرات التجربة، مثل استبدال المذاب بمادة أخرى كالنشا.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== LAB ===== -->
+<section id="lab">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker">نشاط (٧) — تجربة عملية</span>
+      <h2>المختبر الافتراضي: الذوبان والحرارة</h2>
+      <p>
+        نفّذ التجربة كما في كتاب العلوم والحياة: كأسان بهما ٥٠ مل ماء لكل منهما، وتُسخَّن الكأس الثانية تدريجياً.
+        الفرق أنّك هنا المتحكّم بالتجربة: يمكنك إضافة الملح في أي لحظة أثناء التسخين — عند ٣٠° أو ٤٠° أو ٥٠° س أو أي درجة تختارها —
+        وستُضاف ملعقة ملح لكل كأس في اللحظة نفسها لتقارن سرعة الذوبان بينهما.
+        <em>(زمن الذوبان داخل المحاكاة مُسرَّع لأغراض توضيحية.)</em>
+      </p>
+    </div>
+
+    <div class="lab-panel">
+
+      <div class="steps-track" id="stepsTrack">
+        <div class="step-chip" data-step="1"><b>١. تحضير الكأسين</b>٥٠ مل ماء في كل كأس، بدرجة حرارة الغرفة.</div>
+        <div class="step-chip" data-step="2"><b>٢. قياس الحرارة الابتدائية</b>تحقّق أن الكأسين متساويان في الحرارة.</div>
+        <div class="step-chip" data-step="3"><b>٣. تسخين الكأس الثانية</b>أشعل اللهب، وراقب الحرارة وهي ترتفع.</div>
+        <div class="step-chip" data-step="4"><b>٤. إضافة الملح</b>أضف الملح لحظة ما تشاء أثناء التسخين — عند أي درجة حرارة تريد اختبارها.</div>
+        <div class="step-chip" data-step="5"><b>٥. الملاحظة والنتائج</b>سجّل زمن الذوبان في كل كأس وقارن.</div>
+      </div>
+
+      <div class="bench">
+        <!-- COLD BEAKER -->
+        <div class="beaker-stage">
+          <span class="tag cold">الكأس الأولى — بلا تسخين</span>
+          <div class="rig">
+            <div class="beaker" id="coldBeaker">
+              <div class="beaker-lip"></div>
+              <div class="beaker-glass">
+                <div class="liquid" id="coldLiquid"></div>
+              </div>
+              <div class="mini-therm"><div class="fill" id="coldThermFill"></div></div>
+            </div>
+          </div>
+          <div class="stand"></div>
+          <div class="readout">
+            <span>الحرارة: <b id="coldTempLabel">٢٥°س</b></span>
+            <span>الحالة: <b id="coldStatus">في انتظار الملح</b></span>
+          </div>
+        </div>
+
+        <!-- HOT BEAKER -->
+        <div class="beaker-stage">
+          <span class="tag hot">الكأس الثانية — مُسخَّنة</span>
+          <div class="rig">
+            <div class="beaker" id="hotBeaker">
+              <div class="beaker-lip"></div>
+              <div class="beaker-glass">
+                <div class="liquid" id="hotLiquid"></div>
+              </div>
+              <div class="mini-therm"><div class="fill" id="hotThermFill"></div></div>
+            </div>
+          </div>
+          <div class="flame-under" id="flameUnder"><div class="f"></div></div>
+          <div class="stand"></div>
+          <div class="readout">
+            <span>الحرارة: <b id="hotTempLabel">٢٥°س</b></span>
+            <span>الحالة: <b id="hotStatus">في انتظار التسخين</b></span>
+          </div>
+        </div>
+      </div>
+
+      <p style="text-align:center; color:var(--muted); font-size:.85rem; margin:-6px 0 18px;">
+        💡 يمكنك الضغط على "أضف الملح" في أي لحظة أثناء التسخين — سواء عند ٣٠° أو ٤٠° أو ٥٠° س — لتجرّب أثر أي درجة حرارة تريدها.
+      </p>
+      <div class="lab-controls">
+        <button class="btn-lab hot-toggle" id="heatBtn" onclick="toggleHeat()">🔥 أشعل اللهب تحت الكأس الثانية</button>
+        <button class="btn-lab" id="saltBtn" onclick="addSalt()">🧂 أضف ملعقة ملح لكل كأس الآن</button>
+        <button class="btn-lab" id="resetBtn" onclick="resetLab()">↺ إعادة ضبط التجربة</button>
+      </div>
+
+      <div class="results" id="resultsBox" style="display:none;">
+        <div class="result-card">
+          <div class="rt">زمن ذوبان الملح — الكأس الأولى (باردة)</div>
+          <div class="rv" id="coldTimeVal">—</div>
+        </div>
+        <div class="result-card">
+          <div class="rt">زمن ذوبان الملح — الكأس الثانية (ساخنة)</div>
+          <div class="rv" id="hotTimeVal">—</div>
+        </div>
+      </div>
+
+      <div class="conclusion-box" id="conclusionBox">
+        <strong>الاستنتاج:</strong> <span id="conclusionText"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== THINK / DISCUSS ===== -->
+<section id="think">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker">سؤال وتفكير</span>
+      <h2>فكّر وناقش</h2>
+    </div>
+
+    <div class="think-grid">
+      <div class="q-card">
+        <div class="tagline">❓ سؤال</div>
+        <p>ماذا تتوقّع أن يحدث لو تمّ استبدال الملح بالنشا في هذا النشاط؟ اكتب توقّعك بلغتك الخاصة.</p>
+        <textarea placeholder="اكتب توقّعك هنا... (مثال: هل يذوب النشا في الماء البارد؟ وفي الماء الساخن؟)"></textarea>
+        <button class="btn btn-ghost hint-btn" onclick="document.getElementById('starchHint').classList.toggle('show')">💡 أظهر تلميحاً</button>
+        <div class="hint-text" id="starchHint">
+          النشا مادة تختلف عن الملح في تركيبها، فهو لا يذوب ذوباناً حقيقياً في الماء البارد بل يبقى معلّقاً (عالقاً) فيه على شكل جسيمات دقيقة.
+          أما في الماء الساخن جداً فقد يتكوّن معه محلول غرويّ لزج (كما في عمل الجيلاتين النشوي)، وهذا يختلف عن سلوك الملح الذي يذوب ذوباناً حقيقياً في الحالتين، بسرعة أكبر في الماء الساخن.
+        </div>
+      </div>
+
+      <div class="q-card fikkir">
+        <div class="tagline">💡 فكّر</div>
+        <p>يتغيّر مذاق المشروبات الغازية بارتفاع درجة حرارتها. لماذا برأيك؟</p>
+        <button class="btn btn-ghost hint-btn" onclick="document.getElementById('fizzAnswer').classList.toggle('show')">👁️ أظهر الإجابة</button>
+        <div class="hint-text" id="fizzAnswer">
+          السبب أن ذوبانية الغازات (كثاني أكسيد الكربون) في الماء تقلّ كلما ارتفعت درجة الحرارة — على عكس معظم المواد الصلبة.
+          لهذا يفقد المشروب الغازي فورانه ونكهته المنعشة عند تركه دافئاً، بينما يذوب الملح (مادة صلبة) بسرعة أكبر كلما سخّنّا الماء.
+          هذه مقارنة جميلة توضّح أن أثر الحرارة في الذوبان يختلف باختلاف حالة المادة المذابة.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== QUIZ ===== -->
+<section id="quiz">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker">تحقّق من فهمك</span>
+      <h2>اختبر نفسك</h2>
+      <p>أجب عن الأسئلة التالية بعد تنفيذ التجربة الافتراضية للتأكد من فهمك للاستنتاج الرئيسي.</p>
+    </div>
+
+    <div class="quiz-grid" id="quizGrid"></div>
+    <div class="quiz-score" id="quizScore"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="page-badge">٣٧</div>
+  <div>كتاب العلوم والحياة للصف السابع — فلسطين · نشاط (٧): الذوبان والحرارة</div>
+  <div style="margin-top:6px; opacity:.7;">صفحة درس تفاعلية مع مختبر افتراضي — تعمل على الهاتف والحاسوب</div>
+</footer>
+
+<script>
+/* ===================== Hero thermometer ambient animation ===================== */
+(function heroTherm(){
+  const el = document.getElementById('heroThermFill');
+  let up = true, val = 45;
+  setInterval(()=>{
+    val += up ? 1.2 : -1.2;
+    if(val>=62){up=false;}
+    if(val<=40){up=true;}
+    el.style.height = val + '%';
+  }, 900);
+})();
+
+/* ===================== Lab state ===================== */
+const state = {
+  coldTemp: 25,
+  hotTemp: 25,
+  heating: false,
+  saltAdded: false,
+  coldDone: false,
+  hotDone: false,
+  heatTimer: null,
+  coldStart: 0,
+  hotStart: 0
+};
+
+const els = {
+  coldThermFill: document.getElementById('coldThermFill'),
+  hotThermFill: document.getElementById('hotThermFill'),
+  coldTempLabel: document.getElementById('coldTempLabel'),
+  hotTempLabel: document.getElementById('hotTempLabel'),
+  coldStatus: document.getElementById('coldStatus'),
+  hotStatus: document.getElementById('hotStatus'),
+  heatBtn: document.getElementById('heatBtn'),
+  saltBtn: document.getElementById('saltBtn'),
+  flameUnder: document.getElementById('flameUnder'),
+  coldLiquid: document.getElementById('coldLiquid'),
+  hotLiquid: document.getElementById('hotLiquid'),
+  resultsBox: document.getElementById('resultsBox'),
+  coldTimeVal: document.getElementById('coldTimeVal'),
+  hotTimeVal: document.getElementById('hotTimeVal'),
+  conclusionBox: document.getElementById('conclusionBox'),
+  conclusionText: document.getElementById('conclusionText'),
+};
+
+function tempToHeight(t){
+  // maps 20-60C to 10%-95%
+  const pct = ((t-20)/(60-20))*85 + 10;
+  return Math.max(8, Math.min(96, pct));
+}
+
+function renderTemps(){
+  els.coldThermFill.style.height = tempToHeight(state.coldTemp) + '%';
+  els.hotThermFill.style.height = tempToHeight(state.hotTemp) + '%';
+  els.coldTempLabel.textContent = Math.round(state.coldTemp) + '°س';
+  els.hotTempLabel.textContent = Math.round(state.hotTemp) + '°س';
+}
+renderTemps();
+
+function setStep(n, doneUpTo){
+  document.querySelectorAll('.step-chip').forEach(chip=>{
+    const s = +chip.dataset.step;
+    chip.classList.toggle('active', s===n);
+    chip.classList.toggle('done', s<n || (doneUpTo && s<=doneUpTo));
+  });
+}
+setStep(1);
+setTimeout(()=>setStep(2), 600);
+setTimeout(()=>setStep(3), 1200);
+
+const MAX_TEMP = 90; // upper safety limit for the simulated burner
+
+function toggleHeat(){
+  if(state.saltAdded) return;
+  state.heating = !state.heating;
+  els.heatBtn.classList.toggle('active', state.heating);
+  els.heatBtn.textContent = state.heating ? '🔥 إيقاف اللهب' : '🔥 أشعل اللهب تحت الكأس الثانية';
+  els.flameUnder.classList.toggle('on', state.heating);
+  els.hotStatus.textContent = state.heating ? 'يتم التسخين... اضغط "أضف الملح" عند الدرجة التي تريدها' : `التسخين متوقف عند ${Math.round(state.hotTemp)}° س`;
+
+  if(state.heating){
+    setStep(4);
+    if(!state.heatTimer){
+      state.heatTimer = setInterval(()=>{
+        if(state.hotTemp < MAX_TEMP){
+          state.hotTemp = Math.min(MAX_TEMP, state.hotTemp + 1.2);
+          renderTemps();
+        } else {
+          els.hotStatus.textContent = `وصلت إلى الحد الأقصى (${MAX_TEMP}° س)`;
+          clearInterval(state.heatTimer);
+          state.heatTimer = null;
+        }
+      }, 300);
+    }
+  } else if(state.heatTimer){
+    clearInterval(state.heatTimer);
+    state.heatTimer = null;
+  }
+}
+
+function spawnGrains(liquidEl, count){
+  const grains = [];
+  for(let i=0;i<count;i++){
+    const g = document.createElement('div');
+    g.className = 'grain';
+    g.style.right = (10 + Math.random()*70) + '%';
+    g.style.bottom = (6 + Math.random()*18) + 'px';
+    liquidEl.appendChild(g);
+    grains.push(g);
+  }
+  return grains;
+}
+
+function spawnBubbles(liquidEl, count){
+  for(let i=0;i<count;i++){
+    const b = document.createElement('div');
+    b.className = 'bubble';
+    b.style.right = (10 + Math.random()*75) + '%';
+    b.style.animationDelay = (Math.random()*1.6) + 's';
+    liquidEl.appendChild(b);
+  }
+}
+
+function addSalt(){
+  if(state.saltAdded) return;
+  state.saltAdded = true;
+
+  // freeze the burner exactly at the temperature reached so far — this lets
+  // the student test dissolution at ANY point during heating, not just at 50°C
+  if(state.heatTimer){ clearInterval(state.heatTimer); state.heatTimer = null; }
+  state.heating = false;
+  els.heatBtn.classList.remove('active');
+  els.flameUnder.classList.toggle('on', state.hotTemp > 26);
+  els.heatBtn.disabled = true;
+  els.saltBtn.disabled = true;
+  setStep(5, 4);
+
+  const testedTemp = Math.round(state.hotTemp);
+
+  // base dissolve duration (ms) at 25C, faster as temp rises
+  const baseline = 25;
+  const coldDuration = 8000; // room temp reference
+  const factor = 1 + Math.max(0, (state.hotTemp - baseline)) * 0.075;
+  const hotDuration = Math.max(1200, coldDuration / factor);
+
+  els.coldLiquid.style.setProperty('--dur', coldDuration + 'ms');
+  els.hotLiquid.style.setProperty('--dur', hotDuration + 'ms');
+
+  const coldGrains = spawnGrains(els.coldLiquid, 7);
+  const hotGrains = spawnGrains(els.hotLiquid, 7);
+  if(state.hotTemp > 35){ spawnBubbles(els.hotLiquid, Math.min(9, Math.round((state.hotTemp-25)/6))); }
+
+  els.coldStatus.textContent = 'الملح يذوب...';
+  els.hotStatus.textContent = `أُضيف الملح عند ${testedTemp}° س — يذوب الآن...`;
+
+  state.coldStart = performance.now();
+  state.hotStart = performance.now();
+
+  requestAnimationFrame(()=>{
+    coldGrains.forEach((g,i)=> setTimeout(()=> g.classList.add('dissolved'), i*80));
+    hotGrains.forEach((g,i)=> setTimeout(()=> g.classList.add('dissolved'), i*40));
+  });
+
+  setTimeout(()=> finishBeaker('cold', coldDuration), coldDuration + 150);
+  setTimeout(()=> finishBeaker('hot', hotDuration), hotDuration + 150);
+}
+
+function finishBeaker(which, duration){
+  const seconds = (duration/1000).toFixed(1);
+  const testedTemp = Math.round(state.hotTemp);
+  if(which==='cold'){
+    state.coldDone = true;
+    els.coldStatus.textContent = 'ذاب الملح بالكامل ✅';
+    els.coldTimeVal.textContent = seconds + ' ثانية';
+  } else {
+    state.hotDone = true;
+    els.hotStatus.textContent = `ذاب الملح بالكامل عند ${testedTemp}° س ✅`;
+    els.hotTimeVal.textContent = seconds + ' ثانية';
+  }
+  els.resultsBox.style.display = 'grid';
+  if(state.coldDone && state.hotDone){
+    showConclusion(testedTemp);
+  }
+}
+
+function showConclusion(testedTemp){
+  els.conclusionBox.classList.add('show');
+  if(testedTemp <= 27){
+    els.conclusionText.textContent =
+      `اخترت اختبار الملح دون تسخين تقريباً (${testedTemp}° س)، لذا كانت سرعة الذوبان في الكأسين متقاربة. ` +
+      'جرّب الآن تسخين الكأس الثانية إلى درجة أعلى قبل إضافة الملح لترى الفرق بوضوح.';
+  } else {
+    els.conclusionText.textContent =
+      `ذاب الملح في الكأس الثانية (عند ${testedTemp}° س) أسرع من الكأس الأولى (بدرجة حرارة الغرفة تقريباً ٢٥° س). ` +
+      'إذن: كلما ارتفعت درجة حرارة المذيب، زادت سرعة حركة جسيماته، فازداد عدد تصادماتها مع جسيمات المذاب، وبالتالي زادت سرعة الذوبان — وكلما اخترت درجة أعلى، كان الفرق أوضح.';
+  }
+}
+
+function resetLab(){
+  clearInterval(state.heatTimer);
+  Object.assign(state, {
+    coldTemp:25, hotTemp:25, heating:false, saltAdded:false,
+    coldDone:false, hotDone:false, heatTimer:null
+  });
+  renderTemps();
+  els.heatBtn.disabled = false;
+  els.heatBtn.classList.remove('active');
+  els.heatBtn.textContent = '🔥 أشعل اللهب تحت الكأس الثانية';
+  els.flameUnder.classList.remove('on');
+  els.saltBtn.disabled = false;
+  els.coldStatus.textContent = 'في انتظار الملح';
+  els.hotStatus.textContent = 'في انتظار التسخين — أضف الملح متى شئت';
+  els.coldLiquid.innerHTML = '';
+  els.hotLiquid.innerHTML = '';
+  els.resultsBox.style.display = 'none';
+  els.coldTimeVal.textContent = '—';
+  els.hotTimeVal.textContent = '—';
+  els.conclusionBox.classList.remove('show');
+  setStep(1); setTimeout(()=>setStep(2),400); setTimeout(()=>setStep(3),800);
+}
+
+/* ===================== Quiz ===================== */
+const quiz = [
+  {
+    q: '1. في تجربة اليوم، في أيّ كأس ذاب الملح أسرع؟',
+    options: ['الكأس الأولى (باردة)', 'الكأس الثانية (المُسخَّنة)', 'ذابا بالسرعة نفسها', 'لم يذب الملح في أي منهما'],
+    correct: 1,
+    feedback: 'صحيح: ارتفاع درجة الحرارة يزيد من سرعة حركة الجسيمات فيسرّع الذوبان.'
+  },
+  {
+    q: '2. ما تفسير تأثير درجة الحرارة في سرعة الذوبان؟',
+    options: [
+      'الحرارة تقلّل عدد جسيمات الماء',
+      'الحرارة تزيد طاقة حركة الجسيمات وتصادماتها',
+      'الحرارة تغيّر لون الملح',
+      'لا علاقة بين الحرارة والذوبان'
+    ],
+    correct: 1,
+    feedback: 'صحيح: زيادة الطاقة الحركية للجسيمات تزيد عدد التصادمات بين المذاب والمذيب فيذوب أسرع.'
+  },
+  {
+    q: '3. ماذا يحدث لذوبانية الغازات (كغاز المشروبات الغازية) عند رفع الحرارة؟',
+    options: ['تزداد مثل المواد الصلبة', 'تقلّ، فيفقد المشروب فورانه', 'تبقى ثابتة تماماً', 'يتحول الغاز إلى سائل'],
+    correct: 1,
+    feedback: 'صحيح: على عكس المواد الصلبة، تقلّ ذوبانية الغازات في الماء كلما ارتفعت الحرارة.'
+  },
+  {
+    q: '4. لو استُبدل الملح بالنشا في نفس التجربة، ماذا نتوقّع في الماء البارد؟',
+    options: [
+      'يذوب النشا فوراً كالملح تماماً',
+      'يبقى النشا معلّقاً (عالقاً) ولا يذوب ذوباناً حقيقياً',
+      'يتحول الماء إلى بخار',
+      'يترسّب الملح بدلاً من النشا'
+    ],
+    correct: 1,
+    feedback: 'صحيح: النشا لا يذوب ذوباناً حقيقياً في الماء البارد بل يبقى عالقاً على هيئة جسيمات دقيقة.'
+  }
+];
+
+let score = 0, answered = 0;
+const quizGrid = document.getElementById('quizGrid');
+
+quiz.forEach((item, qi)=>{
+  const card = document.createElement('div');
+  card.className = 'quiz-card';
+  card.innerHTML = `
+    <h4>${item.q}</h4>
+    <div class="options">
+      ${item.options.map((opt,oi)=>`<button class="opt" data-q="${qi}" data-o="${oi}">${opt}</button>`).join('')}
+    </div>
+    <div class="quiz-feedback" id="fb-${qi}"></div>
+  `;
+  quizGrid.appendChild(card);
+});
+
+quizGrid.addEventListener('click', (e)=>{
+  const btn = e.target.closest('.opt');
+  if(!btn) return;
+  const qi = +btn.dataset.q;
+  const oi = +btn.dataset.o;
+  const card = btn.closest('.quiz-card');
+  if(card.dataset.locked) return;
+  card.dataset.locked = '1';
+
+  const buttons = card.querySelectorAll('.opt');
+  buttons.forEach(b=> b.disabled = true);
+
+  const correct = quiz[qi].correct;
+  buttons[correct].classList.add('correct');
+  if(oi !== correct){ btn.classList.add('wrong'); }
+  else { score++; }
+  answered++;
+
+  document.getElementById('fb-'+qi).textContent = quiz[qi].feedback;
+  document.getElementById('quizScore').textContent =
+    answered === quiz.length ? `نتيجتك: ${score} من ${quiz.length} 🎉` : `أجبت عن ${answered} من ${quiz.length} أسئلة`;
+});
+</script>
+
+</body>
+</html>

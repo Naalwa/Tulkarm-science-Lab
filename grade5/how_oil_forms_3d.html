@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+<title>كيف يتكوّن النفط؟ | مختبر افتراضي ثلاثي الأبعاد – علوم وحياة، الصف الخامس</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* ===== لوحة الألوان: مقتبسة من طبقات الأرض ومنطقة النفط ===== */
+  --paper:#F3ECD9;
+  --paper-dark:#E7DBBB;
+  --card:#FBF7EC;
+  --ink:#241A10;
+  --ink-soft:#5B4C3A;
+  --sand:#DFC58C;
+  --sand-dk:#C1A163;
+  --gray:#8C8D93;
+  --gray-dk:#6B6C72;
+  --terra:#B5674A;
+  --terra-dk:#8E4C35;
+  --violet:#6C4F63;
+  --violet-dk:#4E3849;
+  --water:#3F7C8C;
+  --water-lt:#8FC6D4;
+  --gas:#A9E0D8;
+  --gas-dk:#5FAE9E;
+  --oil:#1C130B;
+  --oil-glow:#C97A3D;
+  --accent:#C97A3D;
+  --accent-lt:#E5A366;
+  --deep:#0C222B;
+  --deep2:#0A1216;
+  --good:#4C7A54;
+  --warn:#A5482F;
+  --font-d:'Cairo', sans-serif;
+  --font-b:'Tajawal', sans-serif;
+  --radius:18px;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto;} *{animation-duration:.001ms !important; transition-duration:.001ms !important;}}
+body{
+  margin:0;
+  font-family:var(--font-b);
+  background:var(--paper);
+  color:var(--ink);
+  line-height:1.85;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{font-family:var(--font-d); margin:0; color:var(--ink);}
+p{margin:0;}
+a{color:inherit;}
+button{font-family:var(--font-b); cursor:pointer;}
+:focus-visible{outline:3px solid var(--accent); outline-offset:3px;}
+img{max-width:100%; display:block;}
+
+.wrap{max-width:1100px; margin:0 auto; padding:0 22px;}
+
+/* ===== شريط التنقل ===== */
+.topnav{
+  position:sticky; top:0; z-index:50;
+  background:rgba(243,236,217,.92); backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--paper-dark);
+}
+.topnav .wrap{display:flex; align-items:center; justify-content:space-between; height:60px; gap:14px;}
+.brand{display:flex; align-items:center; gap:10px; font-family:var(--font-d); font-weight:800; font-size:1.05rem;}
+.brand .drop{width:14px; height:18px; border-radius:50% 50% 50% 0; background:linear-gradient(160deg,var(--oil-glow),var(--oil)); transform:rotate(45deg);}
+.navlinks{display:flex; gap:4px; font-size:.92rem;}
+.navlinks a{
+  padding:8px 12px; border-radius:999px; text-decoration:none; color:var(--ink-soft); font-weight:700;
+  transition:background .2s, color .2s;
+  white-space:nowrap;
+}
+.navlinks a:hover, .navlinks a.active{background:var(--ink); color:var(--paper);}
+@media(max-width:760px){.navlinks{display:none;}}
+
+/* ===== البطل ===== */
+.hero{
+  position:relative; overflow:hidden;
+  background:linear-gradient(180deg,#123240 0%, #0C222B 45%, #0A1216 100%);
+  color:#F3ECD9;
+  padding:64px 0 40px;
+}
+.hero::before{
+  content:''; position:absolute; inset:0;
+  background:
+    radial-gradient(ellipse 60% 40% at 20% 0%, rgba(201,122,61,.18), transparent 60%),
+    radial-gradient(ellipse 50% 50% at 90% 100%, rgba(95,174,158,.15), transparent 60%);
+  pointer-events:none;
+}
+.hero-grid{display:grid; grid-template-columns:1.1fr .9fr; gap:36px; align-items:center; position:relative;}
+@media(max-width:860px){.hero-grid{grid-template-columns:1fr; text-align:center;}}
+.eyebrow{
+  display:inline-flex; align-items:center; gap:8px; font-weight:800; font-size:.82rem;
+  color:var(--accent-lt); letter-spacing:.5px; background:rgba(201,122,61,.12);
+  border:1px solid rgba(201,122,61,.35); padding:6px 14px; border-radius:999px; margin-bottom:18px;
+}
+.hero h1{font-size:clamp(2rem, 4.6vw, 3.1rem); line-height:1.25; font-weight:900;}
+.hero h1 span{color:var(--accent-lt);}
+.hero p.lead{margin-top:16px; font-size:1.08rem; color:#D8CFB8; max-width:52ch;}
+@media(max-width:860px){.hero p.lead{margin-inline:auto;}}
+.hero-ctas{margin-top:26px; display:flex; gap:12px; flex-wrap:wrap;}
+@media(max-width:860px){.hero-ctas{justify-content:center;}}
+.btn{
+  border:none; border-radius:999px; padding:13px 24px; font-weight:800; font-size:.96rem;
+  display:inline-flex; align-items:center; gap:8px; transition:transform .18s, box-shadow .18s, background .18s;
+}
+.btn-primary{background:linear-gradient(135deg,var(--accent-lt),var(--accent)); color:#241207; box-shadow:0 10px 24px -8px rgba(201,122,61,.6);}
+.btn-primary:hover{transform:translateY(-2px);}
+.btn-ghost{background:transparent; color:#F3ECD9; border:1.5px solid rgba(243,236,217,.35);}
+.btn-ghost:hover{background:rgba(243,236,217,.1);}
+.btn-dark{background:var(--ink); color:var(--paper);}
+.btn-dark:hover{transform:translateY(-2px);}
+.btn:disabled{opacity:.4; cursor:not-allowed; transform:none !important;}
+
+.hero-scene-wrap{display:flex; justify-content:center;}
+
+/* ===== أهداف الدرس ===== */
+.section{padding:64px 0;}
+.section-head{max-width:640px; margin-bottom:34px;}
+.section-head .kicker{
+  font-weight:800; font-size:.8rem; color:var(--accent); letter-spacing:.6px;
+  display:flex; align-items:center; gap:8px; margin-bottom:10px;
+}
+.section-head .kicker::before{content:''; width:22px; height:3px; background:var(--accent); border-radius:2px;}
+.section-head h2{font-size:clamp(1.5rem,3vw,2.1rem); font-weight:800;}
+.section-head p{margin-top:10px; color:var(--ink-soft); font-size:1.02rem;}
+
+.obj-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px;}
+@media(max-width:760px){.obj-grid{grid-template-columns:1fr;}}
+.obj-card{
+  background:var(--card); border-radius:var(--radius); padding:22px;
+  border:1px solid var(--paper-dark); box-shadow:0 6px 16px -12px rgba(0,0,0,.25);
+}
+.obj-card .num{
+  width:36px; height:36px; border-radius:10px; background:var(--oil); color:var(--accent-lt);
+  display:flex; align-items:center; justify-content:center; font-family:var(--font-d); font-weight:800; margin-bottom:14px;
+}
+.obj-card h3{font-size:1.05rem; margin-bottom:8px;}
+.obj-card p{color:var(--ink-soft); font-size:.94rem;}
+
+/* ===== بطاقات مراحل الشرح ===== */
+.stage-cards{display:flex; flex-direction:column; gap:18px;}
+.stage-card{
+  display:grid; grid-template-columns:220px 1fr; gap:26px; align-items:center;
+  background:var(--card); border:1px solid var(--paper-dark); border-radius:var(--radius);
+  padding:22px; box-shadow:0 6px 18px -14px rgba(0,0,0,.3);
+}
+@media(max-width:700px){.stage-card{grid-template-columns:1fr; text-align:center;}}
+.stage-card .mini-scene{display:flex; justify-content:center;}
+.stage-card .tag{
+  display:inline-block; font-family:var(--font-d); font-weight:800; font-size:.78rem;
+  color:var(--terra-dk); background:rgba(181,103,74,.12); padding:4px 12px; border-radius:999px; margin-bottom:10px;
+}
+.stage-card h3{font-size:1.2rem; margin-bottom:8px;}
+.stage-card p{color:var(--ink-soft);}
+
+/* ===== مصيدة النفط توضيح مقطعي ===== */
+.trap-explain{
+  display:grid; grid-template-columns:1fr 1fr; gap:34px; align-items:center;
+  background:var(--card); border:1px solid var(--paper-dark); border-radius:24px; padding:30px;
+}
+@media(max-width:800px){.trap-explain{grid-template-columns:1fr;}}
+.trap-diagram{
+  border-radius:16px; overflow:hidden; border:2px solid var(--ink);
+  box-shadow:0 12px 26px -14px rgba(0,0,0,.35);
+}
+.trap-layer{position:relative; display:flex; align-items:center; justify-content:center; font-weight:800; font-family:var(--font-d); font-size:.86rem;}
+.trap-cap{height:52px; background:repeating-linear-gradient(135deg,var(--violet),var(--violet) 10px,var(--violet-dk) 10px,var(--violet-dk) 20px); color:#fff;}
+.trap-gas{height:46px; background:linear-gradient(180deg,var(--gas),var(--gas-dk)); color:#0A2A24;}
+.trap-oil{height:64px; background:linear-gradient(180deg,var(--oil-glow),var(--oil)); color:#F3ECD9;}
+.trap-water{height:46px; background:linear-gradient(180deg,var(--water-lt),var(--water)); color:#06222A;}
+.trap-base{height:52px; background:repeating-linear-gradient(135deg,var(--violet),var(--violet) 10px,var(--violet-dk) 10px,var(--violet-dk) 20px); color:#fff;}
+.trap-note{list-style:none; padding:0; margin:16px 0 0; display:flex; flex-direction:column; gap:10px;}
+.trap-note li{display:flex; gap:10px; align-items:flex-start; color:var(--ink-soft); font-size:.94rem;}
+.trap-note li::before{content:'●'; color:var(--accent); font-size:.6rem; margin-top:8px;}
+
+/* ===== المختبر الافتراضي ===== */
+.lab{
+  background:linear-gradient(180deg,#12242B,#0A1216);
+  color:#F3ECD9; border-radius:28px; padding:38px 22px 44px; position:relative; overflow:hidden;
+}
+.lab::before{content:''; position:absolute; inset:0; background:radial-gradient(circle at 85% 10%, rgba(201,122,61,.15), transparent 55%); pointer-events:none;}
+.lab-inner{position:relative;}
+.lab-head{max-width:680px; margin-bottom:8px;}
+.lab-head .kicker{color:var(--accent-lt);}
+.lab-head .kicker::before{background:var(--accent-lt);}
+.lab-head h2{color:#F3ECD9;}
+.lab-head p{color:#C9BFA6;}
+
+.lab-grid{display:grid; grid-template-columns:1.05fr .95fr; gap:30px; margin-top:30px; align-items:start;}
+@media(max-width:900px){.lab-grid{grid-template-columns:1fr;}}
+
+.scene-panel{
+  background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.08); border-radius:20px;
+  padding:20px; display:flex; flex-direction:column; align-items:center; gap:16px;
+}
+.scene{
+  width:100%; max-width:340px; height:340px; perspective:1300px; display:flex; align-items:flex-end; justify-content:center;
+  touch-action:none; cursor:grab;
+}
+.scene:active{cursor:grabbing;}
+.tower3d{
+  transform-style:preserve-3d;
+  transform:rotateX(-24deg) rotateY(var(--ry,-32deg));
+  transition:transform .05s linear;
+  position:relative;
+}
+.layer{
+  position:relative; width:150px; height:34px;
+  transform-style:preserve-3d;
+}
+.layer .face-front{position:absolute; inset:0; background:var(--c,#ccc);}
+.layer .face-side{
+  position:absolute; top:0; left:100%; width:44px; height:100%;
+  background:var(--cd,#999); transform-origin:left center; transform:rotateY(90deg);
+}
+.layer .face-top{
+  position:absolute; top:0; left:0; width:100%; height:44px;
+  background:var(--ct,#ddd); transform-origin:top center; transform:rotateX(-90deg);
+}
+.layer .dots{position:absolute; inset:0; background-image:radial-gradient(circle, rgba(20,10,5,.55) 2.4px, transparent 2.6px); background-size:16px 16px; background-position:2px 6px; opacity:.85;}
+.layer .dots.oildot{background-image:radial-gradient(circle, rgba(255,220,180,.5) 2.2px, transparent 2.4px);}
+.rig{
+  position:absolute; bottom:100%; right:50%; transform:translateX(50%);
+  width:14px; height:0; background:linear-gradient(#3a2a1c,#1c130b); transition:height 1.2s ease;
+  z-index:5;
+}
+.rig::after{
+  content:''; position:absolute; bottom:100%; right:-3px; width:20px; height:20px;
+  border-radius:50%; background:radial-gradient(circle,var(--oil-glow),transparent 70%);
+  opacity:0; transition:opacity .3s;
+}
+.rig.gush::after{opacity:1;}
+
+.scene-caption{text-align:center; font-size:.85rem; color:#B9AF98;}
+.scene-hint{font-size:.78rem; color:#7d7360; display:flex; align-items:center; gap:6px;}
+
+.gauge-wrap{display:flex; align-items:center; gap:14px; width:100%; max-width:340px;}
+.gauge-label{font-size:.8rem; color:#C9BFA6; font-weight:700; white-space:nowrap;}
+.gauge-track{flex:1; height:12px; border-radius:999px; background:rgba(255,255,255,.08); overflow:hidden; position:relative;}
+.gauge-fill{height:100%; width:0%; background:linear-gradient(90deg,var(--water-lt),var(--accent),var(--warn)); transition:width .5s ease;}
+.gauge-val{font-family:var(--font-d); font-weight:800; font-size:.85rem; min-width:70px; text-align:left;}
+
+.control-panel{
+  background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.08); border-radius:20px;
+  padding:22px; display:flex; flex-direction:column; gap:18px;
+}
+.stage-dots{display:flex; gap:8px; justify-content:center; flex-wrap:wrap;}
+.stage-dot{
+  width:34px; height:34px; border-radius:50%; border:1.5px solid rgba(255,255,255,.25);
+  background:transparent; color:#C9BFA6; font-family:var(--font-d); font-weight:800; font-size:.85rem;
+  display:flex; align-items:center; justify-content:center; transition:all .2s;
+}
+.stage-dot.done{background:rgba(95,174,158,.25); border-color:var(--gas-dk); color:#DFF6F0;}
+.stage-dot.current{background:var(--accent); border-color:var(--accent); color:#241207; transform:scale(1.12);}
+
+.stage-title{font-size:1.15rem; font-weight:800; color:#F3ECD9;}
+.stage-desc{color:#D8CFB8; font-size:.95rem; min-height:80px;}
+
+.nav-btns{display:flex; gap:10px;}
+.nav-btns .btn{flex:1; justify-content:center;}
+
+.drill-box{
+  border-top:1px dashed rgba(255,255,255,.15); padding-top:16px; display:none; flex-direction:column; gap:12px;
+}
+.drill-box.show{display:flex;}
+.barrel-count{font-family:var(--font-d); font-weight:900; font-size:1.6rem; color:var(--accent-lt);}
+.barrel-note{font-size:.82rem; color:#C9BFA6;}
+
+/* ===== المراجعة / الأسئلة ===== */
+.q-list{display:flex; flex-direction:column; gap:18px;}
+.q-card{
+  background:var(--card); border:1px solid var(--paper-dark); border-radius:var(--radius); padding:22px;
+}
+.q-card .qnum{font-family:var(--font-d); font-weight:900; color:var(--accent); font-size:.85rem; margin-bottom:6px;}
+.q-card h4{font-size:1.05rem; margin-bottom:12px;}
+.q-card textarea{
+  width:100%; min-height:70px; border-radius:12px; border:1.5px solid var(--paper-dark);
+  padding:12px 14px; font-family:var(--font-b); font-size:.95rem; resize:vertical; background:#fff;
+  color:var(--ink);
+}
+.q-card textarea:focus{border-color:var(--accent); outline:none;}
+.q-actions{display:flex; justify-content:flex-end; margin-top:10px;}
+.link-btn{
+  background:none; border:none; color:var(--terra-dk); font-weight:800; font-size:.86rem;
+  display:flex; align-items:center; gap:6px; padding:6px 4px;
+}
+.link-btn:hover{text-decoration:underline;}
+.model-answer{
+  margin-top:12px; background:rgba(76,122,84,.08); border:1px solid rgba(76,122,84,.3);
+  border-radius:12px; padding:14px 16px; font-size:.92rem; color:#2E4A33; display:none;
+}
+.model-answer.show{display:block;}
+.model-answer b{font-family:var(--font-d);}
+
+/* ===== معلومة مفيدة + إنجاز ===== */
+.two-col{display:grid; grid-template-columns:1fr 1fr; gap:20px;}
+@media(max-width:760px){.two-col{grid-template-columns:1fr;}}
+.info-card{
+  border-radius:var(--radius); padding:24px; position:relative; overflow:hidden;
+}
+.info-card.tip{background:linear-gradient(135deg,#FBEFDD,#F3DFC0); border:1px solid #E8CE9E;}
+.info-card.folder{background:linear-gradient(135deg,#E9F0EA,#DCEBE0); border:1px solid #BEDBC7;}
+.info-card .icon{font-size:1.8rem; margin-bottom:10px;}
+.info-card h3{font-size:1.05rem; margin-bottom:10px;}
+.info-card p, .info-card li{color:var(--ink-soft); font-size:.94rem;}
+.info-card ul{margin:10px 0 0; padding-inline-start:20px;}
+.info-card li{margin-bottom:6px;}
+
+footer{padding:36px 0; text-align:center; color:var(--ink-soft); font-size:.85rem; border-top:1px solid var(--paper-dark);}
+
+.reveal{opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease;}
+.reveal.in{opacity:1; transform:translateY(0);}
+
+  /* ══ RESPONSIVE MOBILE & TABLET ══ */
+  @media (max-width: 768px) {
+    body { padding: 8px !important; font-size: 15px !important; overflow-x: hidden !important; }
+    .container, [class*="container"], [class*="wrapper"] { padding: 8px !important; max-width: 100% !important; }
+    canvas { width: 100% !important; height: auto !important; display: block !important; touch-action: none; max-width: 100% !important; }
+    svg { max-width: 100% !important; height: auto !important; }
+    h1 { font-size: clamp(18px,5vw,32px) !important; }
+    h2 { font-size: clamp(15px,4vw,26px) !important; }
+    h3 { font-size: clamp(13px,3.5vw,20px) !important; }
+    [class*="grid"] { grid-template-columns: 1fr !important; }
+    [class*="flex"] { flex-wrap: wrap !important; }
+    input[type="range"] { width: 100% !important; min-height: 36px; }
+    input[type="number"], input[type="text"], select, textarea {
+      font-size: 16px !important; width: 100% !important; box-sizing: border-box; padding: 8px !important; }
+    button { min-height: 44px !important; font-size: 14px !important; touch-action: manipulation; padding: 10px 14px !important; }
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 13px !important; }
+    th, td { padding: 6px 4px !important; }
+    header { padding: 10px 12px !important; }
+    .controls, [class*="controls"] { flex-direction: column !important; gap: 8px !important; }
+    .lab-window, [class*="lab-window"] { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+  }
+  @media (max-width: 480px) {
+    body { padding: 4px !important; }
+    button { width: 100% !important; }
+  }
+  /* ══ END RESPONSIVE ══ */
+</style>
+</head>
+<body>
+<style>
+.vlab-back{position:fixed;top:10px;left:10px;z-index:99999;
+background:rgba(10,22,40,0.93);border:1px solid rgba(0,200,150,0.4);
+border-radius:22px;padding:8px 16px;display:inline-flex;align-items:center;gap:7px;
+color:#00C896;font-family:Tajawal,Cairo,Arial,sans-serif;font-size:13px;font-weight:700;
+text-decoration:none;backdrop-filter:blur(8px);box-shadow:0 4px 18px rgba(0,0,0,0.3);
+transition:background 0.2s;}
+.vlab-back:hover{background:rgba(0,200,150,0.18);}
+</style>
+<a href="../grade5.html" class="vlab-back">&#8594; العودة للصف</a>
+
+
+<nav class="topnav">
+  <div class="wrap">
+    <div class="brand"><span class="drop"></span> درس: تكوّن النفط</div>
+    <div class="navlinks">
+      <a href="#intro">مقدمة</a>
+      <a href="#explain">كيف يتكوّن؟</a>
+      <a href="#lab">المختبر الافتراضي</a>
+      <a href="#review">التقويم</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="intro">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">🛢 علوم وحياة · الصف الخامس · فلسطين</span>
+      <h1>كيف تتحوّل كائناتٌ صغيرة في قاع البحر إلى <span>نفطٍ وغازٍ طبيعي؟</span></h1>
+      <p class="lead">رحلة عمرها ملايين السنين تحدث تحت أقدامنا مباشرة. في هذا الدرس ستكتشف مراحل تكوّن النفط والغاز الطبيعي، وتجرّب بنفسك مختبراً افتراضياً ثلاثي الأبعاد لبناء طبقات الأرض والتنقيب عن النفط خطوة بخطوة.</p>
+      <div class="hero-ctas">
+        <button class="btn btn-primary" onclick="document.getElementById('lab').scrollIntoView()">🧪 جرّب المختبر الافتراضي</button>
+        <button class="btn btn-ghost" onclick="document.getElementById('explain').scrollIntoView()">ابدأ من الشرح</button>
+      </div>
+    </div>
+    <div class="hero-scene-wrap">
+      <div class="scene" id="heroScene" style="height:280px;">
+        <div class="tower3d" id="heroTower"></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="section reveal" id="objectives">
+    <div class="section-head">
+      <div class="kicker">أهداف الدرس</div>
+      <h2>ماذا ستتعلّم اليوم؟</h2>
+    </div>
+    <div class="obj-grid">
+      <div class="obj-card"><div class="num">١</div><h3>أصل النفط والغاز</h3><p>تفسّر كيف تتحوّل بقايا الكائنات الحية البحرية الدقيقة إلى نفط وغاز طبيعي.</p></div>
+      <div class="obj-card"><div class="num">٢</div><h3>عوامل التكوّن</h3><p>تحدّد دور تراكم الرواسب، والحرارة، والضغط في هذه العملية الطويلة.</p></div>
+      <div class="obj-card"><div class="num">٣</div><h3>مصيدة النفط</h3><p>تُعرّف مصيدة النفط وتشرح لماذا يتوضّع الغاز فوق النفط فوق الماء.</p></div>
+    </div>
+  </section>
+
+  <section class="section reveal" id="explain">
+    <div class="section-head">
+      <div class="kicker">أربع مراحل</div>
+      <h2>هكذا يتكوّن النفط والغاز الطبيعي</h2>
+      <p>تأمّل كل مرحلة، ثم انتقل إلى المختبر الافتراضي لتُجري العملية بنفسك وتتحكّم بالزمن والحرارة والضغط.</p>
+    </div>
+    <div class="stage-cards" id="stageCardsHost"></div>
+  </section>
+
+  <section class="section reveal">
+    <div class="section-head">
+      <div class="kicker">لماذا يترتّب هذا الشكل؟</div>
+      <h2>تشريح مصيدة النفط</h2>
+      <p>عندما يتوقف تسرّب النفط والغاز عند طبقة صخرية غير منفذة، يترتّبان بحسب كثافتهما.</p>
+    </div>
+    <div class="trap-explain">
+      <div class="trap-diagram">
+        <div class="trap-layer trap-cap">صخر غير منفذ (حاجز)</div>
+        <div class="trap-layer trap-gas">غاز طبيعي — الأخف وزناً</div>
+        <div class="trap-layer trap-oil">نفط</div>
+        <div class="trap-layer trap-water">ماء — الأثقل وزناً</div>
+        <div class="trap-layer trap-base">صخر غير منفذ (قاعدة)</div>
+      </div>
+      <div>
+        <h3 style="font-size:1.1rem; margin-bottom:6px;">لماذا هذا الترتيب بالتحديد؟</h3>
+        <ul class="trap-note">
+          <li>يشبه الأمر طبقة الزيت التي تطفو فوق الماء في وعاء: المادة الأقل كثافة تعلو دائماً.</li>
+          <li>الصخر غير المنفذ (كصخر الطين المتماسك) يمنع تسرّب السوائل والغازات عبره، فيعمل كغطاء حابس.</li>
+          <li>هذه التركيبة الطبيعية بين طبقتين غير منفذتين تُسمّى «مصيدة نفط»، وهي ما تبحث عنه شركات التنقيب.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section lab reveal" id="lab">
+    <div class="lab-inner">
+      <div class="lab-head">
+        <div class="kicker">مختبر افتراضي تفاعلي</div>
+        <h2>ابنِ الطبقات… وتحكّم بالزمن… ثم احفر بئراً</h2>
+        <p>اسحب الطبقات ثلاثية الأبعاد لتدويرها، اضغط «الخطوة التالية» لتقديم الزمن ملايين السنين في كل مرة، وراقب مقياس الحرارة والضغط. عند اكتمال المصيدة، جرّب الحفر لاستخراج النفط.</p>
+      </div>
+
+      <div class="lab-grid">
+        <div class="scene-panel">
+          <div class="scene" id="labScene">
+            <div class="tower3d" id="labTower">
+              <div class="rig" id="rig"></div>
+            </div>
+          </div>
+          <div class="scene-hint">↔️ اسحب بإصبعك أو الفأرة لتدوير العيّنة</div>
+          <div class="gauge-wrap">
+            <span class="gauge-label">🌡️ الحرارة والضغط</span>
+            <div class="gauge-track"><div class="gauge-fill" id="gaugeFill"></div></div>
+            <span class="gauge-val" id="gaugeVal">٠٪</span>
+          </div>
+          <div class="scene-caption" id="sceneCaption">اضغط «ابدأ» في اللوحة المجاورة لتشاهد العيّنة وهي تتشكّل.</div>
+        </div>
+
+        <div class="control-panel">
+          <div class="stage-dots" id="stageDots"></div>
+          <div>
+            <div class="stage-title" id="stageTitle">استعدّ للرحلة</div>
+            <div class="stage-desc" id="stageDesc">منذ ملايين السنين، عاشت في قاع البحار والمحيطات كائناتٌ حيّة بحريّة دقيقة الحجم. اضغط «ابدأ» لتشاهد ما حدث عندما ماتت هذه الكائنات.</div>
+          </div>
+          <div class="nav-btns">
+            <button class="btn btn-dark" id="prevBtn" disabled>◀ السابقة</button>
+            <button class="btn btn-primary" id="nextBtn">ابدأ ▶</button>
+          </div>
+          <div class="drill-box" id="drillBox">
+            <div>
+              <div class="stage-title" style="font-size:1rem;">🛢 اكتملت مصيدة النفط! جاهزة للتنقيب</div>
+              <div class="stage-desc" style="min-height:auto; margin-top:6px;">اضغط «احفر بئراً» لمحاكاة عملية استخراج حقيقية.</div>
+            </div>
+            <button class="btn btn-primary" id="drillBtn">⛏ احفر بئراً</button>
+            <div id="drillResult" style="display:none;">
+              <div class="barrel-count" id="barrelCount">٠ برميل</div>
+              <div class="barrel-note">يندفع النفط والغاز إلى الأعلى بفعل الضغط المحبوس أسفل الصخر الحاجز — وهذا ما يجعل الحفر ممكناً!</div>
+              <button class="btn btn-ghost" style="margin-top:10px; color:var(--ink); border-color:var(--paper-dark);" id="resetBtn">↻ أعد المحاكاة من البداية</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section reveal" id="review">
+    <div class="section-head">
+      <div class="kicker">التقويم</div>
+      <h2>سجّل استنتاجاتك</h2>
+      <p>أجب أولاً بأسلوبك الخاص، ثم اضغط «أظهر إجابة نموذجية» للمقارنة.</p>
+    </div>
+    <div class="q-list" id="qList"></div>
+  </section>
+
+  <section class="section reveal">
+    <div class="two-col">
+      <div class="info-card tip">
+        <div class="icon">💡</div>
+        <h3>معلومة مفيدة</h3>
+        <p>يتكوّن الغاز الطبيعي في باطن الأرض بنفس الظروف الطبيعية التي يتكوّن فيها النفط، إلا أنّ الغاز الطبيعي يحتاج إلى عمقٍ ودرجة حرارة أكبر. لماذا في رأيك؟</p>
+        <button class="link-btn" id="tipBtn" style="margin-top:10px;">أظهر تفسيراً مقترحاً ›</button>
+        <div class="model-answer" id="tipAnswer"><b>تفسير مقترح:</b> تحوّل بقايا الكائنات الحية إلى غاز يتطلّب تحلّلاً أعمق للمادة العضوية من التحوّل إلى نفط، وهذا التحلّل الإضافي لا يحدث إلا عند درجات حرارة وضغط أعلى، أي في طبقاتٍ أعمق داخل الأرض.</div>
+      </div>
+      <div class="info-card folder">
+        <div class="icon">📁</div>
+        <h3>ملف الإنجاز</h3>
+        <p>ارجع إلى مكتبة المدرسة أو الشبكة العنكبوتية، واكتب تقريراً قصيراً تحتفظ به في ملفّ إنجازك حول أحد الموضوعين:</p>
+        <ul>
+          <li>حقول النفط في قرية رنتيس بمحافظة رام الله.</li>
+          <li>حقول الغاز الطبيعي قبالة سواحل مدينة غزة.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  درس «تكوّن النفط» — منهاج العلوم والحياة، الصف الخامس، فلسطين · صفحة تفاعلية للمراجعة والتجريب
+</footer>
+
+<script>
+/* ================= بيانات المراحل ================= */
+const STAGES = [
+  {
+    title:"المرحلة ١ — كائنات حيّة بحرية دقيقة",
+    desc:"منذ ملايين السنين، عاشت في قاع البحار والمحيطات كائناتٌ حيّة بحرية دقيقة الحجم. عند موتها، ترسّبت بقاياها فوق قاع البحر واختلطت بالرمل والطين.",
+    caption:"بقايا كائنات حية تترسّب فوق قاع البحر",
+    gauge:8,
+    layers:[
+      {h:70,c:'#8FC6D4',cd:'#3F7C8C',ct:'#B7E0EA',label:'ماء'},
+      {h:40,c:'#DFC58C',cd:'#C1A163',ct:'#EAD9AA',dots:true,label:'رمل وبقايا كائنات'}
+    ]
+  },
+  {
+    title:"المرحلة ٢ — تراكم الرواسب",
+    desc:"مع مرور ملايين السنين تراكمت فوقها طبقات جديدة من الرمل والطين والصخور، فازداد الضغط الواقع عليها وارتفعت درجة الحرارة في باطن الأرض.",
+    caption:"طبقات رسوبية متعاقبة تضغط على البقايا",
+    gauge:40,
+    layers:[
+      {h:34,c:'#8C8D93',cd:'#6B6C72',ct:'#A9AAAF',label:'صخر رمادي'},
+      {h:34,c:'#B5674A',cd:'#8E4C35',ct:'#C88568',label:'صخر بني محمر'},
+      {h:34,c:'#DFC58C',cd:'#C1A163',ct:'#EAD9AA',dots:true,label:'رمل وبقايا كائنات'}
+    ]
+  },
+  {
+    title:"المرحلة ٣ — تحوّل البقايا إلى نفط وغاز",
+    desc:"أدّى استمرار ارتفاع الحرارة والضغط عبر ملايين السنين إلى تحلّل أجسام الكائنات الحية تدريجياً وتحوّلها إلى نفط وغاز طبيعي محبوسين بين حبيبات الصخور المسامية.",
+    caption:"الحرارة والضغط الشديدان يحوّلان البقايا إلى نفط وغاز",
+    gauge:75,
+    layers:[
+      {h:30,c:'#8C8D93',cd:'#6B6C72',ct:'#A9AAAF',label:'صخر رمادي'},
+      {h:30,c:'#B5674A',cd:'#8E4C35',ct:'#C88568',label:'صخر بني محمر'},
+      {h:30,c:'#6C4F63',cd:'#4E3849',ct:'#8A6B80',oildots:true,label:'صخر يحتوي نفطاً وغازاً'}
+    ]
+  },
+  {
+    title:"المرحلة ٤ — تسرّب النفط والغاز إلى الأعلى",
+    desc:"لأنّ النفط والغاز أخف من الماء المحيط بهما، فإنّهما يتسرّبان تدريجياً إلى الأعلى عبر الصخور المسامية المنفذة، إلى أن يصطدما بطبقة صخرية غير منفذة توقف صعودهما.",
+    caption:"النفط والغاز يتسرّبان صاعدَين خلال الصخور المسامية",
+    gauge:90,
+    layers:[
+      {h:26,c:'#DFC58C',cd:'#C1A163',ct:'#EAD9AA',label:'صخر منفذ'},
+      {h:26,c:'#8C8D93',cd:'#6B6C72',ct:'#A9AAAF',label:'صخر رمادي منفذ'},
+      {h:26,c:'#B5674A',cd:'#8E4C35',ct:'#C88568',label:'صخر بني محمر'},
+      {h:26,c:'#6C4F63',cd:'#4E3849',ct:'#8A6B80',oildots:true,label:'مصدر النفط والغاز'}
+    ]
+  },
+  {
+    title:"المرحلة ٥ — تكوّن مصيدة النفط",
+    desc:"عند اصطدام النفط والغاز بطبقة صخرية غير منفذة، يُحتجزان أسفلها: الغاز الطبيعي أعلى المصيدة لأنه الأخف، يليه النفط، ثم الماء أسفلها لأنه الأثقل. هذه التركيبة تُسمّى مصيدة نفط.",
+    caption:"مصيدة نفط مكتملة — جاهزة للتنقيب",
+    gauge:100,
+    trap:true,
+    layers:[
+      {h:22,c:'#6C4F63',cd:'#4E3849',ct:'#8A6B80',label:'صخر غير منفذ (غطاء)'},
+      {h:22,c:'#A9E0D8',cd:'#5FAE9E',ct:'#C7ECE6',label:'غاز طبيعي'},
+      {h:30,c:'#C97A3D',cd:'#8F5325',ct:'#E0A468',label:'نفط'},
+      {h:22,c:'#8FC6D4',cd:'#3F7C8C',ct:'#B7E0EA',label:'ماء'},
+      {h:22,c:'#6C4F63',cd:'#4E3849',ct:'#8A6B80',label:'صخر غير منفذ (قاعدة)'}
+    ]
+  }
+];
+
+/* ================= بناء برج ثلاثي الأبعاد ================= */
+function buildTower(container, layers){
+  container.querySelectorAll('.layer').forEach(l=>l.remove());
+  const rig = container.querySelector('.rig');
+  layers.forEach((L,i)=>{
+    const div = document.createElement('div');
+    div.className = 'layer';
+    div.style.setProperty('--c', L.c);
+    div.style.setProperty('--cd', L.cd);
+    div.style.setProperty('--ct', L.ct);
+    div.style.height = L.h + 'px';
+    const front = document.createElement('div'); front.className='face-front';
+    const side = document.createElement('div'); side.className='face-side';
+    div.appendChild(front); div.appendChild(side);
+    if(i===0){
+      const top = document.createElement('div'); top.className='face-top';
+      div.appendChild(top);
+    }
+    if(L.dots){ const d=document.createElement('div'); d.className='dots'; front.appendChild(d); }
+    if(L.oildots){ const d=document.createElement('div'); d.className='dots oildot'; front.appendChild(d); }
+    if(rig) container.insertBefore(div, rig); else container.appendChild(div);
+  });
+}
+
+/* ===== برج البطل (تشكيل ثابت جميل، يدور تلقائياً) ===== */
+const heroTower = document.getElementById('heroTower');
+buildTower(heroTower, STAGES[4].layers);
+let heroRy = -28;
+setInterval(()=>{ heroRy += 0.15; heroTower.style.setProperty('--ry', heroRy+'deg'); }, 40);
+
+/* ===== سحب لتدوير أي مشهد ===== */
+function enableDrag(sceneEl, towerEl, initial){
+  let ry = initial, dragging=false, lastX=0;
+  towerEl.style.setProperty('--ry', ry+'deg');
+  const start = (x)=>{dragging=true; lastX=x;};
+  const move = (x)=>{ if(!dragging) return; const dx = x-lastX; lastX=x; ry += dx*0.4; towerEl.style.setProperty('--ry', ry+'deg'); };
+  const end = ()=>{dragging=false;};
+  sceneEl.addEventListener('mousedown', e=>start(e.clientX));
+  window.addEventListener('mousemove', e=>move(e.clientX));
+  window.addEventListener('mouseup', end);
+  sceneEl.addEventListener('touchstart', e=>start(e.touches[0].clientX), {passive:true});
+  sceneEl.addEventListener('touchmove', e=>move(e.touches[0].clientX), {passive:true});
+  sceneEl.addEventListener('touchend', end);
+}
+
+/* ================= بطاقات الشرح الثابتة (٤ مراحل نصية) ================= */
+const stageHost = document.getElementById('stageCardsHost');
+STAGES.slice(0,4).forEach((s, idx)=>{
+  const card = document.createElement('div');
+  card.className = 'stage-card';
+  const sceneId = 'mini'+idx;
+  card.innerHTML = `
+    <div class="mini-scene"><div class="scene" style="width:150px;height:150px;" id="${sceneId}"><div class="tower3d"></div></div></div>
+    <div>
+      <span class="tag">${s.title.split('—')[0].trim()}</span>
+      <h3>${s.title.split('—')[1].trim()}</h3>
+      <p>${s.desc}</p>
+    </div>`;
+  stageHost.appendChild(card);
+  const sc = card.querySelector('#'+sceneId);
+  const tw = sc.querySelector('.tower3d');
+  buildTower(tw, s.layers);
+  tw.style.transform = 'rotateX(-24deg) rotateY(-30deg)';
+});
+
+/* ================= المختبر التفاعلي ================= */
+const labScene = document.getElementById('labScene');
+const labTower = document.getElementById('labTower');
+const rig = document.getElementById('rig');
+enableDrag(labScene, labTower, -32);
+
+const stageDots = document.getElementById('stageDots');
+STAGES.forEach((s,i)=>{
+  const d = document.createElement('div');
+  d.className='stage-dot';
+  d.textContent = ['١','٢','٣','٤','٥'][i];
+  d.addEventListener('click', ()=>{ if(i<=maxReached) goToStage(i); });
+  stageDots.appendChild(d);
+});
+
+let current = -1;
+let maxReached = -1;
+const gaugeFill = document.getElementById('gaugeFill');
+const gaugeVal = document.getElementById('gaugeVal');
+const stageTitle = document.getElementById('stageTitle');
+const stageDesc = document.getElementById('stageDesc');
+const sceneCaption = document.getElementById('sceneCaption');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const drillBox = document.getElementById('drillBox');
+const drillBtn = document.getElementById('drillBtn');
+const drillResult = document.getElementById('drillResult');
+const barrelCount = document.getElementById('barrelCount');
+const resetBtn = document.getElementById('resetBtn');
+
+function renderStageDots(){
+  [...stageDots.children].forEach((d,i)=>{
+    d.classList.toggle('current', i===current);
+    d.classList.toggle('done', i<current);
+  });
+}
+
+function goToStage(i){
+  current = i;
+  maxReached = Math.max(maxReached, i);
+  const s = STAGES[i];
+  buildTower(labTower, s.layers);
+  stageTitle.textContent = s.title;
+  stageDesc.textContent = s.desc;
+  sceneCaption.textContent = s.caption;
+  gaugeFill.style.width = s.gauge + '%';
+  gaugeVal.textContent = toArabicPercent(s.gauge);
+  prevBtn.disabled = (i===0);
+  nextBtn.textContent = (i===STAGES.length-1) ? 'اكتملت العيّنة ✓' : 'الخطوة التالية ▶';
+  nextBtn.disabled = (i===STAGES.length-1);
+  drillBox.classList.toggle('show', i===STAGES.length-1);
+  renderStageDots();
+}
+
+function toArabicPercent(n){
+  const map = {0:'٠',1:'١',2:'٢',3:'٣',4:'٤',5:'٥',6:'٦',7:'٧',8:'٨',9:'٩'};
+  return String(n).split('').map(ch=>map[ch]!==undefined?map[ch]:ch).join('') + '٪';
+}
+
+nextBtn.addEventListener('click', ()=>{
+  if(current < STAGES.length-1) goToStage(current+1);
+});
+prevBtn.addEventListener('click', ()=>{
+  if(current > 0) goToStage(current-1);
+});
+
+drillBtn.addEventListener('click', ()=>{
+  drillBtn.disabled = true;
+  rig.style.height = '150px';
+  setTimeout(()=>{
+    rig.classList.add('gush');
+    drillResult.style.display = 'block';
+    let n = 0;
+    const target = 400000 + Math.floor(Math.random()*400000);
+    const step = Math.ceil(target/60);
+    const timer = setInterval(()=>{
+      n += step;
+      if(n>=target){ n=target; clearInterval(timer); }
+      barrelCount.textContent = n.toLocaleString('ar-EG') + ' برميل';
+    }, 25);
+  }, 1250);
+});
+
+resetBtn.addEventListener('click', ()=>{
+  rig.style.height='0px';
+  rig.classList.remove('gush');
+  drillResult.style.display='none';
+  drillBtn.disabled = false;
+  barrelCount.textContent = '٠ برميل';
+  goToStage(0);
+});
+
+/* حالة أولية قبل الضغط على ابدأ */
+buildTower(labTower, []);
+
+/* ================= أسئلة التقويم ================= */
+const QUESTIONS = [
+  {q:"ما أصل النفط والغاز الطبيعي؟", a:"يتكوّن النفط والغاز الطبيعي من بقايا كائنات حية بحرية دقيقة عاشت قبل ملايين السنين، ثم تحلّلت بفعل الحرارة والضغط الشديدين تحت طبقات سميكة من الرواسب."},
+  {q:"ما العوامل التي تساهم في تكوين النفط والغاز الطبيعي؟", a:"تراكم كميات كبيرة من الرواسب فوق بقايا الكائنات الحية عبر ملايين السنين، إضافةً إلى ارتفاع درجة الحرارة والضغط في باطن الأرض."},
+  {q:"اكتب بلغتك تعريفاً لمصيدة النفط.", a:"مصيدة النفط هي طبقة صخرية مسامية منفذة محصورة بين طبقتين من صخور غير منفذة، تحتجز النفط والغاز الطبيعي وتمنعهما من الاستمرار في التسرّب إلى الأعلى."},
+  {q:"يتجمّع الغاز الطبيعي فوق النفط، لماذا؟", a:"لأنّ الغاز الطبيعي أقل كثافة (أخف وزناً) من النفط، فيطفو فوقه تماماً كما يطفو الزيت فوق الماء."}
+];
+const qList = document.getElementById('qList');
+QUESTIONS.forEach((item, i)=>{
+  const card = document.createElement('div');
+  card.className = 'q-card';
+  card.innerHTML = `
+    <div class="qnum">سؤال ${['١','٢','٣','٤'][i]}</div>
+    <h4>${item.q}</h4>
+    <textarea placeholder="اكتب إجابتك هنا..."></textarea>
+    <div class="q-actions"><button class="link-btn">أظهر إجابة نموذجية ›</button></div>
+    <div class="model-answer"><b>إجابة نموذجية:</b> ${item.a}</div>
+  `;
+  const btn = card.querySelector('.link-btn');
+  const ans = card.querySelector('.model-answer');
+  btn.addEventListener('click', ()=>{
+    ans.classList.toggle('show');
+    btn.textContent = ans.classList.contains('show') ? 'إخفاء الإجابة ‹' : 'أظهر إجابة نموذجية ›';
+  });
+  qList.appendChild(card);
+});
+
+/* معلومة مفيدة */
+const tipBtn = document.getElementById('tipBtn');
+const tipAnswer = document.getElementById('tipAnswer');
+tipBtn.addEventListener('click', ()=>{
+  tipAnswer.classList.toggle('show');
+  tipBtn.textContent = tipAnswer.classList.contains('show') ? 'إخفاء التفسير ‹' : 'أظهر تفسيراً مقترحاً ›';
+});
+
+/* ================= ظهور تدريجي عند التمرير ================= */
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); });
+}, {threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+/* تفعيل الرابط النشط في القائمة */
+const navA = document.querySelectorAll('.navlinks a');
+const navSections = ['intro','explain','lab','review'].map(id=>document.getElementById(id));
+window.addEventListener('scroll', ()=>{
+  let idx = 0;
+  navSections.forEach((sec,i)=>{ if(sec && window.scrollY >= sec.offsetTop - 90) idx = i; });
+  navA.forEach((a,i)=>a.classList.toggle('active', i===idx));
+});
+</script>
+</body>
+</html>

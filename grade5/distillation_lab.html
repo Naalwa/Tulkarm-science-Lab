@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>التقطير — مختبر افتراضي | الصف الخامس</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700;900&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f4efe2;
+  --paper:#fffdf6;
+  --ink:#213640;
+  --ink-soft:#4c5f68;
+  --teal:#1c5d63;
+  --teal-deep:#123f44;
+  --flame:#e85d2c;
+  --flame-soft:#f3a05c;
+  --brass:#b6873e;
+  --steam:#cfe3de;
+  --pure:#2e9ccb;
+  --salt:#7c8e93;
+  --border:#d9cfb4;
+  --ok:#2f8a5b;
+  --shadow: 0 10px 30px rgba(33,54,64,.12);
+  --radius: 18px;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:
+    radial-gradient(1200px 500px at 15% -10%, #fff9ec 0%, transparent 60%),
+    var(--bg);
+  color:var(--ink);
+  font-family:'Tajawal', sans-serif;
+  line-height:1.9;
+  overflow-x:hidden;
+}
+h1,h2,h3,.display{font-family:'Cairo', sans-serif;}
+img,svg{display:block;max-width:100%;}
+button{font-family:inherit;cursor:pointer;}
+::selection{background:var(--flame-soft);color:#fff;}
+
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px;}
+
+/* ---------- HERO ---------- */
+.hero{
+  position:relative;
+  background:
+    linear-gradient(180deg, rgba(18,63,68,.94), rgba(28,93,99,.9)),
+    repeating-linear-gradient(135deg, rgba(255,255,255,.03) 0 2px, transparent 2px 26px);
+  color:#fdf8ec;
+  padding:64px 20px 90px;
+  overflow:hidden;
+  border-bottom:6px solid var(--brass);
+}
+.hero .wrap{position:relative;z-index:2;}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:14px; letter-spacing:.5px;
+  background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.35);
+  padding:6px 16px;border-radius:999px;
+  margin-bottom:18px;
+}
+.hero h1{
+  font-size:clamp(38px,7vw,64px);
+  font-weight:900;
+  margin:0 0 10px;
+}
+.hero p.lead{
+  font-size:clamp(16px,2.4vw,19px);
+  max-width:640px;
+  color:#e7f2ee;
+  margin:0 0 28px;
+}
+.hero-tags{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:10px;}
+.hero-tags span{
+  background:rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.25);
+  padding:6px 14px;border-radius:10px;font-size:14px;
+}
+.hero-flask{
+  position:absolute; left:-40px; bottom:-30px;
+  width:280px; opacity:.9; filter:drop-shadow(0 20px 30px rgba(0,0,0,.35));
+}
+@media(max-width:720px){.hero-flask{display:none;}}
+.steam-drift{position:absolute;border-radius:50%;background:rgba(255,255,255,.5);filter:blur(2px);}
+
+/* ---------- SECTION SHELL ---------- */
+section{padding:64px 0;}
+.section-head{margin-bottom:34px;}
+.kicker{
+  display:inline-block;color:var(--flame);font-weight:700;font-size:14px;
+  letter-spacing:.5px; margin-bottom:8px;
+}
+.section-head h2{font-size:clamp(26px,4vw,34px);margin:0 0 10px;font-weight:800;color:var(--teal-deep);}
+.section-head p{color:var(--ink-soft);max-width:680px;margin:0;font-size:16px;}
+
+.card{
+  background:var(--paper);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+}
+
+/* ---------- INTRO GRID ---------- */
+.intro-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:stretch;}
+@media(max-width:820px){.intro-grid{grid-template-columns:1fr;}}
+.intro-text{padding:28px;}
+.intro-text h3{margin:0 0 12px;color:var(--teal-deep);font-size:20px;}
+.intro-text p{margin:0 0 14px;color:var(--ink-soft);}
+.mini-cycle{
+  display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;
+}
+.mini-cycle .step{
+  flex:1;min-width:130px;
+  background:#f6f1e3;border:1px solid var(--border);border-radius:12px;
+  padding:14px 12px;text-align:center;font-size:14px;font-weight:700;color:var(--teal-deep);
+  position:relative;
+}
+.mini-cycle .step small{display:block;font-weight:400;color:var(--ink-soft);margin-top:4px;font-size:12.5px;}
+.parts-card{padding:24px;}
+.parts-card h3{margin:0 0 14px;color:var(--teal-deep);font-size:19px;}
+.parts-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;}
+.parts-list li{
+  display:flex;align-items:center;gap:10px;
+  background:#f6f1e3;border-radius:10px;padding:10px 12px;font-size:14.5px;
+}
+.parts-list li .dot{width:10px;height:10px;border-radius:50%;flex:none;}
+.d1{background:var(--flame);} .d2{background:var(--teal);} .d3{background:var(--pure);}
+.d4{background:var(--brass);} .d5{background:var(--salt);}
+
+/* ---------- LAB LAYOUT ---------- */
+.lab-card{padding:0;overflow:hidden;}
+.lab-toolbar{
+  display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;
+  padding:18px 22px;border-bottom:1px solid var(--border);background:#fbf7ea;
+}
+.lab-toolbar .status{
+  font-weight:700;color:var(--teal-deep);font-size:15px;display:flex;align-items:center;gap:8px;
+}
+.status .pulse{width:9px;height:9px;border-radius:50%;background:var(--salt);}
+.status.active .pulse{background:var(--flame);box-shadow:0 0 0 4px rgba(232,93,44,.2);}
+.status.condensing .pulse{background:var(--pure);box-shadow:0 0 0 4px rgba(46,156,203,.2);}
+.status.done .pulse{background:var(--ok);box-shadow:0 0 0 4px rgba(47,138,91,.2);}
+
+.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;}
+.btn{
+  border:none;border-radius:10px;padding:10px 18px;font-weight:700;font-size:14.5px;
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+.btn:active{transform:scale(.96);}
+.btn-primary{background:var(--flame);color:#fff;box-shadow:0 6px 14px rgba(232,93,44,.35);}
+.btn-secondary{background:#e7e0cb;color:var(--teal-deep);}
+.btn-ghost{background:transparent;color:var(--teal-deep);border:1px solid var(--border);}
+.heat-slider-wrap{display:flex;align-items:center;gap:10px;font-size:13.5px;color:var(--ink-soft);}
+input[type=range]{width:130px;accent-color:var(--flame);}
+
+.lab-scene{
+  position:relative;
+  height:420px;
+  background:
+    linear-gradient(180deg,#eaf3f1 0%, #dcece7 55%, #cfe4de 100%);
+  perspective:1200px;
+  overflow:hidden;
+}
+.bench{
+  position:absolute;left:0;right:0;bottom:0;height:70px;
+  background:linear-gradient(180deg,#8a6a3f,#6f5230);
+  box-shadow:inset 0 6px 10px rgba(0,0,0,.2);
+}
+.apparatus{
+  position:absolute;inset:0;
+  transform-style:preserve-3d;
+  transform:rotateX(4deg);
+}
+/* labels toggle */
+.part-label{
+  position:absolute;background:var(--teal-deep);color:#fff;font-size:11.5px;
+  padding:3px 8px;border-radius:6px;white-space:nowrap;opacity:0;pointer-events:none;
+  transition:opacity .25s ease; font-weight:700; z-index:20;
+}
+.labels-on .part-label{opacity:1;}
+
+/* burner + stand */
+.stand{position:absolute;bottom:70px;right:70px;width:10px;height:120px;background:linear-gradient(90deg,#a67c3f,#8c6529);border-radius:3px;}
+.stand-ring{position:absolute;bottom:150px;right:40px;width:110px;height:14px;border:5px solid var(--brass);border-radius:50%;background:transparent;}
+.burner{
+  position:absolute;bottom:70px;right:38px;width:110px;height:34px;
+  background:linear-gradient(180deg,#555,#2c2c2c);border-radius:6px 6px 3px 3px;
+}
+.burner:before{content:"";position:absolute;inset:3px 3px auto 3px;height:8px;background:#111;border-radius:3px;}
+.flame{
+  position:absolute;bottom:104px;right:66px;width:54px;height:0px;
+  transform-origin:bottom center;
+}
+.flame span{
+  position:absolute;bottom:0;left:50%;transform:translateX(-50%);
+  width:26px;height:40px;border-radius:50% 50% 50% 50% / 65% 65% 35% 35%;
+  background:radial-gradient(circle at 50% 80%, #fff6c9 0%, var(--flame-soft) 40%, var(--flame) 75%, transparent 100%);
+  opacity:0; transition:opacity .4s ease;
+  animation:flick 1.1s ease-in-out infinite;
+}
+@keyframes flick{0%,100%{transform:translateX(-50%) scaleY(1) scaleX(1);}50%{transform:translateX(-50%) scaleY(1.15) scaleX(.9);}}
+.flame.on span{opacity:1;}
+
+/* flask */
+.flask{position:absolute;bottom:104px;right:60px;width:120px;height:110px;}
+.flask-neck{
+  position:absolute;top:-46px;right:44px;width:22px;height:52px;
+  background:linear-gradient(90deg,rgba(255,255,255,.35),rgba(180,210,205,.35));
+  border:2px solid rgba(90,140,135,.55);border-bottom:none;border-radius:6px 6px 0 0;
+}
+.flask-body{
+  position:absolute;bottom:0;right:0;width:120px;height:110px;border-radius:50%;
+  border:2px solid rgba(90,140,135,.6);
+  background:linear-gradient(160deg,rgba(255,255,255,.4),rgba(210,230,225,.25));
+  overflow:hidden;
+  box-shadow: inset -10px -10px 20px rgba(0,0,0,.05), 0 10px 18px rgba(0,0,0,.12);
+}
+.liquid{
+  position:absolute;left:0;right:0;bottom:0;height:62%;
+  background:linear-gradient(180deg, rgba(78,150,163,.85), rgba(28,93,99,.92));
+  transition:height 3s ease;
+}
+.liquid:before{
+  content:"";position:absolute;left:0;right:0;top:-4px;height:8px;
+  background:rgba(255,255,255,.25);border-radius:50%;
+}
+.salt-dot{
+  position:absolute;width:4px;height:4px;background:#f4f4f4;border-radius:1px;
+  box-shadow:0 0 0 .5px rgba(0,0,0,.08);
+}
+.bubble{
+  position:absolute;bottom:2px;border-radius:50%;
+  background:rgba(255,255,255,.55);
+  animation:rise 1.6s linear forwards;
+}
+@keyframes rise{0%{transform:translateY(0);opacity:.9;}100%{transform:translateY(-70px);opacity:0;}}
+
+/* thermometer */
+.thermo{position:absolute;bottom:70px;right:180px;width:14px;height:170px;}
+.thermo-tube{
+  position:absolute;bottom:0;width:14px;height:150px;border-radius:7px;
+  background:#fff;border:2px solid #b9c3c5;overflow:hidden;
+}
+.thermo-fill{
+  position:absolute;bottom:0;left:0;right:0;height:8%;
+  background:linear-gradient(180deg,#ff8a5c,#e8452c);
+  transition:height 2.5s ease;
+}
+.thermo-bulb{
+  position:absolute;bottom:-14px;right:0;width:20px;height:20px;margin-right:-3px;
+  border-radius:50%;background:#e8452c;border:2px solid #b9c3c5;
+}
+.thermo-label{position:absolute;bottom:150px;right:-6px;font-size:11.5px;font-weight:700;color:var(--teal-deep);white-space:nowrap;}
+
+/* steam particles */
+.steam-dot{
+  position:absolute;border-radius:50%;background:rgba(255,255,255,.75);
+  filter:blur(.5px);
+}
+
+/* tube to condenser */
+.tube-link{
+  position:absolute;bottom:222px;right:78px;width:150px;height:14px;
+  background:linear-gradient(180deg,rgba(255,255,255,.4),rgba(180,210,205,.4));
+  border:2px solid rgba(90,140,135,.55);border-radius:8px;
+  transform:rotate(-6deg);
+}
+
+/* condenser */
+.condenser{
+  position:absolute;bottom:230px;right:230px;width:230px;height:46px;
+}
+.cond-jacket{
+  position:absolute;inset:0;border:2px solid rgba(90,140,135,.55);border-radius:20px;
+  background:linear-gradient(180deg, rgba(178,222,235,.35), rgba(120,190,210,.2));
+}
+.cond-inner{
+  position:absolute;top:16px;left:8px;right:8px;height:14px;border-radius:8px;
+  background:rgba(255,255,255,.55);border:1px solid rgba(90,140,135,.4);
+}
+.cond-arrow{position:absolute;font-size:10px;color:var(--pure);font-weight:700;}
+.cond-arrow.in{bottom:-18px;right:6px;}
+.cond-arrow.out{top:-16px;left:6px;}
+.dew{
+  position:absolute;top:20px;width:6px;height:6px;border-radius:50%;
+  background:radial-gradient(circle at 30% 30%,#fff,var(--pure));
+  transition:transform 1.2s ease, opacity .3s ease;
+}
+
+/* drip + collector */
+.drip{
+  position:absolute;width:5px;height:9px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;
+  background:linear-gradient(180deg,#eaf7fb,var(--pure));
+  animation:fall 0.9s ease-in forwards;
+}
+@keyframes fall{0%{transform:translateY(0);opacity:1;}100%{transform:translateY(90px);opacity:0;}}
+
+.collector{position:absolute;bottom:70px;right:452px;width:80px;height:90px;}
+.coll-neck{position:absolute;top:-20px;right:30px;width:16px;height:22px;border:2px solid rgba(90,140,135,.55);border-bottom:none;border-radius:5px 5px 0 0;background:rgba(255,255,255,.3);}
+.coll-body{
+  position:absolute;bottom:0;right:0;width:80px;height:80px;border-radius:50%;
+  border:2px solid rgba(90,140,135,.6);overflow:hidden;
+  background:linear-gradient(160deg,rgba(255,255,255,.4),rgba(210,230,225,.2));
+  box-shadow: inset -8px -8px 16px rgba(0,0,0,.05), 0 10px 16px rgba(0,0,0,.12);
+}
+.coll-liquid{
+  position:absolute;left:0;right:0;bottom:0;height:0%;
+  background:linear-gradient(180deg, rgba(120,205,230,.85), rgba(46,156,203,.9));
+  transition:height 1s ease;
+}
+
+/* observation log */
+.log-panel{padding:20px 22px;border-top:1px solid var(--border);background:#fbf7ea;}
+.log-panel h4{margin:0 0 10px;font-size:15px;color:var(--teal-deep);}
+.log-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;max-height:130px;overflow-y:auto;font-size:14px;color:var(--ink-soft);}
+.log-list li{background:#fff;border:1px solid var(--border);border-radius:8px;padding:7px 10px;}
+.log-list li b{color:var(--teal-deep);}
+
+/* labels toggle button */
+.toggle-labels{display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--ink-soft);}
+
+/* ---------- WORKSHEET ---------- */
+.worksheet{display:flex;flex-direction:column;gap:18px;}
+.q-card{padding:20px 22px;}
+.q-card .q-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;}
+.q-num{
+  flex:none;width:34px;height:34px;border-radius:50%;background:var(--teal);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-weight:800;font-family:'Cairo';font-size:15px;
+}
+.q-head p{margin:0;font-weight:700;color:var(--teal-deep);font-size:16px;}
+textarea{
+  width:100%;min-height:80px;border-radius:10px;border:1px solid var(--border);
+  padding:12px 14px;font-family:inherit;font-size:14.5px;color:var(--ink);resize:vertical;
+  background:#fdfbf3;
+}
+textarea:focus{outline:2px solid var(--pure);outline-offset:1px;}
+.q-actions{display:flex;justify-content:flex-end;margin-top:10px;}
+.reveal-btn{
+  background:transparent;border:1px dashed var(--brass);color:var(--brass);
+  padding:7px 14px;border-radius:8px;font-size:13px;font-weight:700;
+}
+.model-answer{
+  margin-top:10px;background:#eef7f0;border:1px solid #cfe6d4;border-radius:10px;
+  padding:12px 14px;font-size:14px;color:#20553a;display:none;
+}
+.model-answer.show{display:block;}
+.model-answer b{color:var(--ok);}
+
+/* compare table */
+.compare-table{width:100%;border-collapse:separate;border-spacing:0;font-size:14.5px;}
+.compare-table th,.compare-table td{padding:12px 14px;text-align:right;}
+.compare-table thead th{background:var(--teal);color:#fff;font-family:'Cairo';font-weight:700;}
+.compare-table thead th:first-child{border-radius:10px 0 0 0;}
+.compare-table thead th:last-child{border-radius:0 10px 0 0;}
+.compare-table tbody tr:nth-child(odd){background:#f6f1e3;}
+.compare-table tbody td:first-child{font-weight:700;color:var(--teal-deep);width:32%;}
+
+/* conclusion */
+.conclusion{
+  background:linear-gradient(160deg, var(--teal-deep), var(--teal));
+  color:#fdf8ec;border-radius:var(--radius);padding:30px 26px;
+}
+.conclusion h3{margin:0 0 12px;font-family:'Cairo';font-size:20px;}
+.conclusion .blank{
+  display:inline-block;min-width:160px;border-bottom:2px dashed rgba(255,255,255,.6);
+  text-align:center;font-weight:800;color:#ffe6c9;
+}
+.def-box{
+  margin-top:16px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.25);
+  border-radius:12px;padding:16px;font-size:14.5px;line-height:1.9;
+}
+
+/* discussion */
+.discuss{
+  background:#fff4e8;border:1px solid #f0d8b8;border-radius:var(--radius);
+  padding:22px 24px;display:flex;gap:16px;align-items:flex-start;
+}
+.discuss .icon{
+  flex:none;width:46px;height:46px;border-radius:50%;background:var(--flame);
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;font-weight:800;
+}
+.discuss p{margin:0;color:var(--ink-soft);}
+.discuss strong{color:var(--teal-deep);}
+
+footer{
+  text-align:center;padding:30px 20px;color:var(--ink-soft);font-size:13.5px;
+  border-top:1px solid var(--border);background:#fbf7ea;
+}
+
+@media(max-width:560px){
+  .lab-scene{height:380px;}
+  .flask{transform:scale(.82);right:20px;}
+  .thermo{right:150px;}
+  .condenser{right:180px;width:190px;}
+  .collector{right:370px;}
+  .tube-link{right:55px;width:120px;}
+}
+
+  /* ══ RESPONSIVE MOBILE & TABLET ══ */
+  @media (max-width: 768px) {
+    body { padding: 8px !important; font-size: 15px !important; overflow-x: hidden !important; }
+    .container, [class*="container"], [class*="wrapper"] { padding: 8px !important; max-width: 100% !important; }
+    canvas { width: 100% !important; height: auto !important; display: block !important; touch-action: none; max-width: 100% !important; }
+    svg { max-width: 100% !important; height: auto !important; }
+    h1 { font-size: clamp(18px,5vw,32px) !important; }
+    h2 { font-size: clamp(15px,4vw,26px) !important; }
+    h3 { font-size: clamp(13px,3.5vw,20px) !important; }
+    [class*="grid"] { grid-template-columns: 1fr !important; }
+    [class*="flex"] { flex-wrap: wrap !important; }
+    input[type="range"] { width: 100% !important; min-height: 36px; }
+    input[type="number"], input[type="text"], select, textarea {
+      font-size: 16px !important; width: 100% !important; box-sizing: border-box; padding: 8px !important; }
+    button { min-height: 44px !important; font-size: 14px !important; touch-action: manipulation; padding: 10px 14px !important; }
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 13px !important; }
+    th, td { padding: 6px 4px !important; }
+    header { padding: 10px 12px !important; }
+    .controls, [class*="controls"] { flex-direction: column !important; gap: 8px !important; }
+    .lab-window, [class*="lab-window"] { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+  }
+  @media (max-width: 480px) {
+    body { padding: 4px !important; }
+    button { width: 100% !important; }
+  }
+  /* ══ END RESPONSIVE ══ */
+</style>
+</head>
+<body>
+<style>
+.vlab-back{position:fixed;top:10px;left:10px;z-index:99999;
+background:rgba(10,22,40,0.93);border:1px solid rgba(0,200,150,0.4);
+border-radius:22px;padding:8px 16px;display:inline-flex;align-items:center;gap:7px;
+color:#00C896;font-family:Tajawal,Cairo,Arial,sans-serif;font-size:13px;font-weight:700;
+text-decoration:none;backdrop-filter:blur(8px);box-shadow:0 4px 18px rgba(0,0,0,0.3);
+transition:background 0.2s;}
+.vlab-back:hover{background:rgba(0,200,150,0.18);}
+</style>
+<a href="../grade5.html" class="vlab-back">&#8594; العودة للصف</a>
+
+
+<!-- ===================== HERO ===================== -->
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow">🧪 مادة العلوم والحياة — الصف الخامس — فلسطين</span>
+    <h1>التقطير: كيف نحصل على ماء نقيّ من محلول ملحي؟</h1>
+    <p class="lead">درس تفاعلي مع مختبر افتراضي ثلاثي الأبعاد تُجري فيه التجربة بنفسك، وتلاحظ، وتسجّل استنتاجاتك خطوة بخطوة — تماماً كما لو كنت في المختبر الحقيقي.</p>
+    <div class="hero-tags">
+      <span>⏱ نحو 25 دقيقة</span>
+      <span>🔬 تجربة تفاعلية كاملة</span>
+      <span>📓 ورقة عمل مدمجة</span>
+    </div>
+  </div>
+</header>
+
+<!-- ===================== ما هو التقطير ===================== -->
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker">أولاً</span>
+      <h2>ما هو التقطير؟</h2>
+      <p>طريقة فصل تُستخدم لفصل سائل عن المواد الذائبة فيه (كالأملاح)، اعتماداً على اختلاف قابلية موادّ الخليط للتبخّر عند درجات حرارة مختلفة.</p>
+    </div>
+
+    <div class="intro-grid">
+      <div class="card intro-text">
+        <h3>الفكرة ببساطة</h3>
+        <p>عندما نُسخّن محلول الماء والملح، يتبخّر <b>الماء</b> ويتحوّل إلى بخار، بينما يبقى <b>الملح</b> في قاع الدورق لأنه لا يتبخر عند تلك الدرجة. يمر البخار بعد ذلك في أنبوب بارد يُسمّى المكثّف، فيبرد ويتحوّل مرة أخرى إلى سائل، فنحصل في النهاية على ماء نقيّ خالٍ من الملح.</p>
+        <p>هذه العملية الطبيعية تحدث كل يوم في السماء من حولنا — في دورة الماء في الطبيعة!</p>
+        <div class="mini-cycle">
+          <div class="step">🔥 تسخين
+            <small>يسخن المحلول في الدورق</small>
+          </div>
+          <div class="step">💨 تبخّر
+            <small>الماء يتحول إلى بخار</small>
+          </div>
+          <div class="step">❄️ تكاثف
+            <small>البخار يبرد في المكثف</small>
+          </div>
+          <div class="step">💧 تجمّع
+            <small>ماء نقي في الدورق الجامع</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="card parts-card">
+        <h3>أجزاء جهاز التقطير الرئيسة</h3>
+        <ul class="parts-list">
+          <li><span class="dot d1"></span> مصدر حرارة (موقد)</li>
+          <li><span class="dot d2"></span> دورق التقطير (يحوي المحلول)</li>
+          <li><span class="dot d3"></span> مكثّف (يبرّد البخار)</li>
+          <li><span class="dot d4"></span> ميزان حراري (يقيس درجة الحرارة)</li>
+          <li><span class="dot d5"></span> دورق تجميع (يجمع الماء النقي)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== المختبر الافتراضي ===================== -->
+<section id="lab" style="background:#eef2ea;">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker">المختبر الافتراضي</span>
+      <h2>نفّذ تجربة التقطير بنفسك</h2>
+      <p>حرّك مقياس الحرارة أو اضغط "تسخين تلقائي"، وراقب ما يحدث داخل دورق التقطير وداخل المكثّف. سجّل ملاحظاتك في القسم التالي بناءً على ما تشاهده.</p>
+    </div>
+
+    <div class="card lab-card">
+      <div class="lab-toolbar">
+        <div class="status" id="statusBox"><span class="pulse"></span><span id="statusText">جاهز للبدء — الماء بارد</span></div>
+        <div class="controls">
+          <label class="toggle-labels"><input type="checkbox" id="labelsToggle"> إظهار أسماء الأجزاء</label>
+          <div class="heat-slider-wrap">
+            🌡️ الحرارة
+            <input type="range" id="heatSlider" min="0" max="100" value="0">
+          </div>
+          <button class="btn btn-secondary" id="autoBtn">تسخين تلقائي</button>
+          <button class="btn btn-ghost" id="resetBtn">إعادة التجربة</button>
+        </div>
+      </div>
+
+      <div class="lab-scene" id="labScene">
+        <div class="apparatus" id="apparatus">
+          <div class="bench"></div>
+
+          <!-- collector -->
+          <div class="collector">
+            <div class="coll-neck"></div>
+            <div class="coll-body"><div class="coll-liquid" id="collLiquid"></div></div>
+            <div class="part-label" style="bottom:0;right:0;">دورق التجميع</div>
+          </div>
+
+          <!-- condenser -->
+          <div class="condenser" id="condenser">
+            <div class="cond-jacket"></div>
+            <div class="cond-inner"></div>
+            <span class="cond-arrow in">دخول ماء بارد ⟵</span>
+            <span class="cond-arrow out">⟶ خروج ماء ساخن</span>
+            <div class="part-label" style="top:-34px;right:40px;">المكثّف</div>
+          </div>
+
+          <div class="tube-link"></div>
+
+          <!-- thermometer -->
+          <div class="thermo">
+            <div class="thermo-tube"><div class="thermo-fill" id="thermoFill"></div></div>
+            <div class="thermo-bulb"></div>
+            <div class="thermo-label" id="thermoLabel">20°م</div>
+            <div class="part-label" style="bottom:170px;right:-10px;">ميزان حراري</div>
+          </div>
+
+          <!-- flask -->
+          <div class="flask" id="flask">
+            <div class="flask-neck"></div>
+            <div class="flask-body">
+              <div class="liquid" id="liquid"></div>
+            </div>
+            <div class="part-label" style="bottom:-14px;right:10px;">دورق التقطير (محلول ملح)</div>
+          </div>
+
+          <!-- burner -->
+          <div class="stand-ring"></div>
+          <div class="stand"></div>
+          <div class="burner"></div>
+          <div class="flame" id="flame"><span></span></div>
+          <div class="part-label" style="bottom:40px;right:50px;">مصدر حرارة</div>
+        </div>
+      </div>
+
+      <div class="log-panel">
+        <h4>📓 سجل الملاحظات التلقائي</h4>
+        <ul class="log-list" id="logList">
+          <li>لم تبدأ التجربة بعد. حرّك مقياس الحرارة لبدء التسخين.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ورقة العمل ===================== -->
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker">سجّل ملاحظاتي</span>
+      <h2>ورقة العمل</h2>
+      <p>أجب عن الأسئلة التالية بعد ملاحظتك للتجربة في المختبر الافتراضي أعلاه. اكتب إجابتك ثم اضغط "أظهر الإجابة النموذجية" للتحقق.</p>
+    </div>
+
+    <div class="worksheet">
+
+      <div class="card q-card">
+        <div class="q-head"><span class="q-num">3</span><p>أكتبُ أسماء أجزاء جهاز التقطير الرئيسة:</p></div>
+        <textarea placeholder="اكتب إجابتك هنا..."></textarea>
+        <div class="q-actions"><button class="reveal-btn">أظهر الإجابة النموذجية</button></div>
+        <div class="model-answer"><b>الإجابة النموذجية:</b> مصدر حرارة، دورق التقطير، ميزان حراري، مكثّف، دورق التجميع.</div>
+      </div>
+
+      <div class="card q-card">
+        <div class="q-head"><span class="q-num">4</span><p>أراقبُ ما يحدث لمخلوط الماء والملح في دورق التقطير وأسجّل ملاحظاتي:</p></div>
+        <textarea placeholder="اكتب إجابتك هنا..."></textarea>
+        <div class="q-actions"><button class="reveal-btn">أظهر الإجابة النموذجية</button></div>
+        <div class="model-answer"><b>الإجابة النموذجية:</b> يسخن الماء في دورق التقطير ثم يتحول إلى بخار وينتقل عبر الأنبوب إلى المكثّف، بينما يبقى الملح في قاع الدورق لأنه لا يتبخر.</div>
+      </div>
+
+      <div class="card q-card">
+        <div class="q-head"><span class="q-num">5</span><p>ماذا أُسمّي العملية التي تحدث داخل دورق التقطير؟</p></div>
+        <textarea placeholder="اكتب إجابتك هنا..." style="min-height:50px;"></textarea>
+        <div class="q-actions"><button class="reveal-btn">أظهر الإجابة النموذجية</button></div>
+        <div class="model-answer"><b>الإجابة النموذجية:</b> التبخّر (التبخير).</div>
+      </div>
+
+      <div class="card q-card">
+        <div class="q-head"><span class="q-num">6</span><p>أراقبُ ما يحدث لبخار الماء في المكثّف وأسجّل ملاحظاتي:</p></div>
+        <textarea placeholder="اكتب إجابتك هنا..."></textarea>
+        <div class="q-actions"><button class="reveal-btn">أظهر الإجابة النموذجية</button></div>
+        <div class="model-answer"><b>الإجابة النموذجية:</b> يبرد بخار الماء داخل المكثّف ويتكاثف، أي يتحول من الحالة الغازية إلى الحالة السائلة، مكوّناً قطرات ماء نقي تنساب إلى دورق التجميع.</div>
+      </div>
+
+      <div class="card q-card">
+        <div class="q-head"><span class="q-num">7</span><p>ماذا أُسمّي العملية التي تحدث داخل المكثّف؟</p></div>
+        <textarea placeholder="اكتب إجابتك هنا..." style="min-height:50px;"></textarea>
+        <div class="q-actions"><button class="reveal-btn">أظهر الإجابة النموذجية</button></div>
+        <div class="model-answer"><b>الإجابة النموذجية:</b> التكاثف.</div>
+      </div>
+
+      <div class="card q-card">
+        <div class="q-head"><span class="q-num">8</span><p>أقارنُ بين صفات السائل الموجود في دورق التقطير والسائل المتجمّع في دورق التجميع:</p></div>
+        <table class="compare-table">
+          <thead><tr><th>الصفة</th><th>السائل في دورق التقطير</th><th>السائل في دورق التجميع</th></tr></thead>
+          <tbody>
+            <tr><td>التركيب</td><td>محلول ملحي (ماء + ملح)</td><td>ماء نقيّ</td></tr>
+            <tr><td>الطعم</td><td>مالح</td><td>بلا طعم</td></tr>
+            <tr><td>الصلاحية للشرب</td><td>غير صالح مباشرة</td><td>صالح للشرب</td></tr>
+          </tbody>
+        </table>
+        <div class="q-actions" style="margin-top:14px;"><button class="reveal-btn">أظهر التفسير</button></div>
+        <div class="model-answer"><b>التفسير:</b> السائل المتبقي في دورق التقطير محلول ملحي لأن الملح لا يتبخر ويبقى فيه، أما السائل المتجمع فهو ماء نقيّ خالٍ من الأملاح لأنه نتج من تكاثف بخار الماء وحده.</div>
+      </div>
+
+      <div class="card q-card">
+        <div class="q-head"><span class="q-num">9</span><p>أُسمّي الخاصية التي اعتمدت عليها طريقة الفصل:</p></div>
+        <textarea placeholder="اكتب إجابتك هنا..." style="min-height:60px;"></textarea>
+        <div class="q-actions"><button class="reveal-btn">أظهر الإجابة النموذجية</button></div>
+        <div class="model-answer"><b>الإجابة النموذجية:</b> اختلاف درجة غليان (تطاير) الماء عن الملح؛ فالماء يتبخر عند درجة حرارة معينة بينما يبقى الملح صلباً ولا يتبخر عند تلك الدرجة نفسها.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===================== الاستنتاج ===================== -->
+<section style="padding-top:0;">
+  <div class="wrap">
+    <div class="conclusion">
+      <h3>أستنتج أنّ:</h3>
+      <p>طريقة الفصل المستخدمة في هذه التجربة هي: <span class="blank">التقطير</span></p>
+      <div class="def-box">
+        <b>تعريف التقطير:</b> عملية فصل تعتمد على تسخين محلول حتى يتبخّر أحد مكوناته (الماء)، ثم تبريد البخار الناتج وتكثيفه، للحصول على سائل نقيّ منفصل عن المواد الذائبة فيه (كالأملاح).
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== أناقش زملائي ===================== -->
+<section style="padding-top:0;">
+  <div class="wrap">
+    <div class="discuss">
+      <div class="icon">؟</div>
+      <p><strong>أناقش زملائي:</strong> تُعدّ دورة الماء في الطبيعة مثالاً على عملية التقطير — كيف؟<br>
+      تُسخّن الشمس ماء البحار والمحيطات فيتبخر (كما يحدث في دورق التقطير)، ويتصاعد بخار الماء إلى الأجواء الباردة فيتكاثف مكوّناً السحب (كما يحدث في المكثّف)، ثم يسقط على شكل مطر نقيّ (كما يتجمع الماء في دورق التجميع)، تاركاً الأملاح خلفه في البحر.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  صُممت هذه الصفحة التعليمية التفاعلية لمبحث العلوم والحياة — الصف الخامس — منهاج فلسطين 🇵🇸
+</footer>
+
+<script>
+// ---------- state ----------
+let heat = 0;
+let autoTimer = null;
+let steamTimer = null;
+let temp = 20;
+let dropletCount = 0;
+let saltDots = 0;
+let liquidLevel = 62; // percent
+let evapAccum = 0;
+let stageLogged = {heating:false, boiling:false, condensing:false, collecting:false};
+
+const flame = document.getElementById('flame');
+const liquid = document.getElementById('liquid');
+const flask = document.getElementById('flask');
+const thermoFill = document.getElementById('thermoFill');
+const thermoLabel = document.getElementById('thermoLabel');
+const statusBox = document.getElementById('statusBox');
+const statusText = document.getElementById('statusText');
+const collLiquid = document.getElementById('collLiquid');
+const condenser = document.getElementById('condenser');
+const heatSlider = document.getElementById('heatSlider');
+const logList = document.getElementById('logList');
+const apparatus = document.getElementById('apparatus');
+
+function addLog(text){
+  const li = document.createElement('li');
+  const t = new Date();
+  const time = t.toLocaleTimeString('ar-EG', {hour:'2-digit', minute:'2-digit', second:'2-digit'});
+  li.innerHTML = '<b>' + time + '</b> — ' + text;
+  logList.appendChild(li);
+  logList.scrollTop = logList.scrollHeight;
+}
+
+function setStatus(cls, text){
+  statusBox.className = 'status ' + cls;
+  statusText.textContent = text;
+}
+
+function spawnBubble(){
+  if(heat < 25) return;
+  const b = document.createElement('div');
+  const size = 4 + Math.random()*5;
+  b.className = 'bubble';
+  b.style.width = size+'px';
+  b.style.height = size+'px';
+  b.style.right = (10 + Math.random()*90)+'px';
+  liquid.appendChild(b);
+  setTimeout(()=>b.remove(), 1700);
+}
+
+function spawnSteam(){
+  if(heat < 45) return;
+  const s = document.createElement('div');
+  const size = 5 + Math.random()*6;
+  s.className = 'steam-dot';
+  s.style.width = size+'px';
+  s.style.height = size+'px';
+  s.style.bottom = '218px';
+  s.style.right = (80 + Math.random()*20)+'px';
+  apparatus.appendChild(s);
+
+  const dx = -150 - Math.random()*60;
+  const dy = -6 + Math.random()*20;
+  s.animate([
+    {transform:'translate(0,0)', opacity:.85},
+    {transform:`translate(${dx}px, ${dy}px)`, opacity:0}
+  ], {duration: 2200, easing:'ease-out'});
+  setTimeout(()=>s.remove(), 2200);
+
+  // chance to form condensation on the condenser
+  if(Math.random() < 0.5){
+    setTimeout(spawnDew, 1400);
+  }
+}
+
+function spawnDew(){
+  const d = document.createElement('div');
+  d.className = 'dew';
+  d.style.right = (20 + Math.random()*180)+'px';
+  condenser.appendChild(d);
+  setTimeout(()=>{
+    d.style.transform = 'translateY(20px)';
+    d.style.opacity = '0';
+    setTimeout(()=>{
+      d.remove();
+      spawnDrip();
+    }, 1200);
+  }, 500);
+}
+
+function spawnDrip(){
+  const drip = document.createElement('div');
+  drip.className = 'drip';
+  drip.style.right = '470px';
+  drip.style.top = '278px';
+  apparatus.appendChild(drip);
+  setTimeout(()=>{
+    drip.remove();
+    collect();
+  }, 900);
+}
+
+function collect(){
+  dropletCount++;
+  const fill = Math.min(70, dropletCount * 1.6);
+  collLiquid.style.height = fill + '%';
+
+  // salt left behind: reduce liquid slightly & add salt crystal
+  evapAccum++;
+  if(evapAccum % 3 === 0 && liquidLevel > 30){
+    liquidLevel -= 1;
+    liquid.style.height = liquidLevel + '%';
+    addSaltDot();
+  }
+
+  if(!stageLogged.collecting){
+    stageLogged.collecting = true;
+    addLog('بدأت قطرات الماء النقي بالتجمّع في دورق التجميع.');
+  }
+  if(dropletCount === 15){
+    addLog('لاحظ: مستوى المحلول في دورق التقطير انخفض قليلاً، وترسّبت حبيبات ملح في القاع.');
+  }
+  if(fill >= 70 && !stageLogged.done){
+    stageLogged.done = true;
+    setStatus('done', 'اكتمل جمع كمية جيدة من الماء النقي ✔');
+    addLog('اكتمل جمع كمية كافية من الماء النقي في دورق التجميع.');
+  }
+}
+
+function addSaltDot(){
+  if(saltDots > 18) return;
+  saltDots++;
+  const dot = document.createElement('div');
+  dot.className = 'salt-dot';
+  dot.style.right = (10 + Math.random()*95)+'px';
+  dot.style.bottom = (3 + Math.random()*10)+'px';
+  document.getElementById('flask').querySelector('.flask-body').appendChild(dot);
+}
+
+function updateTemperature(){
+  temp = 20 + heat * 0.8; // up to ~100
+  thermoFill.style.height = Math.min(100, (temp-15)) + '%';
+  thermoLabel.textContent = Math.round(temp) + '°م';
+}
+
+function applyHeat(value){
+  heat = value;
+  heatSlider.value = value;
+  updateTemperature();
+
+  if(heat === 0){
+    flame.classList.remove('on');
+    setStatus('', 'جاهز للبدء — الماء بارد');
+    return;
+  }
+
+  flame.classList.add('on');
+
+  if(heat > 0 && heat < 45){
+    setStatus('active', 'يسخن الماء داخل دورق التقطير...');
+    if(!stageLogged.heating){
+      stageLogged.heating = true;
+      addLog('بدأ تسخين مخلوط الماء والملح في دورق التقطير، وبدأت درجة الحرارة بالارتفاع.');
+    }
+  } else if(heat >= 45 && heat < 75){
+    setStatus('active', 'الماء يتبخّر وينتقل البخار نحو المكثّف');
+    if(!stageLogged.boiling){
+      stageLogged.boiling = true;
+      addLog('بدأ الماء يتبخّر (عملية التبخّر)، وينتقل بخار الماء عبر الأنبوب باتجاه المكثّف، بينما يبقى الملح في الدورق.');
+    }
+  } else {
+    setStatus('condensing', 'البخار يتكاثف داخل المكثّف مكوّناً قطرات ماء نقي');
+    if(!stageLogged.condensing){
+      stageLogged.condensing = true;
+      addLog('يبرد بخار الماء داخل المكثّف ويتكاثف (يتحول إلى الحالة السائلة) مكوّناً قطرات ماء نقي.');
+    }
+  }
+}
+
+// ---------- background loops ----------
+setInterval(spawnBubble, 500);
+setInterval(spawnSteam, 900);
+
+// ---------- controls ----------
+heatSlider.addEventListener('input', (e)=>{
+  stopAuto();
+  applyHeat(parseInt(e.target.value));
+});
+
+document.getElementById('autoBtn').addEventListener('click', ()=>{
+  if(autoTimer){ stopAuto(); return; }
+  document.getElementById('autoBtn').textContent = 'إيقاف التسخين التلقائي';
+  let v = heat;
+  autoTimer = setInterval(()=>{
+    v = Math.min(100, v + 2);
+    applyHeat(v);
+    if(v >= 100){ stopAuto(); }
+  }, 400);
+});
+
+function stopAuto(){
+  if(autoTimer){ clearInterval(autoTimer); autoTimer = null; }
+  document.getElementById('autoBtn').textContent = 'تسخين تلقائي';
+}
+
+document.getElementById('resetBtn').addEventListener('click', ()=>{
+  stopAuto();
+  heat = 0; temp = 20; dropletCount = 0; saltDots = 0; liquidLevel = 62; evapAccum = 0;
+  stageLogged = {heating:false, boiling:false, condensing:false, collecting:false, done:false};
+  liquid.style.height = liquidLevel + '%';
+  collLiquid.style.height = '0%';
+  document.querySelectorAll('.salt-dot').forEach(d=>d.remove());
+  applyHeat(0);
+  logList.innerHTML = '<li>تمت إعادة ضبط التجربة. حرّك مقياس الحرارة لبدء التسخين من جديد.</li>';
+});
+
+document.getElementById('labelsToggle').addEventListener('change', (e)=>{
+  document.getElementById('labScene').classList.toggle('labels-on', e.target.checked);
+});
+
+// ---------- worksheet reveal buttons ----------
+document.querySelectorAll('.reveal-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const ans = btn.closest('.q-card').querySelector('.model-answer');
+    ans.classList.toggle('show');
+    btn.textContent = ans.classList.contains('show') ? 'إخفاء الإجابة النموذجية' : 'أظهر الإجابة النموذجية';
+  });
+});
+
+// init
+liquid.style.height = liquidLevel + '%';
+updateTemperature();
+</script>
+</body>
+</html>

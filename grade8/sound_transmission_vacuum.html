@@ -1,0 +1,1650 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="درس انتقال الصوت في الفراغ - العلوم والحياة - الصف الثامن - فلسطين">
+  <title>انتقال الصوت في الفراغ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    :root {
+      --bg-deep:    #060A14;
+      --bg-space:   #0A0E1A;
+      --bg-card:    #0F1628;
+      --bg-card2:   #131C35;
+      --blue-deep:  #0D1B4B;
+      --blue-mid:   #1E3A8A;
+      --blue-glow:  #3B82F6;
+      --gold:       #F59E0B;
+      --gold-light: #FCD34D;
+      --teal:       #06B6D4;
+      --red:        #EF4444;
+      --green:      #10B981;
+      --white:      #F8FAFC;
+      --gray:       #94A3B8;
+      --gray-dim:   #334155;
+      --font-display: 'Tajawal', 'Cairo', sans-serif;
+      --font-body:    'Cairo', 'Tajawal', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg-deep);
+      color: var(--white);
+      font-family: var(--font-body);
+      line-height: 1.7;
+      overflow-x: hidden;
+      direction: rtl;
+    }
+
+    /* ===== STARS BACKGROUND ===== */
+    #stars-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ===== LAYOUT ===== */
+    .page-wrap { position: relative; z-index: 1; }
+
+    /* ===== HERO ===== */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(59,130,246,0.15) 0%, transparent 70%);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      animation: pulse-glow 4s ease-in-out infinite;
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+      50%       { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(245,158,11,0.15);
+      border: 1px solid rgba(245,158,11,0.4);
+      color: var(--gold);
+      padding: 0.4rem 1.2rem;
+      border-radius: 100px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.03em;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 6vw, 4rem);
+      font-weight: 900;
+      line-height: 1.2;
+      background: linear-gradient(135deg, #fff 0%, #93C5FD 50%, var(--teal) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1rem;
+    }
+
+    .hero-sub {
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      color: var(--gray);
+      max-width: 550px;
+      margin: 0 auto 2.5rem;
+    }
+
+    .scroll-hint {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      color: var(--gray);
+      font-size: 0.8rem;
+      animation: bounce 2s ease-in-out infinite;
+    }
+    .scroll-hint svg { opacity: 0.6; }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(8px); }
+    }
+
+    /* ===== PLANET 3D ===== */
+    .hero-visual {
+      position: relative;
+      width: 220px; height: 220px;
+      margin: 0 auto 2.5rem;
+      perspective: 600px;
+    }
+    .planet {
+      width: 160px; height: 160px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse at 35% 35%,
+        #1a3a8f 0%, #0a1a5c 40%, #050d30 80%);
+      box-shadow:
+        0 0 40px rgba(59,130,246,0.4),
+        inset -20px -10px 30px rgba(0,0,0,0.6),
+        inset 10px 5px 20px rgba(255,255,255,0.05);
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      animation: planet-spin 20s linear infinite;
+    }
+    @keyframes planet-spin {
+      to { box-shadow:
+        0 0 40px rgba(59,130,246,0.4),
+        inset -20px -10px 30px rgba(0,0,0,0.6),
+        inset 10px 5px 20px rgba(255,255,255,0.05),
+        0 0 80px rgba(59,130,246,0.2); }
+    }
+    .orbit-ring {
+      position: absolute;
+      width: 200px; height: 60px;
+      border: 2px solid rgba(245,158,11,0.3);
+      border-radius: 50%;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%) rotateX(70deg);
+      animation: orbit-rotate 6s linear infinite;
+    }
+    .orbit-dot {
+      position: absolute;
+      width: 10px; height: 10px;
+      background: var(--gold);
+      border-radius: 50%;
+      top: -5px; left: calc(50% - 5px);
+      box-shadow: 0 0 10px var(--gold);
+    }
+    @keyframes orbit-rotate {
+      to { transform: translate(-50%, -50%) rotateX(70deg) rotateZ(360deg); }
+    }
+
+    /* ===== SECTIONS ===== */
+    section {
+      padding: 5rem 1.5rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      color: var(--teal);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 0.6rem;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 4vw, 2.5rem);
+      font-weight: 800;
+      margin-bottom: 1rem;
+      color: var(--white);
+    }
+
+    .section-desc {
+      color: var(--gray);
+      max-width: 650px;
+      font-size: 1rem;
+      margin-bottom: 2.5rem;
+    }
+
+    /* ===== 3D CARDS ===== */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .card-3d {
+      background: var(--bg-card);
+      border: 1px solid var(--gray-dim);
+      border-radius: 16px;
+      padding: 1.8rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      transform-style: preserve-3d;
+    }
+    .card-3d:hover {
+      transform: translateY(-6px) rotateX(2deg);
+      box-shadow: 0 20px 40px rgba(59,130,246,0.15), 0 0 0 1px rgba(59,130,246,0.3);
+    }
+    .card-3d::before {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 100%; height: 3px;
+      background: linear-gradient(90deg, transparent, var(--blue-glow), var(--teal));
+    }
+
+    .card-icon {
+      width: 52px; height: 52px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem;
+      margin-bottom: 1rem;
+    }
+    .card-icon.blue  { background: rgba(59,130,246,0.15); }
+    .card-icon.gold  { background: rgba(245,158,11,0.15); }
+    .card-icon.teal  { background: rgba(6,182,212,0.15); }
+    .card-icon.red   { background: rgba(239,68,68,0.15); }
+
+    .card-3d h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+      color: var(--white);
+    }
+    .card-3d p {
+      font-size: 0.9rem;
+      color: var(--gray);
+      line-height: 1.6;
+    }
+
+    /* ===== DIVIDER ===== */
+    .divider {
+      border: none;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gray-dim), transparent);
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    /* ===== OBJECTIVES ===== */
+    .objectives-box {
+      background: linear-gradient(135deg, rgba(245,158,11,0.08) 0%, rgba(59,130,246,0.08) 100%);
+      border: 1px solid rgba(245,158,11,0.25);
+      border-radius: 20px;
+      padding: 2rem 2.5rem;
+    }
+    .objectives-box h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--gold);
+      margin-bottom: 1.2rem;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .obj-list { list-style: none; display: flex; flex-direction: column; gap: 0.8rem; }
+    .obj-list li {
+      display: flex; align-items: flex-start; gap: 0.8rem;
+      font-size: 0.95rem; color: var(--white);
+    }
+    .obj-dot {
+      width: 22px; height: 22px; min-width: 22px;
+      border-radius: 50%;
+      background: var(--gold);
+      color: #000;
+      font-size: 0.7rem;
+      font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      margin-top: 2px;
+    }
+
+    /* ===== LAB SECTION ===== */
+    #lab-section {
+      max-width: 1200px;
+    }
+
+    .lab-container {
+      background: var(--bg-card);
+      border: 1px solid var(--gray-dim);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+    }
+
+    .lab-header {
+      background: linear-gradient(135deg, #0D1B4B 0%, #1E3A8A 100%);
+      padding: 1.2rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    .lab-header-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      display: flex; align-items: center; gap: 0.6rem;
+    }
+    .lab-status {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-size: 0.82rem;
+      color: var(--gray);
+    }
+    .status-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: blink 1.5s ease-in-out infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    .lab-body {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      min-height: 500px;
+    }
+
+    /* ===== EXPERIMENT CANVAS ===== */
+    .exp-canvas {
+      position: relative;
+      background: radial-gradient(ellipse at center, #050d2a 0%, #020610 100%);
+      overflow: hidden;
+      min-height: 460px;
+    }
+
+    /* Stars in lab */
+    .lab-stars { position: absolute; inset: 0; }
+    .lab-star {
+      position: absolute;
+      background: #fff;
+      border-radius: 50%;
+      animation: twinkle var(--dur) ease-in-out infinite;
+    }
+    @keyframes twinkle { 0%,100%{opacity:var(--op)} 50%{opacity:0.1} }
+
+    /* Bell jar */
+    .bell-jar-wrapper {
+      position: absolute;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .bell-jar-svg { filter: drop-shadow(0 0 20px rgba(59,130,246,0.3)); }
+
+    /* Bell inside jar */
+    .bell-elem {
+      position: absolute;
+      bottom: 70px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 2.5rem;
+      animation: bell-ring 0.15s ease-in-out infinite;
+      filter: drop-shadow(0 0 8px rgba(245,158,11,0.8));
+    }
+    .bell-elem.ringing { animation: bell-ring 0.12s ease-in-out infinite; }
+    .bell-elem.silent  { animation: none; }
+    @keyframes bell-ring {
+      0%,100% { transform: translateX(-50%) rotate(-8deg); }
+      50%      { transform: translateX(-50%) rotate(8deg); }
+    }
+
+    /* Sound waves */
+    .sound-waves {
+      position: absolute;
+      bottom: 120px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 200px; height: 200px;
+      pointer-events: none;
+    }
+    .wave-circle {
+      position: absolute;
+      border: 2px solid;
+      border-radius: 50%;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      animation: wave-expand 1.4s ease-out infinite;
+      opacity: 0;
+    }
+    .wave-circle:nth-child(1) { animation-delay: 0s;    border-color: rgba(245,158,11,0.8); }
+    .wave-circle:nth-child(2) { animation-delay: 0.35s; border-color: rgba(245,158,11,0.6); }
+    .wave-circle:nth-child(3) { animation-delay: 0.7s;  border-color: rgba(245,158,11,0.4); }
+    .wave-circle:nth-child(4) { animation-delay: 1.05s; border-color: rgba(245,158,11,0.2); }
+
+    @keyframes wave-expand {
+      0%   { width: 20px;  height: 20px;  opacity: 0.9; }
+      100% { width: 180px; height: 180px; opacity: 0; }
+    }
+
+    .sound-waves.blocked .wave-circle {
+      animation-name: wave-blocked;
+      border-color: rgba(239,68,68,0.5) !important;
+    }
+    @keyframes wave-blocked {
+      0%   { width: 20px;  height: 20px;  opacity: 0.7; }
+      50%  { width: 80px;  height: 80px;  opacity: 0.3; }
+      100% { width: 80px;  height: 80px;  opacity: 0; }
+    }
+
+    /* Vacuum gauge */
+    .vacuum-gauge {
+      position: absolute;
+      top: 20px; left: 20px;
+      background: rgba(15,22,40,0.9);
+      border: 1px solid var(--gray-dim);
+      border-radius: 12px;
+      padding: 0.8rem 1.2rem;
+      min-width: 160px;
+    }
+    .gauge-label { font-size: 0.72rem; color: var(--gray); margin-bottom: 0.4rem; }
+    .gauge-bar-bg {
+      height: 8px;
+      background: var(--gray-dim);
+      border-radius: 100px;
+      overflow: hidden;
+    }
+    .gauge-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--green), var(--gold), var(--red));
+      border-radius: 100px;
+      transition: width 0.5s ease;
+      width: 100%;
+    }
+    .gauge-value {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-top: 0.3rem;
+      color: var(--white);
+    }
+    .gauge-unit { font-size: 0.72rem; color: var(--gray); }
+
+    /* Result banner */
+    .result-banner {
+      position: absolute;
+      bottom: 20px; left: 50%;
+      transform: translateX(-50%);
+      background: rgba(15,22,40,0.95);
+      border: 1px solid;
+      border-radius: 12px;
+      padding: 0.8rem 1.5rem;
+      text-align: center;
+      font-weight: 600;
+      font-size: 0.9rem;
+      white-space: nowrap;
+      transition: all 0.4s ease;
+      display: none;
+    }
+    .result-banner.show { display: block; }
+    .result-banner.sound { border-color: var(--green); color: var(--green); }
+    .result-banner.no-sound { border-color: var(--red); color: var(--red); }
+
+    /* ear icon */
+    .ear-icon {
+      position: absolute;
+      top: 20px; right: 20px;
+      font-size: 2.2rem;
+      transition: all 0.4s;
+      filter: grayscale(1);
+    }
+    .ear-icon.hearing { filter: grayscale(0) drop-shadow(0 0 10px var(--green)); animation: ear-bounce 0.5s ease-in-out infinite alternate; }
+    .ear-icon.deaf    { filter: grayscale(1); }
+    @keyframes ear-bounce { to { transform: scale(1.1); } }
+
+    /* pump */
+    .pump-icon {
+      position: absolute;
+      bottom: 20px; right: 20px;
+      font-size: 2rem;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .pump-icon:hover { transform: scale(1.1); }
+    .pump-icon.pumping { animation: pump-anim 0.3s ease-in-out; }
+    @keyframes pump-anim { 0%{transform:scale(1)} 50%{transform:scale(0.85)} 100%{transform:scale(1)} }
+
+    /* ===== LAB CONTROLS ===== */
+    .lab-controls {
+      background: var(--bg-card2);
+      border-right: 1px solid var(--gray-dim);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      overflow-y: auto;
+    }
+
+    .ctrl-title {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--teal);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.2rem;
+    }
+
+    .ctrl-group { display: flex; flex-direction: column; gap: 0.5rem; }
+
+    .ctrl-btn {
+      display: flex; align-items: center; gap: 0.6rem;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--gray-dim);
+      border-radius: 10px;
+      padding: 0.7rem 1rem;
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      width: 100%;
+      text-align: right;
+    }
+    .ctrl-btn:hover { background: rgba(59,130,246,0.1); border-color: var(--blue-glow); }
+    .ctrl-btn.active { background: rgba(59,130,246,0.2); border-color: var(--blue-glow); color: #93C5FD; }
+    .ctrl-btn.danger { background: rgba(239,68,68,0.1); border-color: var(--red); color: #FCA5A5; }
+    .ctrl-btn.success { background: rgba(16,185,129,0.1); border-color: var(--green); color: #6EE7B7; }
+
+    .slider-wrap { display: flex; flex-direction: column; gap: 0.4rem; }
+    .slider-label { display: flex; justify-content: space-between; font-size: 0.82rem; color: var(--gray); }
+    .slider-label span:last-child { color: var(--white); font-weight: 600; }
+    input[type="range"] {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 6px;
+      background: var(--gray-dim);
+      border-radius: 100px;
+      outline: none;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: var(--blue-glow);
+      cursor: pointer;
+      box-shadow: 0 0 8px rgba(59,130,246,0.5);
+    }
+
+    .divider-ctrl {
+      height: 1px;
+      background: var(--gray-dim);
+      border: none;
+    }
+
+    /* ===== STEPS SECTION ===== */
+    .steps-timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      position: relative;
+    }
+    .steps-timeline::before {
+      content: '';
+      position: absolute;
+      top: 0; right: 24px;
+      width: 2px;
+      height: 100%;
+      background: linear-gradient(to bottom, var(--blue-glow), transparent);
+    }
+
+    .step-item {
+      display: flex;
+      gap: 1.2rem;
+      padding: 1.2rem 0 1.2rem 1rem;
+      position: relative;
+    }
+    .step-num {
+      width: 48px; height: 48px; min-width: 48px;
+      border-radius: 50%;
+      background: var(--bg-card2);
+      border: 2px solid var(--gray-dim);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800;
+      font-size: 1rem;
+      color: var(--gray);
+      position: relative;
+      z-index: 1;
+      transition: all 0.3s;
+    }
+    .step-item.active .step-num {
+      background: var(--blue-mid);
+      border-color: var(--blue-glow);
+      color: #fff;
+      box-shadow: 0 0 15px rgba(59,130,246,0.4);
+    }
+    .step-item.done .step-num {
+      background: var(--green);
+      border-color: var(--green);
+      color: #fff;
+    }
+    .step-content h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.3rem; }
+    .step-content p  { font-size: 0.83rem; color: var(--gray); line-height: 1.5; }
+
+    /* ===== RESULTS TABLE ===== */
+    .results-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--gray-dim);
+      border-radius: 20px;
+      padding: 2rem;
+      margin-top: 2rem;
+    }
+    .results-panel h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      display: flex; align-items: center; gap: 0.5rem;
+      color: var(--teal);
+    }
+
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .result-card {
+      background: var(--bg-card2);
+      border-radius: 14px;
+      padding: 1.2rem;
+      border: 1px solid var(--gray-dim);
+      transition: all 0.3s;
+    }
+    .result-card.filled { border-color: var(--green); background: rgba(16,185,129,0.07); }
+    .result-card .rc-label { font-size: 0.78rem; color: var(--gray); margin-bottom: 0.4rem; }
+    .result-card .rc-val {
+      font-size: 1.4rem; font-weight: 800;
+      color: var(--gray);
+      transition: color 0.3s;
+    }
+    .result-card.filled .rc-val { color: var(--white); }
+    .result-card .rc-sub { font-size: 0.78rem; color: var(--gray); margin-top: 0.2rem; }
+
+    /* ===== CONCLUSION ===== */
+    .conclusion-box {
+      background: linear-gradient(135deg, rgba(6,182,212,0.08) 0%, rgba(16,185,129,0.08) 100%);
+      border: 1px solid rgba(6,182,212,0.3);
+      border-radius: 20px;
+      padding: 2rem 2.5rem;
+      margin-top: 2rem;
+    }
+    .conclusion-box h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--teal);
+      margin-bottom: 1.2rem;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .conclusion-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.8rem;
+      margin-bottom: 1rem;
+      padding: 0.8rem;
+      background: rgba(255,255,255,0.03);
+      border-radius: 10px;
+      border-right: 3px solid var(--teal);
+      transition: all 0.3s;
+      opacity: 0.3;
+    }
+    .conclusion-item.revealed { opacity: 1; }
+    .conclusion-item .ci-icon { font-size: 1.3rem; }
+    .conclusion-item p { font-size: 0.9rem; color: var(--white); line-height: 1.5; }
+
+    /* ===== QUIZ ===== */
+    .quiz-box {
+      background: var(--bg-card);
+      border: 1px solid var(--gray-dim);
+      border-radius: 20px;
+      padding: 2rem 2.5rem;
+    }
+    .quiz-q {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--white);
+    }
+    .quiz-options { display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 1rem; }
+    .quiz-opt {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--gray-dim);
+      border-radius: 10px;
+      padding: 0.75rem 1rem;
+      cursor: pointer;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      color: var(--white);
+      transition: all 0.2s;
+      text-align: right;
+    }
+    .quiz-opt:hover { border-color: var(--blue-glow); background: rgba(59,130,246,0.08); }
+    .quiz-opt.correct { border-color: var(--green); background: rgba(16,185,129,0.12); color: #6EE7B7; }
+    .quiz-opt.wrong   { border-color: var(--red);   background: rgba(239,68,68,0.12);   color: #FCA5A5; }
+    .quiz-feedback { font-size: 0.88rem; margin-top: 0.5rem; font-weight: 600; }
+    .quiz-feedback.ok  { color: var(--green); }
+    .quiz-feedback.err { color: var(--red); }
+
+    .quiz-nav { display: flex; gap: 0.8rem; margin-top: 1rem; }
+    .btn-primary {
+      background: var(--blue-glow);
+      border: none;
+      border-radius: 10px;
+      padding: 0.7rem 1.5rem;
+      color: #fff;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-primary:hover { background: #2563EB; transform: translateY(-1px); }
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid var(--gray-dim);
+      border-radius: 10px;
+      padding: 0.7rem 1.5rem;
+      color: var(--gray);
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-secondary:hover { border-color: var(--white); color: var(--white); }
+
+    /* ===== FOOTER ===== */
+    footer {
+      border-top: 1px solid var(--gray-dim);
+      padding: 2rem 1.5rem;
+      text-align: center;
+      color: var(--gray);
+      font-size: 0.82rem;
+    }
+    footer strong { color: var(--gold); }
+
+    /* ===== MOBILE ===== */
+    @media (max-width: 768px) {
+      .lab-body { grid-template-columns: 1fr; }
+      .lab-controls { border-right: none; border-top: 1px solid var(--gray-dim); }
+      .steps-timeline::before { display: none; }
+      section { padding: 3rem 1rem; }
+      .lab-header { padding: 1rem; }
+      .conclusion-box, .objectives-box { padding: 1.2rem; }
+      .results-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 480px) {
+      .hero-visual { width: 160px; height: 160px; }
+      .planet { width: 120px; height: 120px; }
+      .orbit-ring { width: 150px; height: 45px; }
+      .results-grid { grid-template-columns: 1fr; }
+      .quiz-nav { flex-direction: column; }
+    }
+
+    /* ===== PROGRESS BAR ===== */
+    .progress-bar {
+      position: fixed;
+      top: 0; left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--blue-glow), var(--teal));
+      z-index: 1000;
+      transition: width 0.2s;
+      width: 0%;
+    }
+
+    /* ===== NOTIFY ===== */
+    .notify {
+      position: fixed;
+      bottom: 2rem; right: 2rem;
+      background: var(--bg-card);
+      border: 1px solid var(--green);
+      color: var(--green);
+      padding: 0.8rem 1.5rem;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      z-index: 999;
+      transform: translateX(150%);
+      transition: transform 0.4s ease;
+    }
+    .notify.show { transform: translateX(0); }
+
+    /* scroll animations */
+    .fade-in { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+  
+  /* ═══ RESPONSIVE MOBILE & TABLET — AUTO-INJECTED ═══ */
+  @media (max-width: 768px) {
+    body { padding: 8px !important; font-size: 15px !important; overflow-x: hidden !important; }
+    .container, [class*="container"], [class*="wrapper"] { padding: 8px !important; max-width: 100% !important; }
+    canvas { width: 100% !important; height: auto !important; display: block !important; touch-action: none; max-width: 100% !important; }
+    svg { max-width: 100% !important; height: auto !important; }
+    h1 { font-size: clamp(18px, 5vw, 32px) !important; }
+    h2 { font-size: clamp(16px, 4vw, 26px) !important; }
+    h3 { font-size: clamp(14px, 3.5vw, 22px) !important; }
+    p, li, td, th, label, span { font-size: clamp(13px, 3.5vw, 16px) !important; }
+    [class*="grid"] { grid-template-columns: 1fr !important; }
+    [class*="flex"] { flex-wrap: wrap !important; }
+    input[type="range"] { width: 100% !important; min-height: 36px; }
+    input[type="number"], input[type="text"], select, textarea { 
+      font-size: 16px !important; width: 100% !important; box-sizing: border-box; padding: 8px !important;
+    }
+    button { min-height: 44px !important; font-size: 14px !important; touch-action: manipulation; padding: 10px 14px !important; }
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 13px !important; }
+    th, td { padding: 6px 4px !important; white-space: nowrap; }
+    [style*="display: grid"], [style*="display:grid"] { display: flex !important; flex-direction: column !important; }
+    .lab-window, [class*="lab-window"] { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+    header { padding: 12px !important; }
+    .controls, [class*="controls"] { flex-direction: column !important; gap: 8px !important; }
+  }
+  @media (max-width: 480px) {
+    body { padding: 4px !important; }
+    h1 { font-size: clamp(16px, 5vw, 24px) !important; }
+    button { width: 100% !important; }
+  }
+  /* ═══ END RESPONSIVE ═══ */
+</style>
+</head>
+<body>
+
+<style>
+.vlab-back-btn {
+  position: fixed; top: 10px; left: 10px; z-index: 99999;
+  background: rgba(10,22,40,0.93); border: 1px solid rgba(0,200,150,0.4);
+  border-radius: 22px; padding: 8px 16px;
+  display: inline-flex; align-items: center; gap: 7px;
+  color: #00C896; font-family: Tajawal, Cairo, Arial, sans-serif;
+  font-size: 13px; font-weight: 700; text-decoration: none;
+  backdrop-filter: blur(8px); box-shadow: 0 4px 18px rgba(0,0,0,0.3);
+  transition: background 0.2s;
+}
+.vlab-back-btn:hover { background: rgba(0,200,150,0.18); color: #00C896; }
+</style>
+
+<a href="../grade8.html" class="vlab-back-btn">&#8594; العودة للصف</a>
+
+
+<div class="progress-bar" id="progressBar"></div>
+<canvas id="stars-canvas"></canvas>
+
+<div class="page-wrap">
+
+  <!-- HERO -->
+  <section class="hero" style="max-width:none; padding: 0 1.5rem;">
+    <span class="badge">🔬 العلوم والحياة · الصف الثامن · فلسطين</span>
+    <div class="hero-visual">
+      <div class="planet"></div>
+      <div class="orbit-ring"><div class="orbit-dot"></div></div>
+    </div>
+    <h1 class="hero-title">هل ينتقل الصوت<br>في الفراغ؟</h1>
+    <p class="hero-sub">
+      استكشف أسرار الصوت والفضاء من خلال مختبر افتراضي تفاعلي مصمم خصيصاً لك
+    </p>
+    <div class="scroll-hint">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
+      <span>مرر للأسفل للبدء</span>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- OBJECTIVES -->
+  <section class="fade-in">
+    <div class="section-label">📋 أهداف الدرس</div>
+    <h2 class="section-title">ماذا ستتعلم اليوم؟</h2>
+    <div class="objectives-box">
+      <h3>⭐ الأهداف التعليمية</h3>
+      <ul class="obj-list">
+        <li><span class="obj-dot">١</span><span>أن تُعرّف الصوت وتُوضّح كيف ينتج</span></li>
+        <li><span class="obj-dot">٢</span><span>أن تُميّز بين وسط الانتقال ودوره في نقل الصوت</span></li>
+        <li><span class="obj-dot">٣</span><span>أن تستنتج أن الصوت لا ينتقل في الفراغ</span></li>
+        <li><span class="obj-dot">٤</span><span>أن تُفسّر سبب صمت الفضاء الخارجي</span></li>
+        <li><span class="obj-dot">٥</span><span>أن تربط نتائج التجربة بالظواهر الكونية الحقيقية</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- CONCEPTS -->
+  <section class="fade-in">
+    <div class="section-label">💡 المفاهيم الأساسية</div>
+    <h2 class="section-title">قبل أن تبدأ التجربة</h2>
+    <p class="section-desc">إليك المفاهيم الضرورية التي ستحتاجها لفهم ما ستشاهده في المختبر الافتراضي</p>
+    <div class="cards-grid">
+      <div class="card-3d">
+        <div class="card-icon blue">🔊</div>
+        <h3>ما هو الصوت؟</h3>
+        <p>الصوت موجة ميكانيكية طولية تنتج عن اهتزاز الأجسام. يحتاج الصوت إلى وسط مادي (صلب، سائل، أو غاز) لكي ينتقل من مكان إلى آخر.</p>
+      </div>
+      <div class="card-3d">
+        <div class="card-icon gold">⚗️</div>
+        <h3>الفراغ (Vacuum)</h3>
+        <p>الفراغ هو منطقة لا تحتوي على أي مادة. في الفراغ لا توجد جزيئات يمكن للصوت أن يُحرّكها، وهذا هو السبب في صمت الفضاء الخارجي تماماً.</p>
+      </div>
+      <div class="card-3d">
+        <div class="card-icon teal">🌊</div>
+        <h3>وسط الانتقال</h3>
+        <p>لكي ينتقل الصوت، لا بدّ من وجود وسط مادي. يُحرّك الصوتُ جزيئاتِ الوسط، التي تنقل الطاقة إلى الجزيئات المجاورة وهكذا.</p>
+      </div>
+      <div class="card-3d">
+        <div class="card-icon red">🚀</div>
+        <h3>الصوت في الفضاء</h3>
+        <p>في أفلام الفضاء تسمع انفجارات وأصواتاً، لكن هذا خاطئ علمياً! الفضاء فراغ شبه تام، والانفجارات الحقيقية هناك صامتة تماماً.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- STEPS -->
+  <section class="fade-in">
+    <div class="section-label">🧪 خطوات التجربة</div>
+    <h2 class="section-title">التجربة: اختبار انتقال الصوت في الفراغ</h2>
+    <p class="section-desc">سنضع جرس كهربائي داخل غطاء زجاجي محكم ثم نسحب الهواء تدريجياً لنرى ما يحدث للصوت</p>
+    <div class="steps-timeline" id="stepsTimeline">
+      <div class="step-item active" id="step-1">
+        <div class="step-num">١</div>
+        <div class="step-content">
+          <h4>ضع الجرس داخل الوعاء الزجاجي</h4>
+          <p>ضع جرساً كهربائياً داخل غطاء زجاجي شفاف يمكنك رؤية محتوياته. تأكد من إحكام الغطاء جيداً.</p>
+        </div>
+      </div>
+      <div class="step-item" id="step-2">
+        <div class="step-num">٢</div>
+        <div class="step-content">
+          <h4>شغّل الجرس وسجّل ما تسمع</h4>
+          <p>قبل سحب الهواء، شغّل الجرس. هل تسمعه؟ الوعاء مملوء بالهواء حالياً. سجّل ملاحظتك.</p>
+        </div>
+      </div>
+      <div class="step-item" id="step-3">
+        <div class="step-num">٣</div>
+        <div class="step-content">
+          <h4>اسحب الهواء تدريجياً</h4>
+          <p>استخدم المضخة (مضخة تفريغ) لسحب الهواء من داخل الوعاء تدريجياً، مع الاستمرار في تشغيل الجرس.</p>
+        </div>
+      </div>
+      <div class="step-item" id="step-4">
+        <div class="step-num">٤</div>
+        <div class="step-content">
+          <h4>لاحظ تغيّر شدة الصوت</h4>
+          <p>كلما قلّ الهواء، تضعف شدة الصوت تدريجياً حتى يختفي تماماً عند الفراغ التام.</p>
+        </div>
+      </div>
+      <div class="step-item" id="step-5">
+        <div class="step-num">٥</div>
+        <div class="step-content">
+          <h4>أعد الهواء واستنتج</h4>
+          <p>عند إعادة الهواء إلى الوعاء، يعود الصوت تدريجياً. ما الذي يدل عليه ذلك؟</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- VIRTUAL LAB -->
+  <section id="lab-section" class="fade-in" style="max-width:1200px;">
+    <div class="section-label">🔬 المختبر الافتراضي</div>
+    <h2 class="section-title">نفّذ التجربة بنفسك</h2>
+    <p class="section-desc">تفاعل مع المختبر الافتراضي واكتشف نتائجك الخاصة</p>
+
+    <div class="lab-container">
+      <div class="lab-header">
+        <div class="lab-header-title">
+          🧪 مختبر انتقال الصوت في الفراغ
+        </div>
+        <div class="lab-status">
+          <div class="status-dot"></div>
+          <span>المختبر جاهز للتجربة</span>
+        </div>
+      </div>
+
+      <div class="lab-body">
+        <!-- EXPERIMENT AREA -->
+        <div class="exp-canvas" id="expCanvas">
+          <div class="lab-stars" id="labStars"></div>
+
+          <!-- Vacuum gauge -->
+          <div class="vacuum-gauge">
+            <div class="gauge-label">ضغط الهواء</div>
+            <div class="gauge-bar-bg">
+              <div class="gauge-bar-fill" id="gaugeFill" style="width:100%"></div>
+            </div>
+            <div class="gauge-value" id="gaugeVal">101.3</div>
+            <div class="gauge-unit">كيلوباسكال (kPa)</div>
+          </div>
+
+          <!-- Ear indicator -->
+          <div class="ear-icon hearing" id="earIcon">👂</div>
+
+          <!-- Bell Jar SVG -->
+          <div class="bell-jar-wrapper" id="bellJarWrapper">
+            <svg class="bell-jar-svg" width="200" height="280" viewBox="0 0 200 280" id="bellJarSVG">
+              <defs>
+                <linearGradient id="jarGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%"   stop-color="#3B82F6" stop-opacity="0.3"/>
+                  <stop offset="40%"  stop-color="#93C5FD" stop-opacity="0.1"/>
+                  <stop offset="100%" stop-color="#3B82F6" stop-opacity="0.25"/>
+                </linearGradient>
+                <linearGradient id="baseGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#334155"/>
+                  <stop offset="100%" stop-color="#1E293B"/>
+                </linearGradient>
+              </defs>
+              <!-- Base -->
+              <ellipse cx="100" cy="255" rx="90" ry="18" fill="url(#baseGrad)" stroke="#475569" stroke-width="1.5"/>
+              <!-- Jar body -->
+              <path d="M20 250 Q10 150 30 60 Q60 10 100 10 Q140 10 170 60 Q190 150 180 250 Z"
+                    fill="url(#jarGrad)" stroke="#93C5FD" stroke-width="1.5" stroke-opacity="0.5"/>
+              <!-- Shine -->
+              <path d="M35 220 Q30 130 50 60 Q65 25 85 18"
+                    fill="none" stroke="#fff" stroke-width="3" stroke-opacity="0.12" stroke-linecap="round"/>
+              <!-- Top knob -->
+              <ellipse cx="100" cy="10" rx="15" ry="8" fill="#475569"/>
+              <rect x="95" y="8" width="10" height="12" fill="#475569"/>
+              <!-- Air particles -->
+              <g id="airParticles"></g>
+            </svg>
+
+            <!-- Bell -->
+            <div class="bell-elem silent" id="bellElem">🔔</div>
+
+            <!-- Sound waves -->
+            <div class="sound-waves" id="soundWaves">
+              <div class="wave-circle"></div>
+              <div class="wave-circle"></div>
+              <div class="wave-circle"></div>
+              <div class="wave-circle"></div>
+            </div>
+          </div>
+
+          <!-- Result banner -->
+          <div class="result-banner" id="resultBanner"></div>
+        </div>
+
+        <!-- CONTROLS -->
+        <div class="lab-controls">
+          <div class="ctrl-title">🎛️ تحكم في التجربة</div>
+
+          <div class="ctrl-group">
+            <button class="ctrl-btn" id="btnBell" onclick="toggleBell()">
+              🔔 تشغيل الجرس
+            </button>
+          </div>
+
+          <hr class="divider-ctrl">
+
+          <div class="ctrl-title">🌬️ إدارة الهواء</div>
+          <div class="ctrl-group">
+            <button class="ctrl-btn danger" id="btnPump" onclick="pumpAir()">
+              🔧 سحب الهواء (مضخة)
+            </button>
+            <button class="ctrl-btn success" id="btnReturn" onclick="returnAir()">
+              💨 إعادة الهواء
+            </button>
+          </div>
+
+          <hr class="divider-ctrl">
+
+          <div class="ctrl-title">🔊 شدة الصوت المُسمَعة</div>
+          <div class="slider-wrap">
+            <div class="slider-label"><span>هادئ</span><span id="volLabel">100%</span><span>عالٍ</span></div>
+            <input type="range" id="volSlider" min="0" max="100" value="100" disabled>
+          </div>
+
+          <hr class="divider-ctrl">
+
+          <div class="ctrl-title">📊 حالة التجربة</div>
+          <div style="font-size:0.82rem; color:var(--gray); line-height:1.6;" id="labStatus">
+            الوعاء مليء بالهواء. شغّل الجرس وابدأ بسحب الهواء لرؤية ما سيحدث.
+          </div>
+
+          <hr class="divider-ctrl">
+          <button class="ctrl-btn" onclick="resetLab()" style="border-color:var(--gold);color:var(--gold);">
+            🔄 إعادة ضبط التجربة
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESULTS -->
+    <div class="results-panel fade-in" id="resultsPanel">
+      <h3>📋 جدول نتائج التجربة</h3>
+      <div class="results-grid">
+        <div class="result-card" id="rc1">
+          <div class="rc-label">عند الضغط الطبيعي (الهواء كامل)</div>
+          <div class="rc-val" id="rv1">لم يُسجَّل بعد</div>
+          <div class="rc-sub">هل تُسمع الصوت؟</div>
+        </div>
+        <div class="result-card" id="rc2">
+          <div class="rc-label">عند تقليل الهواء (50%)</div>
+          <div class="rc-val" id="rv2">لم يُسجَّل بعد</div>
+          <div class="rc-sub">هل تُسمع الصوت؟</div>
+        </div>
+        <div class="result-card" id="rc3">
+          <div class="rc-label">عند الفراغ التام (0%)</div>
+          <div class="rc-val" id="rv3">لم يُسجَّل بعد</div>
+          <div class="rc-sub">هل تُسمع الصوت؟</div>
+        </div>
+        <div class="result-card" id="rc4">
+          <div class="rc-label">بعد إعادة الهواء</div>
+          <div class="rc-val" id="rv4">لم يُسجَّل بعد</div>
+          <div class="rc-sub">هل عاد الصوت؟</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- CONCLUSIONS -->
+  <section class="fade-in">
+    <div class="section-label">🎯 الاستنتاجات</div>
+    <h2 class="section-title">ماذا تعلّمنا من التجربة؟</h2>
+    <div class="conclusion-box">
+      <h3>🔬 استنتاجات التجربة</h3>
+      <div class="conclusion-item" id="con1">
+        <span class="ci-icon">✅</span>
+        <p><strong>الصوت ينتقل في الهواء:</strong> عندما كان الوعاء مليئاً بالهواء، سمعنا الجرس بوضوح تام، لأن الهواء وسط مادي يمكنه نقل الاهتزازات.</p>
+      </div>
+      <div class="conclusion-item" id="con2">
+        <span class="ci-icon">📉</span>
+        <p><strong>الصوت يضعف بتقليل الهواء:</strong> كلما سحبنا الهواء أكثر، ضعف الصوت أكثر. هذا يدل على أن الصوت يحتاج إلى وسط مادي لنقله.</p>
+      </div>
+      <div class="conclusion-item" id="con3">
+        <span class="ci-icon">🚫</span>
+        <p><strong>الصوت لا ينتقل في الفراغ:</strong> عند إزالة الهواء تماماً، توقفنا عن سماع الجرس رغم أنه لا يزال يهتز. الفراغ لا ينقل الصوت!</p>
+      </div>
+      <div class="conclusion-item" id="con4">
+        <span class="ci-icon">↩️</span>
+        <p><strong>إعادة الهواء تُعيد الصوت:</strong> عند ضخ الهواء مجدداً، عاد الصوت. هذا يُثبت أن الصوت يحتاج لوسط مادي وليس لمصدر الاهتزاز فقط.</p>
+      </div>
+      <div class="conclusion-item" id="con5">
+        <span class="ci-icon">🌌</span>
+        <p><strong>الفضاء الخارجي صامت:</strong> الفضاء فراغ شبه تام. لهذا لا يوجد صوت في الفضاء، وما تسمعه في أفلام الخيال العلمي مجرد تأثيرات درامية غير حقيقية!</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- QUIZ -->
+  <section class="fade-in">
+    <div class="section-label">✏️ اختبر فهمك</div>
+    <h2 class="section-title">أسئلة تقييمية</h2>
+    <div class="quiz-box" id="quizBox">
+      <div id="quizContent"></div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>🌍 مصمّم خصيصاً لمنهاج <strong>العلوم والحياة</strong> · الصف الثامن الأساسي · فلسطين</p>
+    <p style="margin-top:0.4rem; opacity:0.6;">جميع الحقوق محفوظة · المختبر الافتراضي التفاعلي</p>
+  </footer>
+</div>
+
+<div class="notify" id="notify"></div>
+
+<script>
+/* ===================== STARS ===================== */
+(function(){
+  const c = document.getElementById('stars-canvas');
+  const ctx = c.getContext('2d');
+  let W, H, stars = [];
+  
+  function resize(){
+    W = c.width = window.innerWidth;
+    H = c.height = window.innerHeight;
+    stars = Array.from({length:180}, () => ({
+      x: Math.random()*W, y: Math.random()*H,
+      r: Math.random()*1.5+0.3,
+      op: Math.random()*0.7+0.1,
+      sp: Math.random()*0.008+0.002
+    }));
+  }
+  
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    stars.forEach(s => {
+      s.op += s.sp; if(s.op>0.9||s.op<0.1) s.sp*=-1;
+      ctx.beginPath();
+      ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fillStyle = `rgba(255,255,255,${s.op})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  resize();
+  window.addEventListener('resize', resize);
+  draw();
+})();
+
+/* ===================== LAB STARS ===================== */
+(function(){
+  const c = document.getElementById('labStars');
+  for(let i=0;i<40;i++){
+    const s = document.createElement('div');
+    s.className = 'lab-star';
+    const sz = Math.random()*2+0.5;
+    s.style.cssText = `
+      width:${sz}px;height:${sz}px;
+      top:${Math.random()*100}%;left:${Math.random()*100}%;
+      --op:${Math.random()*0.6+0.2};
+      --dur:${Math.random()*3+2}s;
+    `;
+    c.appendChild(s);
+  }
+})();
+
+/* ===================== PROGRESS BAR ===================== */
+window.addEventListener('scroll',()=>{
+  const el = document.getElementById('progressBar');
+  const pct = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+  el.style.width = pct + '%';
+});
+
+/* ===================== FADE IN ===================== */
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.12 });
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+/* ===================== NOTIFY ===================== */
+function notify(msg, col='var(--green)') {
+  const n = document.getElementById('notify');
+  n.textContent = msg;
+  n.style.borderColor = col;
+  n.style.color = col;
+  n.classList.add('show');
+  setTimeout(() => n.classList.remove('show'), 3000);
+}
+
+/* ===================== AUDIO ENGINE ===================== */
+let audioCtx = null;
+let bellOscillators = [];   // active oscillator nodes
+let bellGainNode = null;    // master gain controlled by air%
+let bellInterval = null;    // repeating ding interval
+
+function initAudio() {
+  if (audioCtx) return;
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  bellGainNode = audioCtx.createGain();
+  bellGainNode.gain.value = 0;
+  bellGainNode.connect(audioCtx.destination);
+}
+
+/* Synthesise a single realistic bell strike using additive harmonics */
+function strikeBell(volumeScale) {
+  if (!audioCtx || !bellGainNode) return;
+  if (volumeScale <= 0.01) return;          // silence in near-vacuum
+
+  const now = audioCtx.currentTime;
+
+  // Bell partials: [frequency multiplier, relative amplitude, decay seconds]
+  const partials = [
+    [1.00, 1.00, 2.5],
+    [2.76, 0.55, 1.8],
+    [5.40, 0.25, 1.2],
+    [8.93, 0.12, 0.8],
+    [13.4, 0.06, 0.5],
+  ];
+  const fundamental = 520; // Hz  (~C5, classic bell pitch)
+
+  partials.forEach(([mult, amp, decay]) => {
+    const osc  = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.value = fundamental * mult;
+
+    // Amplitude envelope: sharp attack, long exponential decay
+    gain.gain.setValueAtTime(amp * volumeScale, now);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + decay);
+
+    osc.connect(gain);
+    gain.connect(bellGainNode);
+    osc.start(now);
+    osc.stop(now + decay + 0.05);
+  });
+
+  // Small metallic clack at strike (white noise burst)
+  const bufSize = audioCtx.sampleRate * 0.03;
+  const buffer  = audioCtx.createBuffer(1, bufSize, audioCtx.sampleRate);
+  const data    = buffer.getChannelData(0);
+  for (let i = 0; i < bufSize; i++) data[i] = (Math.random() * 2 - 1) * 0.15;
+  const noise = audioCtx.createBufferSource();
+  noise.buffer = buffer;
+  const noiseGain = audioCtx.createGain();
+  noiseGain.gain.setValueAtTime(volumeScale * 0.3, now);
+  noiseGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.03);
+  noise.connect(noiseGain);
+  noiseGain.connect(bellGainNode);
+  noise.start(now);
+}
+
+/* Set master gain so bell volume tracks air percentage */
+function setBellAudioVolume(pct) {
+  if (!bellGainNode) return;
+  // Map 0–100% air → 0–1 gain, with a gentle curve
+  const vol = Math.pow(Math.max(0, pct) / 100, 0.7);
+  bellGainNode.gain.setTargetAtTime(vol, audioCtx.currentTime, 0.1);
+}
+
+function startBellSound() {
+  initAudio();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  setBellAudioVolume(airPct);
+  strikeBell(airPct / 100);                  // immediate first strike
+  bellInterval = setInterval(() => {
+    if (!bellOn) return;
+    setBellAudioVolume(airPct);
+    strikeBell(airPct / 100);
+  }, 900);                                    // ring every 0.9 s
+}
+
+function stopBellSound() {
+  if (bellInterval) { clearInterval(bellInterval); bellInterval = null; }
+  if (bellGainNode) bellGainNode.gain.setTargetAtTime(0, audioCtx ? audioCtx.currentTime : 0, 0.05);
+}
+
+/* ===================== LAB STATE ===================== */
+let bellOn = false;
+let airPct = 100; // 0–100
+let resultFlags = {r1:false, r2:false, r3:false, r4:false};
+let currentStep = 1;
+
+function updateStep(n) {
+  for(let i=1;i<=5;i++) {
+    const el = document.getElementById(`step-${i}`);
+    if(i < n) { el.classList.remove('active'); el.classList.add('done'); el.querySelector('.step-num').textContent = '✓'; }
+    else if(i === n) { el.classList.add('active'); el.classList.remove('done'); }
+    else { el.classList.remove('active','done'); }
+  }
+  currentStep = n;
+}
+
+/* ===================== AIR PARTICLES ===================== */
+function renderAirParticles(pct) {
+  const g = document.getElementById('airParticles');
+  g.innerHTML = '';
+  const count = Math.floor(pct / 100 * 25);
+  for(let i=0;i<count;i++) {
+    const x = 35 + Math.random()*130;
+    const y = 70 + Math.random()*160;
+    const c = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    c.setAttribute('cx', x); c.setAttribute('cy', y);
+    c.setAttribute('r', Math.random()*2+1);
+    c.setAttribute('fill', `rgba(147,197,253,${Math.random()*0.4+0.1})`);
+    g.appendChild(c);
+  }
+}
+
+/* ===================== GAUGE ===================== */
+function updateGauge(pct) {
+  const kPa = (pct / 100 * 101.3).toFixed(1);
+  document.getElementById('gaugeFill').style.width = pct + '%';
+  document.getElementById('gaugeVal').textContent = kPa;
+}
+
+/* ===================== SOUND ===================== */
+function updateSound() {
+  const waves = document.getElementById('soundWaves');
+  const ear   = document.getElementById('earIcon');
+  const bell  = document.getElementById('bellElem');
+  const banner= document.getElementById('resultBanner');
+  const volSlider = document.getElementById('volSlider');
+  const volLabel  = document.getElementById('volLabel');
+
+  const vol = bellOn ? airPct : 0;
+  volSlider.value = vol;
+  volLabel.textContent = vol + '%';
+
+  // Sync audio engine volume with current air level
+  if (bellOn && bellGainNode) setBellAudioVolume(airPct);
+
+  if(bellOn) {
+    bell.classList.add('ringing'); bell.classList.remove('silent');
+    if(airPct > 10) {
+      waves.style.opacity = airPct / 100;
+      waves.classList.remove('blocked');
+      ear.className = 'ear-icon hearing';
+      banner.className = 'result-banner show sound';
+      banner.textContent = '✅ الجرس يرن — الصوت ينتقل عبر الهواء';
+    } else {
+      waves.style.opacity = 0.2;
+      waves.classList.add('blocked');
+      ear.className = 'ear-icon deaf';
+      banner.className = 'result-banner show no-sound';
+      banner.textContent = '🔇 لا صوت! — الفراغ لا ينقل الصوت';
+    }
+  } else {
+    bell.classList.remove('ringing'); bell.classList.add('silent');
+    waves.style.opacity = 0;
+    ear.className = 'ear-icon deaf';
+    banner.className = 'result-banner';
+    banner.textContent = '';
+  }
+}
+
+/* ===================== BELL ===================== */
+function toggleBell() {
+  bellOn = !bellOn;
+  const btn = document.getElementById('btnBell');
+  btn.classList.toggle('active', bellOn);
+  btn.textContent = bellOn ? '🔕 إيقاف الجرس' : '🔔 تشغيل الجرس';
+  if (bellOn) { startBellSound(); } else { stopBellSound(); }
+  updateSound();
+
+  if(bellOn && airPct > 80 && !resultFlags.r1) {
+    resultFlags.r1 = true;
+    setResult('rc1','rv1','نعم ✅ — الصوت واضح');
+    if(currentStep <= 2) updateStep(2);
+    notify('✅ سجّلت نتيجتك الأولى!');
+  }
+
+  document.getElementById('labStatus').textContent = bellOn
+    ? `الجرس يرن. الهواء عند ${airPct.toFixed(0)}%. ${airPct>10?'يمكنك الآن سحب الهواء.':'الفراغ شبه تام!'}`
+    : 'الجرس متوقف. يمكنك تشغيله متى تشاء.';
+}
+
+/* ===================== PUMP ===================== */
+function pumpAir() {
+  if(airPct <= 2) { notify('⚠️ لا يوجد هواء لسحبه أكثر!', 'var(--gold)'); return; }
+  if(!bellOn) notify('💡 شغّل الجرس أولاً لترى التغيير!', 'var(--gold)');
+
+  if(currentStep < 3) updateStep(3);
+
+  const interval = setInterval(() => {
+    airPct = Math.max(0, airPct - 4);
+    updateGauge(airPct);
+    renderAirParticles(airPct);
+    updateSound();
+    document.getElementById('labStatus').textContent =
+      `الهواء الآن ${airPct.toFixed(0)}%. ${airPct>50?'الصوت بدأ يخف...':airPct>10?'الصوت أصبح ضعيفاً جداً!':'الفراغ شبه تام — لا صوت!'}`;
+
+    if(airPct <= 55 && !resultFlags.r2) {
+      resultFlags.r2 = true;
+      setResult('rc2','rv2','نعم ⚠️ — لكن بصوت خافت');
+      if(currentStep < 4) updateStep(4);
+      notify('📉 لاحظت أن الصوت يخف مع تقليل الهواء!');
+    }
+    if(airPct <= 5 && !resultFlags.r3) {
+      resultFlags.r3 = true;
+      setResult('rc3','rv3','لا 🔇 — صمت تام');
+      if(currentStep < 5) updateStep(4);
+      notify('🔇 الفراغ التام! لا صوت على الإطلاق!', 'var(--red)');
+      revealConclusions(1,2,3);
+    }
+    if(airPct <= 0) clearInterval(interval);
+  }, 80);
+}
+
+/* ===================== RETURN AIR ===================== */
+function returnAir() {
+  if(airPct >= 100) { notify('💨 الهواء ممتلئ بالفعل!', 'var(--teal)'); return; }
+
+  const interval = setInterval(() => {
+    airPct = Math.min(100, airPct + 4);
+    updateGauge(airPct);
+    renderAirParticles(airPct);
+    updateSound();
+    document.getElementById('labStatus').textContent =
+      `الهواء يعود... ${airPct.toFixed(0)}%. ${airPct>50?'الصوت بدأ يعود!':''}`;
+
+    if(airPct >= 90 && !resultFlags.r4) {
+      resultFlags.r4 = true;
+      setResult('rc4','rv4','نعم ✅ — عاد الصوت كما كان');
+      if(currentStep < 5) updateStep(5);
+      notify('🎉 الصوت عاد! التجربة مكتملة!', 'var(--teal)');
+      revealConclusions(4,5);
+    }
+    if(airPct >= 100) clearInterval(interval);
+  }, 80);
+}
+
+/* ===================== SET RESULT ===================== */
+function setResult(card, val, text) {
+  const c = document.getElementById(card);
+  const v = document.getElementById(val);
+  c.classList.add('filled');
+  v.textContent = text;
+}
+
+/* ===================== CONCLUSIONS ===================== */
+function revealConclusions(...nums) {
+  nums.forEach(n => {
+    const el = document.getElementById('con'+n);
+    if(el) el.classList.add('revealed');
+  });
+}
+
+/* ===================== RESET ===================== */
+function resetLab() {
+  bellOn = false; airPct = 100; resultFlags = {r1:false,r2:false,r3:false,r4:false};
+  stopBellSound();
+  document.getElementById('btnBell').classList.remove('active');
+  document.getElementById('btnBell').textContent = '🔔 تشغيل الجرس';
+  updateGauge(100);
+  renderAirParticles(100);
+  updateSound();
+  ['rc1','rc2','rc3','rc4'].forEach(id => document.getElementById(id).classList.remove('filled'));
+  ['rv1','rv2','rv3','rv4'].forEach(id => document.getElementById(id).textContent = 'لم يُسجَّل بعد');
+  document.querySelectorAll('.conclusion-item').forEach(el => el.classList.remove('revealed'));
+  updateStep(1);
+  document.getElementById('labStatus').textContent = 'الوعاء مليء بالهواء. شغّل الجرس وابدأ بسحب الهواء لرؤية ما سيحدث.';
+  notify('🔄 تم إعادة ضبط التجربة', 'var(--teal)');
+}
+
+// Init particles
+renderAirParticles(100);
+updateGauge(100);
+
+/* ===================== QUIZ ===================== */
+const questions = [
+  {
+    q: "ما الذي يحتاجه الصوت لكي ينتقل من مكان إلى آخر؟",
+    opts: ["الحرارة", "الضوء", "وسط مادي", "الجاذبية"],
+    ans: 2,
+    explain: "صحيح! الصوت موجة ميكانيكية تحتاج إلى وسط مادي (كالهواء أو الماء أو الصلب) لتنتقل."
+  },
+  {
+    q: "ماذا يحدث لصوت الجرس عند سحب الهواء تدريجياً؟",
+    opts: ["يزداد قوة", "يبقى كما هو", "يخف تدريجياً ثم يختفي", "يتحوّل إلى ضوء"],
+    ans: 2,
+    explain: "صحيح! كلما قلّ الهواء، ضعف الصوت. عند الفراغ التام يختفي الصوت كلياً."
+  },
+  {
+    q: "لماذا لا يوجد صوت في الفضاء الخارجي؟",
+    opts: ["لأنه بارد جداً", "لأن الفضاء فراغ شبه تام يخلو من الوسط المادي", "لأن الصوت يتحول إلى ضوء", "لأن الجاذبية تمتصه"],
+    ans: 1,
+    explain: "صحيح! الفضاء فراغ شبه تام لا يحتوي على ما يكفي من المادة لنقل الاهتزازات الصوتية."
+  },
+  {
+    q: "ماذا يحدث لصوت الجرس عند إعادة الهواء إلى الوعاء؟",
+    opts: ["يبقى صامتاً", "يعود الصوت تدريجياً", "ينتج ضوءاً", "يزداد حجم الجرس"],
+    ans: 1,
+    explain: "صحيح! يعود الصوت تدريجياً مع عودة الهواء، مما يثبت أن الصوت يحتاج إلى وسط مادي."
+  },
+  {
+    q: "أيٌّ مما يلي لا يستطيع الصوت الانتقال خلاله؟",
+    opts: ["الماء", "الهواء", "الفراغ", "الحديد"],
+    ans: 2,
+    explain: "صحيح! الصوت لا ينتقل في الفراغ، لكنه ينتقل في الماء والهواء والمواد الصلبة كالحديد."
+  }
+];
+
+let qIdx = 0;
+let score = 0;
+let answered = false;
+
+function renderQuiz() {
+  const box = document.getElementById('quizContent');
+  if(qIdx >= questions.length) {
+    box.innerHTML = `
+      <div style="text-align:center; padding:2rem;">
+        <div style="font-size:3rem; margin-bottom:1rem;">${score >= 4 ? '🌟' : score >= 3 ? '👍' : '💪'}</div>
+        <h3 style="font-size:1.4rem; font-weight:800; margin-bottom:0.5rem; color:var(--white);">
+          ${score >= 4 ? 'ممتاز!' : score >= 3 ? 'جيد جداً!' : 'استمر في المحاولة!'}
+        </h3>
+        <p style="color:var(--gray); margin-bottom:1.5rem;">نتيجتك: <strong style="color:var(--gold); font-size:1.3rem;">${score} / ${questions.length}</strong></p>
+        <p style="color:var(--gray); font-size:0.9rem; margin-bottom:2rem;">
+          ${score === 5 ? 'أحسنت! فهمت التجربة بشكل مثالي 🎉' : 'راجع المختبر الافتراضي وأعد التجربة لتعزيز فهمك.'}
+        </p>
+        <button class="btn-primary" onclick="restartQuiz()">🔄 إعادة الاختبار</button>
+      </div>`;
+    return;
+  }
+
+  const q = questions[qIdx];
+  answered = false;
+  box.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.2rem;">
+      <div class="quiz-q">سؤال ${qIdx+1} من ${questions.length}</div>
+      <div style="font-size:0.82rem;color:var(--gray);">النقاط: ${score}/${questions.length}</div>
+    </div>
+    <p class="quiz-q">${q.q}</p>
+    <div class="quiz-options">
+      ${q.opts.map((o,i) => `<button class="quiz-opt" onclick="answerQ(${i})">${o}</button>`).join('')}
+    </div>
+    <div class="quiz-feedback" id="qFeedback"></div>
+    <div class="quiz-nav" id="quizNav" style="display:none;">
+      <button class="btn-primary" onclick="nextQ()">السؤال التالي ←</button>
+    </div>`;
+}
+
+function answerQ(i) {
+  if(answered) return;
+  answered = true;
+  const q = questions[qIdx];
+  const opts = document.querySelectorAll('.quiz-opt');
+  opts.forEach((o,idx) => {
+    o.disabled = true;
+    if(idx === q.ans) o.classList.add('correct');
+    else if(idx === i && i !== q.ans) o.classList.add('wrong');
+  });
+  const fb = document.getElementById('qFeedback');
+  if(i === q.ans) {
+    score++;
+    fb.className = 'quiz-feedback ok';
+    fb.textContent = '✅ ' + q.explain;
+  } else {
+    fb.className = 'quiz-feedback err';
+    fb.textContent = '❌ ' + q.explain;
+  }
+  document.getElementById('quizNav').style.display = 'flex';
+}
+
+function nextQ() { qIdx++; renderQuiz(); }
+function restartQuiz() { qIdx = 0; score = 0; renderQuiz(); }
+
+renderQuiz();
+</script>
+</body>
+</html>

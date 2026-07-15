@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<!-- ترميز النص UTF-8 يضمن عرض الحروف العربية بشكل صحيح على جميع الأجهزة -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="description" content="درس تفاعلي: مفهوم الطاقة ومصادرها - مادة العلوم والحياة - الصف الخامس - فلسطين">
+<title>الطاقة ومصادرها | مختبر افتراضي - الصف الخامس</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-deep:#0a1f2c;
+    --bg-panel:#0f2c3d;
+    --bg-panel-2:#123344;
+    --line: rgba(159,184,198,0.18);
+    --sun:#ffb454;
+    --sun-deep:#ff8c3a;
+    --water:#4fc3d9;
+    --leaf:#6fcf97;
+    --flame:#ef7b5c;
+    --text-light:#eaf4f7;
+    --text-muted:#9fb8c6;
+    --shadow-deep: 0 20px 50px rgba(0,0,0,0.45);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1200px 700px at 85% -10%, rgba(255,180,84,0.10), transparent 60%),
+      radial-gradient(900px 600px at 10% 10%, rgba(79,195,217,0.10), transparent 55%),
+      var(--bg-deep);
+    color:var(--text-light);
+    font-family:'Cairo', sans-serif;
+    line-height:1.9;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.display{font-family:'Tajawal', sans-serif;}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 22px;}
+  a{color:inherit;}
+  ::selection{background:var(--sun); color:#101;}
+
+  /* ---------- eyebrow / labels ---------- */
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:'Tajawal',sans-serif; font-weight:700; font-size:14px;
+    color:var(--sun); letter-spacing:.5px;
+    background:rgba(255,180,84,0.10); border:1px solid rgba(255,180,84,0.3);
+    padding:6px 16px; border-radius:999px; margin-bottom:18px;
+  }
+  .eyebrow::before{content:"⚡"; font-size:15px;}
+
+  /* ================= HERO ================= */
+  .hero{
+    position:relative; min-height:100vh; display:flex; align-items:center; justify-content:center;
+    padding:100px 20px 60px; text-align:center; perspective:1400px; overflow:hidden;
+  }
+  .hero::after{
+    content:""; position:absolute; inset:0; pointer-events:none;
+    background:linear-gradient(to bottom, transparent 60%, var(--bg-deep) 100%);
+  }
+  .orbit-scene{
+    position:relative; width:340px; height:340px; margin:0 auto 10px;
+    transform-style:preserve-3d;
+  }
+  .core{
+    position:absolute; top:50%; left:50%; width:110px; height:110px; border-radius:50%;
+    transform:translate(-50%,-50%);
+    background: radial-gradient(circle at 35% 30%, #fff2d6, var(--sun) 45%, var(--sun-deep) 80%);
+    box-shadow: 0 0 60px 12px rgba(255,180,84,0.55), inset -10px -10px 25px rgba(120,60,0,0.35);
+    animation: pulse 3.2s ease-in-out infinite;
+    display:flex; align-items:center; justify-content:center; font-size:44px;
+  }
+  @keyframes pulse{
+    0%,100%{ box-shadow:0 0 55px 10px rgba(255,180,84,0.5), inset -10px -10px 25px rgba(120,60,0,0.35); transform:translate(-50%,-50%) scale(1);}
+    50%{ box-shadow:0 0 85px 22px rgba(255,180,84,0.75), inset -10px -10px 25px rgba(120,60,0,0.35); transform:translate(-50%,-50%) scale(1.06);}
+  }
+  .orbit-ring{
+    position:absolute; inset:0; transform-style:preserve-3d;
+    animation: spin3d 22s linear infinite;
+  }
+  @keyframes spin3d{
+    from{ transform: rotateY(0deg) rotateX(18deg); }
+    to{ transform: rotateY(360deg) rotateX(18deg); }
+  }
+  .sat{
+    position:absolute; top:50%; left:50%; width:64px; height:64px; margin:-32px 0 0 -32px;
+    border-radius:16px; display:flex; align-items:center; justify-content:center; font-size:28px;
+    background:var(--bg-panel-2); border:1px solid var(--line); box-shadow:var(--shadow-deep);
+  }
+  .sat b{position:absolute; bottom:-24px; font-size:11px; font-weight:700; color:var(--text-muted); white-space:nowrap;}
+  .sat:nth-child(1){ transform: rotateY(0deg) translateZ(170px); }
+  .sat:nth-child(2){ transform: rotateY(72deg) translateZ(170px); }
+  .sat:nth-child(3){ transform: rotateY(144deg) translateZ(170px); }
+  .sat:nth-child(4){ transform: rotateY(216deg) translateZ(170px); }
+  .sat:nth-child(5){ transform: rotateY(288deg) translateZ(170px); }
+
+  .hero h1{ font-size:clamp(34px,6vw,58px); font-weight:900; margin:6px 0 10px; }
+  .hero h1 span{ color:var(--sun); }
+  .hero p.lead{ color:var(--text-muted); font-size:18px; max-width:600px; margin:0 auto 26px; }
+  .grade-tag{
+    display:inline-flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-bottom:30px;
+  }
+  .grade-tag span{
+    background:var(--bg-panel); border:1px solid var(--line); padding:8px 16px; border-radius:10px;
+    font-size:13px; color:var(--text-muted); font-weight:600;
+  }
+  .scroll-cue{ margin-top:20px; font-size:13px; color:var(--text-muted); }
+  .scroll-cue .chev{ display:block; margin:8px auto 0; width:14px; height:14px; border-left:2px solid var(--sun); border-bottom:2px solid var(--sun); transform:rotate(-45deg); animation:bob 1.6s ease-in-out infinite;}
+  @keyframes bob{ 0%,100%{transform:translateY(0) rotate(-45deg);} 50%{transform:translateY(6px) rotate(-45deg);} }
+
+  /* ================= SECTIONS ================= */
+  section{ padding:90px 0; position:relative; }
+  .section-head{ text-align:center; max-width:680px; margin:0 auto 50px; }
+  .section-head h2{ font-size:clamp(26px,4vw,38px); font-weight:800; margin:0 0 14px;}
+  .section-head p{ color:var(--text-muted); font-size:16px; margin:0;}
+
+  /* ---------- تعريف الطاقة : بطاقات قلب ثلاثي الأبعاد ---------- */
+  .flip-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:24px; }
+  .flip-card{ perspective:1200px; height:230px; cursor:pointer; }
+  .flip-inner{
+    position:relative; width:100%; height:100%; transition:transform .7s cubic-bezier(.4,.2,.2,1);
+    transform-style:preserve-3d;
+  }
+  .flip-card.is-flipped .flip-inner{ transform: rotateY(180deg); }
+  .flip-face{
+    position:absolute; inset:0; backface-visibility:hidden; border-radius:18px;
+    padding:26px; display:flex; flex-direction:column; justify-content:center; gap:10px;
+    border:1px solid var(--line); box-shadow:var(--shadow-deep);
+  }
+  .flip-front{ background:linear-gradient(160deg, var(--bg-panel), var(--bg-panel-2)); }
+  .flip-front .ic{ font-size:38px; }
+  .flip-front h3{ margin:0; font-size:19px; }
+  .flip-front .hint{ font-size:12.5px; color:var(--text-muted); margin-top:auto;}
+  .flip-back{
+    background:linear-gradient(160deg, #16405a, #0f2c3d);
+    transform: rotateY(180deg);
+    font-size:14.5px; color:var(--text-light);
+  }
+  .flip-back b{ color:var(--sun); }
+
+  .relation-box{
+    margin-top:46px; background:var(--bg-panel); border:1px solid var(--line); border-radius:20px;
+    padding:34px; text-align:center; box-shadow:var(--shadow-deep);
+  }
+  .relation-box .eq{
+    display:flex; align-items:center; justify-content:center; gap:18px; flex-wrap:wrap;
+    font-family:'Tajawal',sans-serif; font-weight:800; font-size:clamp(16px,3vw,22px); margin-bottom:14px;
+  }
+  .relation-box .eq .pill{ background:rgba(255,180,84,0.12); border:1px solid rgba(255,180,84,.35); color:var(--sun); padding:10px 20px; border-radius:12px; }
+  .relation-box .eq .op{ color:var(--text-muted); font-size:22px; }
+  .relation-box p{ color:var(--text-muted); max-width:560px; margin:0 auto; }
+
+  /* ---------- مصادر الطاقة ---------- */
+  .source-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:22px; }
+  .source-card{
+    position:relative; border-radius:18px; padding:24px 20px; text-align:center;
+    background:var(--bg-panel); border:1px solid var(--line); overflow:hidden;
+    transition:transform .35s ease, box-shadow .35s ease; cursor:pointer;
+  }
+  .source-card:hover{ transform:translateY(-8px) rotateX(4deg); box-shadow:var(--shadow-deep); }
+  .source-card .glow{ position:absolute; inset:-40% -40% auto auto; width:140px; height:140px; border-radius:50%; filter:blur(30px); opacity:.35; }
+  .source-card .ic{ font-size:44px; display:block; margin-bottom:14px; }
+  .source-card h4{ margin:0 0 8px; font-size:17px; font-family:'Tajawal',sans-serif; }
+  .source-card p{ font-size:13px; color:var(--text-muted); margin:0; min-height:56px; }
+  .source-card .tag{
+    display:inline-block; margin-top:12px; font-size:11px; font-weight:700; padding:4px 12px; border-radius:999px;
+  }
+  .tag.renew{ background:rgba(111,207,151,0.15); color:var(--leaf); border:1px solid rgba(111,207,151,.4); }
+  .tag.nonrenew{ background:rgba(239,123,92,0.15); color:var(--flame); border:1px solid rgba(239,123,92,.4); }
+
+  /* ================= المختبر الافتراضي ================= */
+  .lab-panel{
+    background:linear-gradient(180deg, var(--bg-panel), #0c2432);
+    border:1px solid var(--line); border-radius:26px; padding:36px; box-shadow:var(--shadow-deep);
+  }
+  .lab-instructions{ background:rgba(255,180,84,0.08); border:1px dashed rgba(255,180,84,.4); border-radius:14px; padding:16px 20px; font-size:14px; color:var(--text-light); margin-bottom:28px;}
+  .lab-controls{ display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin-bottom:30px; }
+  .src-btn{
+    font-family:'Cairo',sans-serif; font-weight:700; font-size:14px; color:var(--text-light);
+    background:var(--bg-panel-2); border:1px solid var(--line); padding:12px 18px; border-radius:12px;
+    cursor:pointer; display:flex; align-items:center; gap:8px; transition:all .25s ease;
+  }
+  .src-btn .dot{width:8px;height:8px;border-radius:50%;}
+  .src-btn:hover{ border-color:var(--sun); transform:translateY(-3px); }
+  .src-btn.active{ background:rgba(255,180,84,0.15); border-color:var(--sun); color:var(--sun); }
+
+  .stage{
+    position:relative; height:300px; border-radius:20px; margin-bottom:26px;
+    background: linear-gradient(180deg, #0a2a3f 0%, #072235 65%, #0a1f2c 100%);
+    border:1px solid var(--line); overflow:hidden; perspective:900px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .stage .ground{ position:absolute; bottom:0; left:0; right:0; height:40px; background:linear-gradient(180deg, #16394a, #0a1f2c); }
+  .device{ position:relative; width:100%; height:100%; }
+  .device-item{ position:absolute; opacity:0; transition:opacity .4s ease; width:100%; height:100%; }
+  .device-item.active{ opacity:1; }
+
+  /* توربين رياح */
+  .turbine{ position:absolute; bottom:40px; left:50%; transform:translateX(-50%); width:14px; height:150px; background:linear-gradient(#e7edf0,#b9c6cc); border-radius:4px; }
+  .turbine .hub{ position:absolute; top:-10px; left:50%; width:20px; height:20px; margin-left:-10px; border-radius:50%; background:#e7edf0; z-index:2; }
+  .turbine .blades{ position:absolute; top:0; left:50%; width:4px; height:4px; transform-style:preserve-3d; }
+  .blade{ position:absolute; top:0; left:0; width:6px; height:90px; background:linear-gradient(#f4f8fa,#c7d3d8); border-radius:0 0 40px 40px; transform-origin:top center; }
+  .blade:nth-child(1){ transform:rotate(0deg); }
+  .blade:nth-child(2){ transform:rotate(120deg); }
+  .blade:nth-child(3){ transform:rotate(240deg); }
+  .turbine.spin .blades{ animation:rotate 1.1s linear infinite; }
+  @keyframes rotate{ to{ transform:rotate(360deg); } }
+
+  /* عجلة ماء */
+  .waterwheel-wrap{ position:absolute; bottom:40px; left:50%; transform:translateX(-50%); }
+  .river{ position:absolute; bottom:-40px; left:-140px; width:280px; height:30px; background:repeating-linear-gradient(90deg, rgba(79,195,217,.5) 0 20px, rgba(79,195,217,.2) 20px 40px); border-radius:20px; }
+  .wheel{ width:90px; height:90px; border-radius:50%; border:6px solid #dfe7ea; position:relative; background:rgba(79,195,217,.12); }
+  .wheel .spoke{ position:absolute; top:50%; left:50%; width:6px; height:44px; background:#c8d3d8; margin:-22px 0 0 -3px; transform-origin:center 22px; }
+  .wheel .spoke:nth-child(1){ transform:rotate(0deg); }
+  .wheel .spoke:nth-child(2){ transform:rotate(60deg); }
+  .wheel .spoke:nth-child(3){ transform:rotate(120deg); }
+  .wheel .spoke:nth-child(4){ transform:rotate(180deg); }
+  .wheel .spoke:nth-child(5){ transform:rotate(240deg); }
+  .wheel .spoke:nth-child(6){ transform:rotate(300deg); }
+  .wheel.spin{ animation:rotate 1.6s linear infinite; }
+
+  /* شمس / لوح شمسي */
+  .solar-scene{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
+  .sun-orb{ position:absolute; top:26px; right:60px; width:60px; height:60px; border-radius:50%; background:radial-gradient(circle at 35% 30%, #fff2d6, var(--sun) 60%); box-shadow:0 0 0 rgba(255,180,84,0); transition:box-shadow .6s ease; }
+  .sun-orb.glow{ box-shadow:0 0 60px 18px rgba(255,180,84,.55); }
+  .panel{ width:150px; height:90px; background:linear-gradient(135deg,#1c3a52,#12283a); border:3px solid #3a5a72; border-radius:8px; position:relative; transform:rotateX(50deg); box-shadow:0 20px 30px rgba(0,0,0,.4); }
+  .panel::before{ content:""; position:absolute; inset:6px; background:
+    repeating-linear-gradient(90deg, rgba(255,255,255,.08) 0 24px, rgba(0,0,0,.15) 24px 48px);
+  }
+  .panel.active::after{ content:""; position:absolute; inset:0; border-radius:6px; box-shadow:0 0 30px 6px rgba(255,180,84,.5) inset; }
+
+  /* سيارة/وقود */
+  .road{ position:absolute; bottom:40px; left:0; right:0; height:4px; background:repeating-linear-gradient(90deg, #4a6577 0 22px, transparent 22px 44px); }
+  .car{ position:absolute; bottom:44px; right:-40px; font-size:40px; transition: right 2.4s cubic-bezier(.3,.6,.2,1); }
+  .car.drive{ right:calc(100% - 40px); }
+
+  /* غذاء / حركة */
+  .runner-track{ position:absolute; bottom:40px; left:0; right:0; height:4px; }
+  .runner{ position:absolute; bottom:44px; right:20px; font-size:46px; }
+  .runner.move{ animation:jog 1s ease-in-out infinite; }
+  @keyframes jog{ 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(-10px);} }
+
+  .bulb{ position:absolute; top:16px; left:50%; transform:translateX(-50%); font-size:30px; filter:grayscale(1) opacity(.4); transition:filter .5s ease; }
+  .bulb.lit{ filter:grayscale(0) opacity(1) drop-shadow(0 0 14px rgba(255,220,120,.9)); }
+
+  .lab-readout{ display:grid; grid-template-columns: 1fr 1.4fr; gap:22px; }
+  @media(max-width:720px){ .lab-readout{ grid-template-columns:1fr; } }
+  .gauge-box{ background:var(--bg-panel-2); border:1px solid var(--line); border-radius:16px; padding:22px; display:flex; flex-direction:column; align-items:center; gap:10px; }
+  .gauge-box .glabel{ font-size:13px; color:var(--text-muted); font-weight:700; }
+  .gauge-val{ font-family:'Tajawal',sans-serif; font-size:30px; font-weight:800; color:var(--sun); }
+  .result-box{ background:var(--bg-panel-2); border:1px solid var(--line); border-radius:16px; padding:22px; font-size:14.5px; }
+  .result-box h4{ margin:0 0 10px; font-family:'Tajawal',sans-serif; color:var(--sun); font-size:16px; }
+  .result-box .placeholder{ color:var(--text-muted); }
+  .run-btn{
+    display:block; margin:0 auto; font-family:'Tajawal',sans-serif; font-weight:800; font-size:15px;
+    background:linear-gradient(135deg, var(--sun), var(--sun-deep)); color:#241300; border:none;
+    padding:14px 34px; border-radius:14px; cursor:pointer; box-shadow:0 12px 26px rgba(255,140,58,.35);
+    transition:transform .2s ease;
+  }
+  .run-btn:active{ transform:scale(.96); }
+  .run-btn:disabled{ opacity:.5; cursor:not-allowed; }
+
+  .conclusion-area{ margin-top:30px; }
+  .conclusion-area textarea{
+    width:100%; min-height:90px; border-radius:14px; border:1px solid var(--line); background:var(--bg-panel-2);
+    color:var(--text-light); font-family:'Cairo',sans-serif; font-size:14.5px; padding:16px; resize:vertical;
+  }
+  .conclusion-area textarea:focus{ outline:2px solid var(--sun); }
+  .btn-row{ display:flex; gap:12px; margin-top:14px; flex-wrap:wrap; }
+  .ghost-btn{
+    font-family:'Cairo',sans-serif; font-weight:700; font-size:13.5px; background:transparent;
+    border:1px solid var(--line); color:var(--text-light); padding:10px 18px; border-radius:10px; cursor:pointer;
+  }
+  .ghost-btn:hover{ border-color:var(--water); }
+  .model-answer{ margin-top:14px; background:rgba(111,207,151,0.1); border:1px solid rgba(111,207,151,.4); border-radius:12px; padding:16px; font-size:14px; display:none; }
+  .model-answer.show{ display:block; }
+  .model-answer b{ color:var(--leaf); }
+
+  /* ---------- قائمة يومية تفاعلية ---------- */
+  .daily-list{ list-style:none; margin:18px 0 0; padding:0; display:flex; flex-direction:column; gap:10px; }
+  .daily-list li{ background:var(--bg-panel-2); border:1px solid var(--line); border-radius:12px; padding:12px 16px; display:flex; justify-content:space-between; align-items:center; font-size:14px; }
+  .daily-list li button{ background:none; border:none; color:var(--flame); font-size:16px; cursor:pointer; }
+  .add-row{ display:flex; gap:10px; margin-top:16px; }
+  .add-row input{ flex:1; padding:12px 16px; border-radius:12px; border:1px solid var(--line); background:var(--bg-panel-2); color:var(--text-light); font-family:'Cairo',sans-serif; font-size:14px; }
+  .add-row input:focus{ outline:2px solid var(--sun); }
+  .add-row button{ font-family:'Tajawal',sans-serif; font-weight:800; background:var(--water); color:#04222a; border:none; border-radius:12px; padding:0 22px; cursor:pointer; }
+
+  /* ---------- اختبار قصير ---------- */
+  .quiz-card{ background:var(--bg-panel); border:1px solid var(--line); border-radius:18px; padding:26px; margin-bottom:20px; }
+  .quiz-q{ font-weight:700; margin-bottom:16px; font-size:15.5px; }
+  .quiz-opts{ display:grid; gap:10px; }
+  .quiz-opt{ text-align:right; background:var(--bg-panel-2); border:1px solid var(--line); border-radius:12px; padding:12px 16px; cursor:pointer; font-family:'Cairo',sans-serif; font-size:14px; color:var(--text-light); }
+  .quiz-opt.correct{ border-color:var(--leaf); background:rgba(111,207,151,.12); color:var(--leaf); }
+  .quiz-opt.wrong{ border-color:var(--flame); background:rgba(239,123,92,.12); color:var(--flame); }
+  .quiz-score{ text-align:center; font-family:'Tajawal',sans-serif; font-weight:800; font-size:18px; color:var(--sun); margin-top:6px; }
+
+  footer{ text-align:center; padding:50px 20px 70px; color:var(--text-muted); font-size:13px; }
+  footer b{ color:var(--text-light); }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; }
+  }
+  @media(max-width:600px){
+    .orbit-scene{ transform:scale(.8); }
+    section{ padding:60px 0; }
+  }
+
+  /* ══ RESPONSIVE MOBILE & TABLET ══ */
+  @media (max-width: 768px) {
+    body { padding: 8px !important; font-size: 15px !important; overflow-x: hidden !important; }
+    .container, [class*="container"], [class*="wrapper"] { padding: 8px !important; max-width: 100% !important; }
+    canvas { width: 100% !important; height: auto !important; display: block !important; touch-action: none; max-width: 100% !important; }
+    svg { max-width: 100% !important; height: auto !important; }
+    h1 { font-size: clamp(18px,5vw,32px) !important; }
+    h2 { font-size: clamp(15px,4vw,26px) !important; }
+    h3 { font-size: clamp(13px,3.5vw,20px) !important; }
+    [class*="grid"] { grid-template-columns: 1fr !important; }
+    [class*="flex"] { flex-wrap: wrap !important; }
+    input[type="range"] { width: 100% !important; min-height: 36px; }
+    input[type="number"], input[type="text"], select, textarea {
+      font-size: 16px !important; width: 100% !important; box-sizing: border-box; padding: 8px !important; }
+    button { min-height: 44px !important; font-size: 14px !important; touch-action: manipulation; padding: 10px 14px !important; }
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 13px !important; }
+    th, td { padding: 6px 4px !important; }
+    header { padding: 10px 12px !important; }
+    .controls, [class*="controls"] { flex-direction: column !important; gap: 8px !important; }
+    .lab-window, [class*="lab-window"] { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+  }
+  @media (max-width: 480px) {
+    body { padding: 4px !important; }
+    button { width: 100% !important; }
+  }
+  /* ══ END RESPONSIVE ══ */
+</style>
+</head>
+<body>
+<style>
+.vlab-back{position:fixed;top:10px;left:10px;z-index:99999;
+background:rgba(10,22,40,0.93);border:1px solid rgba(0,200,150,0.4);
+border-radius:22px;padding:8px 16px;display:inline-flex;align-items:center;gap:7px;
+color:#00C896;font-family:Tajawal,Cairo,Arial,sans-serif;font-size:13px;font-weight:700;
+text-decoration:none;backdrop-filter:blur(8px);box-shadow:0 4px 18px rgba(0,0,0,0.3);
+transition:background 0.2s;}
+.vlab-back:hover{background:rgba(0,200,150,0.18);}
+</style>
+<a href="../grade5.html" class="vlab-back">&#8594; العودة للصف</a>
+
+
+<!-- ===================== الواجهة الرئيسية (Hero) ===================== -->
+<section class="hero">
+  <div class="wrap">
+    <div class="orbit-scene">
+      <div class="core">⚡</div>
+      <div class="orbit-ring">
+        <div class="sat">☀️<b>الشمس</b></div>
+        <div class="sat">🌬️<b>الرياح</b></div>
+        <div class="sat">💧<b>الماء</b></div>
+        <div class="sat">⛽<b>الوقود</b></div>
+        <div class="sat">🍽️<b>الغذاء</b></div>
+      </div>
+    </div>
+    <span class="eyebrow">الدرس الأول · العلوم والحياة · الصف الخامس</span>
+    <h1>الطاقة <span>وأشكالها</span></h1>
+    <p class="lead">تعرّف إلى مفهوم الطاقة والعلاقة بينها وبين إنجاز العمل، واكتشف مصادرها المختلفة من خلال مختبر افتراضي تجرّب فيه بنفسك.</p>
+    <div class="grade-tag">
+      <span>📘 منهاج فلسطين</span>
+      <span>🧪 مختبر تفاعلي</span>
+      <span>📱 يعمل على الجوال والحاسوب</span>
+    </div>
+    <div class="scroll-cue">ابدأ الدرس<span class="chev"></span></div>
+  </div>
+</section>
+
+<!-- ===================== مفهوم الطاقة ===================== -->
+<section id="definition">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">نشاط ١</span>
+      <h2>ما الذي يمكّننا من إنجاز أعمالنا؟</h2>
+      <p>انقر على كل بطاقة لتكتشف الإجابة، تماماً كما ناقشنا في النشاط الأول من الكتاب.</p>
+    </div>
+
+    <div class="flip-grid">
+      <div class="flip-card" onclick="this.classList.toggle('is-flipped')">
+        <div class="flip-inner">
+          <div class="flip-face flip-front">
+            <span class="ic">🤸</span>
+            <h3>التمارين الرياضية</h3>
+            <span class="hint">ما الذي يمكّننا من القيام بها؟ انقر لتعرف</span>
+          </div>
+          <div class="flip-face flip-back">
+            نحتاج إلى <b>الغذاء</b> الذي يزوّد أجسامنا بالطاقة اللازمة للحركة، حتى نتمكّن من ممارسة التمارين وإنجاز أعمالنا اليومية.
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-card" onclick="this.classList.toggle('is-flipped')">
+        <div class="flip-inner">
+          <div class="flip-face flip-front">
+            <span class="ic">🍲</span>
+            <h3>الغذاء اليومي</h3>
+            <span class="hint">ما أهمية الغذاء لأجسامنا؟ انقر لتعرف</span>
+          </div>
+          <div class="flip-face flip-back">
+            يزوّدنا الغذاء <b>بالطاقة اللازمة للحركة</b>؛ فبدونه لا نستطيع القيام بأي عمل أو نشاط جسدي.
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-card" onclick="this.classList.toggle('is-flipped')">
+        <div class="flip-inner">
+          <div class="flip-face flip-front">
+            <span class="ic">🚗</span>
+            <h3>سيارة تتحرك</h3>
+            <span class="hint">ما الذي يجعلها تتحرك؟ انقر لتعرف</span>
+          </div>
+          <div class="flip-face flip-back">
+            تحتاج السيارة إلى <b>الوقود</b> الذي يزوّدها بالطاقة اللازمة للحركة والانطلاق.
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-card" onclick="this.classList.toggle('is-flipped')">
+        <div class="flip-inner">
+          <div class="flip-face flip-front">
+            <span class="ic">🧠</span>
+            <h3>العلاقة بين الطاقة والعمل</h3>
+            <span class="hint">ما العلاقة بينهما؟ انقر لتعرف</span>
+          </div>
+          <div class="flip-face flip-back">
+            <b>لا يمكن إنجاز أي عمل من دون طاقة.</b> فكلّما احتجنا لإنجاز عمل أكبر، احتجنا إلى كمية أكبر من الطاقة.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="relation-box">
+      <div class="eq">
+        <span class="pill">الطاقة</span>
+        <span class="op">=</span>
+        <span class="pill">المقدرة على إنجاز العمل</span>
+      </div>
+      <p>هذا هو التعريف العلمي للطاقة الذي سنعتمده طوال الدرس: كل شيء يتحرك أو يعمل أو ينمو يحتاج إلى طاقة لإتمام ذلك.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== مصادر الطاقة ===================== -->
+<section id="sources">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">نشاط ٢</span>
+      <h2>مصادر الطاقة</h2>
+      <p>الشمس هي مصدر الطاقة الرئيس على سطح الأرض، ومنها تنشأ معظم مصادر الطاقة الأخرى. انقر على كل مصدر لتتعرف على استخدامه.</p>
+    </div>
+    <div class="source-grid" id="sourceGrid"></div>
+  </div>
+</section>
+
+<!-- ===================== المختبر الافتراضي ===================== -->
+<section id="lab">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">المختبر الافتراضي</span>
+      <h2>جرّب بنفسك: من الطاقة إلى العمل المُنجز</h2>
+      <p>اختر مصدر طاقة، شغّل التجربة، وراقب كيف يتحوّل إلى عمل فعلي داخل المحطة أمامك.</p>
+    </div>
+
+    <div class="lab-panel">
+      <div class="lab-instructions">
+        📌 خطوات التجربة: (١) اختر مصدر الطاقة من الأزرار بالأسفل. (٢) اضغط زر «شغّل التجربة». (٣) راقب الجهاز في المحطة ومقياس الطاقة الناتجة. (٤) اكتب استنتاجك في الأسفل.
+      </div>
+
+      <div class="lab-controls" id="labControls"></div>
+
+      <div class="stage">
+        <div class="ground"></div>
+        <div class="device" id="device">
+
+          <div class="device-item" data-src="wind">
+            <div class="bulb" id="bulb-wind">💡</div>
+            <div class="turbine" id="turbine">
+              <div class="hub"></div>
+              <div class="blades">
+                <div class="blade"></div><div class="blade"></div><div class="blade"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="device-item" data-src="water">
+            <div class="bulb" id="bulb-water">💡</div>
+            <div class="waterwheel-wrap">
+              <div class="river"></div>
+              <div class="wheel" id="wheel">
+                <div class="spoke"></div><div class="spoke"></div><div class="spoke"></div>
+                <div class="spoke"></div><div class="spoke"></div><div class="spoke"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="device-item" data-src="sun">
+            <div class="solar-scene">
+              <div class="sun-orb" id="sunOrb"></div>
+              <div class="panel" id="panel"></div>
+              <div class="bulb" id="bulb-sun" style="top:auto;bottom:80px;">💡</div>
+            </div>
+          </div>
+
+          <div class="device-item" data-src="fuel">
+            <div class="road"></div>
+            <div class="car" id="car">🚗</div>
+          </div>
+
+          <div class="device-item" data-src="food">
+            <div class="runner-track"></div>
+            <div class="runner" id="runner">🏃</div>
+          </div>
+
+        </div>
+      </div>
+
+      <button class="run-btn" id="runBtn" disabled>اختر مصدر طاقة أولاً</button>
+
+      <div class="lab-readout" style="margin-top:26px;">
+        <div class="gauge-box">
+          <span class="glabel">مقياس الطاقة الناتجة</span>
+          <svg width="130" height="130" viewBox="0 0 130 130">
+            <circle cx="65" cy="65" r="54" fill="none" stroke="#1d3d4f" stroke-width="12"/>
+            <circle id="gaugeCircle" cx="65" cy="65" r="54" fill="none" stroke="#ffb454" stroke-width="12"
+              stroke-linecap="round" stroke-dasharray="339" stroke-dashoffset="339"
+              transform="rotate(-90 65 65)" style="transition:stroke-dashoffset 1.6s ease;"/>
+          </svg>
+          <div class="gauge-val" id="gaugeVal">٠٪</div>
+        </div>
+        <div class="result-box" id="resultBox">
+          <h4>نتيجة التجربة</h4>
+          <p class="placeholder" id="resultText">لم تُجرَ أي تجربة بعد. اختر مصدراً واضغط «شغّل التجربة».</p>
+        </div>
+      </div>
+
+      <div class="conclusion-area">
+        <h4 style="font-family:'Tajawal',sans-serif; margin-bottom:10px;">✍️ استنتاجي الخاص</h4>
+        <textarea id="studentConclusion" placeholder="اكتب هنا ماذا لاحظت من التجربة، وما العلاقة بين مصدر الطاقة والعمل الذي تم إنجازه..."></textarea>
+        <div class="btn-row">
+          <button class="ghost-btn" onclick="toggleModelAnswer()">تحقّق من الاستنتاج النموذجي</button>
+          <button class="ghost-btn" onclick="document.getElementById('studentConclusion').value=''">مسح</button>
+        </div>
+        <div class="model-answer" id="modelAnswer">
+          <b>الاستنتاج النموذجي:</b> الطاقة هي المقدرة على إنجاز عمل. في كل تجربة، تحوّل مصدر الطاقة (الشمس، الرياح، الماء، الوقود، أو الغذاء) إلى حركة أو عمل مفيد (توليد كهرباء، حركة سيارة، أو حركة جسم الإنسان). فبدون الطاقة، لا يمكن إنجاز أي عمل.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== أفكر: قائمة يومية ===================== -->
+<section id="think">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">أفكر 🌱</span>
+      <h2>أعمال أقوم بها خلال يومي تحتاج إلى الطاقة</h2>
+      <p>أضف أعمالاً تقوم بها يومياً، وفكّر: ما مصدر الطاقة الذي يمكّنك من إنجاز كل عمل؟</p>
+    </div>
+    <div class="lab-panel">
+      <div class="add-row">
+        <input type="text" id="dailyInput" placeholder="مثال: المشي إلى المدرسة، ركوب الدراجة، القراءة...">
+        <button onclick="addDailyItem()">إضافة</button>
+      </div>
+      <ul class="daily-list" id="dailyList"></ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== اختبار قصير ===================== -->
+<section id="quiz">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">تحقّق من فهمك</span>
+      <h2>اختبار سريع</h2>
+      <p>أجب عن الأسئلة التالية لتتأكد من فهمك للدرس.</p>
+    </div>
+    <div id="quizContainer"></div>
+    <div class="quiz-score" id="quizScore"></div>
+  </div>
+</section>
+
+<footer>
+  صُممت هذه الصفحة التفاعلية لخدمة مبحث <b>العلوم والحياة</b> - الصف الخامس الأساسي - فلسطين · درس: الطاقة ومصادرها
+</footer>
+
+<script>
+/* ===================== ترميز اللغة العربية =====================
+   الصفحة مضبوطة بترميز UTF-8 واتجاه RTL لتظهر النصوص العربية
+   بشكل صحيح على الهاتف والحاسوب معاً. */
+
+// ---------- بيانات مصادر الطاقة ----------
+const SOURCES = [
+  { id:'sun',  name:'الشمس',        icon:'☀️', color:'var(--sun)',   type:'renew',
+    desc:'المصدر الرئيس للطاقة على سطح الأرض، تُستخدم لتوليد الكهرباء (الخلايا الشمسية) وتدفئة المياه.' },
+  { id:'wind', name:'الرياح',       icon:'🌬️', color:'var(--water)', type:'renew',
+    desc:'تُستخدم لتشغيل التوربينات الهوائية التي تولّد الطاقة الكهربائية دون تلويث البيئة.' },
+  { id:'water',name:'جريان الماء',  icon:'💧', color:'var(--water)', type:'renew',
+    desc:'يُستخدم جريان الماء في الأنهار والسدود لتدوير عجلات مائية تولّد الطاقة الكهربائية.' },
+  { id:'fuel', name:'الوقود',       icon:'⛽', color:'var(--flame)', type:'nonrenew',
+    desc:'مثل البنزين والديزل والغاز الطبيعي، تُستخدم لتشغيل السيارات ووسائل النقل والآلات.' },
+  { id:'food', name:'الغذاء',       icon:'🍽️', color:'var(--sun)',   type:'renew',
+    desc:'يزوّد جسم الإنسان والحيوان بالطاقة اللازمة للحركة والنمو وإنجاز الأعمال اليومية.' },
+];
+
+const RESULTS = {
+  sun:  { gauge:88, text:'تحوّلت أشعة الشمس إلى طاقة كهربائية عبر اللوح الشمسي، فأضاءت المصباح. هذا مثال على تحويل الطاقة الشمسية إلى عمل مفيد (إضاءة).' },
+  wind: { gauge:80, text:'دفعت الرياح ريش التوربين فدارت بسرعة، وتحوّلت حركة الدوران إلى طاقة كهربائية أضاءت المصباح.' },
+  water:{ gauge:92, text:'دفع جريان الماء عجلة السد فدارت، وتولّدت طاقة كهربائية أضاءت المصباح — وهذا مبدأ عمل السدود المائية.' },
+  fuel: { gauge:75, text:'احترق الوقود داخل محرك السيارة فأنتج طاقة حركية جعلت السيارة تتحرك من مكانها إلى الأمام.' },
+  food: { gauge:70, text:'تحوّل الغذاء داخل جسم الإنسان إلى طاقة استُخدمت لتحريك العضلات، فتمكّن من الجري والحركة.' },
+};
+
+let currentSource = null;
+let isRunning = false;
+
+// ---------- بناء بطاقات مصادر الطاقة ----------
+const sourceGrid = document.getElementById('sourceGrid');
+SOURCES.forEach(s=>{
+  const card = document.createElement('div');
+  card.className = 'source-card';
+  card.innerHTML = `
+    <div class="glow" style="background:${s.color}"></div>
+    <span class="ic">${s.icon}</span>
+    <h4>${s.name}</h4>
+    <p>${s.desc}</p>
+    <span class="tag ${s.type==='renew' ? 'renew':'nonrenew'}">${s.type==='renew' ? 'طاقة متجددة' : 'طاقة غير متجددة'}</span>
+  `;
+  sourceGrid.appendChild(card);
+});
+
+// ---------- بناء أزرار المختبر ----------
+const labControls = document.getElementById('labControls');
+SOURCES.forEach(s=>{
+  const btn = document.createElement('button');
+  btn.className = 'src-btn';
+  btn.dataset.src = s.id;
+  btn.innerHTML = `<span class="dot" style="background:${s.color}"></span> ${s.icon} ${s.name}`;
+  btn.onclick = ()=> selectSource(s.id);
+  labControls.appendChild(btn);
+});
+
+function selectSource(id){
+  if(isRunning) return;
+  currentSource = id;
+  document.querySelectorAll('.src-btn').forEach(b=> b.classList.toggle('active', b.dataset.src===id));
+  document.querySelectorAll('.device-item').forEach(d=> d.classList.toggle('active', d.dataset.src===id));
+  resetStageAnimations();
+  const runBtn = document.getElementById('runBtn');
+  runBtn.disabled = false;
+  runBtn.textContent = 'شغّل التجربة ▶';
+  document.getElementById('resultText').textContent = 'المصدر جاهز. اضغط «شغّل التجربة» لمشاهدة النتيجة.';
+  document.getElementById('resultText').classList.add('placeholder');
+  setGauge(0);
+}
+
+function resetStageAnimations(){
+  document.getElementById('turbine').classList.remove('spin');
+  document.getElementById('wheel').classList.remove('spin');
+  document.getElementById('panel').classList.remove('active');
+  document.getElementById('sunOrb').classList.remove('glow');
+  document.getElementById('car').classList.remove('drive');
+  document.getElementById('runner').classList.remove('move');
+  ['bulb-wind','bulb-water','bulb-sun'].forEach(id=> document.getElementById(id).classList.remove('lit'));
+}
+
+function setGauge(pct){
+  const circle = document.getElementById('gaugeCircle');
+  const circumference = 339;
+  const offset = circumference - (circumference * pct/100);
+  circle.style.strokeDashoffset = offset;
+  document.getElementById('gaugeVal').textContent = toArabicPercent(pct);
+}
+
+function toArabicPercent(n){
+  const arabicDigits = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
+  return String(n).split('').map(ch => /[0-9]/.test(ch) ? arabicDigits[ch] : ch).join('') + '٪';
+}
+
+document.getElementById('runBtn').addEventListener('click', runExperiment);
+
+function runExperiment(){
+  if(!currentSource || isRunning) return;
+  isRunning = true;
+  const runBtn = document.getElementById('runBtn');
+  runBtn.disabled = true;
+  runBtn.textContent = 'جارٍ تشغيل التجربة...';
+
+  resetStageAnimations();
+
+  if(currentSource==='wind'){
+    document.getElementById('turbine').classList.add('spin');
+    setTimeout(()=> document.getElementById('bulb-wind').classList.add('lit'), 700);
+  }
+  if(currentSource==='water'){
+    document.getElementById('wheel').classList.add('spin');
+    setTimeout(()=> document.getElementById('bulb-water').classList.add('lit'), 700);
+  }
+  if(currentSource==='sun'){
+    document.getElementById('sunOrb').classList.add('glow');
+    setTimeout(()=>{
+      document.getElementById('panel').classList.add('active');
+      document.getElementById('bulb-sun').classList.add('lit');
+    }, 500);
+  }
+  if(currentSource==='fuel'){
+    setTimeout(()=> document.getElementById('car').classList.add('drive'), 150);
+  }
+  if(currentSource==='food'){
+    document.getElementById('runner').classList.add('move');
+  }
+
+  setTimeout(()=> setGauge(RESULTS[currentSource].gauge), 200);
+
+  setTimeout(()=>{
+    const box = document.getElementById('resultText');
+    box.textContent = RESULTS[currentSource].text;
+    box.classList.remove('placeholder');
+    runBtn.disabled = false;
+    runBtn.textContent = 'أعد التجربة 🔁';
+    isRunning = false;
+  }, 2000);
+}
+
+function toggleModelAnswer(){
+  document.getElementById('modelAnswer').classList.toggle('show');
+}
+
+// ---------- قائمة "أفكر" اليومية ----------
+const defaultDaily = ['المشي إلى المدرسة', 'اللعب في الملعب', 'صعود الدرج'];
+const dailyList = document.getElementById('dailyList');
+
+function renderDaily(items){
+  dailyList.innerHTML = '';
+  items.forEach((txt, i)=>{
+    const li = document.createElement('li');
+    li.innerHTML = `<span>${txt}</span>`;
+    const btn = document.createElement('button');
+    btn.textContent = '✕';
+    btn.onclick = ()=>{ items.splice(i,1); renderDaily(items); };
+    li.appendChild(btn);
+    dailyList.appendChild(li);
+  });
+}
+let dailyItems = [...defaultDaily];
+renderDaily(dailyItems);
+
+function addDailyItem(){
+  const input = document.getElementById('dailyInput');
+  const val = input.value.trim();
+  if(!val) return;
+  dailyItems.push(val);
+  renderDaily(dailyItems);
+  input.value = '';
+}
+document.getElementById('dailyInput').addEventListener('keydown', e=>{
+  if(e.key==='Enter') addDailyItem();
+});
+
+// ---------- الاختبار القصير ----------
+const QUIZ = [
+  { q:'ما تعريف الطاقة؟',
+    options:['لون الأشياء','المقدرة على إنجاز عمل','شكل من أشكال المادة'],
+    correct:1 },
+  { q:'ما مصدر الطاقة الرئيس على سطح الأرض؟',
+    options:['الوقود','القمر','الشمس'],
+    correct:2 },
+  { q:'أي مما يلي يُعدّ مصدراً غير متجدد للطاقة؟',
+    options:['الرياح','الوقود (النفط والغاز)','أشعة الشمس'],
+    correct:1 },
+  { q:'ماذا يزوّد الغذاء جسم الإنسان؟',
+    options:['بالطاقة اللازمة للحركة','باللون فقط','بالوزن الزائد فقط'],
+    correct:0 },
+];
+
+const quizContainer = document.getElementById('quizContainer');
+let quizAnswered = 0, quizScoreVal = 0;
+
+QUIZ.forEach((item, qi)=>{
+  const card = document.createElement('div');
+  card.className = 'quiz-card';
+  const qEl = document.createElement('div');
+  qEl.className = 'quiz-q';
+  qEl.textContent = `${qi+1}. ${item.q}`;
+  card.appendChild(qEl);
+  const optsWrap = document.createElement('div');
+  optsWrap.className = 'quiz-opts';
+  item.options.forEach((opt, oi)=>{
+    const optEl = document.createElement('div');
+    optEl.className = 'quiz-opt';
+    optEl.textContent = opt;
+    optEl.onclick = ()=>{
+      if(optEl.dataset.locked) return;
+      Array.from(optsWrap.children).forEach(c=> c.dataset.locked = 'true');
+      if(oi === item.correct){
+        optEl.classList.add('correct');
+        quizScoreVal++;
+      }else{
+        optEl.classList.add('wrong');
+        optsWrap.children[item.correct].classList.add('correct');
+      }
+      quizAnswered++;
+      updateQuizScore();
+    };
+    optsWrap.appendChild(optEl);
+  });
+  card.appendChild(optsWrap);
+  quizContainer.appendChild(card);
+});
+
+function toArabicNumber(n){
+  const arabicDigits = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
+  return String(n).split('').map(ch => /[0-9]/.test(ch) ? arabicDigits[ch] : ch).join('');
+}
+
+function updateQuizScore(){
+  const scoreEl = document.getElementById('quizScore');
+  if(quizAnswered === QUIZ.length){
+    scoreEl.textContent = `نتيجتك: ${toArabicNumber(quizScoreVal)} من ${toArabicNumber(QUIZ.length)} 🎉`;
+  } else {
+    scoreEl.textContent = '';
+  }
+}
+</script>
+</body>
+</html>

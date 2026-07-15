@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المختبر الافتراضي: القياس بالورنية | فيزياء الصف العاشر</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #2c3e50;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 12px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 25px;
+        }
+
+        header h1 { margin: 0; font-size: 24px; }
+        header p { margin: 5px 0 0 0; opacity: 0.9; font-size: 14px; }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+
+        @media (min-width: 850px) {
+            .grid { grid-template-columns: 3fr 2fr; }
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            border-top: 5px solid var(--secondary-color);
+        }
+
+        .lab-card {
+            border-top-color: #2ecc71;
+        }
+
+        h2 {
+            color: var(--primary-color);
+            font-size: 18px;
+            margin-top: 0;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 8px;
+        }
+
+        /* محاكي الورنية */
+        .canvas-container {
+            position: relative;
+            background: #eef2f5;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #ddd;
+            margin-bottom: 15px;
+            width: 100%;
+        }
+
+        canvas {
+            display: block;
+            width: 100% !important;
+            height: auto !important;
+            background-color: #ecf0f1;
+            touch-action: none;
+        }
+
+        .controls {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            background: #f1f2f6;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+
+        label { font-weight: bold; font-size: 14px; }
+
+        select, input[type="range"], input[type="number"], button {
+            padding: 8px 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 14px;
+            max-width: 100%;
+        }
+        input[type="range"] { width: 100% !important; }
+
+        button {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover { background-color: #2980b9; }
+
+        /* التحقق من الإجابة */
+        .verification {
+            background: #fff9db;
+            padding: 15px;
+            border-radius: 8px;
+            border-right: 5px solid #f59f00;
+            margin-top: 15px;
+        }
+
+        .result-msg {
+            margin-top: 8px;
+            font-weight: bold;
+        }
+
+        /* جدول النتائج */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th { background-color: var(--primary-color); color: white; }
+
+        /* الأسئلة الاستنتاجية */
+        .question-group {
+            margin-bottom: 15px;
+        }
+
+        .question-group p { font-weight: 500; margin-bottom: 5px; font-size: 14px;}
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            resize: vertical;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+
+        /* ===== RESPONSIVE MOBILE ===== */
+        @media (max-width: 600px) {
+            body { padding: 8px; }
+            header h1 { font-size: 18px; }
+            header p { font-size: 12px; }
+            h2 { font-size: 15px; }
+            .controls { flex-direction: column; align-items: stretch; }
+            .controls label { font-size: 13px; }
+            select { width: 100%; }
+            input[type="range"] { width: 100% !important; }
+            .verification div { flex-direction: column; gap: 8px; }
+            input[type="number"] { width: 100% !important; }
+            button { width: 100%; }
+            table { font-size: 12px; }
+            th, td { padding: 6px 4px; }
+            textarea { font-size: 13px; }
+        }
+        @media (max-width: 400px) {
+            header h1 { font-size: 15px; }
+        }
+        </style>
+</head>
+<body>
+
+<style>
+.back-to-lab {
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    z-index: 9999;
+    background: rgba(10,22,40,0.92);
+    border: 1px solid rgba(0,200,150,0.35);
+    border-radius: 24px;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: #00C896;
+    font-family: Tajawal, Cairo, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+    transition: background 0.2s;
+}
+.back-to-lab:hover { background: rgba(0,200,150,0.15); }
+</style>
+<a href="../grade10.html" class="back-to-lab">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+  العودة للصف العاشر
+</a>
+
+
+<div class="container">
+    <header>
+        <h1>مختبر الفيزياء الافتراضي التفاعلي</h1>
+        <p>منهاج الفيزياء - الصف العاشر الأساسي | دولة فلسطين</p>
+        <p style="font-weight: bold; margin-top: 5px;">التجربة: القياس باستخدام القدمة ذات الورنية (Vernier Caliper)</p>
+    </header>
+
+    <div class="grid">
+        <div class="card lab-card">
+            <h2>🔬 بيئة المحاكاة التفاعلية (ثنائية وثلاثية الأبعاد مدمجة)</h2>
+            <p style="font-size: 13px; color: #666;">اسحب المقبض الدائري الأزرق للفك التفاعلي، أو استخدم شريط التمرير لقياس الجسم المختار.</p>
+            
+            <div class="controls">
+                <label for="object-select">اختر الجسم المراد قياسه:</label>
+                <select id="object-select" onchange="changeObject()">
+                    <option value="none">--- بدون جسم ---</option>
+                    <option value="sphere">كرة معدنية صغيرة</option>
+                    <option value="wire">سلك نحاسي سميك</option>
+                    <option value="block">مكعب خشبي</option>
+                </select>
+                
+                <label for="fine-slider" style="margin-right: auto;">تحكم دقيق بالفك:</label>
+                <input type="range" id="fine-slider" min="0" max="150" value="0" step="0.1" style="width: 150px;" oninput="updateCaliperFromSlider(this.value)">
+            </div>
+
+            <div class="canvas-container">
+                <canvas id="caliperCanvas" width="800" height="320"></canvas>
+            </div>
+
+            <div class="verification">
+                <strong>✍️ اختبر قراءتك الذاتية:</strong>
+                <p style="margin: 5px 0 10px 0; font-size: 13px;">قم بأخذ القراءة من الورنية أعلاه بالمليمتر (mm) ثم أدخلها هنا للتحقق من دقة قياسك:</p>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <input type="number" id="student-input" step="0.05" placeholder="مثال: 12.45" style="width: 120px;">
+                    <span style="font-weight: bold;">مم (mm)</span>
+                    <button onclick="checkAnswer()">تحقق من الإجابة</button>
+                </div>
+                <div id="feedback" class="result-msg"></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>📋 بطاقة التجربة المخبرية</h2>
+            
+            <h3>1. الهدف من التجربة:</h3>
+            <p style="font-size: 13px; font-weight: bold; color: #34495e;">تنمية مهارة القياس الدقيق للأبعاد الطولية الصغيرة باستخدام القدمة ذات الورنية، وحساب القراءة المباشرة وتدوينها بشكل علمي صحيح.</p>
+
+            <h3>2. خطوات التنفيذ:</h3>
+            <ol style="font-size: 13px; padding-right: 20px; line-height: 1.6;">
+                <li>اختر "كرة معدنية صغيرة" من قائمة الأجسام.</li>
+                <li>حرك فك الورنية حتى ينطبق تماماً على حواف الكرة.</li>
+                <li>انظر إلى صفر الورنية وحدد القراءة على المقياس الرئيسي بالمليمتر.</li>
+                <li>ابحث عن الخط من مقياس الورنية المنطبق تماماً مع خط من خطوط المقياس الرئيسي واضربه في (0.05 مم).</li>
+                <li>اجمع القراءتين للحصول على القيمة النهائية ثم سجلها في الجدول أدناه.</li>
+                <li>كرر الخطوات مع الأجسام الأخرى.</li>
+            </ol>
+
+            <h3>3. جدول تسجيل البيانات والنتائج:</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>الجسم المراد قياسه</th>
+                        <th>القراءة الصحيحة (مم)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>كرة معدنية صغيرة</td>
+                        <td><span id="t-sphere">--</span> مم</td>
+                    </tr>
+                    <tr>
+                        <td>سلك نحاسي سميك</td>
+                        <td><span id="t-wire">--</span> مم</td>
+                    </tr>
+                    <tr>
+                        <td>مكعب خشبي</td>
+                        <td><span id="t-block">--</span> مم</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>4. الاستنتاجات والتفكير الناقد:</h3>
+            <div class="question-group">
+                <p>س1: ما أهمية وجود تدريجين (رئيسي وورنية) في أداة القياس هذه مقارنة بالمسطرة العادية؟</p>
+                <textarea rows="2" placeholder="اكتب استنتاجك العلمي هنا كطالب فيزيائي..."></textarea>
+            </div>
+            <div class="question-group">
+                <p>س2: إذا كانت القيمة المقاسة للكرة أقل من القيمة الحقيقية باستمرار، ما نوع الخطأ المتوقع هنا؟ وكيف يمكن معالجته؟</p>
+                <textarea rows="2" placeholder="توقع نوع الخطأ (صَفري/نظامي/عشوائي)..."></textarea>
+            </div>
+            <button style="width: 100%; background-color: var(--primary-color);" onclick="alert('تم حفظ إجاباتك بنجاح! يمكنك مناقشتها الآن مع معلمك عبر المنصة.')">إرسال الإجابات والتقرير إلى المعلم</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const canvas = document.getElementById('caliperCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // قيم الأجسام الافتراضية بالمليمترات
+    const objectsData = {
+        none: { size: 0, name: "" },
+        sphere: { size: 24.35, name: "كرة معدنية صغيرة", color: "#7f8c8d", type: "circle" },
+        wire: { size: 8.70, name: "سلك نحاسي سميك", color: "#d35400", type: "rect" },
+        block: { size: 42.15, name: "مكعب خشبي", color: "#f39c12", type: "block" }
+    };
+
+    let currentObject = "none";
+    let currentCaliperPos = 0; // بالمليمتر
+    let isDragging = false;
+    let dragStartX = 0;
+    let dragStartPos = 0;
+
+    // معامل التحويل من مليمتر إلى بكسل على الرسم
+    const mmToPx = 4.5;
+    const originX = 120; // نقطة الصفر للفك الثابت
+
+    function init() {
+        draw();
+        // أحداث الماوس واللمس للتفاعل
+        canvas.addEventListener('mousedown', startDrag);
+        canvas.addEventListener('mousemove', doDrag);
+        canvas.addEventListener('mouseup', stopDrag);
+        canvas.addEventListener('mouseleave', stopDrag);
+        
+        canvas.addEventListener('touchstart', (e) => { startDrag(e.touches[0]); });
+        canvas.addEventListener('touchmove', (e) => { doDrag(e.touches[0]); e.preventDefault(); });
+        canvas.addEventListener('touchend', stopDrag);
+    }
+
+    function changeObject() {
+        currentObject = document.getElementById('object-select').value;
+        const obj = objectsData[currentObject];
+        
+        if (currentObject !== "none") {
+            // تحريك الفك تلقائياً ليقترب من الجسم لتسهيل التجربة
+            currentCaliperPos = obj.size;
+            document.getElementById('fine-slider').value = obj.size;
+            
+            // إظهار النتيجة بالجدول لمساعدة الطالب بعد الاختيار
+            document.getElementById('t-' + currentObject).innerText = obj.size;
+        } else {
+            currentCaliperPos = 0;
+            document.getElementById('fine-slider').value = 0;
+        }
+        draw();
+        document.getElementById('feedback').innerText = "";
+    }
+
+    function updateCaliperFromSlider(val) {
+        currentCaliperPos = parseFloat(val);
+        draw();
+    }
+
+    function startDrag(e) {
+        const rect = canvas.getBoundingClientRect();
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+        
+        // حساب موقع الفك المتحرك بالبكسل لتحديد منطقة السحب (المقبض التفاعلي السفلي)
+        const sliderX = originX + (currentCaliperPos * mmToPx);
+        
+        // جعل السحب متاحاً من خلال مقبض دائري تحت الورنية
+        if (Math.abs(mouseX - (sliderX + 50)) < 30 && Math.abs(mouseY - 260) < 30) {
+            isDragging = true;
+            dragStartX = mouseX;
+            dragStartPos = currentCaliperPos;
+        }
+    }
+
+    function doDrag(e) {
+        if (!isDragging) return;
+        const rect = canvas.getBoundingClientRect();
+        const mouseX = e.clientX - rect.left;
+        
+        const deltaX = mouseX - dragStartX;
+        let newPos = dragStartPos + (deltaX / mmToPx);
+        
+        if (newPos < 0) newPos = 0;
+        if (newPos > 150) newPos = 150; // أقصى حد للورنية الافتراضية
+        
+        currentCaliperPos = Math.round(newPos * 20) / 20; // خطوة القياس 0.05 مم
+        document.getElementById('fine-slider').value = currentCaliperPos;
+        draw();
+    }
+
+    function stopDrag() {
+        isDragging = false;
+    }
+
+    function checkAnswer() {
+        const studentAns = parseFloat(document.getElementById('student-input').value);
+        const feedback = document.getElementById('feedback');
+        
+        if (isNaN(studentAns)) {
+            feedback.innerHTML = "⚠️ الرجاء إدخال رقم صحيح قبل التحقق.";
+            feedback.style.color = "#c0392b";
+            return;
+        }
+
+        if (currentObject === "none") {
+            feedback.innerHTML = "⚠️ يرجى اختيار جسم للقياس أولاً لتأكيد قراءتك.";
+            feedback.style.color = "#c0392b";
+            return;
+        }
+
+        const exactSize = objectsData[currentObject].size;
+        // نسبة سماح مقبولة للتقريب الجيد للطلاب
+        if (Math.abs(studentAns - exactSize) < 0.01) {
+            feedback.innerHTML = `🎉 إجابة ممتازة وصحيحة تماماً! قراءتك للجسم (${objectsData[currentObject].name}) دقيقة جداً: ${exactSize} مم.`;
+            feedback.style.color = "#27ae60";
+        } else {
+            feedback.innerHTML = `❌ القياس غير دقيق تماماً. حاول مرة أخرى! انظر بدقة لخط انطباق الورنية مع المقياس الرئيسي.`;
+            feedback.style.color = "#c0392b";
+        }
+    }
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // رسم الخلفية وتأثيرات العمق ثلاثية الأبعاد (3D shadow projection)
+        ctx.fillStyle = "#ecf0f1";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // رسم الجسم المقاس في الفك التابع للتجربة
+        drawObject();
+
+        // 1. رسم الفك الثابت والمقياس الرئيسي السفلي والعلوي (The Main Frame)
+        ctx.fillStyle = "#bdc3c7";
+        // الجزء الرئيسي الخلفي
+        ctx.fillRect(20, 40, 750, 60); 
+        // الفك الثابت لأسفل
+        ctx.beginPath();
+        ctx.moveTo(120, 100);
+        ctx.lineTo(120, 200);
+        ctx.lineTo(95, 170);
+        ctx.lineTo(95, 100);
+        ctx.closePath();
+        ctx.fill();
+        
+        // رسم تدريج المقياس الرئيسي (بالمليمترات)
+        ctx.strokeStyle = "#2c3e50";
+        ctx.fillStyle = "#2c3e50";
+        ctx.font = "10px Tahoma";
+        ctx.lineWidth = 1;
+
+        for (let i = 0; i <= 140; i++) {
+            let x = originX + (i * mmToPx);
+            if (x > 760) break;
+            
+            let h = 8; // الخطوط العادية الصغيرة
+            if (i % 10 === 0) {
+                h = 16; // الخطوط الطويلة لكل سم
+                ctx.fillText(i/10, x - 3, 56);
+            } else if (i % 5 === 0) {
+                h = 12; // خط الـ 0.5 سم
+            }
+            ctx.beginPath();
+            ctx.moveTo(x, 100);
+            ctx.lineTo(x, 100 - h);
+            ctx.stroke();
+        }
+
+        // 2. رسم الجزء المنزلق (الورنية المتنقلة)
+        let slideX = originX + (currentCaliperPos * mmToPx);
+        
+        // الظل الإسقاطي لمحاكاة البُعد الثالث للورنية المنزلقة
+        ctx.fillStyle = "rgba(0, 0, 0, 0.15)";
+        ctx.fillRect(slideX - 5, 35, 110, 205);
+
+        // الفك المتحرك الفعلي
+        ctx.fillStyle = "#95a5a6";
+        ctx.fillRect(slideX, 35, 100, 70); // الإطار العلوي المنزلق
+        
+        // الفك المتحرك الممتد لأسفل
+        ctx.beginPath();
+        ctx.moveTo(slideX, 105);
+        ctx.lineTo(slideX, 200);
+        ctx.lineTo(slideX + 25, 170);
+        ctx.lineTo(slideX + 25, 105);
+        ctx.closePath();
+        ctx.fill();
+
+        // رسم المقبض التفاعلي المستدير في الأسفل المحاكي للأبعاد الثلاثية لسهولة السحب باللمس
+        ctx.fillStyle = "rgba(52, 152, 219, 0.8)";
+        ctx.beginPath();
+        ctx.arc(slideX + 50, 250, 18, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = "white";
+        ctx.font = "bold 11px Tahoma";
+        ctx.fillText("اسحب", slideX + 34, 254);
+
+        // رسم تدريج الورنية بدقة (دقة الورنية المعتمدة 0.05 مم، أي 20 خطاً تكافئ 19 مم)
+        ctx.strokeStyle = "#e74c3c"; // لون أحمر مميز لتسهيل القراءة للطلاب
+        ctx.fillStyle = "#e74c3c";
+        ctx.font = "9px Arial";
+        ctx.lineWidth = 1.2;
+
+        // الصفر الخاص بالورنية
+        ctx.beginPath();
+        ctx.moveTo(slideX, 105);
+        ctx.lineTo(slideX, 122);
+        ctx.stroke();
+        ctx.fillText("0", slideX - 3, 134);
+
+        // باقي الخطوط الـ 20 لتدريج الورنية
+        // كل خط في الورنية يبتعد بمقدار 0.95 ملم من خطوط المقياس الرئيسي علمياً
+        for (let j = 1; j <= 20; j++) {
+            let vx = slideX + (j * 0.95 * mmToPx);
+            let vh = 8;
+            if (j % 2 === 0) {
+                vh = 13;
+                ctx.fillText((j/2).toString(), vx - 3, 134);
+            }
+            ctx.beginPath();
+            ctx.moveTo(vx, 105);
+            ctx.lineTo(vx, 105 + vh);
+            ctx.stroke();
+        }
+    }
+
+    function drawObject() {
+        if (currentObject === "none") return;
+        const obj = objectsData[currentObject];
+        ctx.save();
+        
+        // إعطاء تأثيرات إضاءة وظلال ثلاثية الأبعاد للأجسام الافتراضية
+        ctx.fillStyle = obj.color;
+        ctx.shadowColor = "rgba(0, 0, 0, 0.3)";
+        ctx.shadowBlur = 8;
+        ctx.shadowOffsetX = 3;
+        ctx.shadowOffsetY = 3;
+
+        let wPx = obj.size * mmToPx;
+
+        if (obj.type === "circle") {
+            ctx.beginPath();
+            ctx.arc(120 + wPx/2, 145, wPx/2, 0, Math.PI * 2);
+            ctx.fill();
+            // لمعان خفيف ثلاثي الأبعاد
+            ctx.fillStyle = "rgba(255,255,255,0.2)";
+            ctx.beginPath();
+            ctx.arc(120 + wPx/3, 135, wPx/5, 0, Math.PI * 2);
+            ctx.fill();
+        } else if (obj.type === "rect") {
+            ctx.fillRect(120, 130, wPx, 35);
+        } else if (obj.type === "block") {
+            // رسم مكعب ثلاثي الأبعاد بطريقة الإسقاط المائل Isometric
+            let x = 120, y = 110, h = wPx;
+            ctx.fillRect(x, y, wPx, h);
+            
+            // الوجه العلوي للمكعب الخشبي
+            ctx.fillStyle = "#e67e22";
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.lineTo(x + 15, y - 12);
+            ctx.lineTo(x + wPx + 15, y - 12);
+            ctx.lineTo(x + wPx, y);
+            ctx.closePath();
+            ctx.fill();
+
+            // الوجه الجانبي
+            ctx.fillStyle = "#d35400";
+            ctx.beginPath();
+            ctx.moveTo(x + wPx, y);
+            ctx.lineTo(x + wPx + 15, y - 12);
+            ctx.lineTo(x + wPx + 15, y + h - 12);
+            ctx.lineTo(x + wPx, y + h);
+            ctx.closePath();
+            ctx.fill();
+        }
+        ctx.restore();
+    }
+
+    // تشغيل المختبر عند تحميل الصفحة بالكامل
+    window.onload = function(){ init(); resizeCanvas(); };
+
+    // Responsive canvas resize
+    function resizeCanvas() {
+        const container = canvas.parentElement;
+        const ratio = canvas.height / canvas.width;
+        canvas.style.width = '100%';
+        canvas.style.height = 'auto';
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+</script>
+
+</body>
+</html>

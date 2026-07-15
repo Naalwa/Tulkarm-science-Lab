@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<!-- تعريف ترميز النص UTF-8 لضمان عرض اللغة العربية بشكل صحيح على كل الأجهزة -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta http-equiv="Content-Language" content="ar">
+<title>آلية عمل الورقة — مختبر البناء الضوئي التفاعلي</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lalezar&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --forest-deep:#173626;
+  --leaf:#2D6A4F;
+  --leaf-light:#74C69D;
+  --leaf-pale:#B7E4C7;
+  --mint-bg:#EDF7EE;
+  --cream:#FBF9F1;
+  --sun:#FFB703;
+  --sun-deep:#FB8500;
+  --water:#48CAE4;
+  --water-deep:#0096C7;
+  --soil:#7F5539;
+  --starch-dark:#1D2A50;
+  --iodine:#9C6B30;
+  --ink:#1B2B22;
+  --card-shadow: 0 18px 40px -18px rgba(23,54,38,.35);
+  --radius: 22px;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--cream);
+  color:var(--ink);
+  font-family:'Tajawal',sans-serif;
+  line-height:1.75;
+  overflow-x:hidden;
+}
+h1,h2,h3,.display{
+  font-family:'Lalezar',cursive;
+  font-weight:400;
+  letter-spacing:.5px;
+}
+img,svg{display:block;}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px;}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:.8rem;font-weight:700;color:var(--leaf);
+  background:var(--leaf-pale);padding:6px 16px;border-radius:99px;
+  margin-bottom:14px;
+}
+section{position:relative;padding:78px 0;}
+.section-head{max-width:680px;margin-bottom:44px;}
+.section-head h2{font-size:2.3rem;color:var(--forest-deep);margin:0 0 10px;}
+.section-head p{font-size:1.05rem;color:#3d5548;margin:0;}
+
+/* ===== HERO ===== */
+.hero{
+  min-height:100svh;
+  display:flex;flex-direction:column;justify-content:center;
+  background:
+    radial-gradient(circle at 85% 8%, rgba(255,183,3,.35), transparent 45%),
+    linear-gradient(160deg, var(--forest-deep) 0%, #1f4a34 45%, var(--leaf) 100%);
+  color:var(--cream);
+  overflow:hidden;
+  padding:110px 0 60px;
+}
+.hero .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center;position:relative;z-index:2;}
+.hero .eyebrow{background:rgba(255,255,255,.12);color:var(--leaf-pale);}
+.hero h1{font-size:clamp(2.4rem,5vw,3.6rem);margin:0 0 18px;color:#fff;text-shadow:0 6px 30px rgba(0,0,0,.25);}
+.hero h1 span{color:var(--sun);}
+.hero p.lead{font-size:1.12rem;color:#dff3e6;max-width:520px;margin:0 0 30px;}
+.hero .cta-row{display:flex;gap:14px;flex-wrap:wrap;}
+.btn{
+  border:none;cursor:pointer;font-family:'Tajawal',sans-serif;font-weight:700;
+  padding:15px 30px;border-radius:99px;font-size:1rem;
+  transition:transform .25s ease, box-shadow .25s ease, background .25s ease;
+  display:inline-flex;align-items:center;gap:10px;
+}
+.btn-primary{background:var(--sun);color:#2b1900;box-shadow:0 14px 30px -10px rgba(255,183,3,.6);}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 18px 34px -8px rgba(255,183,3,.75);}
+.btn-ghost{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.35);}
+.btn-ghost:hover{background:rgba(255,255,255,.2);transform:translateY(-3px);}
+
+/* 3D leaf scene */
+.scene3d{perspective:1200px;height:420px;position:relative;}
+.leaf3d{
+  width:100%;height:100%;position:relative;transform-style:preserve-3d;
+  animation:floatLeaf 7s ease-in-out infinite;
+}
+@keyframes floatLeaf{
+  0%,100%{transform:rotateY(-18deg) rotateX(8deg) translateY(0);}
+  50%{transform:rotateY(-10deg) rotateX(3deg) translateY(-16px);}
+}
+.leaf3d svg{width:100%;height:100%;filter:drop-shadow(0 30px 40px rgba(0,0,0,.35));}
+.ray{
+  position:absolute;top:-40px;right:20%;width:5px;height:120px;
+  background:linear-gradient(var(--sun), transparent);
+  transform-origin:top center;
+  animation:rayFall 2.4s linear infinite;
+  opacity:.85;border-radius:6px;
+}
+.ray:nth-child(2){right:38%;animation-delay:.5s;height:90px;}
+.ray:nth-child(3){right:55%;animation-delay:1s;height:140px;}
+.ray:nth-child(4){right:70%;animation-delay:1.5s;height:100px;}
+@keyframes rayFall{0%{transform:translateY(0) scaleY(1);opacity:.9;}100%{transform:translateY(160px) scaleY(.4);opacity:0;}}
+.molecule{
+  position:absolute;font-family:'Tajawal',sans-serif;font-weight:700;font-size:.78rem;
+  color:var(--forest-deep);background:#fff;padding:5px 12px;border-radius:99px;
+  box-shadow:0 8px 18px -6px rgba(0,0,0,.35);
+  animation:drift 6s ease-in-out infinite;
+}
+.molecule.o2{background:var(--water);color:#04293A;top:8%;left:2%;animation-delay:.4s;}
+.molecule.co2{background:#fff;top:60%;right:-6%;animation-delay:1.2s;}
+.molecule.sugar{background:var(--sun);color:#2b1900;top:82%;left:14%;animation-delay:2s;}
+@keyframes drift{0%,100%{transform:translateY(0);}50%{transform:translateY(-14px);}}
+
+.scroll-cue{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);z-index:2;color:#dff3e6cc;font-size:.85rem;display:flex;flex-direction:column;align-items:center;gap:6px;}
+.scroll-cue .line{width:1px;height:34px;background:linear-gradient(#dff3e6,transparent);animation:pulseLine 1.8s ease-in-out infinite;}
+@keyframes pulseLine{0%,100%{opacity:.3;}50%{opacity:1;}}
+
+/* ===== LESSON MECHANISM ===== */
+.lesson{background:var(--mint-bg);}
+.path-track{position:relative;}
+.path-track::before{
+  content:"";position:absolute;top:0;bottom:0;right:29px;width:3px;
+  background:repeating-linear-gradient(var(--leaf-light) 0 10px, transparent 10px 20px);
+}
+.step{
+  position:relative;padding-right:78px;margin-bottom:38px;
+  transform-style:preserve-3d;perspective:800px;
+}
+.step:last-child{margin-bottom:0;}
+.step-num{
+  position:absolute;right:0;top:0;width:60px;height:60px;border-radius:18px;
+  background:var(--leaf);color:#fff;display:flex;align-items:center;justify-content:center;
+  font-family:'Lalezar',cursive;font-size:1.5rem;box-shadow:var(--card-shadow);
+  transition:transform .35s ease;
+}
+.step-card{
+  background:#fff;border-radius:var(--radius);padding:22px 26px;box-shadow:var(--card-shadow);
+  transition:transform .35s ease, box-shadow .35s ease;
+  border:1px solid #e3f0e6;
+}
+.step-card h3{margin:0 0 8px;color:var(--forest-deep);font-size:1.25rem;}
+.step-card p{margin:0;color:#3d5548;}
+.step:hover .step-card{transform:translateY(-6px) rotateX(2deg);box-shadow:0 26px 50px -20px rgba(23,54,38,.45);}
+.step:hover .step-num{transform:scale(1.08) rotate(-4deg);}
+
+/* ===== LAB ===== */
+.lab{background:linear-gradient(180deg, var(--cream), #f2ede0);}
+.lab-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:30px;align-items:start;}
+.panel{
+  background:#fff;border-radius:var(--radius);padding:26px;box-shadow:var(--card-shadow);
+  border:1px solid #ece6d6;
+}
+.panel h3{margin:0 0 4px;color:var(--forest-deep);font-size:1.15rem;}
+.panel .hint{color:#6a7d70;font-size:.88rem;margin:0 0 20px;}
+.toggle-row{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  padding:14px 0;border-bottom:1px dashed #e2ded0;
+}
+.toggle-row:last-of-type{border-bottom:none;}
+.toggle-label{display:flex;align-items:center;gap:12px;}
+.toggle-icon{width:38px;height:38px;flex:none;}
+.toggle-label strong{display:block;font-size:.98rem;color:var(--ink);}
+.toggle-label span{font-size:.78rem;color:#7c8c81;}
+.switch{
+  --w:52px;--h:30px;width:var(--w);height:var(--h);border-radius:99px;background:#dfe3d6;
+  position:relative;cursor:pointer;border:none;flex:none;transition:background .3s ease;
+}
+.switch::after{
+  content:"";position:absolute;top:3px;right:3px;width:24px;height:24px;border-radius:50%;
+  background:#fff;box-shadow:0 3px 8px rgba(0,0,0,.25);transition:transform .3s ease;
+}
+.switch.on{background:var(--leaf);}
+.switch.on::after{transform:translateX(-22px);}
+
+.run-btn{width:100%;margin-top:22px;justify-content:center;}
+.run-btn:disabled{opacity:.55;cursor:not-allowed;transform:none !important;box-shadow:none !important;}
+
+/* stage / beaker visual */
+.stage-wrap{
+  background:#fff;border-radius:var(--radius);padding:26px;box-shadow:var(--card-shadow);
+  border:1px solid #ece6d6;
+}
+.stage{
+  height:300px;border-radius:16px;
+  background:linear-gradient(180deg,#eaf6ee,#dcefe1);
+  position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;
+  perspective:900px;
+}
+.stage-status{position:absolute;top:12px;right:14px;background:rgba(255,255,255,.85);padding:6px 14px;border-radius:99px;font-size:.8rem;font-weight:700;color:var(--forest-deep);}
+.beaker{
+  position:relative;width:150px;height:190px;transform-style:preserve-3d;
+  transition:transform .6s ease;
+}
+.beaker-glass{
+  position:absolute;inset:0;border:4px solid rgba(120,150,135,.5);border-top:none;
+  border-radius:0 0 26px 26px;background:rgba(255,255,255,.35);backdrop-filter:blur(1px);
+}
+.liquid{
+  position:absolute;left:4px;right:4px;bottom:4px;height:0%;border-radius:0 0 22px 22px;
+  transition:height 1s ease, background 1s ease;
+}
+.leaf-in-stage{
+  position:absolute;left:50%;top:38%;width:70px;height:70px;transform:translate(-50%,-50%) rotate(-8deg);
+  transition:fill 1.2s ease, filter 1s ease;z-index:3;
+}
+.bubble{
+  position:absolute;bottom:10px;width:8px;height:8px;border-radius:50%;
+  background:rgba(255,255,255,.8);animation:bub 1.6s ease-in infinite;
+}
+@keyframes bub{0%{transform:translateY(0) scale(.6);opacity:.9;}100%{transform:translateY(-160px) scale(1.1);opacity:0;}}
+.result-banner{
+  margin-top:16px;padding:14px 18px;border-radius:14px;font-weight:700;text-align:center;
+  font-size:1rem;display:none;
+}
+.result-banner.show{display:block;}
+.result-banner.ok{background:#e3f4e6;color:var(--forest-deep);border:1px solid var(--leaf-light);}
+.result-banner.no{background:#fdece3;color:#8a3b1f;border:1px solid #f0b79a;}
+
+.log-wrap{margin-top:26px;}
+.log-wrap h4{margin:0 0 12px;color:var(--forest-deep);font-size:1rem;}
+table.logs{width:100%;border-collapse:collapse;font-size:.86rem;background:#fff;border-radius:12px;overflow:hidden;box-shadow:var(--card-shadow);}
+table.logs th,table.logs td{padding:10px 8px;text-align:center;border-bottom:1px solid #eee;}
+table.logs th{background:var(--leaf);color:#fff;font-weight:700;}
+table.logs tr:last-child td{border-bottom:none;}
+.mark-y{color:var(--leaf);font-weight:900;}
+.mark-n{color:#c0503a;font-weight:900;}
+.empty-log{color:#8a9a8f;font-size:.9rem;text-align:center;padding:18px 0;}
+
+.discover-banner{
+  margin-top:24px;background:linear-gradient(120deg,var(--sun),var(--sun-deep));
+  color:#2b1900;padding:16px 20px;border-radius:16px;font-weight:700;display:none;
+  align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+}
+.discover-banner.show{display:flex;}
+.discover-banner a{color:#2b1900;text-decoration:underline;font-weight:900;}
+
+/* ===== CONCLUSIONS ===== */
+.conclusions{background:var(--forest-deep);color:#eafaf0;}
+.conclusions .section-head h2{color:#fff;}
+.conclusions .section-head p{color:#bcd9c8;}
+.qcard{
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);
+  border-radius:var(--radius);padding:22px;margin-bottom:20px;
+}
+.qcard label{display:block;font-weight:700;margin-bottom:10px;color:#fff;}
+.qcard textarea{
+  width:100%;min-height:64px;border-radius:12px;border:1px solid rgba(255,255,255,.25);
+  background:rgba(255,255,255,.08);color:#fff;padding:12px 14px;font-family:'Tajawal',sans-serif;
+  font-size:.95rem;resize:vertical;
+}
+.qcard textarea::placeholder{color:#a9c6b6;}
+.qcard-foot{display:flex;justify-content:flex-end;margin-top:10px;}
+.reveal-btn{
+  background:var(--leaf-light);color:#0f2d1e;border:none;padding:9px 18px;border-radius:99px;
+  font-weight:700;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:.85rem;
+  transition:transform .25s ease;
+}
+.reveal-btn:hover{transform:translateY(-2px);}
+.answer-box{
+  margin-top:14px;padding:14px 16px;border-radius:12px;background:rgba(255,183,3,.12);
+  border:1px dashed var(--sun);display:none;color:#fff4da;font-size:.92rem;
+}
+.answer-box.show{display:block;}
+
+/* equation flip */
+.equation{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:12px;margin:20px 0;}
+.eq-op{font-size:1.6rem;color:var(--sun);font-weight:900;}
+.eq-arrow{
+  display:flex;flex-direction:column;align-items:center;gap:4px;font-size:.78rem;color:#bcd9c8;
+  min-width:110px;text-align:center;
+}
+.eq-arrow .bar{width:100%;height:3px;background:var(--sun);position:relative;border-radius:3px;}
+.eq-arrow .bar::before{content:"◀";position:absolute;right:-2px;top:-8px;color:var(--sun);font-size:.8rem;}
+.flip-card{width:150px;height:88px;perspective:700px;cursor:pointer;}
+.flip-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;}
+.flip-card.flipped .flip-inner{transform:rotateY(180deg);}
+.flip-front,.flip-back{
+  position:absolute;inset:0;border-radius:14px;display:flex;align-items:center;justify-content:center;
+  backface-visibility:hidden;font-weight:700;text-align:center;padding:8px;font-size:.85rem;
+}
+.flip-front{background:rgba(255,255,255,.08);border:2px dashed rgba(255,255,255,.35);color:#bcd9c8;}
+.flip-back{background:var(--leaf-light);color:#0f2d1e;transform:rotateY(180deg);}
+
+/* mind map */
+.mindmap{display:flex;flex-direction:column;align-items:center;gap:26px;margin-top:10px;}
+.mindmap-title{
+  background:var(--leaf);color:#fff;padding:14px 26px;border-radius:16px;font-weight:900;
+  font-family:'Lalezar',cursive;font-size:1.2rem;box-shadow:var(--card-shadow);
+}
+.mindmap-branches{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;width:100%;}
+.branch{display:flex;flex-direction:column;align-items:center;gap:8px;}
+.branch .connector{width:2px;height:24px;background:var(--sun);}
+.branch .flip-card{width:100%;max-width:170px;height:100px;}
+
+/* footer */
+footer{background:#12291d;color:#bcd9c8;padding:50px 0 30px;text-align:center;font-size:.85rem;}
+footer .brand{color:#fff;font-family:'Lalezar',cursive;font-size:1.3rem;margin-bottom:8px;}
+
+/* importance cards */
+.importance-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:6px;}
+.imp-card{background:#fff;border-radius:18px;padding:20px;box-shadow:var(--card-shadow);text-align:center;border:1px solid #ece6d6;}
+.imp-card .ic{width:46px;height:46px;margin:0 auto 12px;}
+.imp-card h4{margin:0 0 6px;color:var(--forest-deep);font-size:1.02rem;}
+.imp-card p{margin:0;color:#516a5b;font-size:.86rem;}
+
+@media (max-width:920px){
+  .hero .wrap{grid-template-columns:1fr;text-align:center;}
+  .hero .cta-row{justify-content:center;}
+  .lab-grid{grid-template-columns:1fr;}
+  .mindmap-branches{grid-template-columns:repeat(2,1fr);}
+  .importance-grid{grid-template-columns:1fr;}
+  .equation{gap:8px;}
+  .eq-arrow{min-width:70px;}
+}
+@media (max-width:520px){
+  section{padding:56px 0;}
+  .section-head h2{font-size:1.7rem;}
+  .scene3d{height:300px;}
+  .flip-card{width:120px;height:78px;}
+}
+
+  /* ══ RESPONSIVE MOBILE & TABLET ══ */
+  @media (max-width: 768px) {
+    body { padding: 8px !important; font-size: 15px !important; overflow-x: hidden !important; }
+    .container, [class*="container"], [class*="wrapper"] { padding: 8px !important; max-width: 100% !important; }
+    canvas { width: 100% !important; height: auto !important; display: block !important; touch-action: none; max-width: 100% !important; }
+    svg { max-width: 100% !important; height: auto !important; }
+    h1 { font-size: clamp(18px,5vw,32px) !important; }
+    h2 { font-size: clamp(15px,4vw,26px) !important; }
+    h3 { font-size: clamp(13px,3.5vw,20px) !important; }
+    [class*="grid"] { grid-template-columns: 1fr !important; }
+    [class*="flex"] { flex-wrap: wrap !important; }
+    input[type="range"] { width: 100% !important; min-height: 36px; }
+    input[type="number"], input[type="text"], select, textarea {
+      font-size: 16px !important; width: 100% !important; box-sizing: border-box; padding: 8px !important; }
+    button { min-height: 44px !important; font-size: 14px !important; touch-action: manipulation; padding: 10px 14px !important; }
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 13px !important; }
+    th, td { padding: 6px 4px !important; }
+    header { padding: 10px 12px !important; }
+    .controls, [class*="controls"] { flex-direction: column !important; gap: 8px !important; }
+    .lab-window, [class*="lab-window"] { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+  }
+  @media (max-width: 480px) {
+    body { padding: 4px !important; }
+    button { width: 100% !important; }
+  }
+  /* ══ END RESPONSIVE ══ */
+</style>
+</head>
+<body>
+<style>
+.vlab-back{position:fixed;top:10px;left:10px;z-index:99999;
+background:rgba(10,22,40,0.93);border:1px solid rgba(0,200,150,0.4);
+border-radius:22px;padding:8px 16px;display:inline-flex;align-items:center;gap:7px;
+color:#00C896;font-family:Tajawal,Cairo,Arial,sans-serif;font-size:13px;font-weight:700;
+text-decoration:none;backdrop-filter:blur(8px);box-shadow:0 4px 18px rgba(0,0,0,0.3);
+transition:background 0.2s;}
+.vlab-back:hover{background:rgba(0,200,150,0.18);}
+</style>
+<a href="../grade6.html" class="vlab-back">&#8594; العودة للصف</a>
+
+
+<!-- ============ HERO ============ -->
+<header class="hero" id="top">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">مادة العلوم والحياة · الصف السادس · فلسطين</span>
+      <h1>كيف تصنع <span>الورقة</span> غذاءها بنفسها؟</h1>
+      <p class="lead">في هذا الدرس التفاعلي ستكتشف آلية عمل الورقة خطوة بخطوة، ثم تدخل المختبر الافتراضي لتجري تجربة اختبار النشا بنفسك، وتصل إلى شروط عملية البناء الضوئي كما لو كنت داخل المختبر الحقيقي.</p>
+      <div class="cta-row">
+        <button class="btn btn-primary" onclick="document.getElementById('lab').scrollIntoView({behavior:'smooth'})">🧪 ادخل المختبر الافتراضي</button>
+        <button class="btn btn-ghost" onclick="document.getElementById('lesson').scrollIntoView({behavior:'smooth'})">اقرأ الشرح أولاً</button>
+      </div>
+    </div>
+    <div class="scene3d">
+      <div class="ray"></div><div class="ray"></div><div class="ray"></div><div class="ray"></div>
+      <div class="molecule o2">O₂ أكسجين</div>
+      <div class="molecule co2">CO₂ ثاني أكسيد الكربون</div>
+      <div class="molecule sugar">سكر (غذاء)</div>
+      <div class="leaf3d">
+        <svg viewBox="0 0 300 300">
+          <defs>
+            <linearGradient id="leafGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#74C69D"/>
+              <stop offset="100%" stop-color="#1B4332"/>
+            </linearGradient>
+          </defs>
+          <path d="M150 30 C 60 60, 30 150, 60 230 C 90 280, 150 290, 150 290 C 150 290, 210 280, 240 230 C 270 150, 240 60, 150 30 Z" fill="url(#leafGrad)"/>
+          <path d="M150 40 L150 280 M150 100 L100 140 M150 100 L200 140 M150 160 L95 200 M150 160 L205 200 M150 220 L110 250 M150 220 L190 250" stroke="#0e2a1c" stroke-width="3" fill="none" opacity=".6" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-cue"><span>مرّر لتبدأ الرحلة</span><span class="line"></span></div>
+</header>
+
+<!-- ============ LESSON: MECHANISM ============ -->
+<section class="lesson" id="lesson">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">نشاط (٣): آلية عمل الورقة</span>
+      <h2>رحلة الغذاء داخل الورقة</h2>
+      <p>تتبّع الخطوات الخمس التالية بالترتيب لتفهم كيف تتعاون أجزاء الورقة معًا لصنع الغذاء وإطلاق الأكسجين.</p>
+    </div>
+    <div class="path-track">
+      <div class="step">
+        <div class="step-num">١</div>
+        <div class="step-card">
+          <h3>امتصاص ضوء الشمس</h3>
+          <p>تمتص مادة الكلوروفيل الموجودة في البلاستيدات الخضراء ضوء الشمس، وتخزّنه على شكل طاقة كيميائية تُستخدم لاحقًا في صنع الغذاء.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">٢</div>
+        <div class="step-card">
+          <h3>دخول الماء عبر الساق</h3>
+          <p>يدخل الماء إلى الورقة قادمًا من الجذور، عن طريق أوعية الخشب الموجودة داخل عروق الورقة.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">٣</div>
+        <div class="step-card">
+          <h3>دخول ثاني أكسيد الكربون</h3>
+          <p>يدخل غاز ثاني أكسيد الكربون من الهواء الجوي إلى داخل الورقة عبر فتحات دقيقة تسمى الثغور.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">٤</div>
+        <div class="step-card">
+          <h3>عملية البناء الضوئي</h3>
+          <p>تقوم البلاستيدات الخضراء باستخدام الماء وثاني أكسيد الكربون وضوء الشمس لإنتاج السكر (الغذاء) وغاز الأكسجين.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">٥</div>
+        <div class="step-card">
+          <h3>انتقال الغذاء والغاز الناتج</h3>
+          <p>ينتقل السكر الناتج إلى بقية أجزاء النبات عبر أوعية اللحاء، بينما يخرج الأكسجين إلى الهواء عبر الثغور.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ VIRTUAL LAB ============ -->
+<section class="lab" id="lab">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">المختبر الافتراضي</span>
+      <h2>تجربة اختبار النشا باليود 🧪</h2>
+      <p>اختر شروط التجربة، ثم اضغط "شغّل التجربة" لمشاهدة الورقة وهي تُغلى، وتُنزع خضرتها بالكحول، ثم تُغمر بمحلول اليود. إن تلوّنت باللون الأزرق الداكن (الأسود المزرقّ) فهذا دليل على وجود النشا، أي أن البناء الضوئي قد حدث.</p>
+    </div>
+
+    <div class="lab-grid">
+      <!-- controls -->
+      <div class="panel">
+        <h3>ضبط شروط التجربة</h3>
+        <p class="hint">فعّل أو أطفئ كل عامل، وكرر التجربة عدة مرات لتكتشف الشروط اللازمة بنفسك.</p>
+
+        <div class="toggle-row">
+          <div class="toggle-label">
+            <svg class="toggle-icon" viewBox="0 0 40 40"><circle cx="20" cy="20" r="10" fill="#FFB703"/><g stroke="#FB8500" stroke-width="3" stroke-linecap="round"><line x1="20" y1="2" x2="20" y2="8"/><line x1="20" y1="32" x2="20" y2="38"/><line x1="2" y1="20" x2="8" y2="20"/><line x1="32" y1="20" x2="38" y2="20"/><line x1="7" y1="7" x2="11" y2="11"/><line x1="29" y1="29" x2="33" y2="33"/><line x1="7" y1="33" x2="11" y2="29"/><line x1="29" y1="11" x2="33" y2="7"/></g></svg>
+            <div><strong>ضوء الشمس</strong><span>تُعرَّض الورقة للضوء</span></div>
+          </div>
+          <button class="switch" id="sw-light" onclick="toggleFactor('light')"></button>
+        </div>
+
+        <div class="toggle-row">
+          <div class="toggle-label">
+            <svg class="toggle-icon" viewBox="0 0 40 40"><path d="M20 4 C10 18 6 24 6 29 a14 14 0 0 0 28 0 c0-5-4-11-14-25Z" fill="#48CAE4"/></svg>
+            <div><strong>الماء</strong><span>ري النبات بالماء</span></div>
+          </div>
+          <button class="switch" id="sw-water" onclick="toggleFactor('water')"></button>
+        </div>
+
+        <div class="toggle-row">
+          <div class="toggle-label">
+            <svg class="toggle-icon" viewBox="0 0 40 40"><circle cx="13" cy="20" r="7" fill="#555"/><circle cx="27" cy="20" r="7" fill="#555"/><circle cx="20" cy="20" r="4" fill="#222"/></svg>
+            <div><strong>ثاني أكسيد الكربون</strong><span>هواء يحوي CO₂</span></div>
+          </div>
+          <button class="switch" id="sw-co2" onclick="toggleFactor('co2')"></button>
+        </div>
+
+        <div class="toggle-row">
+          <div class="toggle-label">
+            <svg class="toggle-icon" viewBox="0 0 40 40"><path d="M20 4 C10 10 8 20 12 30 C15 36 25 36 28 30 C32 20 30 10 20 4Z" fill="#2D6A4F"/></svg>
+            <div><strong>المادة الخضراء (الكلوروفيل)</strong><span>ورقة خضراء كاملة أم مبرقشة (بيضاء جزئيًا)؟</span></div>
+          </div>
+          <button class="switch" id="sw-chl" onclick="toggleFactor('chlorophyll')"></button>
+        </div>
+
+        <button class="btn btn-primary run-btn" id="runBtn" onclick="runExperiment()">▶ شغّل التجربة</button>
+      </div>
+
+      <!-- stage -->
+      <div class="stage-wrap">
+        <h3>وعاء التجربة</h3>
+        <p class="hint">راقب الورقة في كل مرحلة من مراحل الاختبار.</p>
+        <div class="stage">
+          <div class="stage-status" id="stageStatus">جاهز لبدء التجربة</div>
+          <div class="beaker" id="beaker">
+            <div class="beaker-glass"></div>
+            <div class="liquid" id="liquid"></div>
+            <svg class="leaf-in-stage" id="leafShape" viewBox="0 0 100 100">
+              <path d="M50 8 C20 20, 10 55, 25 80 C33 93, 50 96, 50 96 C50 96, 67 93, 75 80 C90 55, 80 20, 50 8Z" fill="#2D6A4F" id="leafFill"/>
+            </svg>
+          </div>
+        </div>
+        <div class="result-banner" id="resultBanner"></div>
+
+        <div class="log-wrap">
+          <h4>سجل التجارب</h4>
+          <div id="logTableWrap">
+            <p class="empty-log" id="emptyLog">لم تُجرِ أي تجربة بعد — غيّر الشروط واضغط "شغّل التجربة".</p>
+          </div>
+        </div>
+
+        <div class="discover-banner" id="discoverBanner">
+          <span>🎉 أحسنت! جرّبت شروطًا كافية لاستنتاج شروط البناء الضوئي الأربعة.</span>
+          <a href="#conclusions">انتقل إلى الاستنتاجات ↓</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONCLUSIONS ============ -->
+<section class="conclusions" id="conclusions">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">الاستنتاجات</span>
+      <h2>ماذا تعلّمنا من التجربة؟</h2>
+      <p>اكتب إجابتك أولًا بناءً على ما لاحظته في المختبر، ثم اضغط "تحقق من إجابتي" لمقارنتها.</p>
+    </div>
+
+    <div class="qcard">
+      <label>١. من أين يدخل غاز ثاني أكسيد الكربون إلى ورقة النبات؟</label>
+      <textarea placeholder="اكتب إجابتك هنا..."></textarea>
+      <div class="qcard-foot"><button class="reveal-btn" onclick="toggleAnswer(this)">تحقق من إجابتي</button></div>
+      <div class="answer-box">يدخل ثاني أكسيد الكربون إلى الورقة عبر فتحات دقيقة جدًا تسمى الثغور، وتنتشر بكثرة في السطح السفلي للورقة.</div>
+    </div>
+
+    <div class="qcard">
+      <label>٢. ما أهمية البلاستيدات الخضراء في عملية البناء الضوئي؟</label>
+      <textarea placeholder="اكتب إجابتك هنا..."></textarea>
+      <div class="qcard-foot"><button class="reveal-btn" onclick="toggleAnswer(this)">تحقق من إجابتي</button></div>
+      <div class="answer-box">تحتوي البلاستيدات الخضراء على مادة الكلوروفيل التي تمتص طاقة ضوء الشمس، وتستخدمها لتحويل الماء وثاني أكسيد الكربون إلى سكر وأكسجين.</div>
+    </div>
+
+    <div class="qcard">
+      <label>٣. ما الغاز الناتج عن عملية البناء الضوئي؟ ومن أي جزء من الورقة يخرج؟</label>
+      <textarea placeholder="اكتب إجابتك هنا..."></textarea>
+      <div class="qcard-foot"><button class="reveal-btn" onclick="toggleAnswer(this)">تحقق من إجابتي</button></div>
+      <div class="answer-box">الغاز الناتج هو الأكسجين، ويخرج من الورقة عبر الثغور نفسها التي دخل منها ثاني أكسيد الكربون.</div>
+    </div>
+
+    <div class="qcard">
+      <label>٤. ما الغذاء الذي تنتجه الورقة؟ وأين ينتقل؟</label>
+      <textarea placeholder="اكتب إجابتك هنا..."></textarea>
+      <div class="qcard-foot"><button class="reveal-btn" onclick="toggleAnswer(this)">تحقق من إجابتي</button></div>
+      <div class="answer-box">الغذاء الناتج هو السكر، وينتقل عبر أوعية اللحاء إلى جميع أجزاء النبات ليُستخدم في النمو أو يُخزَّن.</div>
+    </div>
+
+    <div class="qcard">
+      <label>٥. أكمل معادلة البناء الضوئي (اضغط كل مربع لكشف الإجابة)</label>
+      <div class="equation">
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-inner">
+            <div class="flip-front">؟ المادة الداخلة</div>
+            <div class="flip-back">ثاني أكسيد الكربون</div>
+          </div>
+        </div>
+        <span class="eq-op">+</span>
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-inner">
+            <div class="flip-front">؟ المادة الداخلة</div>
+            <div class="flip-back">الماء</div>
+          </div>
+        </div>
+        <div class="eq-arrow"><span>ضوء الشمس + الكلوروفيل</span><span class="bar"></span></div>
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-inner">
+            <div class="flip-front">؟ المادة الناتجة</div>
+            <div class="flip-back">السكر (الغذاء)</div>
+          </div>
+        </div>
+        <span class="eq-op">+</span>
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-inner">
+            <div class="flip-front">؟ المادة الناتجة</div>
+            <div class="flip-back">الأكسجين</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="qcard">
+      <label>٦. ما أهمية عملية البناء الضوئي؟</label>
+      <textarea placeholder="اكتب إجابتك هنا..."></textarea>
+      <div class="qcard-foot"><button class="reveal-btn" onclick="toggleAnswer(this)">تحقق من إجابتي</button></div>
+      <div class="answer-box">توفّر الغذاء لجميع الكائنات الحية بشكل مباشر أو غير مباشر، وتُطلق الأكسجين اللازم للتنفس، وتخفّض نسبة ثاني أكسيد الكربون في الهواء.</div>
+    </div>
+
+    <div class="qcard">
+      <label>أختبر نفسي: أكمل المخطط — شروط عملية البناء الضوئي</label>
+      <div class="mindmap">
+        <div class="mindmap-title">شروط عملية البناء الضوئي</div>
+        <div class="mindmap-branches">
+          <div class="branch"><div class="connector"></div>
+            <div class="flip-card" onclick="this.classList.toggle('flipped')">
+              <div class="flip-inner"><div class="flip-front">؟</div><div class="flip-back">ضوء الشمس</div></div>
+            </div>
+          </div>
+          <div class="branch"><div class="connector"></div>
+            <div class="flip-card" onclick="this.classList.toggle('flipped')">
+              <div class="flip-inner"><div class="flip-front">؟</div><div class="flip-back">الماء</div></div>
+            </div>
+          </div>
+          <div class="branch"><div class="connector"></div>
+            <div class="flip-card" onclick="this.classList.toggle('flipped')">
+              <div class="flip-inner"><div class="flip-front">؟</div><div class="flip-back">ثاني أكسيد الكربون</div></div>
+            </div>
+          </div>
+          <div class="branch"><div class="connector"></div>
+            <div class="flip-card" onclick="this.classList.toggle('flipped')">
+              <div class="flip-inner"><div class="flip-front">؟</div><div class="flip-back">المادة الخضراء (الكلوروفيل)</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ IMPORTANCE ============ -->
+<section id="importance">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">لماذا يهمنا هذا الدرس؟</span>
+      <h2>أهمية البناء الضوئي لكوكبنا</h2>
+    </div>
+    <div class="importance-grid">
+      <div class="imp-card">
+        <svg class="ic" viewBox="0 0 40 40"><path d="M20 4 C10 10 8 20 12 30 C15 36 25 36 28 30 C32 20 30 10 20 4Z" fill="#2D6A4F"/></svg>
+        <h4>مصدر الغذاء</h4>
+        <p>يعتمد جميع البشر والحيوانات على النباتات كمصدر أساسي للغذاء، بشكل مباشر أو غير مباشر.</p>
+      </div>
+      <div class="imp-card">
+        <svg class="ic" viewBox="0 0 40 40"><circle cx="20" cy="20" r="14" fill="#48CAE4"/></svg>
+        <h4>إنتاج الأكسجين</h4>
+        <p>يوفر البناء الضوئي الأكسجين الذي تحتاجه جميع الكائنات الحية لعملية التنفس.</p>
+      </div>
+      <div class="imp-card">
+        <svg class="ic" viewBox="0 0 40 40"><circle cx="14" cy="20" r="8" fill="#888"/><circle cx="26" cy="20" r="8" fill="#888"/></svg>
+        <h4>تنقية الهواء</h4>
+        <p>يمتص النبات ثاني أكسيد الكربون الزائد من الجو، مما يساعد على تقليل الاحتباس الحراري.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="brand">آلية عمل الورقة</div>
+    <p>صفحة تعليمية تفاعلية لدرس البناء الضوئي — منهاج العلوم والحياة، الصف السادس، فلسطين.</p>
+  </div>
+</footer>
+
+<script>
+const state = {light:false, water:false, co2:false, chlorophyll:true};
+let trialCount = 0;
+let uniqueConditionsTested = new Set();
+
+function toggleFactor(key){
+  state[key] = !state[key];
+  document.getElementById('sw-' + (key==='chlorophyll'?'chl':key)).classList.toggle('on', state[key]);
+}
+
+function labelYN(v){ return v ? '<span class="mark-y">✓</span>' : '<span class="mark-n">✗</span>'; }
+
+function runExperiment(){
+  const btn = document.getElementById('runBtn');
+  const status = document.getElementById('stageStatus');
+  const leaf = document.getElementById('leafFill');
+  const beaker = document.getElementById('beaker');
+  const liquid = document.getElementById('liquid');
+  const banner = document.getElementById('resultBanner');
+
+  btn.disabled = true;
+  banner.classList.remove('show','ok','no');
+
+  // reset visuals
+  leaf.setAttribute('fill', state.chlorophyll ? '#2D6A4F' : '#DCE9DC');
+  liquid.style.height = '0%';
+  liquid.style.background = 'transparent';
+  beaker.style.transform = 'none';
+  status.textContent = 'المرحلة ١: غلي الورقة بالماء لإيقاف نشاطها';
+
+  // stage 1: boiling water
+  liquid.style.background = 'rgba(255,255,255,.55)';
+  setTimeout(()=>{ liquid.style.height = '55%'; }, 100);
+
+  setTimeout(()=>{
+    status.textContent = 'المرحلة ٢: نزع الكلوروفيل بالكحول';
+    liquid.style.background = 'rgba(140,200,255,.55)';
+    leaf.setAttribute('fill', '#EFE7C8');
+  }, 1500);
+
+  setTimeout(()=>{
+    status.textContent = 'المرحلة ٣: غمر الورقة بمحلول اليود';
+    liquid.style.background = 'rgba(156,107,48,.6)';
+  }, 3000);
+
+  setTimeout(()=>{
+    const success = state.light && state.water && state.co2 && state.chlorophyll;
+    leaf.setAttribute('fill', success ? '#1D2A50' : '#B98A55');
+    status.textContent = success ? 'تكوّن النشا في الورقة' : 'لم يتكوّن النشا في الورقة';
+
+    banner.classList.add('show', success ? 'ok' : 'no');
+    if(success){
+      banner.textContent = '✅ اسودّت الورقة (لون أزرق داكن) — هذا دليل على وجود النشا، أي أن البناء الضوئي قد حدث!';
+    } else {
+      const missing = [];
+      if(!state.light) missing.push('ضوء الشمس');
+      if(!state.water) missing.push('الماء');
+      if(!state.co2) missing.push('ثاني أكسيد الكربون');
+      if(!state.chlorophyll) missing.push('المادة الخضراء (الكلوروفيل)');
+      banner.textContent = '❌ بقي لون الورقة بنيًا (لون اليود نفسه) — لم يتكوّن نشا، لأن العامل الناقص هو: ' + missing.join('، ') + '.';
+    }
+
+    logTrial(success);
+    btn.disabled = false;
+  }, 4500);
+}
+
+function logTrial(success){
+  trialCount++;
+  const wrap = document.getElementById('logTableWrap');
+  const emptyLog = document.getElementById('emptyLog');
+  if(emptyLog) emptyLog.remove();
+
+  let table = document.getElementById('logsTable');
+  if(!table){
+    wrap.innerHTML = `<table class="logs" id="logsTable">
+      <thead><tr><th>#</th><th>ضوء</th><th>ماء</th><th>CO₂</th><th>كلوروفيل</th><th>النتيجة</th></tr></thead>
+      <tbody id="logsBody"></tbody></table>`;
+    table = document.getElementById('logsTable');
+  }
+  const body = document.getElementById('logsBody');
+  const row = document.createElement('tr');
+  row.innerHTML = `<td>${trialCount}</td><td>${labelYN(state.light)}</td><td>${labelYN(state.water)}</td>
+    <td>${labelYN(state.co2)}</td><td>${labelYN(state.chlorophyll)}</td>
+    <td>${success ? '<span class="mark-y">نشا ✓</span>' : '<span class="mark-n">لا نشا ✗</span>'}</td>`;
+  body.appendChild(row);
+
+  uniqueConditionsTested.add(JSON.stringify(state));
+  if(trialCount >= 3){
+    document.getElementById('discoverBanner').classList.add('show');
+  }
+}
+
+function toggleAnswer(btn){
+  const box = btn.closest('.qcard').querySelector('.answer-box');
+  box.classList.toggle('show');
+  btn.textContent = box.classList.contains('show') ? 'إخفاء الإجابة' : 'تحقق من إجابتي';
+}
+</script>
+</body>
+</html>

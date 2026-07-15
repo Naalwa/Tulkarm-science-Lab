@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>نشاط (٣): فصل الشوائب من الماء – العلوم والحياة – الصف الخامس</title>
+  <meta name="description" content="مختبر افتراضي تفاعلي لتجربة فصل الشوائب من الماء – منهاج العلوم والحياة الصف الخامس – فلسطين" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --water-blue: #1a90d9;
+      --water-light: #a8d8f0;
+      --water-dark: #0d5a8a;
+      --lab-white: #f8fafd;
+      --sand-brown: #c2a06a;
+      --sand-light: #e8d5b0;
+      --glass-tint: rgba(200, 230, 255, 0.3);
+      --science-green: #2ecc71;
+      --accent-orange: #e67e22;
+      --accent-gold: #f1c40f;
+      --deep-navy: #0a2540;
+      --text-main: #1a2640;
+      --text-muted: #5a6a80;
+      --surface: #ffffff;
+      --surface-alt: #f0f6ff;
+      --shadow-md: 0 8px 32px rgba(26,100,180,0.13);
+      --shadow-lg: 0 16px 48px rgba(10,37,64,0.18);
+      --radius: 18px;
+      --radius-sm: 10px;
+      --border: 1.5px solid rgba(26,144,217,0.18);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Tajawal', 'Cairo', Arial, sans-serif;
+      background: linear-gradient(160deg, #e8f4ff 0%, #f5faff 40%, #eaf6f0 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ===== HEADER ===== */
+    .page-header {
+      background: linear-gradient(135deg, var(--deep-navy) 0%, var(--water-dark) 60%, #1565c0 100%);
+      color: white;
+      padding: 28px 20px 32px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-header::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
+      pointer-events: none;
+    }
+    .header-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 50px;
+      padding: 5px 18px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      letter-spacing: 0.5px;
+    }
+    .page-header h1 {
+      font-family: 'Cairo', sans-serif;
+      font-size: clamp(22px, 5vw, 38px);
+      font-weight: 900;
+      line-height: 1.3;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.3);
+    }
+    .page-header p {
+      margin-top: 8px;
+      font-size: 15px;
+      opacity: 0.85;
+    }
+    .water-wave {
+      position: absolute; bottom: -2px; left: 0; right: 0;
+      height: 38px; overflow: hidden;
+    }
+    .water-wave svg { display: block; }
+
+    /* ===== NAV TABS ===== */
+    .nav-tabs {
+      display: flex; justify-content: center; gap: 8px;
+      padding: 20px 16px 0;
+      flex-wrap: wrap;
+    }
+    .nav-tab {
+      background: white;
+      border: 2px solid var(--water-light);
+      border-radius: 50px;
+      padding: 9px 22px;
+      font-size: 14px; font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s;
+      color: var(--water-dark);
+      font-family: 'Tajawal', sans-serif;
+    }
+    .nav-tab:hover { background: var(--water-light); }
+    .nav-tab.active {
+      background: var(--water-blue);
+      border-color: var(--water-blue);
+      color: white;
+      box-shadow: 0 4px 16px rgba(26,144,217,0.35);
+    }
+
+    /* ===== SECTIONS ===== */
+    .section { display: none; padding: 20px 16px 40px; max-width: 900px; margin: 0 auto; }
+    .section.active { display: block; }
+
+    /* ===== CARD ===== */
+    .card {
+      background: white;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-md);
+      padding: 24px;
+      margin-bottom: 20px;
+      border: var(--border);
+    }
+    .card-title {
+      font-family: 'Cairo', sans-serif;
+      font-size: 19px; font-weight: 800;
+      color: var(--water-dark);
+      margin-bottom: 14px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .card-title .icon {
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, var(--water-blue), var(--water-dark));
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    /* ===== INFO BOXES ===== */
+    .info-box {
+      background: linear-gradient(135deg, #e8f4ff, #d0eaff);
+      border-right: 4px solid var(--water-blue);
+      border-radius: var(--radius-sm);
+      padding: 14px 18px;
+      margin-bottom: 14px;
+      font-size: 15px; line-height: 1.8;
+    }
+    .info-box.green {
+      background: linear-gradient(135deg, #e6f9ef, #ccf2e0);
+      border-right-color: var(--science-green);
+    }
+    .info-box.orange {
+      background: linear-gradient(135deg, #fff4e6, #ffe4c0);
+      border-right-color: var(--accent-orange);
+    }
+    .info-box.gold {
+      background: linear-gradient(135deg, #fffbe6, #fff3b0);
+      border-right-color: var(--accent-gold);
+    }
+
+    /* ===== STEP BADGES ===== */
+    .steps-list { display: flex; flex-direction: column; gap: 14px; }
+    .step-item {
+      display: flex; align-items: flex-start; gap: 14px;
+      background: var(--surface-alt);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      border: 1px solid rgba(26,144,217,0.12);
+    }
+    .step-num {
+      width: 34px; height: 34px;
+      background: linear-gradient(135deg, var(--water-blue), var(--water-dark));
+      color: white;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 15px;
+      flex-shrink: 0;
+    }
+    .step-text { font-size: 15px; line-height: 1.8; padding-top: 4px; }
+
+    /* ===== 3D LAB ===== */
+    #lab-canvas-wrap {
+      position: relative;
+      width: 100%; max-width: 520px;
+      margin: 0 auto 20px;
+      user-select: none;
+    }
+    #lab-canvas {
+      width: 100%; height: auto;
+      border-radius: var(--radius);
+      display: block;
+      filter: drop-shadow(0 8px 24px rgba(26,100,180,0.18));
+    }
+    .lab-controls {
+      display: flex; flex-wrap: wrap; gap: 10px;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+    .lab-btn {
+      padding: 11px 22px;
+      border-radius: 50px;
+      border: none;
+      font-family: 'Tajawal', sans-serif;
+      font-size: 15px; font-weight: 700;
+      cursor: pointer;
+      transition: all 0.22s;
+    }
+    .lab-btn.primary {
+      background: linear-gradient(135deg, var(--water-blue), var(--water-dark));
+      color: white;
+      box-shadow: 0 4px 16px rgba(26,144,217,0.3);
+    }
+    .lab-btn.primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(26,144,217,0.4); }
+    .lab-btn.secondary {
+      background: white;
+      color: var(--water-dark);
+      border: 2px solid var(--water-blue);
+    }
+    .lab-btn.secondary:hover { background: var(--water-light); }
+    .lab-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; }
+
+    .observation-box {
+      background: #1e2d40;
+      color: #a8d8f0;
+      border-radius: var(--radius-sm);
+      padding: 16px 18px;
+      font-size: 14px;
+      line-height: 1.9;
+      min-height: 70px;
+      font-family: 'Cairo', monospace;
+    }
+    .observation-box .obs-line { opacity: 0; transition: opacity 0.5s; }
+    .observation-box .obs-line.visible { opacity: 1; }
+
+    /* ===== QUIZ ===== */
+    .question-block {
+      background: var(--surface-alt);
+      border-radius: var(--radius-sm);
+      padding: 18px;
+      margin-bottom: 16px;
+      border: 1.5px solid rgba(26,144,217,0.15);
+    }
+    .question-text {
+      font-size: 16px; font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--deep-navy);
+    }
+    .options-grid { display: flex; flex-direction: column; gap: 8px; }
+    .option-btn {
+      padding: 10px 16px;
+      border-radius: var(--radius-sm);
+      border: 2px solid var(--water-light);
+      background: white;
+      text-align: right;
+      font-family: 'Tajawal', sans-serif;
+      font-size: 14px; font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: var(--text-main);
+    }
+    .option-btn:hover { border-color: var(--water-blue); background: #e8f4ff; }
+    .option-btn.correct { background: #e6f9ef; border-color: var(--science-green); color: #1a6b3a; }
+    .option-btn.wrong { background: #ffeaea; border-color: #e74c3c; color: #8b1a1a; }
+    .feedback-msg {
+      margin-top: 8px; padding: 8px 12px;
+      border-radius: 8px; font-size: 14px; font-weight: 600;
+      display: none;
+    }
+    .feedback-msg.show { display: block; }
+    .feedback-msg.correct { background: #e6f9ef; color: #1a6b3a; }
+    .feedback-msg.wrong { background: #ffeaea; color: #8b1a1a; }
+
+    /* ===== COMPARISON TABLE ===== */
+    .compare-table {
+      width: 100%; border-collapse: collapse;
+      font-size: 14px;
+    }
+    .compare-table th, .compare-table td {
+      padding: 12px 14px;
+      text-align: center;
+      border: 1px solid rgba(26,144,217,0.2);
+    }
+    .compare-table th {
+      background: linear-gradient(135deg, var(--water-blue), var(--water-dark));
+      color: white;
+      font-weight: 700;
+    }
+    .compare-table tr:nth-child(even) td { background: var(--surface-alt); }
+    .compare-table tr:hover td { background: #d0eaff; }
+    .compare-table td:first-child { font-weight: 700; color: var(--water-dark); text-align: right; }
+
+    /* ===== PROGRESS ===== */
+    .score-display {
+      text-align: center;
+      padding: 20px;
+    }
+    .score-circle {
+      width: 120px; height: 120px;
+      border-radius: 50%;
+      background: conic-gradient(var(--water-blue) 0deg, #e8f4ff 0deg);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 16px;
+      position: relative;
+      transition: background 0.5s;
+    }
+    .score-inner {
+      width: 90px; height: 90px;
+      background: white;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column;
+    }
+    .score-num { font-size: 26px; font-weight: 900; color: var(--water-dark); }
+    .score-label { font-size: 11px; color: var(--text-muted); }
+
+    /* ===== CANVAS SCENE ===== */
+    canvas { touch-action: none; }
+
+    /* RESPONSIVE */
+    @media (max-width: 600px) {
+      .card { padding: 16px; }
+      .nav-tab { padding: 8px 14px; font-size: 13px; }
+      .lab-btn { padding: 10px 16px; font-size: 14px; }
+    }
+
+    /* ANIMATION */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .section.active > * { animation: fadeInUp 0.4s ease both; }
+    .section.active > *:nth-child(2) { animation-delay: 0.06s; }
+    .section.active > *:nth-child(3) { animation-delay: 0.12s; }
+    .section.active > *:nth-child(4) { animation-delay: 0.18s; }
+
+    .badge-pill {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--accent-orange), var(--accent-gold));
+      color: white;
+      border-radius: 50px;
+      padding: 3px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-right: 6px;
+    }
+  
+  /* ══ RESPONSIVE MOBILE & TABLET ══ */
+  @media (max-width: 768px) {
+    body { padding: 8px !important; font-size: 15px !important; overflow-x: hidden !important; }
+    .container, [class*="container"], [class*="wrapper"] { padding: 8px !important; max-width: 100% !important; }
+    canvas { width: 100% !important; height: auto !important; display: block !important; touch-action: none; max-width: 100% !important; }
+    svg { max-width: 100% !important; height: auto !important; }
+    h1 { font-size: clamp(18px,5vw,32px) !important; }
+    h2 { font-size: clamp(15px,4vw,26px) !important; }
+    h3 { font-size: clamp(13px,3.5vw,20px) !important; }
+    [class*="grid"] { grid-template-columns: 1fr !important; }
+    [class*="flex"] { flex-wrap: wrap !important; }
+    input[type="range"] { width: 100% !important; min-height: 36px; }
+    input[type="number"], input[type="text"], select, textarea {
+      font-size: 16px !important; width: 100% !important; box-sizing: border-box; padding: 8px !important; }
+    button { min-height: 44px !important; font-size: 14px !important; touch-action: manipulation; padding: 10px 14px !important; }
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 13px !important; }
+    th, td { padding: 6px 4px !important; }
+    header { padding: 10px 12px !important; }
+    .controls, [class*="controls"] { flex-direction: column !important; gap: 8px !important; }
+    .lab-window, [class*="lab-window"] { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+  }
+  @media (max-width: 480px) {
+    body { padding: 4px !important; }
+    button { width: 100% !important; }
+  }
+  /* ══ END RESPONSIVE ══ */
+</style>
+</head>
+<body>
+<style>
+.vlab-back{position:fixed;top:10px;left:10px;z-index:99999;
+background:rgba(10,22,40,0.93);border:1px solid rgba(0,200,150,0.4);
+border-radius:22px;padding:8px 16px;display:inline-flex;align-items:center;gap:7px;
+color:#00C896;font-family:Tajawal,Cairo,Arial,sans-serif;font-size:13px;font-weight:700;
+text-decoration:none;backdrop-filter:blur(8px);box-shadow:0 4px 18px rgba(0,0,0,0.3);
+transition:background 0.2s;}
+.vlab-back:hover{background:rgba(0,200,150,0.18);}
+</style>
+<a href="../grade5.html" class="vlab-back">&#8594; العودة للصف</a>
+
+
+<!-- HEADER -->
+<header class="page-header">
+  <div class="header-badge">🔬 العلوم والحياة – الصف الخامس – فلسطين</div>
+  <h1>نشاط (٣): فصل الشوائب من الماء</h1>
+  <p>مختبر افتراضي تفاعلي ثلاثي الأبعاد – تعلّم التجربة خطوة بخطوة</p>
+  <div class="water-wave">
+    <svg viewBox="0 0 900 38" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,20 C150,5 300,35 450,20 C600,5 750,35 900,20 L900,38 L0,38 Z" fill="#f0f6ff"/>
+    </svg>
+  </div>
+</header>
+
+<!-- NAVIGATION -->
+<nav class="nav-tabs" role="tablist" aria-label="أقسام الدرس">
+  <button class="nav-tab active" onclick="showSection('intro')" role="tab">📘 مقدمة</button>
+  <button class="nav-tab" onclick="showSection('lab1')" role="tab">🧪 الترسيب</button>
+  <button class="nav-tab" onclick="showSection('lab2')" role="tab">🌀 الترشيح</button>
+  <button class="nav-tab" onclick="showSection('compare')" role="tab">📊 مقارنة</button>
+  <button class="nav-tab" onclick="showSection('quiz')" role="tab">✏️ اختبار</button>
+</nav>
+
+<!-- ===== SECTION: INTRO ===== -->
+<section id="intro" class="section active" role="tabpanel">
+  <div class="card">
+    <div class="card-title"><div class="icon">💧</div> ما الشوائب في الماء؟</div>
+    <div class="info-box">
+      <strong>تعريف:</strong> الشوائب هي مواد صلبة صغيرة تختلط بالماء، مثل التراب والرمال والغبار، وتجعل الماء غير صافٍ وغير صالح للشرب مباشرةً.
+    </div>
+    <div class="steps-list">
+      <div class="step-item">
+        <div class="step-num">١</div>
+        <div class="step-text">الماء الطبيعي يحتوي على مواد ذائبة وشوائب عالقة تحتاج إلى فصلها.</div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">٢</div>
+        <div class="step-text">هناك طريقتان رئيسيتان لفصل الشوائب: <strong>الترسيب (الترويق)</strong> و<strong>الترشيح</strong>.</div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">٣</div>
+        <div class="step-text">تُستخدم هاتان الطريقتان في معالجة مياه الشرب ومياه الصرف الصحي.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><div class="icon">🎯</div> أهداف النشاط</div>
+    <div class="info-box green">
+      <strong>سنتعلم من هذا النشاط:</strong>
+      <ul style="margin-top:8px; padding-right:20px; line-height:2.1;">
+        <li>تمييز المخلوط المتجانس من غير المتجانس.</li>
+        <li>تنفيذ تجربة الترسيب (الترويق) والترشيح.</li>
+        <li>تحديد الخاصية التي تعتمد عليها كل طريقة.</li>
+        <li>مقارنة نتائج الطريقتين.</li>
+        <li>استخدام المصطلحات العلمية الصحيحة.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><div class="icon">⚗️</div> المواد والأدوات اللازمة</div>
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr)); gap:12px;">
+      <div style="background:#e8f4ff;border-radius:10px;padding:14px;text-align:center;">
+        <div style="font-size:30px;">🥛</div>
+        <div style="font-size:13px;font-weight:700;margin-top:6px;">كأس زجاجية</div>
+      </div>
+      <div style="background:#fff4e6;border-radius:10px;padding:14px;text-align:center;">
+        <div style="font-size:30px;">🏔️</div>
+        <div style="font-size:13px;font-weight:700;margin-top:6px;">تراب / رمل</div>
+      </div>
+      <div style="background:#e6f9ef;border-radius:10px;padding:14px;text-align:center;">
+        <div style="font-size:30px;">💧</div>
+        <div style="font-size:13px;font-weight:700;margin-top:6px;">ماء نظيف</div>
+      </div>
+      <div style="background:#f0e6ff;border-radius:10px;padding:14px;text-align:center;">
+        <div style="font-size:30px;">🔺</div>
+        <div style="font-size:13px;font-weight:700;margin-top:6px;">قمع ترشيح</div>
+      </div>
+      <div style="background:#ffeaea;border-radius:10px;padding:14px;text-align:center;">
+        <div style="font-size:30px;">📄</div>
+        <div style="font-size:13px;font-weight:700;margin-top:6px;">ورق ترشيح</div>
+      </div>
+      <div style="background:#fffbe6;border-radius:10px;padding:14px;text-align:center;">
+        <div style="font-size:30px;">⏱️</div>
+        <div style="font-size:13px;font-weight:700;margin-top:6px;">وقت وصبر</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center; padding:10px 0 20px;">
+    <button class="lab-btn primary" onclick="showSection('lab1')" style="font-size:16px;padding:14px 36px;">
+      ابدأ التجربة الأولى: الترسيب ←
+    </button>
+  </div>
+</section>
+
+<!-- ===== SECTION: LAB 1 – SEDIMENTATION ===== -->
+<section id="lab1" class="section" role="tabpanel">
+  <div class="card">
+    <div class="card-title"><div class="icon">🧪</div> أولاً: الترسيب (الترويق)</div>
+    <div class="info-box">
+      <strong>مبدأ الترسيب:</strong> عند ترك مخلوط الماء والتراب ساكناً لفترة من الزمن، تترسب الجزيئات الصلبة إلى قاع الكأس بفعل <strong>الجاذبية</strong>، ويصبح الماء الذي في الأعلى أكثر صفاءً.
+    </div>
+    <div class="steps-list">
+      <div class="step-item"><div class="step-num">١</div><div class="step-text">ضع كمية من التراب في الكأس الزجاجية.</div></div>
+      <div class="step-item"><div class="step-num">٢</div><div class="step-text">أضف الماء إلى الكأس وحرّكه جيداً.</div></div>
+      <div class="step-item"><div class="step-num">٣</div><div class="step-text">اترك الكأس ساكناً لفترة كافية مع ملاحظة ما يحدث.</div></div>
+      <div class="step-item"><div class="step-num">٤</div><div class="step-text">اسكب الماء الصافي من الأعلى بهدوء وانظر ماذا بقي في الكأس.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><div class="icon">🔬</div> المختبر الافتراضي – الترسيب</div>
+    <div class="lab-controls">
+      <button class="lab-btn primary" id="btn-add-sand" onclick="lab1Action('addSand')">١. أضف التراب</button>
+      <button class="lab-btn primary" id="btn-add-water" onclick="lab1Action('addWater')" disabled>٢. أضف الماء</button>
+      <button class="lab-btn primary" id="btn-mix" onclick="lab1Action('mix')" disabled>٣. حرّك</button>
+      <button class="lab-btn primary" id="btn-wait" onclick="lab1Action('wait')" disabled>٤. انتظر وترسّب</button>
+      <button class="lab-btn primary" id="btn-pour" onclick="lab1Action('pour')" disabled>٥. اسكب الماء</button>
+      <button class="lab-btn secondary" onclick="lab1Reset()">🔄 أعد التجربة</button>
+    </div>
+
+    <div id="lab-canvas-wrap">
+      <canvas id="lab1Canvas" width="520" height="380"></canvas>
+    </div>
+
+    <div class="card-title" style="margin-top:8px;"><div class="icon">📋</div> ملاحظاتي</div>
+    <div class="observation-box" id="obs1">
+      <div class="obs-line" id="obs1-1">انتظر... ابدأ بخطوة ١ في الأعلى.</div>
+    </div>
+  </div>
+
+  <div class="card" id="card-conclude1" style="display:none">
+    <div class="card-title"><div class="icon">💡</div> الاستنتاج</div>
+    <div class="info-box green">
+      <strong>طريقة الفصل المستخدمة:</strong> الترسيب (الترويق).<br>
+      <strong>الخاصية المعتمدة:</strong> فرق الكثافة بين التراب والماء، مما يجعل التراب يرسب في القاع بفعل الجاذبية.<br>
+      <strong>تعريف الترويق:</strong> فصل المواد الصلبة العالقة في سائل عن طريق تركه ساكناً حتى تترسب هذه المواد في القاع.
+    </div>
+    <div class="info-box orange">
+      <strong>هل الماء الناتج نظيف تماماً؟</strong> لا! قد يحتوي على جزيئات دقيقة جداً لم تترسب. نحتاج إلى خطوة إضافية: الترشيح.
+    </div>
+    <div style="text-align:center;margin-top:14px;">
+      <button class="lab-btn primary" onclick="showSection('lab2')" style="font-size:15px;padding:12px 30px;">
+        انتقل إلى الترشيح ←
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION: LAB 2 – FILTRATION ===== -->
+<section id="lab2" class="section" role="tabpanel">
+  <div class="card">
+    <div class="card-title"><div class="icon">🌀</div> ثانياً: الترشيح</div>
+    <div class="info-box">
+      <strong>مبدأ الترشيح:</strong> يمر الماء عبر <strong>ورق الترشيح</strong> المثبت في القمع، فتعلق الجزيئات الصلبة الدقيقة في الورق ويمر الماء الصافي من خلاله.
+    </div>
+    <div class="info-box gold">
+      <strong>معلومة مفيدة:</strong> ورق الترشيح هو ورق شبه نفّاذ يُستخدم لفصل المواد الصلبة الدقيقة الموجودة في سائل خلال عملية الترشيح.
+    </div>
+
+    <!-- Filter paper folding steps -->
+    <div class="card-title" style="margin-top:8px;"><div class="icon">📐</div> كيف تطوي ورق الترشيح؟</div>
+    <div style="display:flex; gap:10px; overflow-x:auto; padding-bottom:8px;">
+      <div style="flex-shrink:0;text-align:center;min-width:90px;">
+        <canvas id="fold1" width="90" height="90"></canvas>
+        <div style="font-size:12px;font-weight:700;margin-top:4px;color:var(--water-dark)">١. دائرة</div>
+      </div>
+      <div style="flex-shrink:0;align-self:center;font-size:22px;color:var(--text-muted)">←</div>
+      <div style="flex-shrink:0;text-align:center;min-width:90px;">
+        <canvas id="fold2" width="90" height="90"></canvas>
+        <div style="font-size:12px;font-weight:700;margin-top:4px;color:var(--water-dark)">٢. نصف</div>
+      </div>
+      <div style="flex-shrink:0;align-self:center;font-size:22px;color:var(--text-muted)">←</div>
+      <div style="flex-shrink:0;text-align:center;min-width:90px;">
+        <canvas id="fold3" width="90" height="90"></canvas>
+        <div style="font-size:12px;font-weight:700;margin-top:4px;color:var(--water-dark)">٣. ربع</div>
+      </div>
+      <div style="flex-shrink:0;align-self:center;font-size:22px;color:var(--text-muted)">←</div>
+      <div style="flex-shrink:0;text-align:center;min-width:90px;">
+        <canvas id="fold4" width="90" height="90"></canvas>
+        <div style="font-size:12px;font-weight:700;margin-top:4px;color:var(--water-dark)">٤. قمع</div>
+      </div>
+    </div>
+
+    <div class="steps-list" style="margin-top:14px;">
+      <div class="step-item"><div class="step-num">١</div><div class="step-text">ضع قطعة قماش بيضاء (أو ورق ترشيح) على فوهة كأس زجاجية.</div></div>
+      <div class="step-item"><div class="step-num">٢</div><div class="step-text">اصبّ الماء المخلوط الذي حصلت عليه من تجربة الترسيب ببطء عبر ورق الترشيح في القمع.</div></div>
+      <div class="step-item"><div class="step-num">٣</div><div class="step-text">لاحظ: هل حصلت على ماء صافٍ تماماً؟</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><div class="icon">🔬</div> المختبر الافتراضي – الترشيح</div>
+    <div class="lab-controls">
+      <button class="lab-btn primary" id="btn2-setup" onclick="lab2Action('setup')">١. ثبّت ورق الترشيح</button>
+      <button class="lab-btn primary" id="btn2-pour" onclick="lab2Action('pour')" disabled>٢. اسكب الماء</button>
+      <button class="lab-btn primary" id="btn2-collect" onclick="lab2Action('collect')" disabled>٣. اجمع الماء الصافي</button>
+      <button class="lab-btn secondary" onclick="lab2Reset()">🔄 أعد التجربة</button>
+    </div>
+
+    <div id="lab-canvas-wrap">
+      <canvas id="lab2Canvas" width="520" height="420"></canvas>
+    </div>
+
+    <div class="card-title" style="margin-top:8px;"><div class="icon">📋</div> ملاحظاتي</div>
+    <div class="observation-box" id="obs2">
+      <div class="obs-line" id="obs2-1">انتظر... ابدأ بخطوة ١ في الأعلى.</div>
+    </div>
+  </div>
+
+  <div class="card" id="card-conclude2" style="display:none">
+    <div class="card-title"><div class="icon">💡</div> الاستنتاج</div>
+    <div class="info-box green">
+      <strong>طريقة الفصل المستخدمة:</strong> الترشيح.<br>
+      <strong>الخاصية المعتمدة:</strong> حجم الجزيئات — ورق الترشيح يحتجز الجزيئات الكبيرة ويسمح للماء بالمرور.<br>
+      <strong>تعريف الترشيح:</strong> فصل المواد الصلبة الدقيقة عن السوائل باستخدام مادة مسامية تمنع مرور الصلبيات وتسمح للسائل بالمرور.
+    </div>
+    <div style="text-align:center;margin-top:14px;">
+      <button class="lab-btn primary" onclick="showSection('compare')" style="font-size:15px;padding:12px 30px;">
+        قارن بين الطريقتين ←
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION: COMPARE ===== -->
+<section id="compare" class="section" role="tabpanel">
+  <div class="card">
+    <div class="card-title"><div class="icon">📊</div> المقارنة بين الترويق والترشيح</div>
+    <div style="overflow-x:auto;">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>وجه المقارنة</th>
+            <th>الفصل بالترويق</th>
+            <th>الفصل بالترشيح</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>الوقت اللازم</td><td>طويل نسبياً (ساعات)</td><td>أقصر نسبياً</td></tr>
+          <tr><td>السهولة</td><td>سهل جداً (بدون أدوات خاصة)</td><td>يحتاج قمعاً وورق ترشيح</td></tr>
+          <tr><td>جودة الفصل</td><td>متوسطة (قد تبقى جزيئات دقيقة)</td><td>أفضل (يزيل الجزيئات الدقيقة)</td></tr>
+          <tr><td>الخاصية المعتمدة</td><td>فرق الكثافة والجاذبية</td><td>حجم الجزيئات والمسامية</td></tr>
+          <tr><td>أمثلة من الحياة</td><td>خزانات معالجة المياه</td><td>صنع الجبنة، القهوة، الكلى</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><div class="icon">🌍</div> أمثلة من حياتنا اليومية</div>
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap:12px;">
+      <div class="info-box" style="margin:0;">
+        <strong>🧀 صناعة الجبنة واللبنة</strong><br>
+        <span style="font-size:13px;">تُرشَّح أم خالد اللبن عبر قماش لتصنع اللبنة – هذا ترشيح!</span>
+      </div>
+      <div class="info-box orange" style="margin:0;">
+        <strong>☕ تحضير القهوة</strong><br>
+        <span style="font-size:13px;">الفلتر يمسك البن ويسمح للقهوة بالمرور – ترشيح بامتياز.</span>
+      </div>
+      <div class="info-box green" style="margin:0;">
+        <strong>🚰 محطات معالجة المياه</strong><br>
+        <span style="font-size:13px;">المياه العادمة تمر بمراحل ترسيب وترشيح لتصبح صالحة للري.</span>
+      </div>
+      <div class="info-box gold" style="margin:0;">
+        <strong>🫁 الكلى في جسم الإنسان</strong><br>
+        <span style="font-size:13px;">الكلى ترشّح الدم وتفصل الفضلات منه كل دقيقة!</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><div class="icon">🤔</div> ناقش مع زملائك</div>
+    <div class="info-box orange">
+      <strong>أناقش زملائي:</strong> تُعدّ طريقة الفصل بالترويق من مراحل معالجة المياه العادمة لتحويلها إلى مياه صالحة لريّ المزروعات.
+      <br><br>
+      <strong>هل يمكن الحصول على ماء أكثر صفاءً باستخدام طريقة أخرى؟</strong><br>
+      نعم! بعد الترسيب والترشيح، يمكن استخدام التقطير أو معالجة كيميائية (التعقيم بالكلور) للحصول على ماء نقي تماماً.
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:10px;">
+    <button class="lab-btn primary" onclick="showSection('quiz')" style="font-size:16px;padding:14px 36px;">
+      اختبر معلوماتك ←
+    </button>
+  </div>
+</section>
+
+<!-- ===== SECTION: QUIZ ===== -->
+<section id="quiz" class="section" role="tabpanel">
+  <div class="card">
+    <div class="card-title"><div class="icon">✏️</div> اختبر معلوماتك</div>
+    <div class="score-display">
+      <div class="score-circle" id="scoreCircle">
+        <div class="score-inner">
+          <div class="score-num" id="scoreNum">0/7</div>
+          <div class="score-label">النقاط</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q1 -->
+    <div class="question-block">
+      <div class="question-text">١. هل مخلوط الماء والتراب متجانس أم غير متجانس؟</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, false, 'q1', '❌ خطأ – مخلوط الماء والتراب غير متجانس لأن مكوناته مرئية ومختلفة.')">متجانس</button>
+        <button class="option-btn" onclick="checkAnswer(this, true, 'q1', '✅ صحيح! الماء والتراب مخلوط غير متجانس لأن الأجزاء المختلفة مرئية.')">غير متجانس</button>
+        <button class="option-btn" onclick="checkAnswer(this, false, 'q1', '❌ خطأ – المخلوط الكيميائي يختلف عن المخلوط العادي.')">مخلوط كيميائي</button>
+      </div>
+      <div class="feedback-msg" id="q1-fb"></div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="question-block">
+      <div class="question-text">٢. ما الخاصية التي يعتمد عليها الترسيب (الترويق)؟</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, false, 'q2', '❌ خطأ – الغليان لا علاقة له بالترسيب.')">درجة الغليان</button>
+        <button class="option-btn" onclick="checkAnswer(this, false, 'q2', '❌ خطأ – المسامية خاصية الترشيح لا الترسيب.')">المسامية</button>
+        <button class="option-btn" onclick="checkAnswer(this, true, 'q2', '✅ صحيح! الترسيب يعتمد على فرق الكثافة بين المواد الصلبة والسائل.')">فرق الكثافة والجاذبية</button>
+      </div>
+      <div class="feedback-msg" id="q2-fb"></div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="question-block">
+      <div class="question-text">٣. ما وظيفة ورق الترشيح؟</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, false, 'q3', '❌ خطأ – ورق الترشيح لا يُذيب المواد.')">إذابة المواد الصلبة</button>
+        <button class="option-btn" onclick="checkAnswer(this, true, 'q3', '✅ صحيح! ورق الترشيح يحتجز المواد الصلبة الدقيقة ويسمح للسائل بالمرور.')">احتجاز المواد الصلبة والسماح للسائل بالمرور</button>
+        <button class="option-btn" onclick="checkAnswer(this, false, 'q3', '❌ خطأ – ورق الترشيح لا يُغيّر لون الماء.')">تغيير لون الماء</button>
+      </div>
+      <div class="feedback-msg" id="q3-fb"></div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="question-block">
+      <div class="question-text">٤. أيّ الطريقتين تُعطي ماءً أنقى؟</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, false, 'q4', '❌ خطأ – الترسيب يترك جزيئات دقيقة في الماء.')">الترسيب فقط</button>
+        <button class="option-btn" onclick="checkAnswer(this, true, 'q4', '✅ صحيح! الترشيح يزيل الجزيئات الأدق ويعطي ماءً أكثر صفاءً.')">الترشيح</button>
+        <button class="option-btn" onclick="checkAnswer(this, false, 'q4', '❌ خطأ – الطريقتان تختلفان في جودة الفصل.')">كلتاهما متساويتان</button>
+      </div>
+      <div class="feedback-msg" id="q4-fb"></div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="question-block">
+      <div class="question-text">٥. عندما تصنع أمّك اللبنة، أيّ طريقة تستخدم؟</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, false, 'q5', '❌ خطأ – الترسيب لا يُستخدم في صناعة اللبنة.')">الترسيب</button>
+        <button class="option-btn" onclick="checkAnswer(this, true, 'q5', '✅ صحيح! ترشيح اللبن عبر قماش هي طريقة الترشيح بعينها.')">الترشيح</button>
+        <button class="option-btn" onclick="checkAnswer(this, false, 'q5', '❌ خطأ – التقطير لا يُستخدم في صناعة اللبنة.')">التقطير</button>
+      </div>
+      <div class="feedback-msg" id="q5-fb"></div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="question-block">
+      <div class="question-text">٦. ما الذي يبقى في قاع الكأس بعد الترسيب؟</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, false, 'q6', '❌ خطأ – الهواء لا يترسب في القاع.')">هواء</button>
+        <button class="option-btn" onclick="checkAnswer(this, true, 'q6', '✅ صحيح! المواد الصلبة (التراب والرمل) تترسب في قاع الكأس.')">المواد الصلبة (التراب)</button>
+        <button class="option-btn" onclick="checkAnswer(this, false, 'q6', '❌ خطأ – الماء يبقى في الأعلى وتترسب المواد الصلبة في القاع.')">الماء النقي</button>
+      </div>
+      <div class="feedback-msg" id="q6-fb"></div>
+    </div>
+
+    <!-- Q7 -->
+    <div class="question-block">
+      <div class="question-text">٧. في محطات معالجة المياه، ما أول خطوة تُستخدم عادةً؟</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, true, 'q7', '✅ صحيح! الترسيب هو أول مرحلة لأنه يُزيل الجزيئات الكبيرة ببساطة.')">الترسيب</button>
+        <button class="option-btn" onclick="checkAnswer(this, false, 'q7', '❌ خطأ – الترشيح يأتي بعد الترسيب عادةً.')">الترشيح مباشرة</button>
+        <button class="option-btn" onclick="checkAnswer(this, false, 'q7', '❌ خطأ – التقطير مرحلة متقدمة ومكلفة.')">التقطير</button>
+      </div>
+      <div class="feedback-msg" id="q7-fb"></div>
+    </div>
+
+    <div id="final-result" style="display:none" class="info-box green" style="text-align:center;margin-top:16px;"></div>
+    <div style="text-align:center;margin-top:16px;">
+      <button class="lab-btn secondary" onclick="resetQuiz()">🔄 أعد الاختبار</button>
+    </div>
+  </div>
+</section>
+
+<script>
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const tabs = ['intro','lab1','lab2','compare','quiz'];
+  const idx = tabs.indexOf(id);
+  document.querySelectorAll('.nav-tab')[idx].classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (id === 'lab1') initLab1();
+  if (id === 'lab2') { initLab2(); drawFoldDiagrams(); }
+}
+
+/* ============================================================
+   FOLD DIAGRAMS
+   ============================================================ */
+function drawFoldDiagrams() {
+  // Step 1: circle
+  drawFold('fold1', (ctx, s) => {
+    ctx.fillStyle = '#fef9f0'; ctx.strokeStyle = '#c2a06a'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(s/2, s/2, s/2-8, 0, Math.PI*2); ctx.fill(); ctx.stroke();
+    ctx.setLineDash([3,3]); ctx.strokeStyle = '#c2a06a90';
+    ctx.beginPath(); ctx.moveTo(8, s/2); ctx.lineTo(s-8, s/2); ctx.stroke();
+  });
+  // Step 2: semi circle
+  drawFold('fold2', (ctx, s) => {
+    ctx.fillStyle = '#fef9f0'; ctx.strokeStyle = '#c2a06a'; ctx.lineWidth = 2;
+    ctx.setLineDash([]);
+    ctx.beginPath(); ctx.arc(s/2, s/2, s/2-8, Math.PI, 0); ctx.closePath(); ctx.fill(); ctx.stroke();
+  });
+  // Step 3: quarter
+  drawFold('fold3', (ctx, s) => {
+    ctx.fillStyle = '#fef9f0'; ctx.strokeStyle = '#c2a06a'; ctx.lineWidth = 2;
+    ctx.setLineDash([]);
+    ctx.beginPath(); ctx.arc(s/2, s/2, s/2-8, 1.5*Math.PI, 0); ctx.lineTo(s/2, s/2); ctx.closePath();
+    ctx.fill(); ctx.stroke();
+  });
+  // Step 4: funnel cone
+  drawFold('fold4', (ctx, s) => {
+    ctx.fillStyle = '#fef9f0'; ctx.strokeStyle = '#c2a06a'; ctx.lineWidth = 2;
+    ctx.setLineDash([]);
+    ctx.beginPath();
+    ctx.moveTo(10, 10); ctx.lineTo(s-10, 10);
+    ctx.lineTo(s/2+4, s-10); ctx.lineTo(s/2-4, s-10);
+    ctx.closePath(); ctx.fill(); ctx.stroke();
+    // open side
+    ctx.strokeStyle = '#1a90d9'; ctx.lineWidth = 1.5;
+    ctx.setLineDash([4,3]);
+    ctx.beginPath(); ctx.moveTo(s/2, 10); ctx.lineTo(s/2, s-10); ctx.stroke();
+  });
+}
+function drawFold(id, fn) {
+  const c = document.getElementById(id);
+  if (!c) return;
+  const ctx = c.getContext('2d');
+  const s = 90;
+  ctx.clearRect(0,0,s,s);
+  fn(ctx, s);
+}
+
+/* ============================================================
+   LAB 1 – SEDIMENTATION
+   ============================================================ */
+let lab1State = {
+  sand: 0, water: 0, mixed: false,
+  settled: 0, poured: false, animFrame: null,
+  phase: 'idle', timer: 0
+};
+
+function initLab1() {
+  lab1State = { sand:0, water:0, mixed:false, settled:0, poured:false, animFrame:null, phase:'idle', timer:0 };
+  enableBtn('btn-add-sand', true); enableBtn('btn-add-water', false);
+  enableBtn('btn-mix', false); enableBtn('btn-wait', false); enableBtn('btn-pour', false);
+  document.getElementById('obs1').innerHTML = '<div class="obs-line visible" style="color:#a8d8f0">⬅ ابدأ بالخطوة الأولى: اضغط "أضف التراب"</div>';
+  document.getElementById('card-conclude1').style.display = 'none';
+  drawLab1();
+}
+
+function lab1Reset() { initLab1(); }
+
+function lab1Action(action) {
+  const s = lab1State;
+  if (action === 'addSand') {
+    s.sand = 1; enableBtn('btn-add-sand', false); enableBtn('btn-add-water', true);
+    addObs('obs1', '🏔️ تمت إضافة التراب إلى الكأس الزجاجية.');
+  } else if (action === 'addWater') {
+    s.water = 1; enableBtn('btn-add-water', false); enableBtn('btn-mix', true);
+    addObs('obs1', '💧 تمت إضافة الماء. الكأس يحتوي على ماء وتراب.');
+  } else if (action === 'mix') {
+    s.mixed = true; s.phase = 'mixing';
+    enableBtn('btn-mix', false);
+    let t = 0;
+    const iv = setInterval(() => {
+      t++; drawLab1(t);
+      if (t > 25) {
+        clearInterval(iv); s.phase = 'mixed';
+        enableBtn('btn-wait', true);
+        addObs('obs1', '🔄 المخلوط غير متجانس – الماء والتراب لا يمتزجان تماماً، ويمكن تمييز الطبقتين.');
+      }
+    }, 60);
+    return;
+  } else if (action === 'wait') {
+    s.phase = 'settling'; enableBtn('btn-wait', false);
+    addObs('obs1', '⏱️ جاري الانتظار... الجاذبية تسحب جزيئات التراب نحو القاع...');
+    let t = 0;
+    const iv = setInterval(() => {
+      t += 2; s.settled = Math.min(t/100, 1); drawLab1(0);
+      if (s.settled >= 1) {
+        clearInterval(iv); s.phase = 'settled';
+        enableBtn('btn-pour', true);
+        addObs('obs1', '✅ ترسّب التراب في قاع الكأس! الماء في الأعلى أصبح أكثر صفاءً – هذا هو الترسيب.');
+      }
+    }, 80);
+    return;
+  } else if (action === 'pour') {
+    s.poured = true; s.phase = 'poured'; enableBtn('btn-pour', false);
+    addObs('obs1', '🥛 تم سكب الماء الصافي من الأعلى بهدوء. بقي التراب في قاع الكأس.');
+    addObs('obs1', '📌 الخاصية المعتمدة: فرق الكثافة – التراب أثقل من الماء فيرسب بفعل الجاذبية.');
+    document.getElementById('card-conclude1').style.display = 'block';
+    document.getElementById('card-conclude1').scrollIntoView({ behavior: 'smooth' });
+  }
+  drawLab1(0);
+}
+
+function drawLab1(tick) {
+  const canvas = document.getElementById('lab1Canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+
+  // Background
+  const bg = ctx.createLinearGradient(0,0,0,H);
+  bg.addColorStop(0,'#e8f4ff'); bg.addColorStop(1,'#d0e8ff');
+  ctx.fillStyle = bg; ctx.fillRect(0,0,W,H);
+
+  const s = lab1State;
+  const cx = W/2;
+
+  // --- Table surface (3D perspective) ---
+  ctx.save();
+  const tableY = H - 60;
+  ctx.fillStyle = '#7b5e3a';
+  ctx.beginPath();
+  ctx.moveTo(20, tableY+10); ctx.lineTo(W-20, tableY+10);
+  ctx.lineTo(W-10, tableY+30); ctx.lineTo(10, tableY+30);
+  ctx.closePath(); ctx.fill();
+  ctx.fillStyle = '#9b7a4a';
+  ctx.beginPath();
+  ctx.moveTo(20, tableY); ctx.lineTo(W-20, tableY);
+  ctx.lineTo(W-10, tableY+10); ctx.lineTo(10, tableY+10);
+  ctx.closePath(); ctx.fill();
+  ctx.restore();
+
+  // --- 3D Glass ---
+  const gx = cx - 65, gy = tableY - 220, gw = 130, gh = 200;
+  drawGlass3D(ctx, gx, gy, gw, gh, s, tick);
+
+  // --- Labels ---
+  ctx.fillStyle = '#0d5a8a';
+  ctx.font = 'bold 14px Cairo, Tajawal, Arial';
+  ctx.textAlign = 'center';
+  if (s.water) {
+    if (s.settled > 0.5) {
+      ctx.fillStyle = '#1a90d9';
+      ctx.fillText('ماء صافٍ', cx + 90, gy + 50);
+      drawArrow(ctx, cx + 55, gy + 55, gx + gw, gy + 55);
+      ctx.fillStyle = '#c2a06a';
+      ctx.fillText('تراب مترسّب', cx + 90, gy + gh - 30);
+      drawArrow(ctx, cx + 55, gy + gh - 25, gx + gw, gy + gh - 25);
+    }
+  }
+
+  // Phase label
+  const phases = {
+    idle: 'الكأس فارغة', addSand: '', mixed: 'مخلوط غير متجانس',
+    settling: 'جاري الترسيب...', settled: 'اكتمل الترسيب!', poured: 'تم السكب'
+  };
+  if (phases[s.phase]) {
+    ctx.fillStyle = '#0a2540';
+    ctx.font = 'bold 15px Cairo, Tajawal, Arial';
+    ctx.fillText(phases[s.phase], cx, 32);
+  }
+}
+
+function drawGlass3D(ctx, x, y, w, h, s, tick) {
+  const offset = 12; // 3D depth
+
+  // 3D side (right face)
+  ctx.save();
+  ctx.fillStyle = 'rgba(180,210,240,0.35)';
+  ctx.beginPath();
+  ctx.moveTo(x+w, y);
+  ctx.lineTo(x+w+offset, y-offset);
+  ctx.lineTo(x+w+offset, y+h-offset);
+  ctx.lineTo(x+w, y+h);
+  ctx.closePath(); ctx.fill();
+
+  // Glass body
+  ctx.fillStyle = 'rgba(220,240,255,0.18)';
+  ctx.strokeStyle = 'rgba(26,100,180,0.5)'; ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.moveTo(x+10, y); ctx.lineTo(x+w-10, y);
+  ctx.lineTo(x+w, y+h); ctx.lineTo(x, y+h); ctx.closePath();
+  ctx.fill(); ctx.stroke();
+
+  // Water level
+  if (s.water) {
+    const wl = h * 0.75;
+    const waterTop = y + h - wl;
+
+    // Sand/sediment layer
+    if (s.sand) {
+      const sandH = s.settled > 0 ? Math.max(18, 18 + s.settled * 42) : 30;
+      const sg = ctx.createLinearGradient(0, y+h-sandH, 0, y+h);
+      sg.addColorStop(0, s.settled > 0.5 ? '#c2a06a' : '#a08050');
+      sg.addColorStop(1, '#8b6332');
+      ctx.fillStyle = sg;
+      ctx.beginPath();
+      ctx.moveTo(x+2, y+h-sandH); ctx.lineTo(x+w-2, y+h-sandH);
+      ctx.lineTo(x+w, y+h); ctx.lineTo(x, y+h); ctx.closePath();
+      ctx.fill();
+
+      // Turbidity gradient
+      const turbidity = s.settled > 0 ? (1 - s.settled) * 0.6 : (s.mixed ? 0.55 : 0);
+      const wg = ctx.createLinearGradient(0, waterTop, 0, y+h-sandH);
+      wg.addColorStop(0, `rgba(26,144,217,${0.5 + turbidity*0.2})`);
+      wg.addColorStop(1, `rgba(${s.settled > 0.5 ? '26,144,217' : '160,130,80'},${0.6 + turbidity*0.2})`);
+      ctx.fillStyle = wg;
+      ctx.beginPath();
+      ctx.moveTo(x+2, waterTop); ctx.lineTo(x+w-2, waterTop);
+      ctx.lineTo(x+w-2, y+h-sandH); ctx.lineTo(x+2, y+h-sandH); ctx.closePath();
+      ctx.fill();
+
+      // Turbidity particles
+      if (s.mixed && s.settled < 0.9) {
+        ctx.fillStyle = `rgba(150,120,70,${(1-s.settled)*0.6})`;
+        for (let i = 0; i < 18; i++) {
+          const px = x + 8 + (Math.sin(i*1.7 + (tick||0)*0.1)*0.5+0.5)*(w-16);
+          const py = waterTop + (Math.cos(i*2.3 + (tick||0)*0.08)*0.5+0.5)*(h*0.55);
+          ctx.beginPath(); ctx.arc(px, py, 2.5, 0, Math.PI*2); ctx.fill();
+        }
+      }
+    } else {
+      // Water only
+      ctx.fillStyle = 'rgba(26,144,217,0.55)';
+      ctx.beginPath();
+      ctx.moveTo(x+2, waterTop); ctx.lineTo(x+w-2, waterTop);
+      ctx.lineTo(x+w, y+h); ctx.lineTo(x, y+h); ctx.closePath(); ctx.fill();
+    }
+
+    // Water surface shimmer
+    ctx.strokeStyle = 'rgba(255,255,255,0.6)'; ctx.lineWidth = 1.5;
+    ctx.setLineDash([4,4]);
+    ctx.beginPath(); ctx.moveTo(x+6, waterTop+4); ctx.lineTo(x+w-6, waterTop+4); ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Poured: show second glass
+    if (s.poured) {
+      const gx2 = x + w + 40;
+      ctx.fillStyle = 'rgba(26,144,217,0.5)';
+      ctx.strokeStyle = 'rgba(26,100,180,0.5)'; ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(gx2+8,y+20); ctx.lineTo(gx2+w-8,y+20);
+      ctx.lineTo(gx2+w,y+h); ctx.lineTo(gx2,y+h); ctx.closePath();
+      ctx.fill(); ctx.stroke();
+      // Pour arc
+      ctx.strokeStyle = 'rgba(26,144,217,0.5)'; ctx.lineWidth = 3;
+      ctx.setLineDash([5,4]);
+      ctx.beginPath(); ctx.arc(x+w+20, y+60, 20, Math.PI, 0); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = '#0d5a8a';
+      ctx.font = 'bold 12px Cairo'; ctx.textAlign = 'center';
+      ctx.fillText('ماء صافٍ', gx2+w/2, y+12);
+    }
+  }
+
+  // Glass outline re-draw on top
+  ctx.strokeStyle = 'rgba(26,100,180,0.55)'; ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.moveTo(x+10, y); ctx.lineTo(x+w-10, y);
+  ctx.lineTo(x+w, y+h); ctx.lineTo(x, y+h); ctx.closePath();
+  ctx.stroke();
+  ctx.restore();
+}
+
+function drawArrow(ctx, x1, y1, x2, y2) {
+  ctx.save(); ctx.strokeStyle='#0d5a8a'; ctx.lineWidth=1.5; ctx.setLineDash([4,3]);
+  ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
+  ctx.setLineDash([]); ctx.restore();
+}
+
+/* ============================================================
+   LAB 2 – FILTRATION
+   ============================================================ */
+let lab2State = { phase: 'idle', dropY: 0, collected: 0, animIv: null };
+
+function initLab2() {
+  lab2State = { phase: 'idle', dropY: 0, collected: 0, animIv: null };
+  enableBtn('btn2-setup', true); enableBtn('btn2-pour', false); enableBtn('btn2-collect', false);
+  document.getElementById('obs2').innerHTML = '<div class="obs-line visible" style="color:#a8d8f0">⬅ ابدأ بالخطوة الأولى: اضغط "ثبّت ورق الترشيح"</div>';
+  document.getElementById('card-conclude2').style.display = 'none';
+  drawLab2();
+}
+
+function lab2Reset() { initLab2(); }
+
+function lab2Action(action) {
+  const s = lab2State;
+  if (action === 'setup') {
+    s.phase = 'setup'; enableBtn('btn2-setup', false); enableBtn('btn2-pour', true);
+    addObs('obs2', '🔺 تم تثبيت ورق الترشيح داخل القمع الزجاجي. القمع موضوع على كأس جمع.');
+    drawLab2();
+  } else if (action === 'pour') {
+    s.phase = 'pouring'; enableBtn('btn2-pour', false);
+    addObs('obs2', '💧 جاري سكب الماء المخلوط عبر ورق الترشيح...');
+    let t = 0;
+    const iv = setInterval(() => {
+      t++; s.dropY = (t % 60) * 3; s.collected = Math.min(t/80, 1);
+      drawLab2();
+      if (t >= 80) {
+        clearInterval(iv); s.phase = 'filtered';
+        enableBtn('btn2-collect', true);
+        addObs('obs2', '✅ ورق الترشيح احتجز جزيئات التراب! الماء الصافي تقطّر إلى الكأس أدناه.');
+      }
+    }, 60);
+    return;
+  } else if (action === 'collect') {
+    s.phase = 'done'; enableBtn('btn2-collect', false);
+    addObs('obs2', '🥛 تم جمع الماء الصافي. لاحظ أن الماء أصبح أكثر صفاءً من نتيجة الترسيب!');
+    addObs('obs2', '📌 الخاصية المعتمدة: حجم الجزيئات – ورق الترشيح يحتجز الكبيرة ويُمرّر الصغيرة (الماء).');
+    document.getElementById('card-conclude2').style.display = 'block';
+    document.getElementById('card-conclude2').scrollIntoView({ behavior: 'smooth' });
+    drawLab2();
+  }
+}
+
+function drawLab2() {
+  const canvas = document.getElementById('lab2Canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+  const s = lab2State;
+  const cx = W/2;
+
+  // Background
+  const bg = ctx.createLinearGradient(0,0,0,H);
+  bg.addColorStop(0,'#eaf6f0'); bg.addColorStop(1,'#d0e8e0');
+  ctx.fillStyle = bg; ctx.fillRect(0,0,W,H);
+
+  if (s.phase === 'idle') {
+    ctx.fillStyle = '#5a6a80'; ctx.font = '16px Cairo,Tajawal,Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText('اضغط "ثبّت ورق الترشيح" لبدء التجربة', cx, H/2);
+    return;
+  }
+
+  // Stand
+  ctx.fillStyle = '#5a5a5a'; ctx.fillRect(cx+60, 60, 10, H-100);
+  ctx.fillStyle = '#4a4a4a'; ctx.fillRect(cx+40, H-110, 50, 8);
+
+  // --- Input beaker (top left) ---
+  const bx = cx-170, by=60, bw=100, bh=90;
+  drawMiniBeaker(ctx, bx, by, bw, bh, s.phase !== 'idle', s.collected < 1);
+
+  // Pour stream
+  if (s.phase === 'pouring') {
+    ctx.strokeStyle = 'rgba(26,144,217,0.55)'; ctx.lineWidth = 3;
+    ctx.setLineDash([]);
+    ctx.beginPath();
+    ctx.moveTo(bx+bw, by+bh/2);
+    ctx.quadraticCurveTo(bx+bw+30, by+bh/2+20, cx-30, 180);
+    ctx.stroke();
+  }
+
+  // --- Funnel ---
+  const fx = cx-40, fy=155, fw=80, fh=90;
+  if (s.phase !== 'idle') {
+    // 3D funnel body
+    ctx.save();
+    const fGrad = ctx.createLinearGradient(fx, fy, fx+fw, fy+fh);
+    fGrad.addColorStop(0, 'rgba(200,230,255,0.6)');
+    fGrad.addColorStop(1, 'rgba(150,200,240,0.4)');
+    ctx.fillStyle = fGrad;
+    ctx.strokeStyle = 'rgba(26,100,180,0.6)'; ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.moveTo(fx, fy); ctx.lineTo(fx+fw, fy);
+    ctx.lineTo(fx+fw/2+5, fy+fh); ctx.lineTo(fx+fw/2-5, fy+fh);
+    ctx.closePath(); ctx.fill(); ctx.stroke();
+
+    // Filter paper inside funnel
+    ctx.fillStyle = 'rgba(255,248,230,0.85)';
+    ctx.strokeStyle = '#c2a06a'; ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(fx+8, fy+6); ctx.lineTo(fx+fw-8, fy+6);
+    ctx.lineTo(fx+fw/2+4, fy+fh-4); ctx.lineTo(fx+fw/2-4, fy+fh-4);
+    ctx.closePath(); ctx.fill(); ctx.stroke();
+
+    // Dirty particles on paper
+    if (s.phase === 'filtered' || s.phase === 'done') {
+      ctx.fillStyle = '#9b7a4a';
+      const pts = [[fx+fw/2-12,fy+30],[fx+fw/2+8,fy+40],[fx+fw/2-5,fy+50],[fx+fw/2+15,fy+25]];
+      pts.forEach(([px,py]) => { ctx.beginPath(); ctx.arc(px,py,4,0,Math.PI*2); ctx.fill(); });
+    }
+    // Stem
+    ctx.fillStyle = 'rgba(200,230,255,0.5)';
+    ctx.strokeStyle='rgba(26,100,180,0.5)'; ctx.lineWidth=2;
+    ctx.fillRect(fx+fw/2-5, fy+fh, 10, 50); ctx.strokeRect(fx+fw/2-5, fy+fh, 10, 50);
+    ctx.restore();
+
+    // Filtered water drops
+    if (s.phase === 'pouring' || s.phase === 'filtered' || s.phase === 'done') {
+      const numDrops = s.phase === 'pouring' ? 3 : (s.phase === 'done' ? 0 : 2);
+      ctx.fillStyle = 'rgba(26,200,255,0.8)';
+      for (let d = 0; d < numDrops; d++) {
+        const dy = fy + fh + 50 + (s.dropY + d*20) % 50;
+        ctx.beginPath(); ctx.arc(cx, dy, 4, 0, Math.PI*2); ctx.fill();
+      }
+    }
+  }
+
+  // --- Collection beaker (bottom) ---
+  const cx2 = cx, cy2 = fy+fh+100, cw2 = 100, ch2 = 90;
+  if (s.phase !== 'idle') {
+    const fillLevel = s.collected * (ch2 - 10);
+    ctx.save();
+    ctx.fillStyle = 'rgba(220,240,255,0.2)';
+    ctx.strokeStyle = 'rgba(26,100,180,0.5)'; ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.moveTo(cx2-cw2/2+8, cy2); ctx.lineTo(cx2+cw2/2-8, cy2);
+    ctx.lineTo(cx2+cw2/2, cy2+ch2); ctx.lineTo(cx2-cw2/2, cy2+ch2);
+    ctx.closePath(); ctx.fill(); ctx.stroke();
+    if (fillLevel > 0) {
+      const wg = ctx.createLinearGradient(0, cy2+ch2-fillLevel, 0, cy2+ch2);
+      wg.addColorStop(0,'rgba(26,200,255,0.65)');
+      wg.addColorStop(1,'rgba(26,144,217,0.75)');
+      ctx.fillStyle = wg;
+      ctx.beginPath();
+      ctx.moveTo(cx2-cw2/2+2, cy2+ch2-fillLevel);
+      ctx.lineTo(cx2+cw2/2-2, cy2+ch2-fillLevel);
+      ctx.lineTo(cx2+cw2/2, cy2+ch2); ctx.lineTo(cx2-cw2/2, cy2+ch2);
+      ctx.closePath(); ctx.fill();
+    }
+    ctx.restore();
+    ctx.fillStyle = '#0d5a8a'; ctx.font = 'bold 13px Cairo,Tajawal,Arial'; ctx.textAlign='center';
+    ctx.fillText(s.phase==='done'?'ماء صافٍ تماماً 💧':'...', cx2, cy2+ch2+18);
+  }
+
+  // Phase label
+  const phaseLabels = {
+    setup:'ورق الترشيح جاهز', pouring:'الترشيح جارٍ...', filtered:'اكتمل الترشيح!', done:'تم جمع الماء ✅'
+  };
+  if (phaseLabels[s.phase]) {
+    ctx.fillStyle = '#0a2540'; ctx.font='bold 15px Cairo,Tajawal,Arial'; ctx.textAlign='center';
+    ctx.fillText(phaseLabels[s.phase], cx, 34);
+  }
+}
+
+function drawMiniBeaker(ctx, x, y, w, h, hasWater, dirty) {
+  ctx.save();
+  ctx.fillStyle = 'rgba(220,240,255,0.2)';
+  ctx.strokeStyle = 'rgba(26,100,180,0.45)'; ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(x+8,y); ctx.lineTo(x+w-8,y);
+  ctx.lineTo(x+w,y+h); ctx.lineTo(x,y+h); ctx.closePath();
+  ctx.fill(); ctx.stroke();
+  if (hasWater) {
+    ctx.fillStyle = dirty ? 'rgba(160,130,80,0.55)' : 'rgba(26,144,217,0.5)';
+    const wh = h*0.6;
+    ctx.beginPath();
+    ctx.moveTo(x+4, y+h-wh); ctx.lineTo(x+w-4, y+h-wh);
+    ctx.lineTo(x+w, y+h); ctx.lineTo(x, y+h); ctx.closePath(); ctx.fill();
+    if (dirty) {
+      ctx.fillStyle='rgba(100,80,40,0.5)';
+      for(let i=0;i<6;i++){
+        ctx.beginPath();
+        ctx.arc(x+10+(i*15)%75, y+h-wh/2+(i%3)*8, 2.5, 0, Math.PI*2); ctx.fill();
+      }
+    }
+  }
+  ctx.restore();
+}
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+function enableBtn(id, on) {
+  const b = document.getElementById(id);
+  if (b) b.disabled = !on;
+}
+
+function addObs(containerId, text) {
+  const c = document.getElementById(containerId);
+  if (!c) return;
+  const d = document.createElement('div');
+  d.className = 'obs-line';
+  d.textContent = text;
+  c.appendChild(d);
+  requestAnimationFrame(() => d.classList.add('visible'));
+  c.scrollTop = c.scrollHeight;
+}
+
+/* ============================================================
+   QUIZ
+   ============================================================ */
+let quizScore = 0;
+let answered = {};
+
+function checkAnswer(btn, correct, qId, feedback) {
+  if (answered[qId]) return;
+  answered[qId] = true;
+  const parent = btn.parentElement;
+  parent.querySelectorAll('.option-btn').forEach(b => b.disabled = true);
+  btn.classList.add(correct ? 'correct' : 'wrong');
+  if (correct) { quizScore++; }
+  const fb = document.getElementById(qId + '-fb');
+  fb.textContent = feedback;
+  fb.className = 'feedback-msg show ' + (correct ? 'correct' : 'wrong');
+
+  updateScore();
+  if (Object.keys(answered).length === 7) showFinalResult();
+}
+
+function updateScore() {
+  document.getElementById('scoreNum').textContent = quizScore + '/7';
+  const pct = (quizScore / 7) * 360;
+  document.getElementById('scoreCircle').style.background =
+    `conic-gradient(var(--water-blue) ${pct}deg, #e8f4ff ${pct}deg)`;
+}
+
+function showFinalResult() {
+  const r = document.getElementById('final-result');
+  r.style.display = 'block';
+  const msgs = [
+    [7, '🏆 ممتاز! أنت عالم صغير حقيقي! درجة مثالية!'],
+    [5, '🌟 أحسنت! نتيجة جيدة جداً، راجع الأسئلة التي أخطأت فيها.'],
+    [3, '👍 جيد! راجع الدرس مرة أخرى لتقوية فهمك.'],
+    [0, '💪 لا بأس! راجع المختبر الافتراضي وحاول مجدداً.']
+  ];
+  const msg = msgs.find(([min]) => quizScore >= min);
+  r.textContent = msg[1];
+}
+
+function resetQuiz() {
+  quizScore = 0; answered = {};
+  document.querySelectorAll('.option-btn').forEach(b => {
+    b.disabled = false; b.classList.remove('correct','wrong');
+  });
+  document.querySelectorAll('.feedback-msg').forEach(f => { f.className='feedback-msg'; f.textContent=''; });
+  document.getElementById('final-result').style.display = 'none';
+  updateScore();
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+window.addEventListener('load', () => {
+  initLab1();
+  drawFoldDiagrams();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="content-language" content="ar">
+<meta http-equiv="Content-Type" content="text/html; charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>قابلية العناصر للطرق والسحب والثني | مختبر افتراضي - الصف السادس</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ===================== Design tokens ===================== */
+:root{
+  --iron-black:#161211;
+  --iron-black-2:#1f1a17;
+  --charcoal:#2a2320;
+  --charcoal-soft:#332b26;
+  --ember:#e2611c;
+  --ember-bright:#ff7a33;
+  --copper:#b8702e;
+  --copper-light:#d99a5b;
+  --steel:#9aa5ab;
+  --steel-dark:#5c666b;
+  --glass-blue:#7fd6e8;
+  --parchment:#f6efe0;
+  --parchment-2:#efe4cd;
+  --ink:#2a2320;
+  --gold:#d1a13a;
+  --good:#4c8c5a;
+  --bad:#b5432f;
+  --radius-lg:22px;
+  --radius-md:14px;
+  --shadow-deep:0 20px 45px rgba(0,0,0,.45);
+  --font-display:'Cairo', system-ui, sans-serif;
+  --font-body:'Tajawal', system-ui, sans-serif;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  font-family:var(--font-body);
+  background:var(--iron-black);
+  color:var(--parchment);
+  line-height:1.8;
+  overflow-x:hidden;
+}
+h1,h2,h3,h4{font-family:var(--font-display); margin:0; color:var(--parchment);}
+p{margin:0 0 12px;}
+img,svg{display:block;}
+button{font-family:var(--font-body); cursor:pointer;}
+::selection{background:var(--ember); color:#fff;}
+
+.wrap{max-width:1180px; margin:0 auto; padding:0 22px;}
+.eyebrow{
+  display:inline-flex; align-items:center; gap:8px;
+  font-family:var(--font-display); font-weight:700; font-size:.8rem;
+  letter-spacing:.5px; color:var(--ember-bright);
+  background:rgba(226,97,28,.12); border:1px solid rgba(226,97,28,.35);
+  padding:6px 16px; border-radius:99px; margin-bottom:18px;
+}
+.section-title{font-size:clamp(1.6rem,3.4vw,2.4rem); font-weight:800; margin-bottom:10px;}
+.section-sub{color:var(--steel); font-size:1.02rem; max-width:640px; margin-bottom:34px;}
+.divider-rivets{
+  height:26px; margin:0; position:relative;
+  background-image:repeating-linear-gradient(-45deg, rgba(226,97,28,.18) 0 10px, transparent 10px 20px);
+  border-top:1px solid rgba(226,97,28,.25); border-bottom:1px solid rgba(226,97,28,.25);
+}
+
+/* ===================== Hero ===================== */
+.hero{
+  position:relative; padding:70px 0 90px; overflow:hidden;
+  background:
+    radial-gradient(ellipse at 75% 20%, rgba(226,97,28,.20), transparent 55%),
+    radial-gradient(ellipse at 15% 80%, rgba(184,112,46,.14), transparent 50%),
+    linear-gradient(180deg,#1a1512,#161211 70%);
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.hero .wrap{display:grid; grid-template-columns:1.1fr .9fr; gap:40px; align-items:center;}
+@media (max-width:900px){ .hero .wrap{grid-template-columns:1fr;} }
+.hero h1{font-size:clamp(2rem,4.6vw,3.2rem); font-weight:900; line-height:1.25;}
+.hero h1 span{color:var(--ember-bright);}
+.hero-desc{color:var(--steel); font-size:1.08rem; max-width:520px; margin-top:16px;}
+.hero-badges{display:flex; flex-wrap:wrap; gap:10px; margin-top:26px;}
+.badge{
+  font-family:var(--font-display); font-weight:700; font-size:.82rem;
+  background:var(--charcoal-soft); border:1px solid rgba(255,255,255,.08);
+  color:var(--parchment); padding:8px 14px; border-radius:10px;
+}
+.hero-cta{
+  margin-top:30px; display:inline-flex; align-items:center; gap:10px;
+  background:linear-gradient(135deg,var(--ember),var(--ember-bright));
+  color:#fff; font-family:var(--font-display); font-weight:800; font-size:1rem;
+  padding:14px 26px; border-radius:12px; border:none; text-decoration:none;
+  box-shadow:0 14px 30px rgba(226,97,28,.35);
+  transition:transform .2s ease, box-shadow .2s ease;
+}
+.hero-cta:hover{transform:translateY(-3px); box-shadow:0 18px 36px rgba(226,97,28,.45);}
+
+/* hero forge scene: 3D anvil + animated hammer */
+.forge-scene{perspective:900px; display:flex; justify-content:center; align-items:center; height:320px;}
+.forge-stage{
+  position:relative; width:260px; height:230px; transform-style:preserve-3d;
+  transform:rotateX(18deg) rotateY(-18deg);
+  animation:sceneFloat 6s ease-in-out infinite;
+}
+@keyframes sceneFloat{0%,100%{transform:rotateX(18deg) rotateY(-18deg) translateY(0);}50%{transform:rotateX(18deg) rotateY(-14deg) translateY(-8px);}}
+.anvil-body{
+  position:absolute; bottom:0; left:50%; transform:translateX(-50%) translateZ(0);
+  width:170px; height:60px; border-radius:8px;
+  background:linear-gradient(180deg,var(--steel),var(--steel-dark));
+  box-shadow:0 20px 30px rgba(0,0,0,.5), inset 0 -8px 14px rgba(0,0,0,.35);
+}
+.anvil-top{
+  position:absolute; bottom:56px; left:50%; transform:translateX(-50%);
+  width:130px; height:26px; border-radius:6px;
+  background:linear-gradient(180deg,#c7d0d4,var(--steel));
+  box-shadow:inset 0 -6px 10px rgba(0,0,0,.3), 0 6px 10px rgba(0,0,0,.4);
+}
+.ember-block{
+  position:absolute; bottom:80px; left:50%; transform:translateX(-50%);
+  width:46px; height:46px; border-radius:6px;
+  background:linear-gradient(135deg,var(--ember-bright),var(--ember) 60%, #7a2e10);
+  box-shadow:0 0 26px 6px rgba(255,122,51,.55), inset 0 0 10px rgba(255,220,180,.6);
+  animation:glow 1.6s ease-in-out infinite;
+}
+@keyframes glow{0%,100%{filter:brightness(1);}50%{filter:brightness(1.25);}}
+.hero-hammer{
+  position:absolute; bottom:150px; right:38px; width:14px; height:110px;
+  transform-origin:top center; transform:rotate(-52deg);
+  animation:hammerSwing 1.6s ease-in-out infinite;
+}
+.hero-hammer .handle{width:12px; height:90px; margin:0 auto; border-radius:6px; background:linear-gradient(90deg,#7a5230,#a9764a);}
+.hero-hammer .head{width:46px; height:22px; margin-top:-4px; margin-right:-17px; border-radius:5px; background:linear-gradient(180deg,#cfd6d9,#7d8a90); box-shadow:0 4px 10px rgba(0,0,0,.4);}
+@keyframes hammerSwing{0%,18%{transform:rotate(-52deg);}32%{transform:rotate(4deg);}55%,100%{transform:rotate(-52deg);}}
+.hero-sparks{position:absolute; bottom:118px; left:50%; width:4px; height:4px;}
+.hero-sparks i{position:absolute; width:4px; height:4px; border-radius:50%; background:var(--ember-bright); opacity:0; animation:spark 1.6s ease-out infinite;}
+.hero-sparks i:nth-child(1){animation-delay:.32s; left:-4px;}
+.hero-sparks i:nth-child(2){animation-delay:.36s; left:6px;}
+.hero-sparks i:nth-child(3){animation-delay:.4s; left:-14px;}
+.hero-sparks i:nth-child(4){animation-delay:.34s; left:14px;}
+@keyframes spark{0%{opacity:1; transform:translate(0,0) scale(1);}100%{opacity:0; transform:translate(var(--dx,20px),-46px) scale(.3);}}
+.hero-sparks i:nth-child(1){--dx:-24px;} .hero-sparks i:nth-child(2){--dx:22px;} .hero-sparks i:nth-child(3){--dx:-36px;} .hero-sparks i:nth-child(4){--dx:34px;}
+
+/* ===================== Generic sections ===================== */
+section{padding:64px 0;}
+.dark-section{background:var(--iron-black);}
+.light-section{background:var(--parchment); color:var(--ink);}
+.light-section .section-sub{color:#6b5f4d;}
+
+/* ===================== Definition cards ===================== */
+.def-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:22px;}
+@media (max-width:860px){.def-grid{grid-template-columns:1fr;}}
+.flip-card{perspective:1200px; height:250px;}
+.flip-inner{position:relative; width:100%; height:100%; transform-style:preserve-3d; transition:transform .7s cubic-bezier(.4,.2,.2,1);}
+.flip-card.flipped .flip-inner{transform:rotateY(180deg);}
+.flip-face{
+  position:absolute; inset:0; backface-visibility:hidden; border-radius:var(--radius-md);
+  padding:24px; display:flex; flex-direction:column; justify-content:center; align-items:center;
+  text-align:center; cursor:pointer; border:1px solid rgba(0,0,0,.06);
+}
+.flip-front{background:linear-gradient(160deg,#fff,var(--parchment-2)); box-shadow:0 14px 26px rgba(0,0,0,.12);}
+.flip-back{background:linear-gradient(160deg,var(--iron-black-2),var(--charcoal)); color:var(--parchment); transform:rotateY(180deg); box-shadow:0 14px 26px rgba(0,0,0,.35);}
+.flip-icon{width:64px; height:64px; margin-bottom:14px;}
+.flip-front h3{font-size:1.2rem; margin-bottom:6px; color:var(--ink);}
+.flip-front span.tap-hint{font-size:.78rem; color:#9a8b6f; font-weight:500;}
+.flip-back h4{color:var(--ember-bright); font-size:1rem; margin-bottom:8px;}
+.flip-back p{font-size:.92rem; color:#d8cdbd;}
+.flip-back .example{font-size:.82rem; color:var(--gold); margin-top:8px;}
+
+/* icon shapes (css) */
+.icon-hammer{position:relative; width:60px; height:60px; margin:0 auto;}
+.icon-hammer .h-handle{position:absolute; width:8px; height:44px; background:#8a5a34; border-radius:4px; right:24px; top:16px; transform:rotate(35deg);}
+.icon-hammer .h-head{position:absolute; width:30px; height:16px; background:linear-gradient(180deg,#c9d1d4,#7d8a90); border-radius:4px; right:6px; top:6px; transform:rotate(35deg);}
+.icon-wire{position:relative; width:60px; height:60px; margin:0 auto;}
+.icon-wire svg{width:100%; height:100%;}
+.icon-bend{position:relative; width:60px; height:60px; margin:0 auto;}
+.icon-bend svg{width:100%; height:100%;}
+
+/* ===================== Lab section ===================== */
+.lab-tabs{display:flex; gap:10px; margin-bottom:30px; flex-wrap:wrap;}
+.lab-tab{
+  flex:1; min-width:170px; background:var(--charcoal-soft); border:1px solid rgba(255,255,255,.08);
+  color:var(--steel); font-family:var(--font-display); font-weight:700; font-size:.95rem;
+  padding:14px 10px; border-radius:12px; text-align:center; transition:.2s;
+}
+.lab-tab.active{background:linear-gradient(135deg,var(--ember),var(--copper)); color:#fff; border-color:transparent; box-shadow:0 10px 20px rgba(226,97,28,.3);}
+.lab-tab:not(.active):hover{color:#fff; border-color:rgba(226,97,28,.4);}
+
+.lab-panel{display:none;}
+.lab-panel.active{display:block; animation:fadeIn .4s ease;}
+@keyframes fadeIn{from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);}}
+
+.lab-card{
+  background:linear-gradient(160deg,var(--charcoal-soft),var(--iron-black-2));
+  border:1px solid rgba(255,255,255,.07); border-radius:var(--radius-lg);
+  padding:30px; box-shadow:var(--shadow-deep);
+}
+.lab-grid{display:grid; grid-template-columns:1.15fr .85fr; gap:30px;}
+@media (max-width:900px){.lab-grid{grid-template-columns:1fr;}}
+
+.material-toggle{display:flex; gap:10px; margin-bottom:20px;}
+.mat-btn{
+  flex:1; padding:12px; border-radius:10px; border:1px solid rgba(255,255,255,.1);
+  background:var(--iron-black-2); color:var(--steel); font-weight:700; font-family:var(--font-display);
+  font-size:.88rem; display:flex; align-items:center; justify-content:center; gap:8px;
+}
+.mat-btn .dot{width:10px; height:10px; border-radius:50%;}
+.mat-btn[data-mat="metal"] .dot{background:var(--copper-light);}
+.mat-btn[data-mat="nonmetal"] .dot{background:var(--glass-blue);}
+.mat-btn.active{background:linear-gradient(135deg,#3a322c,#211b18); color:#fff; border-color:var(--ember);}
+
+.stage-box{
+  perspective:1000px; height:280px; display:flex; align-items:center; justify-content:center;
+  background:
+    radial-gradient(ellipse at 50% 100%, rgba(226,97,28,.10), transparent 60%),
+    repeating-linear-gradient(90deg, rgba(255,255,255,.02) 0 2px, transparent 2px 40px),
+    var(--iron-black);
+  border-radius:var(--radius-md); border:1px solid rgba(255,255,255,.06); position:relative; overflow:hidden;
+  touch-action:none;
+}
+.bench-top{position:absolute; bottom:0; left:0; right:0; height:34px; background:linear-gradient(180deg,#5b4632,#372a1e); box-shadow:0 -3px 10px rgba(0,0,0,.3);}
+
+.readout{
+  display:flex; gap:14px; flex-wrap:wrap; margin-top:16px;
+}
+.readout .stat{
+  background:var(--iron-black-2); border:1px solid rgba(255,255,255,.08); border-radius:10px;
+  padding:10px 16px; font-family:var(--font-display); font-weight:700; font-size:.88rem; color:var(--gold);
+  min-width:120px; text-align:center;
+}
+.readout .stat small{display:block; font-family:var(--font-body); font-weight:400; color:var(--steel); font-size:.72rem; margin-top:2px;}
+
+.lab-controls{display:flex; gap:12px; margin-top:20px; flex-wrap:wrap;}
+.btn{
+  border:none; border-radius:10px; padding:12px 20px; font-family:var(--font-display); font-weight:800; font-size:.9rem;
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+.btn:active{transform:scale(.96);}
+.btn-primary{background:linear-gradient(135deg,var(--ember),var(--ember-bright)); color:#fff; box-shadow:0 10px 20px rgba(226,97,28,.3);}
+.btn-ghost{background:transparent; color:var(--steel); border:1px solid rgba(255,255,255,.15);}
+.btn-gold{background:linear-gradient(135deg,var(--gold),#e8c168); color:#33270a; box-shadow:0 10px 20px rgba(209,161,58,.25);}
+.btn:disabled{opacity:.4; cursor:not-allowed;}
+
+.lab-note{margin-top:18px; padding:14px 16px; border-radius:10px; font-size:.9rem; display:none; border:1px solid transparent;}
+.lab-note.show{display:block; animation:fadeIn .35s ease;}
+.lab-note.ok{background:rgba(76,140,90,.14); border-color:rgba(76,140,90,.4); color:#a8e0b3;}
+.lab-note.bad{background:rgba(181,67,47,.14); border-color:rgba(181,67,47,.4); color:#f0b3a5;}
+
+.lab-instructions{color:var(--steel); font-size:.92rem;}
+.lab-instructions ol{padding-inline-start:20px; margin:10px 0 0;}
+.lab-instructions li{margin-bottom:6px;}
+.lab-instructions strong{color:var(--parchment);}
+
+/* Hammer test elements */
+.hammer-rig{position:relative; width:220px; height:220px; transform-style:preserve-3d; transform:rotateX(20deg) rotateY(-10deg);}
+.anvil-mini{position:absolute; bottom:0; left:50%; transform:translateX(-50%); width:150px; height:34px; border-radius:6px; background:linear-gradient(180deg,#c7d0d4,var(--steel-dark)); box-shadow:0 12px 18px rgba(0,0,0,.4);}
+.hammer-tool{position:absolute; top:6px; right:24px; width:16px; height:100px; transform-origin:top center; transform:rotate(-55deg); transition:transform .18s ease-out;}
+.hammer-tool .handle{width:14px; height:78px; margin:0 auto; border-radius:6px; background:linear-gradient(90deg,#7a5230,#a9764a);}
+.hammer-tool .head{width:52px; height:24px; margin-top:-4px; margin-right:-19px; border-radius:6px; background:linear-gradient(180deg,#d3dade,#7d8a90); box-shadow:0 4px 10px rgba(0,0,0,.4);}
+.hammer-tool.swing{transform:rotate(6deg);}
+
+.metal-cube{
+  position:absolute; bottom:32px; left:50%; width:70px; height:70px;
+  transform-style:preserve-3d; transform:translateX(-50%); transform-origin:bottom center;
+  transition:transform .35s cubic-bezier(.3,.7,.4,1);
+}
+.metal-cube .face{position:absolute; width:70px; height:70px; opacity:.96;}
+.metal-cube.material-metal .face{background:linear-gradient(160deg,var(--copper-light),var(--copper) 60%,#7a4a1d);}
+.metal-cube.material-nonmetal .face{background:linear-gradient(160deg,#cdeef5,var(--glass-blue) 60%,#3f8fa0); opacity:.55;}
+.metal-cube .f-top{transform:rotateX(90deg) translateZ(35px);}
+.metal-cube .f-bottom{transform:rotateX(-90deg) translateZ(35px); filter:brightness(.6);}
+.metal-cube .f-front{transform:translateZ(35px);}
+.metal-cube .f-back{transform:rotateY(180deg) translateZ(35px); filter:brightness(.7);}
+.metal-cube .f-right{transform:rotateY(90deg) translateZ(35px); filter:brightness(.85);}
+.metal-cube .f-left{transform:rotateY(-90deg) translateZ(35px); filter:brightness(.85);}
+.metal-cube.shatter{animation:shatterShake .35s ease;}
+@keyframes shatterShake{0%,100%{transform:translateX(-50%) rotate(0);}25%{transform:translateX(-52%) rotate(-4deg);}75%{transform:translateX(-48%) rotate(4deg);}}
+.metal-cube.hidden-cube{opacity:0; transition:opacity .15s;}
+.shards{position:absolute; bottom:60px; left:50%; width:6px; height:6px; pointer-events:none;}
+.shards i{position:absolute; width:12px; height:12px; background:linear-gradient(160deg,#cdeef5,var(--glass-blue)); opacity:0; clip-path:polygon(50% 0,100% 100%,0 100%);}
+.shards.go i{animation:shardFly .6s ease-out forwards;}
+.shards i:nth-child(1){animation-delay:0s; --sx:-40px; --sy:-30px; --sr:60deg;}
+.shards i:nth-child(2){animation-delay:.02s; --sx:36px; --sy:-40px; --sr:-40deg;}
+.shards i:nth-child(3){animation-delay:.01s; --sx:-20px; --sy:20px; --sr:120deg;}
+.shards i:nth-child(4){animation-delay:.03s; --sx:24px; --sy:24px; --sr:-100deg;}
+.shards i:nth-child(5){animation-delay:.015s; --sx:0px; --sy:-46px; --sr:30deg;}
+@keyframes shardFly{0%{opacity:1; transform:translate(0,0) rotate(0);}100%{opacity:0; transform:translate(var(--sx),var(--sy)) rotate(var(--sr));}}
+
+/* Pull / draw test */
+.pull-rig{position:relative; width:100%; height:200px; display:flex; align-items:center; justify-content:center;}
+.clamp{position:absolute; right:26px; top:50%; transform:translateY(-50%); width:26px; height:60px; background:linear-gradient(180deg,#8a929a,#5c666b); border-radius:6px; box-shadow:0 8px 14px rgba(0,0,0,.4); z-index:3;}
+.wire-el{
+  position:absolute; right:44px; top:50%; transform:translateY(-50%); border-radius:20px;
+  transition:none; box-shadow:0 6px 14px rgba(0,0,0,.35);
+}
+.wire-el.material-metal{background:linear-gradient(180deg,var(--copper-light),var(--copper));}
+.wire-el.material-nonmetal{background:linear-gradient(180deg,#d7f2f7,var(--glass-blue)); box-shadow:0 6px 14px rgba(0,0,0,.2);}
+.wire-piece-b{position:absolute; top:50%; transform:translateY(-50%); border-radius:20px; display:none;}
+.grip{
+  position:absolute; top:50%; width:34px; height:34px; border-radius:8px; transform:translateY(-50%);
+  background:linear-gradient(160deg,#efe4cd,#c7b78f); box-shadow:0 8px 16px rgba(0,0,0,.4); z-index:4;
+  display:flex; align-items:center; justify-content:center; font-size:.7rem; font-weight:800; color:#4a3c22;
+  cursor:grab; touch-action:none; user-select:none;
+}
+.grip:active{cursor:grabbing;}
+
+/* Bend test */
+.bend-rig{position:relative; width:100%; height:220px; display:flex; align-items:center; justify-content:center;}
+.vice{position:absolute; right:30px; top:50%; transform:translateY(-50%); width:34px; height:70px; background:linear-gradient(180deg,#8a929a,#4b545a); border-radius:6px; box-shadow:0 8px 14px rgba(0,0,0,.4); z-index:3;}
+.rod-fixed{position:absolute; right:56px; top:50%; transform:translateY(-50%); width:70px; height:16px; border-radius:8px; z-index:2;}
+.rod-fixed.material-metal{background:linear-gradient(180deg,var(--copper-light),var(--copper));}
+.rod-fixed.material-nonmetal{background:linear-gradient(180deg,#d7f2f7,var(--glass-blue));}
+.rod-free{position:absolute; top:50%; width:120px; height:16px; border-radius:8px; transform-origin:right center; z-index:2; transition:none;}
+.rod-free.material-metal{background:linear-gradient(180deg,var(--copper-light),var(--copper));}
+.rod-free.material-nonmetal{background:linear-gradient(180deg,#d7f2f7,var(--glass-blue));}
+.rod-handle{
+  position:absolute; top:50%; width:26px; height:26px; border-radius:50%;
+  background:linear-gradient(160deg,#efe4cd,#c7b78f); box-shadow:0 6px 12px rgba(0,0,0,.4); z-index:4;
+  cursor:grab; touch-action:none; display:flex; align-items:center; justify-content:center; font-size:.65rem; user-select:none;
+}
+.rod-handle:active{cursor:grabbing;}
+.crack-mark{position:absolute; width:20px; height:26px; opacity:0; z-index:5;}
+.crack-mark.show{opacity:1;}
+
+/* Results table */
+.results-wrap{margin-top:30px;}
+table.results-table{width:100%; border-collapse:collapse; background:var(--charcoal-soft); border-radius:var(--radius-md); overflow:hidden;}
+table.results-table th{background:var(--iron-black-2); color:var(--ember-bright); font-family:var(--font-display); padding:14px; font-size:.88rem; text-align:right;}
+table.results-table td{padding:13px 14px; border-top:1px solid rgba(255,255,255,.06); font-size:.9rem; color:var(--parchment);}
+table.results-table tr:hover td{background:rgba(226,97,28,.05);}
+.tag{display:inline-flex; align-items:center; gap:6px; padding:4px 10px; border-radius:99px; font-size:.78rem; font-weight:700;}
+.tag.good{background:rgba(76,140,90,.18); color:#8fdba0;}
+.tag.bad{background:rgba(181,67,47,.18); color:#f0a08c;}
+.empty-row td{text-align:center; color:var(--steel); padding:26px; font-style:normal;}
+
+/* conclusion / why box */
+.why-grid{display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:26px;}
+@media (max-width:820px){.why-grid{grid-template-columns:1fr;}}
+.why-card{background:var(--charcoal-soft); border:1px solid rgba(255,255,255,.07); border-radius:var(--radius-md); padding:22px;}
+.why-card h4{color:var(--ember-bright); margin-bottom:10px; font-size:1rem;}
+.lattice-demo{height:110px; position:relative; border-radius:8px; overflow:hidden; margin-top:12px; background:var(--iron-black-2);}
+.lattice-metal .layer{position:absolute; display:flex; gap:6px; left:10px;}
+.lattice-metal .ion{width:14px; height:14px; border-radius:50%; background:var(--copper-light);}
+.lattice-metal .layer1{top:14px; animation:slideLayer 3s ease-in-out infinite;}
+.lattice-metal .layer2{top:38px;}
+.lattice-metal .layer3{top:62px; animation:slideLayer 3s ease-in-out infinite reverse;}
+.lattice-metal .electron{position:absolute; width:5px; height:5px; border-radius:50%; background:#ffe6a8; opacity:.9; animation:electronMove 2.4s linear infinite;}
+@keyframes slideLayer{0%,100%{transform:translateX(0);}50%{transform:translateX(14px);}}
+@keyframes electronMove{0%{transform:translate(0,0);}25%{transform:translate(30px,10px);}50%{transform:translate(60px,-6px);}75%{transform:translate(90px,8px);}100%{transform:translate(0,0);}}
+.lattice-nonmetal{display:flex; align-items:center; justify-content:center; gap:8px; flex-wrap:wrap; padding:16px;}
+.lattice-nonmetal .node{width:14px; height:14px; border-radius:3px; background:var(--glass-blue);}
+.lattice-nonmetal.cracked .node:nth-child(5){opacity:0; transform:scale(0);}
+
+/* Reflection box */
+.reflect-box{margin-top:30px; background:var(--charcoal-soft); border-radius:var(--radius-md); padding:24px; border:1px solid rgba(255,255,255,.07);}
+.reflect-box textarea{
+  width:100%; min-height:90px; margin-top:12px; background:var(--iron-black-2); border:1px solid rgba(255,255,255,.1);
+  border-radius:10px; color:var(--parchment); font-family:var(--font-body); font-size:.95rem; padding:14px; resize:vertical;
+}
+.reveal-panel{display:none; margin-top:16px; padding:16px; border-radius:10px; background:rgba(209,161,58,.1); border:1px solid rgba(209,161,58,.35); color:#f0d998; font-size:.92rem;}
+.reveal-panel.show{display:block; animation:fadeIn .4s ease;}
+
+/* Quiz */
+.quiz-card{background:linear-gradient(160deg,var(--charcoal-soft),var(--iron-black-2)); border-radius:var(--radius-lg); padding:30px; border:1px solid rgba(255,255,255,.07);}
+.quiz-q{display:none;}
+.quiz-q.active{display:block; animation:fadeIn .35s ease;}
+.quiz-progress{display:flex; gap:6px; margin-bottom:22px;}
+.quiz-progress span{height:5px; flex:1; background:rgba(255,255,255,.1); border-radius:4px;}
+.quiz-progress span.done{background:var(--ember);}
+.quiz-q h4{font-size:1.1rem; margin-bottom:18px; color:var(--parchment);}
+.quiz-options{display:grid; gap:10px;}
+.quiz-opt{
+  text-align:right; padding:13px 16px; border-radius:10px; border:1px solid rgba(255,255,255,.12);
+  background:var(--iron-black-2); color:var(--parchment); font-size:.92rem; transition:.15s;
+}
+.quiz-opt:hover{border-color:var(--ember);}
+.quiz-opt.correct{background:rgba(76,140,90,.2); border-color:var(--good); color:#bdeecb;}
+.quiz-opt.wrong{background:rgba(181,67,47,.2); border-color:var(--bad); color:#f2bcae;}
+.quiz-feedback{margin-top:14px; font-size:.88rem; color:var(--steel); min-height:20px;}
+.quiz-result{text-align:center; padding:20px 0;}
+.quiz-result .score{font-family:var(--font-display); font-size:2.6rem; font-weight:900; color:var(--gold);}
+
+/* footer */
+footer{padding:36px 0; text-align:center; color:var(--steel-dark); font-size:.85rem; border-top:1px solid rgba(255,255,255,.06);}
+footer strong{color:var(--steel);}
+
+@media (max-width:600px){
+  .lab-card{padding:18px;}
+  section{padding:46px 0;}
+}
+
+  /* ══ RESPONSIVE MOBILE & TABLET ══ */
+  @media (max-width: 768px) {
+    body { padding: 8px !important; font-size: 15px !important; overflow-x: hidden !important; }
+    .container, [class*="container"], [class*="wrapper"] { padding: 8px !important; max-width: 100% !important; }
+    canvas { width: 100% !important; height: auto !important; display: block !important; touch-action: none; max-width: 100% !important; }
+    svg { max-width: 100% !important; height: auto !important; }
+    h1 { font-size: clamp(18px,5vw,32px) !important; }
+    h2 { font-size: clamp(15px,4vw,26px) !important; }
+    h3 { font-size: clamp(13px,3.5vw,20px) !important; }
+    [class*="grid"] { grid-template-columns: 1fr !important; }
+    [class*="flex"] { flex-wrap: wrap !important; }
+    input[type="range"] { width: 100% !important; min-height: 36px; }
+    input[type="number"], input[type="text"], select, textarea {
+      font-size: 16px !important; width: 100% !important; box-sizing: border-box; padding: 8px !important; }
+    button { min-height: 44px !important; font-size: 14px !important; touch-action: manipulation; padding: 10px 14px !important; }
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 13px !important; }
+    th, td { padding: 6px 4px !important; }
+    header { padding: 10px 12px !important; }
+    .controls, [class*="controls"] { flex-direction: column !important; gap: 8px !important; }
+    .lab-window, [class*="lab-window"] { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+  }
+  @media (max-width: 480px) {
+    body { padding: 4px !important; }
+    button { width: 100% !important; }
+  }
+  /* ══ END RESPONSIVE ══ */
+</style>
+</head>
+<body>
+<style>
+.vlab-back{position:fixed;top:10px;left:10px;z-index:99999;
+background:rgba(10,22,40,0.93);border:1px solid rgba(0,200,150,0.4);
+border-radius:22px;padding:8px 16px;display:inline-flex;align-items:center;gap:7px;
+color:#00C896;font-family:Tajawal,Cairo,Arial,sans-serif;font-size:13px;font-weight:700;
+text-decoration:none;backdrop-filter:blur(8px);box-shadow:0 4px 18px rgba(0,0,0,0.3);
+transition:background 0.2s;}
+.vlab-back:hover{background:rgba(0,200,150,0.18);}
+</style>
+<a href="../grade6.html" class="vlab-back">&#8594; العودة للصف</a>
+
+
+<!-- ===================== HERO ===================== -->
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">🔨 العلوم والحياة · الصف السادس · فلسطين</span>
+      <h1>قابلية العناصر للطرق<br>و<span>السحب</span> و<span>الثني</span></h1>
+      <p class="hero-desc">لماذا يتحوّل النحاس إلى أسلاك رفيعة، ويتشكّل الألمنيوم إلى صفائح، بينما ينكسر الزجاج بضربة واحدة؟ في هذا الدرس ستدخل ورشة افتراضية ثلاثية الأبعاد وتجري التجربة بنفسك لتكتشف الإجابة.</p>
+      <div class="hero-badges">
+        <span class="badge">⚒️ الطرق (Malleability)</span>
+        <span class="badge">🧵 السحب (Ductility)</span>
+        <span class="badge">↪️ الثني (Flexibility)</span>
+      </div>
+      <a href="#lab" class="hero-cta">ادخل المختبر الافتراضي ⟵</a>
+    </div>
+    <div class="forge-scene">
+      <div class="forge-stage">
+        <div class="ember-block"></div>
+        <div class="anvil-top"></div>
+        <div class="anvil-body"></div>
+        <div class="hero-hammer"><div class="handle"></div><div class="head"></div></div>
+        <div class="hero-sparks"><i></i><i></i><i></i><i></i></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="divider-rivets"></div>
+
+<!-- ===================== DEFINITIONS ===================== -->
+<section class="light-section" id="intro">
+  <div class="wrap">
+    <span class="eyebrow" style="color:var(--copper); border-color:rgba(184,112,46,.35); background:rgba(184,112,46,.1);">📖 المفاهيم الأساسية</span>
+    <h2 class="section-title">ثلاث خواص فيزيائية للفلزّات</h2>
+    <p class="section-sub">اضغط على كل بطاقة لقلبها ومعرفة التعريف العلمي ومثال من حياتنا اليومية.</p>
+
+    <div class="def-grid">
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-inner">
+          <div class="flip-face flip-front">
+            <div class="icon-hammer"><div class="h-handle"></div><div class="h-head"></div></div>
+            <h3>الطَّرْق (Malleability)</h3>
+            <span class="tap-hint">اضغط لعرض التعريف ⟳</span>
+          </div>
+          <div class="flip-face flip-back">
+            <h4>ما هو الطرق؟</h4>
+            <p>قابلية المادة للتشكّل عند طرقها أو الضغط عليها، بحيث تتحوّل إلى صفائح رقيقة دون أن تنكسر أو تتشقق.</p>
+            <p class="example">مثال: طرق الذهب لصناعة صفائح زينة رقيقة جدًا.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-inner">
+          <div class="flip-face flip-front">
+            <div class="icon-wire">
+              <svg viewBox="0 0 60 60"><path d="M6 30 Q 20 10, 30 30 T 54 30" fill="none" stroke="#b8702e" stroke-width="4" stroke-linecap="round"/><circle cx="6" cy="30" r="4" fill="#8a5a34"/><circle cx="54" cy="30" r="4" fill="#8a5a34"/></svg>
+            </div>
+            <h3>السَّحْب (Ductility)</h3>
+            <span class="tap-hint">اضغط لعرض التعريف ⟳</span>
+          </div>
+          <div class="flip-face flip-back">
+            <h4>ما هو السحب؟</h4>
+            <p>قابلية المادة للتمدّد وتحوّلها إلى أسلاك رفيعة وطويلة عند سحبها من طرفيها دون أن تنقطع.</p>
+            <p class="example">مثال: أسلاك النحاس المستخدمة في التمديدات الكهربائية.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-inner">
+          <div class="flip-face flip-front">
+            <div class="icon-bend">
+              <svg viewBox="0 0 60 60"><path d="M8 46 C 8 20, 30 20, 30 30 C 30 40, 52 40, 52 14" fill="none" stroke="#b8702e" stroke-width="5" stroke-linecap="round"/></svg>
+            </div>
+            <h3>الثَّنْي (Bendability)</h3>
+            <span class="tap-hint">اضغط لعرض التعريف ⟳</span>
+          </div>
+          <div class="flip-face flip-back">
+            <h4>ما هو الثني؟</h4>
+            <p>قابلية المادة للانحناء والتقوّس تحت تأثير قوة مؤثرة، دون أن تنكسر أو تفقد تماسكها.</p>
+            <p class="example">مثال: انحناء قضيب حديد التسليح دون أن ينكسر.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider-rivets"></div>
+
+<!-- ===================== VIRTUAL LAB ===================== -->
+<section class="dark-section" id="lab">
+  <div class="wrap">
+    <span class="eyebrow">🧪 مختبر افتراضي ثلاثي الأبعاد</span>
+    <h2 class="section-title">جرّب بنفسك: هل يتشكّل أم ينكسر؟</h2>
+    <p class="section-sub">اختر المادة (فلز أو لافلز)، ثم نفّذ التجربة بيدك عبر الضغط والسحب، وسجّل النتيجة في جدول الاستنتاجات أسفل الصفحة.</p>
+
+    <div class="lab-tabs">
+      <button class="lab-tab active" data-tab="hammer" onclick="switchTab('hammer')">⚒️ تجربة الطرق</button>
+      <button class="lab-tab" data-tab="pull" onclick="switchTab('pull')">🧵 تجربة السحب</button>
+      <button class="lab-tab" data-tab="bend" onclick="switchTab('bend')">↪️ تجربة الثني</button>
+    </div>
+
+    <!-- ---------- HAMMER PANEL ---------- -->
+    <div class="lab-panel active" id="panel-hammer">
+      <div class="lab-card">
+        <div class="lab-grid">
+          <div>
+            <div class="stage-box">
+              <div class="hammer-rig">
+                <div class="hammer-tool" id="hammerTool"><div class="handle"></div><div class="head"></div></div>
+                <div class="metal-cube material-metal" id="hammerCube">
+                  <div class="face f-front"></div><div class="face f-back"></div>
+                  <div class="face f-top"></div><div class="face f-bottom"></div>
+                  <div class="face f-left"></div><div class="face f-right"></div>
+                </div>
+                <div class="shards" id="hammerShards"><i></i><i></i><i></i><i></i><i></i></div>
+                <div class="anvil-mini"></div>
+              </div>
+              <div class="bench-top"></div>
+            </div>
+            <div class="readout">
+              <div class="stat" id="hammerHitsStat">0<small>عدد الضربات</small></div>
+              <div class="stat" id="hammerShapeStat">لم يتغيّر<small>حالة الشكل</small></div>
+            </div>
+            <div class="lab-controls">
+              <button class="btn btn-primary" onclick="hammerStrike()">اضرب بالمطرقة 🔨</button>
+              <button class="btn btn-ghost" onclick="hammerReset()">إعادة ضبط ↺</button>
+              <button class="btn btn-gold" id="hammerRecordBtn" onclick="recordResult('hammer')" disabled>سجّل النتيجة في الجدول ✔</button>
+            </div>
+            <div class="lab-note" id="hammerNote"></div>
+          </div>
+          <div>
+            <div class="material-toggle">
+              <button class="mat-btn active" data-mat="metal" onclick="setMaterial('hammer','metal')"><span class="dot"></span> فلز (نحاس)</button>
+              <button class="mat-btn" data-mat="nonmetal" onclick="setMaterial('hammer','nonmetal')"><span class="dot"></span> لافلز (زجاج)</button>
+            </div>
+            <div class="lab-instructions">
+              <strong>خطوات التجربة:</strong>
+              <ol>
+                <li>اختر نوع المادة الموضوعة على السّندان.</li>
+                <li>اضغط زر «اضرب بالمطرقة» عدّة مرات.</li>
+                <li>راقب: هل تتغيّر السماكة تدريجيًا، أم تتحطّم المادة؟</li>
+                <li>سجّل ملاحظتك في جدول النتائج.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ---------- PULL PANEL ---------- -->
+    <div class="lab-panel" id="panel-pull">
+      <div class="lab-card">
+        <div class="lab-grid">
+          <div>
+            <div class="stage-box">
+              <div class="pull-rig">
+                <div class="clamp"></div>
+                <div class="wire-el material-metal" id="pullWire" style="width:90px; height:20px;"></div>
+                <div class="wire-piece-b material-metal" id="pullWireB" style="width:30px; height:20px;"></div>
+                <div class="grip" id="pullGrip" style="right:calc(50% - 100px);">⇤</div>
+              </div>
+              <div class="bench-top"></div>
+            </div>
+            <div class="readout">
+              <div class="stat" id="pullLengthStat">100%<small>الطول النسبي</small></div>
+              <div class="stat" id="pullThickStat">100%<small>السماكة النسبية</small></div>
+            </div>
+            <div class="lab-controls">
+              <button class="btn btn-ghost" onclick="pullReset()">إعادة ضبط ↺</button>
+              <button class="btn btn-gold" id="pullRecordBtn" onclick="recordResult('pull')" disabled>سجّل النتيجة في الجدول ✔</button>
+            </div>
+            <div class="lab-note" id="pullNote"></div>
+          </div>
+          <div>
+            <div class="material-toggle">
+              <button class="mat-btn active" data-mat="metal" onclick="setMaterial('pull','metal')"><span class="dot"></span> فلز (نحاس)</button>
+              <button class="mat-btn" data-mat="nonmetal" onclick="setMaterial('pull','nonmetal')"><span class="dot"></span> لافلز (زجاج)</button>
+            </div>
+            <div class="lab-instructions">
+              <strong>خطوات التجربة:</strong>
+              <ol>
+                <li>اختر نوع المادة.</li>
+                <li>اسحب المقبض ⇤ بإصبعك أو الفأرة إلى جهة اليسار ببطء.</li>
+                <li>راقب: هل يتمدّد السلك ويصبح أرفع، أم ينقطع بسرعة؟</li>
+                <li>سجّل ملاحظتك في جدول النتائج.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ---------- BEND PANEL ---------- -->
+    <div class="lab-panel" id="panel-bend">
+      <div class="lab-card">
+        <div class="lab-grid">
+          <div>
+            <div class="stage-box">
+              <div class="bend-rig">
+                <div class="vice"></div>
+                <div class="rod-fixed material-metal"></div>
+                <div class="rod-free material-metal" id="bendRod" style="right:calc(50% - 8px);"></div>
+                <div class="rod-handle" id="bendHandle" style="right:calc(50% - 122px);">⇕</div>
+                <svg class="crack-mark" id="bendCrack" viewBox="0 0 20 26" style="right:calc(50% - 30px);"><path d="M10 0 L4 10 L12 12 L2 26" fill="none" stroke="#f0a08c" stroke-width="2"/></svg>
+              </div>
+              <div class="bench-top"></div>
+            </div>
+            <div class="readout">
+              <div class="stat" id="bendAngleStat">0°<small>زاوية الانحناء</small></div>
+              <div class="stat" id="bendStateStat">مستقيم<small>حالة القضيب</small></div>
+            </div>
+            <div class="lab-controls">
+              <button class="btn btn-ghost" onclick="bendReset()">إعادة ضبط ↺</button>
+              <button class="btn btn-gold" id="bendRecordBtn" onclick="recordResult('bend')" disabled>سجّل النتيجة في الجدول ✔</button>
+            </div>
+            <div class="lab-note" id="bendNote"></div>
+          </div>
+          <div>
+            <div class="material-toggle">
+              <button class="mat-btn active" data-mat="metal" onclick="setMaterial('bend','metal')"><span class="dot"></span> فلز (نحاس)</button>
+              <button class="mat-btn" data-mat="nonmetal" onclick="setMaterial('bend','nonmetal')"><span class="dot"></span> لافلز (زجاج)</button>
+            </div>
+            <div class="lab-instructions">
+              <strong>خطوات التجربة:</strong>
+              <ol>
+                <li>اختر نوع المادة.</li>
+                <li>اسحب المقبض ⇕ إلى الأسفل أو الأعلى لثني القضيب.</li>
+                <li>راقب: هل يبقى القضيب منحنيًا سليمًا، أم ينكسر إلى جزأين؟</li>
+                <li>سجّل ملاحظتك في جدول النتائج.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider-rivets"></div>
+
+<!-- ===================== RESULTS & CONCLUSIONS ===================== -->
+<section class="light-section" id="results">
+  <div class="wrap">
+    <span class="eyebrow" style="color:var(--copper); border-color:rgba(184,112,46,.35); background:rgba(184,112,46,.1);">📊 التوصّل إلى الاستنتاج</span>
+    <h2 class="section-title">جدول نتائج المختبر</h2>
+    <p class="section-sub">كل تجربة تُسجّلها في المختبر أعلاه ستظهر هنا تلقائيًا لتساعدك على المقارنة والاستنتاج.</p>
+
+    <div class="results-wrap">
+      <table class="results-table">
+        <thead>
+          <tr><th>التجربة</th><th>المادة المختبَرة</th><th>ماذا حدث؟</th><th>هل تتشكّل دون كسر؟</th></tr>
+        </thead>
+        <tbody id="resultsBody">
+          <tr class="empty-row" id="emptyRow"><td colspan="4">لم تُسجَّل أي نتيجة بعد — عد إلى المختبر أعلاه وابدأ التجربة.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="reflect-box">
+      <strong>🖊️ اكتب استنتاجك الخاص:</strong>
+      <p style="margin-top:6px; color:#6b5f4d; font-size:.9rem;">بعد تجربة الفلز واللافلز في الاختبارات الثلاثة، ما الفرق الذي لاحظته بينهما؟</p>
+      <textarea id="studentConclusion" placeholder="اكتب هنا ما توصّلت إليه..."></textarea>
+      <div class="lab-controls" style="margin-top:14px;">
+        <button class="btn btn-primary" onclick="revealConclusion()">إظهار الاستنتاج العلمي 🔎</button>
+      </div>
+      <div class="reveal-panel" id="revealPanel">
+        <strong>الاستنتاج العلمي:</strong> الفلزّات بشكل عام قابلة <strong>للطرق والسحب والثني</strong>، أي يمكن تشكيلها إلى صفائح أو أسلاك أو ثنيها دون أن تنكسر. أمّا اللافلزّات (كالزجاج) فهي غالبًا <strong>هشّة (قابلة للكسر)</strong>؛ تنكسر بسهولة عند طرقها أو سحبها أو ثنيها، ولا تتشكّل مثل الفلزّات.
+      </div>
+    </div>
+
+    <div class="why-grid">
+      <div class="why-card">
+        <h4>لماذا تتشكّل الفلزّات ولا تنكسر؟</h4>
+        <p style="color:#6b5f4d; font-size:.92rem;">تترتّب دقائق الفلز في طبقات منتظمة تستطيع الانزلاق فوق بعضها بسهولة عند التأثير عليها بقوة، دون أن ينفصل تماسكها الداخلي — لذلك يتغيّر شكل الفلز فقط.</p>
+        <div class="lattice-demo lattice-metal">
+          <div class="layer layer1"><div class="ion"></div><div class="ion"></div><div class="ion"></div><div class="ion"></div></div>
+          <div class="layer layer2"><div class="ion"></div><div class="ion"></div><div class="ion"></div><div class="ion"></div></div>
+          <div class="layer layer3"><div class="ion"></div><div class="ion"></div><div class="ion"></div><div class="ion"></div></div>
+          <div class="electron" style="top:20px;"></div>
+          <div class="electron" style="top:44px; animation-delay:.8s;"></div>
+          <div class="electron" style="top:68px; animation-delay:1.5s;"></div>
+        </div>
+      </div>
+      <div class="why-card">
+        <h4>لماذا تنكسر اللافلزّات بسهولة؟</h4>
+        <p style="color:#6b5f4d; font-size:.92rem;">دقائق اللافلز مرتبطة بروابط قوية وجامدة لا تسمح لها بالانزلاق فوق بعضها، فعند التأثير عليها بقوة تتفكّك الروابط دفعة واحدة فتنكسر المادة بدلًا من أن تتشكّل.</p>
+        <div class="lattice-demo">
+          <div class="lattice-nonmetal cracked">
+            <div class="node"></div><div class="node"></div><div class="node"></div><div class="node"></div>
+            <div class="node"></div><div class="node"></div><div class="node"></div><div class="node"></div>
+            <div class="node"></div><div class="node"></div><div class="node"></div><div class="node"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider-rivets"></div>
+
+<!-- ===================== QUIZ ===================== -->
+<section class="dark-section" id="quiz">
+  <div class="wrap">
+    <span class="eyebrow">✅ تحقق من فهمك</span>
+    <h2 class="section-title">اختبار سريع</h2>
+    <p class="section-sub">خمسة أسئلة لتتأكد من استيعابك للدرس.</p>
+
+    <div class="quiz-card">
+      <div class="quiz-progress" id="quizProgress"></div>
+
+      <div class="quiz-q active" data-q="0">
+        <h4>1) ما اسم قابلية المادة للتحوّل إلى صفائح رقيقة عند طرقها؟</h4>
+        <div class="quiz-options">
+          <button class="quiz-opt" data-correct="false">السحب</button>
+          <button class="quiz-opt" data-correct="true">الطرق</button>
+          <button class="quiz-opt" data-correct="false">الثني</button>
+          <button class="quiz-opt" data-correct="false">الانصهار</button>
+        </div>
+        <div class="quiz-feedback"></div>
+      </div>
+
+      <div class="quiz-q" data-q="1">
+        <h4>2) الأسلاك الكهربائية النحاسية تدلّ على أنّ النحاس مادة قابلة لـ...</h4>
+        <div class="quiz-options">
+          <button class="quiz-opt" data-correct="false">الكسر</button>
+          <button class="quiz-opt" data-correct="true">السحب</button>
+          <button class="quiz-opt" data-correct="false">التبخّر</button>
+          <button class="quiz-opt" data-correct="false">الذوبان فقط</button>
+        </div>
+        <div class="quiz-feedback"></div>
+      </div>
+
+      <div class="quiz-q" data-q="2">
+        <h4>3) ماذا يحدث للّافلز (كالزجاج) عند طرقه أو ثنيه؟</h4>
+        <div class="quiz-options">
+          <button class="quiz-opt" data-correct="false">يتحوّل إلى صفيحة رقيقة</button>
+          <button class="quiz-opt" data-correct="false">يتحوّل إلى سلك</button>
+          <button class="quiz-opt" data-correct="true">ينكسر أو يتحطّم</button>
+          <button class="quiz-opt" data-correct="false">لا يتأثر إطلاقًا</button>
+        </div>
+        <div class="quiz-feedback"></div>
+      </div>
+
+      <div class="quiz-q" data-q="3">
+        <h4>4) السبب العلمي في قابلية الفلزّات للتشكّل هو:</h4>
+        <div class="quiz-options">
+          <button class="quiz-opt" data-correct="true">قدرة طبقات الدقائق على الانزلاق فوق بعضها دون انفصال</button>
+          <button class="quiz-opt" data-correct="false">أنّ الفلزّات خفيفة الوزن دائمًا</button>
+          <button class="quiz-opt" data-correct="false">أنّ الفلزّات شفّافة</button>
+          <button class="quiz-opt" data-correct="false">أنّ الفلزّات لا تتأثر بالحرارة</button>
+        </div>
+        <div class="quiz-feedback"></div>
+      </div>
+
+      <div class="quiz-q" data-q="4">
+        <h4>5) قضيب حديد التسليح الذي ينحني في موقع البناء دون أن ينكسر يوضّح خاصية:</h4>
+        <div class="quiz-options">
+          <button class="quiz-opt" data-correct="false">السحب</button>
+          <button class="quiz-opt" data-correct="false">الطرق</button>
+          <button class="quiz-opt" data-correct="true">الثني</button>
+          <button class="quiz-opt" data-correct="false">التبلور</button>
+        </div>
+        <div class="quiz-feedback"></div>
+      </div>
+
+      <div class="quiz-q" id="quizResultBox" data-q="final">
+        <div class="quiz-result">
+          <div class="score" id="quizScoreText">0 / 5</div>
+          <p style="color:var(--steel); margin-top:8px;">أحسنت! راجع البطاقات أعلاه إن أردت تثبيت أي مفهوم.</p>
+          <button class="btn btn-primary" style="margin-top:14px;" onclick="restartQuiz()">أعد المحاولة ↺</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p><strong>مادة العلوم والحياة</strong> — الصف السادس الأساسي — فلسطين · درس: قابلية العناصر للطرق والسحب والثني</p>
+    <p>مختبر افتراضي تفاعلي ثلاثي الأبعاد — يعمل على الحاسوب والهاتف</p>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   الحالة العامة state
+   ============================================================ */
+const state = {
+  hammer:{material:'metal', hits:0, done:false, broken:false},
+  pull:{material:'metal', dragging:false, startX:0, stretch:0, done:false, broken:false, baseWidth:90},
+  bend:{material:'metal', dragging:false, startY:0, angle:0, done:false, broken:false}
+};
+const resultsData = [];
+
+/* ============================================================
+   التبويبات
+   ============================================================ */
+function switchTab(tab){
+  document.querySelectorAll('.lab-tab').forEach(function(b){ b.classList.toggle('active', b.dataset.tab===tab); });
+  document.querySelectorAll('.lab-panel').forEach(function(p){ p.classList.remove('active'); });
+  document.getElementById('panel-'+tab).classList.add('active');
+}
+
+/* ============================================================
+   اختيار المادة
+   ============================================================ */
+function setMaterial(test, mat){
+  state[test].material = mat;
+  const scope = document.getElementById('panel-'+test);
+  scope.querySelectorAll('.mat-btn').forEach(function(b){ b.classList.toggle('active', b.dataset.mat===mat); });
+  if(test==='hammer') hammerReset();
+  if(test==='pull') pullReset();
+  if(test==='bend') bendReset();
+}
+
+/* ============================================================
+   تجربة الطرق (Malleability)
+   ============================================================ */
+const hammerTool = document.getElementById('hammerTool');
+const hammerCube = document.getElementById('hammerCube');
+const hammerShards = document.getElementById('hammerShards');
+const hammerNote = document.getElementById('hammerNote');
+const hammerRecordBtn = document.getElementById('hammerRecordBtn');
+
+function hammerStrike(){
+  const s = state.hammer;
+  if(s.broken || s.done) return;
+  hammerTool.classList.add('swing');
+  setTimeout(function(){
+    hammerTool.classList.remove('swing');
+    if(s.material==='metal'){
+      s.hits++;
+      const flatten = Math.min(s.hits,3);
+      const scaleY = 1 - flatten*0.16;
+      const scaleXZ = 1 + flatten*0.20;
+      hammerCube.style.transform = 'translateX(-50%) scaleY('+scaleY+') scaleX('+scaleXZ+') scaleZ('+scaleXZ+')';
+      document.getElementById('hammerHitsStat').innerHTML = s.hits+'<small>عدد الضربات</small>';
+      const pct = Math.round((1-flatten*0.16)*100);
+      document.getElementById('hammerShapeStat').innerHTML = pct+'%<small>السماكة التقريبية</small>';
+      if(s.hits>=3){
+        s.done = true;
+        showNote(hammerNote,'ok','✅ لاحظ: لم ينكسر المعدن، بل تسطّح وتشكّل إلى صفيحة رقيقة — هذا يثبت أنّه قابل للطرق.');
+        hammerRecordBtn.disabled = false;
+      } else {
+        showNote(hammerNote,'ok','المعدن بدأ يتسطّح تدريجيًا... جرّب ضربة أخرى.');
+      }
+    } else {
+      s.hits = 1; s.broken = true;
+      hammerCube.classList.add('shatter');
+      setTimeout(function(){
+        hammerCube.classList.add('hidden-cube');
+        hammerShards.classList.add('go');
+      },260);
+      document.getElementById('hammerHitsStat').innerHTML = '1<small>عدد الضربات</small>';
+      document.getElementById('hammerShapeStat').innerHTML = 'تحطّم<small>حالة الشكل</small>';
+      showNote(hammerNote,'bad','❌ لاحظ: تحطّم اللافلز إلى شظايا ولم يتشكّل أبدًا — هذا يثبت أنّه غير قابل للطرق (هشّ).');
+      hammerRecordBtn.disabled = false;
+    }
+  },260);
+}
+function hammerReset(){
+  const s = state.hammer;
+  s.hits=0; s.done=false; s.broken=false;
+  hammerCube.className = 'metal-cube material-'+s.material;
+  hammerCube.style.transform = 'translateX(-50%) scaleY(1) scaleX(1) scaleZ(1)';
+  hammerShards.classList.remove('go');
+  document.getElementById('hammerHitsStat').innerHTML = '0<small>عدد الضربات</small>';
+  document.getElementById('hammerShapeStat').innerHTML = 'لم يتغيّر<small>حالة الشكل</small>';
+  hideNote(hammerNote);
+  hammerRecordBtn.disabled = true;
+}
+
+/* ============================================================
+   تجربة السحب (Ductility)
+   ============================================================ */
+const pullWire = document.getElementById('pullWire');
+const pullWireB = document.getElementById('pullWireB');
+const pullGrip = document.getElementById('pullGrip');
+const pullNote = document.getElementById('pullNote');
+const pullRecordBtn = document.getElementById('pullRecordBtn');
+
+pullGrip.addEventListener('pointerdown', function(e){
+  const s = state.pull;
+  if(s.done || s.broken) return;
+  s.dragging = true; s.startX = e.clientX;
+  pullGrip.setPointerCapture(e.pointerId);
+});
+pullGrip.addEventListener('pointermove', function(e){
+  const s = state.pull;
+  if(!s.dragging) return;
+  let dx = e.clientX - s.startX;
+  if(dx < 0) dx = 0;
+  const maxStretch = s.material==='metal' ? 190 : 32;
+  if(dx > maxStretch) dx = maxStretch;
+  s.stretch = dx;
+  updatePullVisual();
+  if(dx >= maxStretch){
+    s.dragging = false;
+    if(s.material==='metal'){
+      s.done = true;
+      showNote(pullNote,'ok','✅ لاحظ: تمدّد المعدن وأصبح سلكًا رفيعًا وطويلًا دون أن ينقطع — هذا يثبت أنّه قابل للسحب.');
+    } else {
+      s.broken = true;
+      breakWire();
+      showNote(pullNote,'bad','❌ لاحظ: انقطع اللافلز عند شدّه بمسافة بسيطة فقط — هذا يثبت أنّه غير قابل للسحب (هشّ).');
+    }
+    pullRecordBtn.disabled = false;
+  }
+});
+window.addEventListener('pointerup', function(){ state.pull.dragging = false; });
+
+function updatePullVisual(){
+  const s = state.pull;
+  const newWidth = s.baseWidth + s.stretch;
+  const shrink = s.baseWidth / newWidth;
+  const newHeight = Math.max(20*shrink, 6);
+  pullWire.style.width = newWidth+'px';
+  pullWire.style.height = newHeight+'px';
+  pullGrip.style.right = 'calc(50% - '+(100+s.stretch)+'px)';
+  const lenPct = Math.round((newWidth/s.baseWidth)*100);
+  const thickPct = Math.round((newHeight/20)*100);
+  document.getElementById('pullLengthStat').innerHTML = lenPct+'%<small>الطول النسبي</small>';
+  document.getElementById('pullThickStat').innerHTML = thickPct+'%<small>السماكة النسبية</small>';
+}
+function breakWire(){
+  const s = state.pull;
+  pullWire.style.width = (s.baseWidth*0.55)+'px';
+  pullWireB.className = 'wire-piece-b material-'+s.material;
+  pullWireB.style.display = 'block';
+  pullWireB.style.width = (s.baseWidth*0.3)+'px';
+  pullWireB.style.right = 'calc(50% - '+(30+s.stretch)+'px)';
+}
+function pullReset(){
+  const s = state.pull;
+  s.dragging=false; s.stretch=0; s.done=false; s.broken=false;
+  pullWire.className = 'wire-el material-'+s.material;
+  pullWire.style.width = s.baseWidth+'px';
+  pullWire.style.height = '20px';
+  pullWireB.style.display = 'none';
+  pullGrip.style.right = 'calc(50% - 100px)';
+  document.getElementById('pullLengthStat').innerHTML = '100%<small>الطول النسبي</small>';
+  document.getElementById('pullThickStat').innerHTML = '100%<small>السماكة النسبية</small>';
+  hideNote(pullNote);
+  pullRecordBtn.disabled = true;
+}
+
+/* ============================================================
+   تجربة الثني (Bendability)
+   ============================================================ */
+const bendRod = document.getElementById('bendRod');
+const bendHandle = document.getElementById('bendHandle');
+const bendCrack = document.getElementById('bendCrack');
+const bendNote = document.getElementById('bendNote');
+const bendRecordBtn = document.getElementById('bendRecordBtn');
+
+bendHandle.addEventListener('pointerdown', function(e){
+  const s = state.bend;
+  if(s.done || s.broken) return;
+  s.dragging = true; s.startY = e.clientY;
+  bendHandle.setPointerCapture(e.pointerId);
+});
+bendHandle.addEventListener('pointermove', function(e){
+  const s = state.bend;
+  if(!s.dragging) return;
+  let dy = e.clientY - s.startY;
+  const dir = dy >= 0 ? 1 : -1;
+  let angle = Math.min(Math.abs(dy)*0.9, s.material==='metal'?68:16) * dir;
+  s.angle = angle;
+  updateBendVisual();
+  if(Math.abs(angle) >= (s.material==='metal'?68:16)){
+    s.dragging = false;
+    if(s.material==='metal'){
+      s.done = true;
+      showNote(bendNote,'ok','✅ لاحظ: انحنى المعدن وبقي متماسكًا في شكله الجديد دون أن ينكسر — هذا يثبت أنّه قابل للثني.');
+    } else {
+      s.broken = true;
+      bendCrack.classList.add('show');
+      showNote(bendNote,'bad','❌ لاحظ: تكسّر اللافلز إلى جزأين عند محاولة ثنيه بزاوية بسيطة — هذا يثبت أنّه غير قابل للثني (هشّ).');
+    }
+    bendRecordBtn.disabled = false;
+  }
+});
+window.addEventListener('pointerup', function(){ state.bend.dragging = false; });
+
+function updateBendVisual(){
+  const s = state.bend;
+  bendRod.style.transform = 'translateY(-50%) rotate('+(-s.angle)+'deg)';
+  const handleDist = 120;
+  const rad = (-s.angle) * Math.PI/180;
+  const hx = handleDist*Math.cos(rad);
+  const hy = handleDist*Math.sin(rad);
+  bendHandle.style.right = 'calc(50% - '+(2+hx)+'px)';
+  bendHandle.style.top = 'calc(50% - '+(hy)+'px)';
+  document.getElementById('bendAngleStat').innerHTML = Math.round(Math.abs(s.angle))+'°<small>زاوية الانحناء</small>';
+  document.getElementById('bendStateStat').innerHTML = (s.broken? 'مكسور' : (Math.abs(s.angle)>2 ? 'منحنٍ' : 'مستقيم'))+'<small>حالة القضيب</small>';
+}
+function bendReset(){
+  const s = state.bend;
+  s.dragging=false; s.angle=0; s.done=false; s.broken=false;
+  bendRod.className = 'rod-free material-'+s.material;
+  bendRod.style.transform = 'translateY(-50%) rotate(0deg)';
+  bendHandle.style.right = 'calc(50% - 122px)';
+  bendHandle.style.top = '50%';
+  bendCrack.classList.remove('show');
+  document.getElementById('bendAngleStat').innerHTML = '0°<small>زاوية الانحناء</small>';
+  document.getElementById('bendStateStat').innerHTML = 'مستقيم<small>حالة القضيب</small>';
+  hideNote(bendNote);
+  bendRecordBtn.disabled = true;
+}
+
+/* ============================================================
+   أدوات مساعدة للملاحظات
+   ============================================================ */
+function showNote(el, type, text){
+  el.textContent = text;
+  el.className = 'lab-note show ' + type;
+}
+function hideNote(el){
+  el.className = 'lab-note';
+  el.textContent = '';
+}
+
+/* ============================================================
+   جدول النتائج
+   ============================================================ */
+const testLabels = {hammer:'الطرق ⚒️', pull:'السحب 🧵', bend:'الثني ↪️'};
+function recordResult(test){
+  const s = state[test];
+  const matLabel = s.material==='metal' ? 'فلز (نحاس)' : 'لافلز (زجاج)';
+  let outcome = '', works = s.done && !s.broken;
+  if(test==='hammer'){
+    outcome = s.done ? 'تسطّح إلى صفيحة رقيقة دون كسر' : 'تحطّم بضربة واحدة';
+  } else if(test==='pull'){
+    outcome = s.done ? 'تمدّد إلى سلك رفيع دون انقطاع' : 'انقطع بعد شدّ بسيط';
+  } else {
+    outcome = s.done ? 'انحنى وبقي متماسكًا' : 'انكسر إلى جزأين';
+  }
+  const key = test+'-'+s.material;
+  const existing = resultsData.findIndex(function(r){ return r.key===key; });
+  const row = {key:key, test:testLabels[test], material:matLabel, outcome:outcome, works:works};
+  if(existing>=0) resultsData[existing] = row; else resultsData.push(row);
+  renderResults();
+}
+function renderResults(){
+  const body = document.getElementById('resultsBody');
+  const emptyRow = document.getElementById('emptyRow');
+  body.innerHTML = '';
+  if(resultsData.length===0){
+    body.appendChild(emptyRow);
+    return;
+  }
+  resultsData.forEach(function(r){
+    const tr = document.createElement('tr');
+    tr.innerHTML = '<td>'+r.test+'</td><td>'+r.material+'</td><td>'+r.outcome+'</td>'+
+      '<td><span class="tag '+(r.works?'good':'bad')+'">'+(r.works?'نعم ✔':'لا ✘')+'</span></td>';
+    body.appendChild(tr);
+  });
+}
+function revealConclusion(){
+  document.getElementById('revealPanel').classList.add('show');
+}
+
+/* ============================================================
+   الاختبار السريع (Quiz)
+   ============================================================ */
+const quizQuestions = document.querySelectorAll('.quiz-q[data-q]:not(#quizResultBox)');
+const quizProgress = document.getElementById('quizProgress');
+let quizIndex = 0, quizScore = 0;
+
+quizProgress.innerHTML = Array.from(quizQuestions).map(function(){ return '<span></span>'; }).join('');
+const progressDots = quizProgress.querySelectorAll('span');
+
+quizQuestions.forEach(function(q){
+  const opts = q.querySelectorAll('.quiz-opt');
+  opts.forEach(function(opt){
+    opt.addEventListener('click', function(){
+      if(opt.dataset.locked) return;
+      opts.forEach(function(o){ o.dataset.locked = 'true'; });
+      const isCorrect = opt.dataset.correct === 'true';
+      if(isCorrect){
+        opt.classList.add('correct');
+        quizScore++;
+      } else {
+        opt.classList.add('wrong');
+        opts.forEach(function(o){ if(o.dataset.correct==='true') o.classList.add('correct'); });
+      }
+      const fb = q.querySelector('.quiz-feedback');
+      fb.textContent = isCorrect ? 'إجابة صحيحة! 👏' : 'إجابة غير دقيقة، لاحظ التظليل الأخضر للإجابة الصحيحة.';
+      progressDots[quizIndex].classList.add('done');
+      setTimeout(function(){
+        q.classList.remove('active');
+        quizIndex++;
+        if(quizIndex < quizQuestions.length){
+          quizQuestions[quizIndex].classList.add('active');
+        } else {
+          document.getElementById('quizScoreText').textContent = quizScore+' / '+quizQuestions.length;
+          document.getElementById('quizResultBox').classList.add('active');
+        }
+      },1100);
+    });
+  });
+});
+function restartQuiz(){
+  quizIndex = 0; quizScore = 0;
+  document.getElementById('quizResultBox').classList.remove('active');
+  progressDots.forEach(function(d){ d.classList.remove('done'); });
+  quizQuestions.forEach(function(q,i){
+    q.classList.toggle('active', i===0);
+    q.querySelectorAll('.quiz-opt').forEach(function(o){
+      o.classList.remove('correct','wrong');
+      delete o.dataset.locked;
+    });
+    q.querySelector('.quiz-feedback').textContent = '';
+  });
+}
+
+/* init */
+pullReset();
+bendReset();
+</script>
+</body>
+</html>

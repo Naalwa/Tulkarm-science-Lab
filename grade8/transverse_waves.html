@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>الأمواج المستعرضة</title>
+<style>
+  :root{
+    --bg1:#0f172a;
+    --bg2:#1e293b;
+    --accent:#38bdf8;
+    --accent2:#fbbf24;
+    --accent3:#34d399;
+    --card:#1e2a44;
+    --text:#e2e8f0;
+    --muted:#94a3b8;
+    --danger:#f87171;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Tahoma','Segoe UI',Arial,sans-serif;
+    background:linear-gradient(180deg,var(--bg1),var(--bg2) 40%, #0b1224);
+    color:var(--text);
+    direction:rtl;
+    line-height:1.9;
+  }
+  header{
+    text-align:center;
+    padding:28px 16px 18px;
+    background:radial-gradient(circle at 50% -20%, rgba(56,189,248,0.25), transparent 60%);
+  }
+  header h1{
+    margin:0;
+    font-size:clamp(22px,5vw,36px);
+    color:#fff;
+    text-shadow:0 0 18px rgba(56,189,248,.5);
+  }
+  header p{color:var(--muted); margin:8px 0 0; font-size:14px;}
+  nav{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:8px;
+    padding:10px 12px 24px;
+    position:sticky;
+    top:0;
+    background:rgba(15,23,42,0.92);
+    backdrop-filter:blur(6px);
+    z-index:50;
+  }
+  nav button{
+    background:var(--card);
+    color:var(--text);
+    border:1px solid rgba(148,163,184,.25);
+    padding:9px 16px;
+    border-radius:999px;
+    cursor:pointer;
+    font-size:14px;
+    transition:.25s;
+  }
+  nav button:hover, nav button.active{
+    background:var(--accent);
+    color:#04263b;
+    border-color:var(--accent);
+  }
+  main{max-width:980px; margin:0 auto; padding:6px 16px 70px;}
+  section{
+    background:var(--card);
+    border:1px solid rgba(148,163,184,.15);
+    border-radius:18px;
+    padding:22px 22px 26px;
+    margin-bottom:26px;
+    box-shadow:0 10px 30px rgba(0,0,0,.35);
+    scroll-margin-top:90px;
+  }
+  section h2{
+    margin-top:0;
+    color:var(--accent);
+    font-size:22px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  section h2 .num{
+    background:var(--accent);
+    color:#04263b;
+    width:32px;height:32px;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:16px;
+    flex:none;
+  }
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
+  @media (max-width:760px){.grid2{grid-template-columns:1fr;}}
+  .badge{
+    display:inline-block;
+    background:rgba(56,189,248,.15);
+    color:var(--accent);
+    border:1px solid rgba(56,189,248,.4);
+    border-radius:8px;
+    padding:2px 10px;
+    font-size:13px;
+    margin:0 4px;
+  }
+  .def-box{
+    background:linear-gradient(135deg, rgba(56,189,248,.12), rgba(52,211,153,.08));
+    border-right:4px solid var(--accent);
+    border-radius:12px;
+    padding:14px 16px;
+    margin:14px 0;
+  }
+  .term{color:var(--accent2); font-weight:bold;}
+  ul.points{padding-right:20px; margin:10px 0;}
+  ul.points li{margin-bottom:8px;}
+  .compare-table{width:100%; border-collapse:collapse; margin-top:10px; font-size:14.5px;}
+  .compare-table th, .compare-table td{
+    border:1px solid rgba(148,163,184,.25);
+    padding:10px;
+    text-align:center;
+  }
+  .compare-table th{background:rgba(56,189,248,.18); color:#fff;}
+  .compare-table tr:nth-child(even){background:rgba(255,255,255,.03);}
+
+  /* Lab */
+  .lab-wrap{
+    background:#0b1530;
+    border-radius:16px;
+    padding:14px;
+    border:1px solid rgba(56,189,248,.25);
+  }
+  .scene-3d{
+    perspective:900px;
+    width:100%;
+    display:flex;
+    justify-content:center;
+  }
+  #ropeCanvas{
+    width:100%;
+    max-width:900px;
+    height:340px;
+    display:block;
+    border-radius:14px;
+    background:linear-gradient(180deg,#0d1b3a,#091228 70%, #060a18);
+    box-shadow:inset 0 0 60px rgba(0,0,0,.5), 0 18px 30px rgba(0,0,0,.5);
+    transform: rotateX(6deg);
+    touch-action:none;
+  }
+  .controls{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    align-items:center;
+    justify-content:center;
+    margin-top:14px;
+  }
+  .controls .group{
+    background:rgba(255,255,255,.04);
+    border-radius:12px;
+    padding:8px 14px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:13px;
+  }
+  .controls input[type=range]{width:120px;}
+  .controls label{color:var(--muted); white-space:nowrap;}
+  .btn{
+    border:none;
+    border-radius:10px;
+    padding:10px 18px;
+    cursor:pointer;
+    font-weight:bold;
+    font-size:14px;
+    transition:.2s;
+  }
+  .btn-go{background:var(--accent3); color:#04261b;}
+  .btn-stop{background:var(--danger); color:#330808;}
+  .btn-reset{background:#475569; color:#fff;}
+  .btn:hover{filter:brightness(1.1); transform:translateY(-1px);}
+  .legend{
+    display:flex; gap:14px; flex-wrap:wrap; justify-content:center;
+    font-size:12.5px; color:var(--muted); margin-top:10px;
+  }
+  .legend span{display:flex; align-items:center; gap:5px;}
+  .dot{width:10px; height:10px; border-radius:50%; display:inline-block;}
+
+  .step-card{
+    background:rgba(255,255,255,.04);
+    border-radius:12px;
+    padding:12px 14px;
+    margin-bottom:10px;
+    border-right:3px solid var(--accent2);
+  }
+  .question-box{
+    background:rgba(251,191,36,.08);
+    border:1px solid rgba(251,191,36,.35);
+    border-radius:12px;
+    padding:14px;
+    margin-top:14px;
+  }
+  .question-box h4{margin:0 0 8px; color:var(--accent2);}
+  textarea{
+    width:100%;
+    min-height:60px;
+    border-radius:10px;
+    border:1px solid rgba(148,163,184,.3);
+    background:#0b1530;
+    color:#fff;
+    padding:10px;
+    font-family:inherit;
+    font-size:14px;
+    resize:vertical;
+  }
+  .result-panel{
+    margin-top:14px;
+    background:#08122a;
+    border-radius:12px;
+    padding:12px 16px;
+    font-size:14px;
+    border:1px dashed rgba(56,189,248,.4);
+    display:none;
+  }
+  .result-panel.show{display:block;}
+  .result-panel b{color:var(--accent3);}
+
+  .quiz-q{
+    background:rgba(255,255,255,.04);
+    border-radius:12px;
+    padding:14px;
+    margin-bottom:14px;
+  }
+  .quiz-q p{margin:0 0 10px; font-weight:bold;}
+  .opt{
+    display:block;
+    width:100%;
+    text-align:right;
+    background:#0b1530;
+    border:1px solid rgba(148,163,184,.25);
+    color:var(--text);
+    padding:9px 12px;
+    border-radius:10px;
+    margin-bottom:7px;
+    cursor:pointer;
+    font-size:14px;
+  }
+  .opt:hover{border-color:var(--accent);}
+  .opt.correct{background:rgba(52,211,153,.25); border-color:var(--accent3);}
+  .opt.wrong{background:rgba(248,113,113,.25); border-color:var(--danger);}
+
+  footer{
+    text-align:center;
+    color:var(--muted);
+    font-size:13px;
+    padding:20px;
+  }
+  .float-tip{
+    position:fixed;
+    bottom:14px;
+    left:14px;
+    background:var(--accent);
+    color:#04263b;
+    padding:8px 14px;
+    border-radius:999px;
+    font-size:13px;
+    box-shadow:0 6px 18px rgba(0,0,0,.4);
+    z-index:60;
+    cursor:pointer;
+  }
+  @media(max-width:480px){
+    .controls .group{font-size:12px;}
+    section{padding:16px;}
+  }
+
+  /* ═══ RESPONSIVE MOBILE & TABLET — AUTO-INJECTED ═══ */
+  @media (max-width: 768px) {
+    body { padding: 8px !important; font-size: 15px !important; overflow-x: hidden !important; }
+    .container, [class*="container"], [class*="wrapper"] { padding: 8px !important; max-width: 100% !important; }
+    canvas { width: 100% !important; height: auto !important; display: block !important; touch-action: none; max-width: 100% !important; }
+    svg { max-width: 100% !important; height: auto !important; }
+    h1 { font-size: clamp(18px, 5vw, 32px) !important; }
+    h2 { font-size: clamp(16px, 4vw, 26px) !important; }
+    h3 { font-size: clamp(14px, 3.5vw, 22px) !important; }
+    p, li, td, th, label, span { font-size: clamp(13px, 3.5vw, 16px) !important; }
+    [class*="grid"] { grid-template-columns: 1fr !important; }
+    [class*="flex"] { flex-wrap: wrap !important; }
+    input[type="range"] { width: 100% !important; min-height: 36px; }
+    input[type="number"], input[type="text"], select, textarea { 
+      font-size: 16px !important; width: 100% !important; box-sizing: border-box; padding: 8px !important;
+    }
+    button { min-height: 44px !important; font-size: 14px !important; touch-action: manipulation; padding: 10px 14px !important; }
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 13px !important; }
+    th, td { padding: 6px 4px !important; white-space: nowrap; }
+    [style*="display: grid"], [style*="display:grid"] { display: flex !important; flex-direction: column !important; }
+    .lab-window, [class*="lab-window"] { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+    header { padding: 12px !important; }
+    .controls, [class*="controls"] { flex-direction: column !important; gap: 8px !important; }
+  }
+  @media (max-width: 480px) {
+    body { padding: 4px !important; }
+    h1 { font-size: clamp(16px, 5vw, 24px) !important; }
+    button { width: 100% !important; }
+  }
+  /* ═══ END RESPONSIVE ═══ */
+</style>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<style>
+.vlab-back-btn {
+  position: fixed; top: 10px; left: 10px; z-index: 99999;
+  background: rgba(10,22,40,0.93); border: 1px solid rgba(0,200,150,0.4);
+  border-radius: 22px; padding: 8px 16px;
+  display: inline-flex; align-items: center; gap: 7px;
+  color: #00C896; font-family: Tajawal, Cairo, Arial, sans-serif;
+  font-size: 13px; font-weight: 700; text-decoration: none;
+  backdrop-filter: blur(8px); box-shadow: 0 4px 18px rgba(0,0,0,0.3);
+  transition: background 0.2s;
+}
+.vlab-back-btn:hover { background: rgba(0,200,150,0.18); color: #00C896; }
+</style>
+
+<a href="../grade8.html" class="vlab-back-btn">&#8594; العودة للصف</a>
+
+
+<header>
+  <h1>🌊 درس الأمواج المستعرضة</h1>
+  <p>منهاج العلوم والحياة — الصف الثامن — فلسطين | مختبر افتراضي تفاعلي ثلاثي الأبعاد</p>
+</header>
+
+<nav id="navbar">
+  <button data-target="intro" class="active">المقدمة</button>
+  <button data-target="define">التعريف</button>
+  <button data-target="parts">أجزاء الموجة</button>
+  <button data-target="lab">المختبر الافتراضي</button>
+  <button data-target="conclude">الاستنتاجات</button>
+  <button data-target="compare">مقارنة الأمواج</button>
+  <button data-target="quiz">اختبر نفسك</button>
+</nav>
+
+<main>
+
+  <!-- المقدمة -->
+  <section id="intro">
+    <h2><span class="num">۱</span> مقدمة</h2>
+    <p>
+      عندما يهزّ شخص طرف حبل مشدود بينما يثبّت زميله الطرف الآخر، يلاحظ أن
+      <span class="term">اضطراباً</span> ينتقل عبر الحبل من جهة المُحدِث إلى الجهة الأخرى،
+      بينما تتحرك أجزاء الحبل نفسه إلى الأعلى والأسفل في مكانها تقريباً، دون أن تنتقل مع الموجة
+      إلى الطرف الآخر. هذا هو أساس فكرة <span class="term">الموجة المستعرضة</span>،
+      وهو ما سنكتشفه معاً عبر الشرح والمختبر الافتراضي أدناه.
+    </p>
+  </section>
+
+  <!-- التعريف -->
+  <section id="define">
+    <h2><span class="num">۲</span> تعريف الموجة المستعرضة</h2>
+    <div class="def-box">
+      <p>
+        <span class="term">الموجة المستعرضة (Transverse Wave):</span>
+        هي موجة ميكانيكية تتذبذب فيها جزيئات (أو نقاط) الوسط الناقل
+        <b>عمودياً (في اتجاه متعامد)</b> على اتجاه انتقال الموجة نفسها.
+      </p>
+    </div>
+    <ul class="points">
+      <li>الموجة تنقل <b>طاقة</b> من نقطة إحداثها إلى الوسط المجاور، دون أن تنقل المادة نفسها.</li>
+      <li>اتجاه حركة جزيئات الوسط ↕ يكون <b>عمودياً</b> على اتجاه حركة الموجة ↔.</li>
+      <li>من أمثلتها: حبل يتحرك بشكل عرضي، الموجات الضوئية، والموجات الكهرومغناطيسية.</li>
+    </ul>
+  </section>
+
+  <!-- أجزاء الموجة -->
+  <section id="parts">
+    <h2><span class="num">۳</span> أجزاء الموجة المستعرضة</h2>
+    <div class="grid2">
+      <div>
+        <ul class="points">
+          <li><span class="term">القمة (Crest):</span> أعلى نقطة في الموجة.</li>
+          <li><span class="term">القاع (Trough):</span> أدنى نقطة في الموجة.</li>
+          <li><span class="term">السعة (Amplitude):</span> أقصى إزاحة لجزيء الوسط عن وضع السكون.</li>
+          <li><span class="term">الطول الموجي λ (Wavelength):</span> المسافة بين قمتين متتاليتين (أو قاعين متتاليين).</li>
+          <li><span class="term">الزمن الدوري T (Period):</span> الزمن اللازم لإكمال موجة كاملة واحدة.</li>
+          <li><span class="term">التردد f (Frequency):</span> عدد الموجات الكاملة في الثانية الواحدة. f = 1/T</li>
+        </ul>
+      </div>
+      <div>
+        <svg viewBox="0 0 320 180" style="width:100%; background:#0b1530; border-radius:12px;">
+          <line x1="10" y1="90" x2="310" y2="90" stroke="#475569" stroke-dasharray="4,4"/>
+          <path d="M10,90 C40,20 70,20 100,90 C130,160 160,160 190,90 C220,20 250,20 280,90 C295,125 305,90 310,90"
+                fill="none" stroke="#38bdf8" stroke-width="3"/>
+          <circle cx="55" cy="30" r="3" fill="#fbbf24"/>
+          <text x="50" y="18" fill="#fbbf24" font-size="11">قمة</text>
+          <circle cx="145" cy="150" r="3" fill="#34d399"/>
+          <text x="130" y="170" fill="#34d399" font-size="11">قاع</text>
+          <line x1="55" y1="30" x2="55" y2="90" stroke="#94a3b8" stroke-width="1"/>
+          <text x="58" y="60" fill="#e2e8f0" font-size="10">سعة</text>
+          <line x1="100" y1="90" x2="190" y2="90" stroke="#f87171" stroke-width="1.5"/>
+          <text x="120" y="105" fill="#f87171" font-size="11">طول موجي λ</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- المختبر الافتراضي -->
+  <section id="lab">
+    <h2><span class="num">٤</span> المختبر الافتراضي: نشاط "حبل يتراقص"</h2>
+    <p>
+      نفّذ هذه التجربة الافتراضية تماماً كما في كتابك: اربط شريطاً ملوّناً في منتصف الحبل تقريباً،
+      ثم اطلب من "زميلك الافتراضي" أن يمسك بطرف، وامسك أنت بالطرف الآخر، وهزّ الحبل لتشاهد الموجة.
+    </p>
+
+    <div class="lab-wrap">
+      <div class="scene-3d">
+        <canvas id="ropeCanvas" width="900" height="340"></canvas>
+      </div>
+
+      <div class="legend">
+        <span><i class="dot" style="background:#38bdf8"></i> الحبل</span>
+        <span><i class="dot" style="background:#fbbf24"></i> الشريط الملوّن (نقطة مرجعية)</span>
+        <span><i class="dot" style="background:#f87171"></i> أنت (تهزّ الحبل)</span>
+        <span><i class="dot" style="background:#34d399"></i> زميلك (يمسك بثبات)</span>
+      </div>
+
+      <div class="controls">
+        <div class="group">
+          <label>🟢 من يهزّ الحبل:</label>
+          <select id="whoShakes">
+            <option value="me">أنا (الجهة اليمنى)</option>
+            <option value="friend">زميلي (الجهة اليسرى)</option>
+          </select>
+        </div>
+        <div class="group">
+          <label>قوة الهزّ (السعة):</label>
+          <input type="range" id="ampSlider" min="5" max="60" value="30">
+        </div>
+        <div class="group">
+          <label>سرعة الهزّ (التردد):</label>
+          <input type="range" id="freqSlider" min="1" max="10" value="4">
+        </div>
+        <div class="group">
+          <label>شدّ الحبل (التوتر):</label>
+          <input type="range" id="tensionSlider" min="1" max="10" value="5">
+        </div>
+      </div>
+      <div class="controls">
+        <button class="btn btn-go" id="startBtn">▶ ابدأ الهزّ</button>
+        <button class="btn btn-stop" id="stopBtn">⏸ أوقف</button>
+        <button class="btn btn-reset" id="resetBtn">↺ إعادة ضبط</button>
+      </div>
+    </div>
+
+    <div class="question-box">
+      <h4>أ- هل وصلت الموجة التي أحدثتها أنت في الحبل عندما هززته إلى الجهة الأخرى عند زميلك؟</h4>
+      <textarea id="ansA" placeholder="اكتب ملاحظتك هنا بعد تشغيل المحاكاة..."></textarea>
+    </div>
+    <div class="question-box">
+      <h4>ب- ما اتجاه حركة أجزاء الحبل نفسه (الشريط الملوّن) مقارنة باتجاه انتقال الموجة؟</h4>
+      <textarea id="ansB" placeholder="اكتب ملاحظتك هنا..."></textarea>
+    </div>
+
+    <div style="text-align:center; margin-top:14px;">
+      <button class="btn btn-go" id="checkBtn">✅ تحقق من استنتاجاتي</button>
+    </div>
+    <div class="result-panel" id="resultPanel"></div>
+  </section>
+
+  <!-- الاستنتاجات -->
+  <section id="conclude">
+    <h2><span class="num">٥</span> الاستنتاجات العلمية للتجربة</h2>
+    <div class="def-box">
+      <ul class="points">
+        <li>الحبل وسط مادي تنتقل فيه <b>الموجة</b> (وهي اضطراب يحمل طاقة) من جهتك إلى الجهة الأخرى حيث يقف زميلك — أي أن <b>الموجة تصل بالفعل</b> إلى الطرف الآخر.</li>
+        <li>الشريط الملوّن (الذي يمثّل جزيئات الوسط) يتحرك <b>عموديا (للأعلى والأسفل)</b> في مكانه تقريباً، ولا ينتقل مع الموجة أفقياً نحو زميلك.</li>
+        <li>بذلك تكون حركة جزيئات الوسط <b>عمودية على اتجاه انتقال الموجة</b>، وهذا هو التعريف الدقيق للموجة المستعرضة.</li>
+        <li>زيادة قوة الهزّ (السعة) تزيد ارتفاع القمم وعمق القيعان، بينما زيادة سرعة الهزّ (التردد) تُقصّر الطول الموجي وتزيد عدد الموجات في الثانية.</li>
+        <li>زيادة شدّ الحبل (التوتر) تجعل الموجة تنتقل بسرعة أكبر عبر الحبل.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- مقارنة -->
+  <section id="compare">
+    <h2><span class="num">٦</span> مقارنة سريعة: مستعرضة مقابل طولية</h2>
+    <table class="compare-table">
+      <tr>
+        <th>وجه المقارنة</th>
+        <th>الموجة المستعرضة</th>
+        <th>الموجة الطولية</th>
+      </tr>
+      <tr>
+        <td>اتجاه حركة الجزيئات</td>
+        <td>عمودي على اتجاه انتقال الموجة</td>
+        <td>موازٍ (بنفس اتجاه) انتقال الموجة</td>
+      </tr>
+      <tr>
+        <td>أمثلة</td>
+        <td>الحبل المتموج، الضوء، موجات الراديو</td>
+        <td>الصوت، موجة الزلازل الأولية (P)</td>
+      </tr>
+      <tr>
+        <td>تحتوي على</td>
+        <td>قمم وقيعان</td>
+        <td>تضاغطات وتخلخلات</td>
+      </tr>
+      <tr>
+        <td>تحتاج وسط مادي؟</td>
+        <td>بعضها (مثل الحبل) نعم، وبعضها لا (مثل الضوء)</td>
+        <td>نعم، دائماً</td>
+      </tr>
+    </table>
+  </section>
+
+  <!-- الاختبار -->
+  <section id="quiz">
+    <h2><span class="num">۷</span> اختبر نفسك</h2>
+
+    <div class="quiz-q" data-correct="1">
+      <p>١- في الموجة المستعرضة، تتحرك جزيئات الوسط:</p>
+      <button class="opt">بنفس اتجاه انتقال الموجة</button>
+      <button class="opt">عمودياً على اتجاه انتقال الموجة</button>
+      <button class="opt">لا تتحرك أبداً</button>
+    </div>
+
+    <div class="quiz-q" data-correct="0">
+      <p>٢- المسافة بين قمتين متتاليتين في الموجة تسمى:</p>
+      <button class="opt">الطول الموجي</button>
+      <button class="opt">السعة</button>
+      <button class="opt">التردد</button>
+    </div>
+
+    <div class="quiz-q" data-correct="2">
+      <p>٣- في تجربة الحبل، عند زيادة سرعة هزّ الحبل (التردد)، فإن الطول الموجي:</p>
+      <button class="opt">يبقى ثابتاً</button>
+      <button class="opt">يزداد</button>
+      <button class="opt">يقلّ (يقصُر)</button>
+    </div>
+
+    <div class="quiz-q" data-correct="1">
+      <p>٤- عندما يهزّ شخص الحبل، فإن المادة (الحبل) نفسها:</p>
+      <button class="opt">تنتقل بالكامل إلى الطرف الآخر</button>
+      <button class="opt">لا تنتقل، بل تنتقل الطاقة/الاضطراب فقط</button>
+      <button class="opt">تختفي بعد الهزّ</button>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  صفحة تعليمية تفاعلية — وحدة الأمواج — منهاج العلوم والحياة، الصف الثامن، فلسطين 🇵🇸
+</footer>
+
+<div class="float-tip" id="encodingTip">UTF-8 ✓ يدعم العربية</div>
+
+<script>
+// ===== Navigation =====
+const navButtons = document.querySelectorAll('nav button');
+navButtons.forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    navButtons.forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.target).scrollIntoView({behavior:'smooth'});
+  });
+});
+
+// ===== Rope Wave Simulation =====
+const canvas = document.getElementById('ropeCanvas');
+const ctx = canvas.getContext('2d');
+let W = canvas.width, H = canvas.height;
+
+function resizeCanvas(){
+  const rect = canvas.getBoundingClientRect();
+  canvas.width = rect.width;
+  canvas.height = 340 * (rect.width/900) > 200 ? canvas.height : canvas.height;
+  W = canvas.width; H = canvas.height;
+}
+
+const N = 140; // number of points along rope
+let points = new Array(N).fill(0);
+let running = false;
+let t = 0;
+let waveFrontProgress = 0; // 0..1 how far the wave has traveled from source
+
+const ampSlider = document.getElementById('ampSlider');
+const freqSlider = document.getElementById('freqSlider');
+const tensionSlider = document.getElementById('tensionSlider');
+const whoShakes = document.getElementById('whoShakes');
+
+let reachedOtherSide = false;
+
+function getSourceIndex(){
+  return whoShakes.value === 'me' ? N-1 : 0;
+}
+
+function draw(){
+  ctx.clearRect(0,0,W,H);
+
+  const midY = H/2;
+  const marginX = 60;
+  const usableW = W - marginX*2;
+
+  // ground/depth shading for 3D feel
+  let grad = ctx.createLinearGradient(0,0,0,H);
+  grad.addColorStop(0,'rgba(56,189,248,0.04)');
+  grad.addColorStop(1,'rgba(0,0,0,0.25)');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0,0,W,H);
+
+  // baseline
+  ctx.strokeStyle='rgba(148,163,184,.25)';
+  ctx.setLineDash([5,5]);
+  ctx.beginPath();
+  ctx.moveTo(marginX, midY);
+  ctx.lineTo(W-marginX, midY);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // draw rope as smooth curve with 3D-ish shadow
+  ctx.lineWidth=6;
+  ctx.lineCap='round';
+  ctx.strokeStyle = '#0ea5e9';
+  ctx.shadowColor='rgba(56,189,248,0.6)';
+  ctx.shadowBlur=12;
+  ctx.beginPath();
+  for(let i=0;i<N;i++){
+    const x = marginX + (usableW*i/(N-1));
+    const y = midY + points[i];
+    if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+  }
+  ctx.stroke();
+  ctx.shadowBlur=0;
+
+  // highlight stripe for top shine
+  ctx.lineWidth=2;
+  ctx.strokeStyle='rgba(186,230,253,0.6)';
+  ctx.beginPath();
+  for(let i=0;i<N;i++){
+    const x = marginX + (usableW*i/(N-1));
+    const y = midY + points[i] - 2;
+    if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+  }
+  ctx.stroke();
+
+  // colored ribbon marker at middle point
+  const midIdx = Math.floor(N/2);
+  const mx = marginX + (usableW*midIdx/(N-1));
+  const my = midY + points[midIdx];
+  ctx.beginPath();
+  ctx.arc(mx,my,9,0,Math.PI*2);
+  ctx.fillStyle='#fbbf24';
+  ctx.shadowColor='#fbbf24';
+  ctx.shadowBlur=15;
+  ctx.fill();
+  ctx.shadowBlur=0;
+
+  // hands - person icons at both ends
+  drawPerson(marginX, midY+points[0], '#34d399', 'زميلك');
+  drawPerson(W-marginX, midY+points[N-1], '#f87171', 'أنت');
+}
+
+function drawPerson(x,y,color,label){
+  ctx.beginPath();
+  ctx.arc(x, y-22, 9, 0, Math.PI*2);
+  ctx.fillStyle = color;
+  ctx.fill();
+  ctx.fillRect(x-7, y-14, 14, 22);
+  ctx.fillStyle='#e2e8f0';
+  ctx.font='12px Tahoma';
+  ctx.textAlign='center';
+  ctx.fillText(label, x, y+24);
+}
+
+function step(){
+  if(!running){ requestAnimationFrame(step); return; }
+  t += 0.06 * (1 + tensionSlider.value*0.05);
+
+  const amp = parseFloat(ampSlider.value);
+  const freq = parseFloat(freqSlider.value)/3;
+  const tension = parseFloat(tensionSlider.value);
+  const speed = 0.25 + tension*0.07; // wave propagation speed factor
+
+  // advance wave front
+  if(waveFrontProgress < 1.15){
+    waveFrontProgress += 0.012 * (0.5+tension*0.15);
+  } else {
+    if(!reachedOtherSide){
+      reachedOtherSide = true;
+    }
+  }
+
+  const sourceIsRight = whoShakes.value === 'me';
+
+  for(let i=0;i<N;i++){
+    const distFromSource = sourceIsRight ? (N-1-i)/(N-1) : i/(N-1);
+    const frontHere = waveFrontProgress - distFromSource* (1/speed) ;
+    if(frontHere > 0){
+      const decay = 1; // could decay with distance, keep simple/clear
+      points[i] = Math.sin(t*freq*6 - distFromSource*14) * amp * decay * Math.min(1, frontHere*6);
+    } else {
+      points[i] = 0;
+    }
+  }
+  // fix ends to follow hand motion driven by source itself
+  if(sourceIsRight){
+    points[N-1] = Math.sin(t*freq*6) * amp;
+    points[0] = points[0]; // friend's hand stays mostly still (slight reaction)
+  } else {
+    points[0] = Math.sin(t*freq*6) * amp;
+  }
+
+  draw();
+  requestAnimationFrame(step);
+}
+requestAnimationFrame(step);
+draw();
+
+document.getElementById('startBtn').addEventListener('click', ()=>{
+  running = true;
+});
+document.getElementById('stopBtn').addEventListener('click', ()=>{
+  running = false;
+});
+document.getElementById('resetBtn').addEventListener('click', ()=>{
+  running = false;
+  t = 0;
+  waveFrontProgress = 0;
+  reachedOtherSide = false;
+  points = new Array(N).fill(0);
+  draw();
+});
+
+// ===== Check answers =====
+document.getElementById('checkBtn').addEventListener('click', ()=>{
+  const panel = document.getElementById('resultPanel');
+  let msg = '';
+  if(reachedOtherSide){
+    msg += '🔵 ممتاز! لاحظت بنفسك أن الموجة <b>وصلت بالفعل</b> إلى الجهة الأخرى عند زميلك — أي أن الاضطراب (الطاقة) انتقل عبر الحبل بالكامل.<br><br>';
+  } else {
+    msg += '🟡 لم تُشغّل المحاكاة بعد حتى وصلت الموجة كاملة إلى الطرف الآخر. شغّل "ابدأ الهزّ" وانتظر قليلاً ثم أعد المحاولة لتلاحظ وصول الموجة فعلياً.<br><br>';
+  }
+  msg += '🟢 بالنسبة لحركة أجزاء الحبل (الشريط الملوّن): ستلاحظ أنه يتحرك <b>عمودياً للأعلى والأسفل</b> في مكانه تقريباً، ولا يتحرك أفقياً مع الموجة. وهذا هو ما يجعلها <b>موجة مستعرضة</b>.';
+  panel.innerHTML = msg;
+  panel.classList.add('show');
+  panel.scrollIntoView({behavior:'smooth', block:'nearest'});
+});
+
+// ===== Quiz =====
+document.querySelectorAll('.quiz-q').forEach(q=>{
+  const correctIdx = parseInt(q.dataset.correct);
+  const opts = q.querySelectorAll('.opt');
+  opts.forEach((opt, idx)=>{
+    opt.addEventListener('click', ()=>{
+      opts.forEach(o=>{o.classList.remove('correct','wrong'); o.disabled=true;});
+      if(idx === correctIdx){
+        opt.classList.add('correct');
+      } else {
+        opt.classList.add('wrong');
+        opts[correctIdx].classList.add('correct');
+      }
+    });
+  });
+});
+
+// encoding tip fade
+setTimeout(()=>{
+  const tip = document.getElementById('encodingTip');
+  if(tip) tip.style.opacity='0.5';
+},4000);
+</script>
+
+</body>
+</html>
