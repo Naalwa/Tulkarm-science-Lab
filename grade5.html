@@ -4,116 +4,48 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>الصف الخامس الأساسي — المختبر الافتراضي التجريبي</title>
-  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet"/>
-  <style>
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-    :root{--navy:#0A1628;--navy2:#0D1F3C;--green:#00C896;--white:#F0F8FF;
-      --c1:#FF6B6B;--c2:#FF8E53;--sh:rgba(255,107,107,0.3);--card-bg:rgba(13,31,60,0.88);}
-    html{scroll-behavior:smooth;}
-    body{font-family:'Tajawal',sans-serif;background:var(--navy);color:var(--white);min-height:100vh;overflow-x:hidden;}
-    #bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;}
-    .grid-ov{position:fixed;inset:0;z-index:0;pointer-events:none;
-      background-image:linear-gradient(rgba(0,200,150,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,200,150,0.04) 1px,transparent 1px);
-      background-size:60px 60px;}
-    .wrap{position:relative;z-index:1;}
-    header{padding:12px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;
-      background:rgba(10,22,40,0.96);backdrop-filter:blur(12px);border-bottom:1px solid #FF6B6B26;
-      position:sticky;top:0;z-index:100;}
-    .back-btn{display:flex;align-items:center;gap:7px;color:#FF6B6B;text-decoration:none;font-size:.85rem;font-weight:700;
-      background:#FF6B6B1A;border:1px solid #FF6B6B44;border-radius:20px;padding:7px 15px;transition:background .2s;white-space:nowrap;}
-    .back-btn:hover{background:#FF6B6B33;}
-    .h-title{display:flex;align-items:center;gap:9px;font-size:.95rem;font-weight:800;}
-    .h-icon{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,#FF6B6B,#FF8E53);
-      display:flex;align-items:center;justify-content:center;font-size:17px;box-shadow:0 0 12px rgba(255,107,107,0.3);}
-    .h-badge{background:#FF6B6B12;border:1px solid #FF6B6B30;border-radius:13px;padding:4px 11px;
-      font-size:.68rem;color:#FF6B6B;font-weight:700;text-align:center;line-height:1.5;}
-    .hero{padding:50px 20px 36px;text-align:center;}
-    .hero-ring{width:100px;height:100px;border-radius:50%;
-      background:linear-gradient(135deg,#FF6B6B22,#FF8E5322);border:2px solid #FF6B6B44;
-      display:flex;align-items:center;justify-content:center;font-size:44px;
-      margin:0 auto 22px;box-shadow:0 0 32px rgba(255,107,107,0.3);animation:float 4s ease-in-out infinite;}
-    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
-    .hero h2{font-size:clamp(1.5rem,4vw,2.5rem);font-weight:900;
-      background:linear-gradient(135deg,var(--white),#FF6B6B);
-      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:10px;}
-    .hero p{color:rgba(240,248,255,.6);font-size:.92rem;max-width:440px;margin:0 auto;line-height:1.8;}
-    .stripe{width:65px;height:4px;border-radius:4px;background:linear-gradient(90deg,#FF6B6B,#FF8E53);margin:14px auto 0;}
-    .stats{display:flex;justify-content:center;gap:28px;margin:24px auto 0;flex-wrap:wrap;padding:0 16px;}
-    .stat .num{font-size:1.7rem;font-weight:900;color:#FF6B6B;text-align:center;}
-    .stat .lbl{font-size:.7rem;color:rgba(240,248,255,.5);text-align:center;margin-top:2px;}
-    .sdiv{width:1px;height:32px;background:#FF6B6B22;align-self:center;}
-    .section{max-width:1100px;margin:36px auto 0;padding:0 18px 70px;}
-    .sec-label{display:flex;align-items:center;gap:10px;margin-bottom:24px;}
-    .sec-label h3{font-size:1.25rem;font-weight:800;white-space:nowrap;}
-    .sec-line{flex:1;height:1px;background:#FF6B6B1A;}
-    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px;}
-    .exp-card{background:var(--card-bg);border:1px solid rgba(255,255,255,.06);border-radius:15px;
-      text-decoration:none;color:inherit;display:flex;flex-direction:column;padding:22px 18px 16px;
-      position:relative;cursor:pointer;transition:transform .3s,box-shadow .3s,border-color .3s;}
-    .exp-card::before{content:'';position:absolute;inset:0;border-radius:15px;
-      background:linear-gradient(135deg,#FF6B6B0A,transparent 60%);opacity:0;transition:opacity .3s;}
-    .exp-card:hover{transform:translateY(-5px);box-shadow:0 14px 44px rgba(255,107,107,0.3);border-color:#FF6B6B55;}
-    .exp-card:hover::before{opacity:1;}
-    .exp-num-badge{display:inline-block;font-size:.66rem;font-weight:800;
-      background:linear-gradient(135deg,#FF6B6B,#FF8E53);-webkit-background-clip:text;
-      -webkit-text-fill-color:transparent;background-clip:text;
-      border:1px solid #FF6B6B40;border-radius:18px;padding:3px 9px;margin-bottom:12px;width:fit-content;}
-    .exp-icon{font-size:38px;margin-bottom:10px;line-height:1;}
-    .exp-title{font-size:.95rem;font-weight:700;color:var(--white);margin-bottom:16px;flex:1;line-height:1.5;}
-    .exp-footer{margin-top:auto;}
-    .exp-open{display:inline-flex;align-items:center;gap:5px;font-size:.76rem;font-weight:700;
-      color:#FF6B6B;background:#FF6B6B12;border:1px solid #FF6B6B2E;border-radius:16px;padding:6px 13px;transition:background .2s;}
-    .exp-card:hover .exp-open{background:#FF6B6B22;}
-    .exp-open svg{transition:transform .2s;}
-    .exp-card:hover .exp-open svg{transform:translateX(-3px);}
-    .add-card{background:rgba(13,31,60,.5);border:1px dashed #FF6B6B1E;border-radius:15px;
-      display:flex;flex-direction:column;align-items:center;justify-content:center;
-      padding:32px 16px;min-height:180px;color:rgba(240,248,255,.25);font-size:.8rem;text-align:center;gap:7px;}
-    footer{background:rgba(10,22,40,.98);border-top:1px solid #FF6B6B10;padding:26px 20px;text-align:center;}
-    footer p{font-size:.76rem;color:rgba(240,248,255,.3);line-height:1.8;}
-    @media(max-width:640px){
-      header{padding:8px 12px;}
-      .grid{grid-template-columns:1fr;}
-      .sdiv{display:none;}
-      .hero{padding:32px 14px 24px;}
-    }
-  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;800;900&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="lab-theme.css"/>
 </head>
 <body>
 <canvas id="bg-canvas"></canvas>
-<div class="grid-ov"></div>
-<div class="wrap">
+<div class="wrapper">
+
   <header>
     <a href="index.html" class="back-btn">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       الرئيسية
     </a>
-    <div class="h-title"><div class="h-icon">🌱</div><span>الصف الخامس الأساسي</span></div>
-    <div class="h-badge">مديرية طولكرم<br>المختبر الافتراضي</div>
+    <div class="header-title">
+      <div class="h-icon" style="background:linear-gradient(135deg,#22D3EE,var(--indigo))">🌱</div>
+      <span>الصف الخامس الأساسي</span>
+    </div>
+    <div class="header-badge">مديرية طولكرم<br>المختبر الافتراضي</div>
   </header>
 
-  <section class="hero">
-    <div class="hero-ring">🌱</div>
+  <section class="grade-hero">
+    <div class="grade-hero-ring">🌱</div>
     <h2>الصف الخامس الأساسي</h2>
     <p>اختر التجربة التي تريد استكشافها وابدأ رحلتك العلمية التفاعلية</p>
-    <div class="stripe"></div>
-    <div class="stats">
-      <div class="stat"><div class="num">53</div><div class="lbl">تجربة علمية</div></div>
-      <div class="sdiv"></div>
-      <div class="stat"><div class="num">100%</div><div class="lbl">تفاعلية</div></div>
-      <div class="sdiv"></div>
-      <div class="stat"><div class="num">🇵🇸</div><div class="lbl">المنهاج الفلسطيني</div></div>
+    <div class="grade-stripe" style="background:linear-gradient(90deg,#22D3EE,var(--indigo))"></div>
+    <div class="stats-bar">
+      <div class="stat-item"><div class="num" style="color:#22D3EE">53</div><div class="lbl">تجربة علمية</div></div>
+      <div class="stat-div"></div>
+      <div class="stat-item"><div class="num" style="color:#22D3EE">100%</div><div class="lbl">تفاعلية</div></div>
+      <div class="stat-div"></div>
+      <div class="stat-item"><div class="num">🇵🇸</div><div class="lbl">المنهاج الفلسطيني</div></div>
     </div>
   </section>
 
-  <section class="section">
-    <div class="sec-label">
+  <section class="exps-section">
+    <div class="section-label">
       <h3>🧪 التجارب العلمية</h3>
-      <div class="sec-line"></div>
+      <div class="section-label-line"></div>
     </div>
-    <div class="grid">
-
-      <a href="grade5/skeletal_system.html" class="exp-card">
+    <div class="exps-grid">
+<a href="grade5/skeletal_system.html" class="exp-card">
         <div class="exp-num-badge">تجربة 1</div>
         <div class="exp-icon">🩸</div>
         <div class="exp-title">الجهاز الهيكلي | علوم وحياة</div>
@@ -123,7 +55,7 @@
           </span>
         </div>
       </a>
-      <a href="grade5/activity3_water_purification.html" class="exp-card">
+<a href="grade5/activity3_water_purification.html" class="exp-card">
         <div class="exp-num-badge">تجربة 2</div>
         <div class="exp-icon">💧</div>
         <div class="exp-title">نشاط (٣): فصل الشوائب من الماء – العلوم والحياة</div>
@@ -133,7 +65,7 @@
           </span>
         </div>
       </a>
-      <a href="grade5/simulate_cell.html" class="exp-card">
+<a href="grade5/simulate_cell.html" class="exp-card">
         <div class="exp-num-badge">تجربة 3</div>
         <div class="exp-icon">🔬</div>
         <div class="exp-title">أحاكي الخلية | العلوم والحياة</div>
@@ -143,7 +75,7 @@
           </span>
         </div>
       </a>
-      <a href="grade5/simulate_compound.html" class="exp-card">
+<a href="grade5/simulate_compound.html" class="exp-card">
         <div class="exp-num-badge">تجربة 4</div>
         <div class="exp-icon">🧪</div>
         <div class="exp-title">أُحاكي المُرَكَّب</div>
@@ -153,7 +85,7 @@
           </span>
         </div>
       </a>
-      <a href="grade5/separate_mixture_magnet.html" class="exp-card">
+<a href="grade5/separate_mixture_magnet.html" class="exp-card">
         <div class="exp-num-badge">تجربة 5</div>
         <div class="exp-icon">⚡</div>
         <div class="exp-title">أريد حَلّاً 🧲 فصل المخلوط بالمغناطيس</div>
@@ -163,7 +95,7 @@
           </span>
         </div>
       </a>
-      <a href="grade5/forms_of_energy.html" class="exp-card">
+<a href="grade5/forms_of_energy.html" class="exp-card">
         <div class="exp-num-badge">تجربة 6</div>
         <div class="exp-icon">⚙️</div>
         <div class="exp-title">أشكال الطاقة</div>
@@ -173,7 +105,7 @@
           </span>
         </div>
       </a>
-      <a href="grade5/play_with_dough_physical_change.html" class="exp-card">
+<a href="grade5/play_with_dough_physical_change.html" class="exp-card">
         <div class="exp-num-badge">تجربة 7</div>
         <div class="exp-icon">🧪</div>
         <div class="exp-title">ألعب مع المعجون | التغيّر الطبيعي</div>
@@ -183,7 +115,7 @@
           </span>
         </div>
       </a>
-      <a href="grade5/salts_of_palestine.html" class="exp-card">
+<a href="grade5/salts_of_palestine.html" class="exp-card">
         <div class="exp-num-badge">تجربة 8</div>
         <div class="exp-icon">⚗️</div>
         <div class="exp-title">أملاح بلادي — درس تفاعلي مع مختبر افتراضي</div>
@@ -193,7 +125,7 @@
           </span>
         </div>
       </a>
-      <a href="grade5/microscope_cell_discovery.html" class="exp-card">
+<a href="grade5/microscope_cell_discovery.html" class="exp-card">
         <div class="exp-num-badge">تجربة 9</div>
         <div class="exp-icon">🔬</div>
         <div class="exp-title">المجهر واكتشاف الخليّة | مختبر افتراضي</div>
@@ -203,7 +135,7 @@
           </span>
         </div>
       </a>
-      <a href="grade5/lightning_thunder.html" class="exp-card">
+<a href="grade5/lightning_thunder.html" class="exp-card">
         <div class="exp-num-badge">تجربة 10</div>
         <div class="exp-icon">⚡</div>
         <div class="exp-title">البرق والرعد | مختبر افتراضي - العلوم والحياة، الصف الخامس</div>
@@ -213,7 +145,7 @@
           </span>
         </div>
       </a>
-      <a href="grade5/attraction_repulsion_charges.html" class="exp-card">
+<a href="grade5/attraction_repulsion_charges.html" class="exp-card">
         <div class="exp-num-badge">تجربة 11</div>
         <div class="exp-icon">⚡</div>
         <div class="exp-title">التجاذب والتنافر | مختبر الشحنات الافتراضي</div>
@@ -223,7 +155,7 @@
           </span>
         </div>
       </a>
-      <a href="grade5/industrial_resources.html" class="exp-card">
+<a href="grade5/industrial_resources.html" class="exp-card">
         <div class="exp-num-badge">تجربة 12</div>
         <div class="exp-icon">⚗️</div>
         <div class="exp-title">الثروات الصناعيّة — درس تفاعلي ومختبر افتراضي</div>
@@ -233,7 +165,7 @@
           </span>
         </div>
       </a>
-      <a href="grade5/natural_resources.html" class="exp-card">
+<a href="grade5/natural_resources.html" class="exp-card">
         <div class="exp-num-badge">تجربة 13</div>
         <div class="exp-icon">🛢️</div>
         <div class="exp-title">الثروات الطبيعية | العلوم والحياة</div>
@@ -243,7 +175,7 @@
           </span>
         </div>
       </a>
-      <a href="grade5/charging_contact_induction.html" class="exp-card">
+<a href="grade5/charging_contact_induction.html" class="exp-card">
         <div class="exp-num-badge">تجربة 14</div>
         <div class="exp-icon">⚡</div>
         <div class="exp-title">الشحن باللمس والحث (التأثير) | العلوم والحياة</div>
@@ -253,7 +185,7 @@
           </span>
         </div>
       </a>
-      <a href="grade5/lightning_static_electricity.html" class="exp-card">
+<a href="grade5/lightning_static_electricity.html" class="exp-card">
         <div class="exp-num-badge">تجربة 15</div>
         <div class="exp-icon">⚡</div>
         <div class="exp-title">الصاعقة | ظواهر مرتبطة بالكهرباء الساكنة</div>
@@ -263,7 +195,7 @@
           </span>
         </div>
       </a>
-      <a href="grade5/play_with_energy.html" class="exp-card">
+<a href="grade5/play_with_energy.html" class="exp-card">
         <div class="exp-num-badge">تجربة 16</div>
         <div class="exp-icon">⚙️</div>
         <div class="exp-title">ألعب مع الطاقة | مختبر افتراضي - علوم وحياة</div>
@@ -273,7 +205,7 @@
           </span>
         </div>
       </a>
-      <a href="grade5/activity8_element.html" class="exp-card">
+<a href="grade5/activity8_element.html" class="exp-card">
         <div class="exp-num-badge">تجربة 17</div>
         <div class="exp-icon">🧪</div>
         <div class="exp-title">نشاط (٨): العُنصُر - علوم الصف الخامس</div>
@@ -283,7 +215,7 @@
           </span>
         </div>
       </a>
-      <a href="grade5/electroscope_lab.html" class="exp-card">
+<a href="grade5/electroscope_lab.html" class="exp-card">
         <div class="exp-num-badge">تجربة 18</div>
         <div class="exp-icon">⚡</div>
         <div class="exp-title">الكشاف الكهربائي | مختبر تفاعلي - العلوم والحياة</div>
@@ -293,7 +225,7 @@
           </span>
         </div>
       </a>
-      <a href="grade5/salt_treasure_activity4.html" class="exp-card">
+<a href="grade5/salt_treasure_activity4.html" class="exp-card">
         <div class="exp-num-badge">تجربة 19</div>
         <div class="exp-icon">🛢️</div>
         <div class="exp-title">الكنز المِلحيّ | نشاط (٤) — العلوم والحياة</div>
@@ -303,7 +235,7 @@
           </span>
         </div>
       </a>
-      <a href="grade5/pure_impure_matter.html" class="exp-card">
+<a href="grade5/pure_impure_matter.html" class="exp-card">
         <div class="exp-num-badge">تجربة 20</div>
         <div class="exp-icon">⚛️</div>
         <div class="exp-title">المادة النقية والمادة غير النقية</div>
@@ -313,7 +245,7 @@
           </span>
         </div>
       </a>
-      <a href="grade5/electric_generator_energy.html" class="exp-card">
+<a href="grade5/electric_generator_energy.html" class="exp-card">
         <div class="exp-num-badge">تجربة 21</div>
         <div class="exp-icon">⚡</div>
         <div class="exp-title">المولّد الكهربائي — تحوّلات الطاقة</div>
@@ -323,7 +255,7 @@
           </span>
         </div>
       </a>
-      <a href="grade5/surface_water.html" class="exp-card">
+<a href="grade5/surface_water.html" class="exp-card">
         <div class="exp-num-badge">تجربة 22</div>
         <div class="exp-icon">💧</div>
         <div class="exp-title">المياه السطحية | مختبر افتراضي</div>
@@ -333,7 +265,7 @@
           </span>
         </div>
       </a>
-      <a href="grade5/groundwater_palestine.html" class="exp-card">
+<a href="grade5/groundwater_palestine.html" class="exp-card">
         <div class="exp-num-badge">تجربة 23</div>
         <div class="exp-icon">💧</div>
         <div class="exp-title">المياه الجوفيّة في فلسطين</div>
@@ -343,7 +275,7 @@
           </span>
         </div>
       </a>
-      <a href="grade5/oil_in_palestine.html" class="exp-card">
+<a href="grade5/oil_in_palestine.html" class="exp-card">
         <div class="exp-num-badge">تجربة 24</div>
         <div class="exp-icon">🛢️</div>
         <div class="exp-title">النفط في بلادي — مختبر افتراضي</div>
@@ -353,7 +285,7 @@
           </span>
         </div>
       </a>
-      <a href="grade5/i_am_mixture.html" class="exp-card">
+<a href="grade5/i_am_mixture.html" class="exp-card">
         <div class="exp-num-badge">تجربة 25</div>
         <div class="exp-icon">⚗️</div>
         <div class="exp-title">أنا المخلوط - العلوم والحياة</div>
@@ -363,7 +295,7 @@
           </span>
         </div>
       </a>
-      <a href="grade5/energy_environment.html" class="exp-card">
+<a href="grade5/energy_environment.html" class="exp-card">
         <div class="exp-num-badge">تجربة 26</div>
         <div class="exp-icon">⚙️</div>
         <div class="exp-title">الطاقة والبيئة | مختبر افتراضي</div>
@@ -373,7 +305,7 @@
           </span>
         </div>
       </a>
-      <a href="grade5/types_of_rocks.html" class="exp-card">
+<a href="grade5/types_of_rocks.html" class="exp-card">
         <div class="exp-num-badge">تجربة 27</div>
         <div class="exp-icon">⚗️</div>
         <div class="exp-title">أنواع الصخور | مختبر افتراضي تفاعلي</div>
@@ -383,7 +315,7 @@
           </span>
         </div>
       </a>
-      <a href="grade5/other_energy_transformations.html" class="exp-card">
+<a href="grade5/other_energy_transformations.html" class="exp-card">
         <div class="exp-num-badge">تجربة 28</div>
         <div class="exp-icon">⚙️</div>
         <div class="exp-title">تحوّلات أخرى للطاقة | مختبر افتراضي</div>
@@ -393,7 +325,7 @@
           </span>
         </div>
       </a>
-      <a href="grade5/light_energy_transformations.html" class="exp-card">
+<a href="grade5/light_energy_transformations.html" class="exp-card">
         <div class="exp-num-badge">تجربة 29</div>
         <div class="exp-icon">⚙️</div>
         <div class="exp-title">تحوّلات الطاقة الضوئية | العلوم والحياة</div>
@@ -403,7 +335,7 @@
           </span>
         </div>
       </a>
-      <a href="grade5/energy_conservation.html" class="exp-card">
+<a href="grade5/energy_conservation.html" class="exp-card">
         <div class="exp-num-badge">تجربة 30</div>
         <div class="exp-icon">⚙️</div>
         <div class="exp-title">ترشيد استهلاك الطاقة</div>
@@ -413,7 +345,7 @@
           </span>
         </div>
       </a>
-      <a href="grade5/classify_materials.html" class="exp-card">
+<a href="grade5/classify_materials.html" class="exp-card">
         <div class="exp-num-badge">تجربة 31</div>
         <div class="exp-icon">⚛️</div>
         <div class="exp-title">تصنيف المواد - العلوم والحياة</div>
@@ -423,7 +355,7 @@
           </span>
         </div>
       </a>
-      <a href="grade5/states_of_matter.html" class="exp-card">
+<a href="grade5/states_of_matter.html" class="exp-card">
         <div class="exp-num-badge">تجربة 32</div>
         <div class="exp-icon">⚗️</div>
         <div class="exp-title">حالات المادّة | مختبر افتراضي تفاعلي</div>
@@ -433,7 +365,7 @@
           </span>
         </div>
       </a>
-      <a href="grade5/burn_magnesium_chemical_change.html" class="exp-card">
+<a href="grade5/burn_magnesium_chemical_change.html" class="exp-card">
         <div class="exp-num-badge">تجربة 33</div>
         <div class="exp-icon">⚗️</div>
         <div class="exp-title">حرق المغنيسيوم | تغيّر كيميائي</div>
@@ -443,7 +375,7 @@
           </span>
         </div>
       </a>
-      <a href="grade5/water_harvesting.html" class="exp-card">
+<a href="grade5/water_harvesting.html" class="exp-card">
         <div class="exp-num-badge">تجربة 34</div>
         <div class="exp-icon">⚗️</div>
         <div class="exp-title">حصاد المياه — درس تفاعلي ومختبر افتراضي</div>
@@ -453,7 +385,7 @@
           </span>
         </div>
       </a>
-      <a href="grade5/rock_properties.html" class="exp-card">
+<a href="grade5/rock_properties.html" class="exp-card">
         <div class="exp-num-badge">تجربة 35</div>
         <div class="exp-icon">🧪</div>
         <div class="exp-title">خصائص الصّخور | مختبر افتراضي</div>
@@ -463,7 +395,7 @@
           </span>
         </div>
       </a>
-      <a href="grade5/compound_properties.html" class="exp-card">
+<a href="grade5/compound_properties.html" class="exp-card">
         <div class="exp-num-badge">تجربة 36</div>
         <div class="exp-icon">🧪</div>
         <div class="exp-title">خصائص المُرَكَّب | مختبر افتراضي - العلوم والحياة</div>
@@ -473,7 +405,7 @@
           </span>
         </div>
       </a>
-      <a href="grade5/energy_sources.html" class="exp-card">
+<a href="grade5/energy_sources.html" class="exp-card">
         <div class="exp-num-badge">تجربة 37</div>
         <div class="exp-icon">⚙️</div>
         <div class="exp-title">الطاقة ومصادرها | مختبر افتراضي</div>
@@ -483,7 +415,7 @@
           </span>
         </div>
       </a>
-      <a href="grade5/activity3_electric_charge.html" class="exp-card">
+<a href="grade5/activity3_electric_charge.html" class="exp-card">
         <div class="exp-num-badge">تجربة 38</div>
         <div class="exp-icon">⚡</div>
         <div class="exp-title">نشاط ٣ • الشّحنة الكهربائيّة وأنواعها</div>
@@ -493,7 +425,7 @@
           </span>
         </div>
       </a>
-      <a href="grade5/how_oil_forms_3d.html" class="exp-card">
+<a href="grade5/how_oil_forms_3d.html" class="exp-card">
         <div class="exp-num-badge">تجربة 39</div>
         <div class="exp-icon">🛢️</div>
         <div class="exp-title">كيف يتكوّن النفط؟ | مختبر افتراضي ثلاثي الأبعاد – علوم وحياة، الصف الخامس</div>
@@ -503,7 +435,7 @@
           </span>
         </div>
       </a>
-      <a href="grade5/distillation_lab.html" class="exp-card">
+<a href="grade5/distillation_lab.html" class="exp-card">
         <div class="exp-num-badge">تجربة 40</div>
         <div class="exp-icon">💧</div>
         <div class="exp-title">التقطير — مختبر افتراضي</div>
@@ -513,7 +445,7 @@
           </span>
         </div>
       </a>
-      <a href="grade5/salt_dissolving_water.html" class="exp-card">
+<a href="grade5/salt_dissolving_water.html" class="exp-card">
         <div class="exp-num-badge">تجربة 41</div>
         <div class="exp-icon">💧</div>
         <div class="exp-title">ذوبان المِلح في الماء | مختبر افتراضي</div>
@@ -523,7 +455,7 @@
           </span>
         </div>
       </a>
-      <a href="grade5/sedimentary_rocks_formation.html" class="exp-card">
+<a href="grade5/sedimentary_rocks_formation.html" class="exp-card">
         <div class="exp-num-badge">تجربة 42</div>
         <div class="exp-icon">🪨</div>
         <div class="exp-title">شاهد على تاريخ الأرض — تكوّن الصخور الرسوبية</div>
@@ -533,7 +465,7 @@
           </span>
         </div>
       </a>
-      <a href="grade5/separation_funnel.html" class="exp-card">
+<a href="grade5/separation_funnel.html" class="exp-card">
         <div class="exp-num-badge">تجربة 43</div>
         <div class="exp-icon">🧪</div>
         <div class="exp-title">قِمعُ الفَصل — علوم وحياة</div>
@@ -543,7 +475,7 @@
           </span>
         </div>
       </a>
-      <a href="grade5/homogeneous_heterogeneous.html" class="exp-card">
+<a href="grade5/homogeneous_heterogeneous.html" class="exp-card">
         <div class="exp-num-badge">تجربة 44</div>
         <div class="exp-icon">🧫</div>
         <div class="exp-title">متجانس أم غير متجانس - العلوم والحياة</div>
@@ -553,7 +485,7 @@
           </span>
         </div>
       </a>
-      <a href="grade5/quarries_3d.html" class="exp-card">
+<a href="grade5/quarries_3d.html" class="exp-card">
         <div class="exp-num-badge">تجربة 45</div>
         <div class="exp-icon">🧪</div>
         <div class="exp-title">مَحاجِرُ بلادي | مختبر افتراضي ثلاثي الأبعاد</div>
@@ -563,7 +495,7 @@
           </span>
         </div>
       </a>
-      <a href="grade5/different_mixtures.html" class="exp-card">
+<a href="grade5/different_mixtures.html" class="exp-card">
         <div class="exp-num-badge">تجربة 46</div>
         <div class="exp-icon">🧪</div>
         <div class="exp-title">مخاليط مختلفة | العلوم والحياة</div>
@@ -573,7 +505,7 @@
           </span>
         </div>
       </a>
-      <a href="grade5/cell_discovery_journey.html" class="exp-card">
+<a href="grade5/cell_discovery_journey.html" class="exp-card">
         <div class="exp-num-badge">تجربة 47</div>
         <div class="exp-icon">🔬</div>
         <div class="exp-title">رحلة اكتشاف الخليّة | العلوم والحياة</div>
@@ -583,7 +515,7 @@
           </span>
         </div>
       </a>
-      <a href="grade5/biological_organization_levels.html" class="exp-card">
+<a href="grade5/biological_organization_levels.html" class="exp-card">
         <div class="exp-num-badge">تجربة 48</div>
         <div class="exp-icon">🧪</div>
         <div class="exp-title">مستويات التنظيم الحيوي في جسم الكائنات الحية</div>
@@ -593,7 +525,7 @@
           </span>
         </div>
       </a>
-      <a href="grade5/electrical_energy_sources.html" class="exp-card">
+<a href="grade5/electrical_energy_sources.html" class="exp-card">
         <div class="exp-num-badge">تجربة 49</div>
         <div class="exp-icon">⚡</div>
         <div class="exp-title">مصادر الطاقة الكهربائية</div>
@@ -603,7 +535,7 @@
           </span>
         </div>
       </a>
-      <a href="grade5/cell_components.html" class="exp-card">
+<a href="grade5/cell_components.html" class="exp-card">
         <div class="exp-num-badge">تجربة 50</div>
         <div class="exp-icon">🔬</div>
         <div class="exp-title">مكوّنات الخليّة</div>
@@ -613,7 +545,7 @@
           </span>
         </div>
       </a>
-      <a href="grade5/element_lesson.html" class="exp-card">
+<a href="grade5/element_lesson.html" class="exp-card">
         <div class="exp-num-badge">تجربة 51</div>
         <div class="exp-icon">⚛️</div>
         <div class="exp-title">درس العنصر – العلوم والحياة</div>
@@ -623,7 +555,7 @@
           </span>
         </div>
       </a>
-      <a href="grade5/activity1_matter.html" class="exp-card">
+<a href="grade5/activity1_matter.html" class="exp-card">
         <div class="exp-num-badge">تجربة 52</div>
         <div class="exp-icon">⚛️</div>
         <div class="exp-title">نشاط (١): المادة - العلوم والحياة</div>
@@ -633,7 +565,7 @@
           </span>
         </div>
       </a>
-            <a href="grade7/groundwater_lab.html" class="exp-card">
+<a href="grade7/groundwater_lab.html" class="exp-card">
         <div class="exp-num-badge">تجربة 53</div>
         <div class="exp-icon">💧</div>
         <div class="exp-title">المياه الجوفيّة | مختبر افتراضي تفاعلي</div>
@@ -643,24 +575,18 @@
           </span>
         </div>
       </a>
-      <div class="add-card"><div style="font-size:24px;opacity:.3">＋</div><div>يمكن إضافة تجارب جديدة هنا</div></div>
+<div class="add-card"><div style="font-size:24px;opacity:.3">＋</div>
     </div>
   </section>
 
-  <footer><p>المختبر الافتراضي التجريبي — فريق صُنَّاع التميّز التربوي(قادة الإبداع)<br>مديرية التربية والتعليم — طولكرم 🇵🇸</p></footer>
+  <footer>
+    <div class="footer-sub">
+      المختبر الافتراضي التجريبي — فريق صُنَّاع التميّز التربوي (قادة الإبداع)<br>
+      <strong>مديرية التربية والتعليم — طولكرم — مبحث العلوم 🇵🇸</strong>
+    </div>
+  </footer>
+
 </div>
-<script>
-const cv=document.getElementById('bg-canvas'),ctx=cv.getContext('2d');let W,H;
-function rs(){W=cv.width=innerWidth;H=cv.height=innerHeight;}rs();window.addEventListener('resize',rs);
-const P=Array.from({length:70},()=>({x:Math.random()*9999,y:Math.random()*9999,
-  vx:(Math.random()-.5)*.5,vy:(Math.random()-.5)*.5,r:Math.random()*2+.4,a:Math.random()*.4+.1,
-  reset(){this.x=Math.random()*W;this.y=Math.random()*H;}}));
-function draw(){ctx.clearRect(0,0,W,H);P.forEach(p=>{p.x+=p.vx;p.y+=p.vy;
-  if(p.x<0||p.x>W||p.y<0||p.y>H)p.reset();
-  ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-  const h=Math.floor(p.a*255).toString(16).padStart(2,'0');
-  ctx.fillStyle=(Math.random()<.6?'#FF6B6B':'#FF8E53')+h;ctx.fill();});requestAnimationFrame(draw);}
-draw();
-</script>
+<script src="lab-theme.js"></script>
 </body>
 </html>
