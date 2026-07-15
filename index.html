@@ -30,7 +30,7 @@
    ═══════════════════════════════════════════════════════════ */
 :root {
   --c-sky:       #00C8FF;
-  --c-royal:     #0A0E2E;
+  --c-royal:     #061E3A;
   --c-indigo:    #1A237E;
   --c-violet:    #7C3AED;
   --c-glass:     rgba(255, 255, 255, 0.07);
@@ -50,7 +50,8 @@ html { scroll-behavior: smooth; }
 
 body {
   font-family: 'Tajawal', sans-serif;
-  background: var(--c-royal);
+  background: linear-gradient(160deg, #061E3A 0%, #0A2D52 45%, #0D3566 100%);
+  background-attachment: fixed;
   color: var(--c-pearl);
   min-height: 100vh;
   overflow-x: hidden;
@@ -68,7 +69,8 @@ body {
 
 /* ─── SCROLLBAR ─────────────────────────────────── */
 ::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--c-royal); }
+::-webkit-scrollbar-track { background: linear-gradient(160deg, #061E3A 0%, #0A2D52 45%, #0D3566 100%);
+  background-attachment: fixed; }
 ::-webkit-scrollbar-thumb { background: var(--c-sky); border-radius: 3px; }
 
 /* ═══════════════════════════════════════════════════
@@ -739,7 +741,7 @@ footer {
       scaleMobile: 1.00,
       /* ── ألوان الشبكة — غيّر هذه القيم لتغيير اللون ── */
       color: 0x00C8FF,           /* لون الخطوط: سماوي */
-      backgroundColor: 0x0A0E2E, /* لون الخلفية: أزرق ملكي داكن */
+      backgroundColor: 0x061E3A, /* لون الخلفية: أزرق ملكي داكن */
       points: 9.00,              /* عدد النقاط — أكثر = أكثف */
       maxDistance: 22.00,        /* أقصى مسافة بين النقاط */
       spacing: 18.00,

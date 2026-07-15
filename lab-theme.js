@@ -92,9 +92,10 @@
 
     /* background gradient */
     const bg = ctx.createLinearGradient(0, 0, W, H);
-    bg.addColorStop(0,   '#020B1A');
-    bg.addColorStop(0.45,'#041525');
-    bg.addColorStop(1,   '#030E1E');
+    bg.addColorStop(0,   '#061E3A');
+    bg.addColorStop(0.35,'#0A2D52');
+    bg.addColorStop(0.7, '#0D3566');
+    bg.addColorStop(1,   '#082847');
     ctx.fillStyle = bg;
     ctx.fillRect(0, 0, W, H);
 
@@ -108,10 +109,10 @@
     const px = (mx / W - 0.5) * 30;
     const py = (my / H - 0.5) * 30;
     const glows = [
-      {x:W*0.15+px, y:H*0.2+py,  r:230, c:'rgba(0,130,220,0.07)'},
-      {x:W*0.8-px,  y:H*0.15-py, r:190, c:'rgba(56,100,240,0.08)'},
-      {x:W*0.5+px,  y:H*0.65+py, r:210, c:'rgba(0,160,180,0.06)'},
-      {x:W*0.85-px, y:H*0.75-py, r:160, c:'rgba(100,80,230,0.05)'},
+      {x:W*0.15+px, y:H*0.2+py,  r:280, c:'rgba(0,160,255,0.12)'},
+      {x:W*0.8-px,  y:H*0.15-py, r:220, c:'rgba(0,120,240,0.10)'},
+      {x:W*0.5+px,  y:H*0.65+py, r:260, c:'rgba(0,200,230,0.09)'},
+      {x:W*0.85-px, y:H*0.75-py, r:200, c:'rgba(50,100,220,0.08)'},
     ];
     glows.forEach(g => {
       const rg = ctx.createRadialGradient(g.x,g.y,0,g.x,g.y,g.r);
